@@ -8,16 +8,16 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Rajdhani:ital,wght@0,600;0,700;1,700&display=swap" rel="stylesheet">
-    
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
     <script src="https://cdn.tailwindcss.com"></script>
+    
     <script>
         tailwind.config = {
             theme: {
                 extend: {
                     colors: {
                         'tera-dark': '#05020a',
+                        'tera-darker': '#020104',
                         'tera-purple': '#a855f7',
                         'tera-blue': '#3b82f6',
                         'tera-gold': '#fbbf24',
@@ -27,6 +27,21 @@
                     fontFamily: {
                         sans: ['Inter', 'sans-serif'],
                         heading: ['Rajdhani', 'sans-serif'],
+                    },
+                    animation: {
+                        'gradient-x': 'gradient-x 3s ease infinite',
+                        'float': 'float 6s ease-in-out infinite',
+                        'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                    },
+                    keyframes: {
+                        'gradient-x': {
+                            '0%, 100%': { 'background-size': '200% 200%', 'background-position': 'left center' },
+                            '50%': { 'background-size': '200% 200%', 'background-position': 'right center' },
+                        },
+                        'float': {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-10px)' },
+                        }
                     }
                 }
             }
@@ -34,303 +49,427 @@
     </script>
 
     <style>
-        body {
-            background-color: #05020a;
-            color: #ffffff;
-            overflow-x: hidden;
-            background-image: 
-                radial-gradient(circle at 0% 0%, rgba(168, 85, 247, 0.05) 0%, transparent 50%),
-                radial-gradient(circle at 100% 100%, rgba(59, 130, 246, 0.05) 0%, transparent 50%);
-        }
-        .glass {
-            background: rgba(255, 255, 255, 0.02);
-            backdrop-filter: blur(8px);
-            -webkit-backdrop-filter: blur(8px);
-            border: 1px solid rgba(255, 255, 255, 0.05);
-        }
-        .item-card {
-            background: linear-gradient(145deg, rgba(30,15,50,0.4) 0%, rgba(15,7,25,0.6) 100%);
-            border: 1px solid rgba(168,85,247,0.1);
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-        .item-card:hover {
-            transform: translateY(-5px);
-            border-color: rgba(168,85,247,0.6);
-            box-shadow: 0 10px 20px -5px rgba(168,85,247,0.3);
-        }
-        .text-gradient {
-            background: linear-gradient(to right, #a855f7, #3b82f6);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
+        body { background-color: #05020a; color: #ffffff; overflow-x: hidden; position: relative; }
+        .bg-grid { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background-image: linear-gradient(to right, rgba(255,255,255,0.02) 1px, transparent 1px), linear-gradient(to bottom, rgba(255,255,255,0.02) 1px, transparent 1px); background-size: 40px 40px; z-index: -2; pointer-events: none; }
+        .bg-orb-1, .bg-orb-2 { position: fixed; border-radius: 50%; filter: blur(100px); z-index: -1; opacity: 0.4; pointer-events: none; }
+        .bg-orb-1 { width: 40vw; height: 40vw; background: rgba(168, 85, 247, 0.15); top: -10%; left: -10%; animation: float 10s ease-in-out infinite alternate; }
+        .bg-orb-2 { width: 50vw; height: 50vw; background: rgba(59, 130, 246, 0.1); bottom: -20%; right: -10%; animation: float 12s ease-in-out infinite alternate-reverse; }
+        .glass { background: rgba(10, 5, 20, 0.4); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.05); }
+        .nav-scrolled { background: rgba(5, 2, 10, 0.85); box-shadow: 0 10px 30px -10px rgba(0,0,0,0.8); border-bottom: 1px solid rgba(168, 85, 247, 0.2); }
+        
+        .glow-card-wrapper { position: relative; border-radius: 1rem; z-index: 1; }
+        .glow-card-wrapper::before { content: ""; position: absolute; inset: -2px; border-radius: 1.1rem; background: linear-gradient(45deg, #a855f7, #3b82f6, #a855f7, #fbbf24); background-size: 300%; z-index: -1; opacity: 0; transition: opacity 0.4s ease; filter: blur(8px); animation: gradient-x 4s linear infinite; }
+        .glow-card-wrapper:hover::before { opacity: 1; }
+        .item-card { background: linear-gradient(145deg, rgba(20,10,35,0.8) 0%, rgba(10,5,15,0.95) 100%); border: 1px solid rgba(168,85,247,0.15); transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); height: 100%; }
+        .glow-card-wrapper:hover .item-card { transform: translateY(-5px); border-color: rgba(255,255,255,0.1); }
+        
+        .text-gradient-animated { background: linear-gradient(to right, #a855f7, #3b82f6, #fbbf24, #a855f7); background-size: 300% auto; -webkit-background-clip: text; -webkit-text-fill-color: transparent; animation: gradient-x 4s linear infinite; }
         
         /* Encyclopedia Tab System */
-        .encyclopedia-tab { display: none; animation: fadeIn 0.4s ease-in-out; }
-        .encyclopedia-tab.active { display: block; }
-        .tab-btn.active { background: rgba(168, 85, 247, 0.2); border-left: 4px solid #a855f7; color: #fff; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-        
+        .encyclopedia-tab { display: none; }
+        .encyclopedia-tab.active { display: block; animation: slideInRight 0.4s ease-out forwards; }
+        .tab-btn { position: relative; overflow: hidden; }
+        .tab-btn::before { content: ''; position: absolute; left: 0; top: 0; height: 100%; width: 0; background: linear-gradient(90deg, rgba(168,85,247,0.2), transparent); transition: width 0.3s ease; z-index: -1; }
+        .tab-btn:hover::before { width: 100%; }
+        .tab-btn.active { border-left: 4px solid #a855f7; color: #fff; background: rgba(168,85,247,0.1); }
+        @keyframes slideInRight { from { opacity: 0; transform: translateX(20px); } to { opacity: 1; transform: translateX(0); } }
+
         /* Navigation Page System */
-        .page-section { display: none; animation: slideUpFade 0.4s ease-out forwards; }
-        .page-section.active-page { display: block; }
-        .active-nav { color: #a855f7 !important; }
-        @keyframes slideUpFade {
-            from { opacity: 0; transform: translateY(15px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
+        .page-section { display: none; }
+        .page-section.active-page { display: block; animation: slideUpFade 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+        .active-nav { color: #a855f7 !important; text-shadow: 0 0 10px rgba(168,85,247,0.5); }
+        @keyframes slideUpFade { from { opacity: 0; transform: translateY(30px) scale(0.98); } to { opacity: 1; transform: translateY(0) scale(1); } }
 
-        ::-webkit-scrollbar { width: 6px; height: 6px; }
-        ::-webkit-scrollbar-track { background: #05020a; }
-        ::-webkit-scrollbar-thumb { background: #a855f7; border-radius: 10px; }
+        /* Scrollbars */
+        ::-webkit-scrollbar { width: 8px; height: 8px; }
+        ::-webkit-scrollbar-track { background: #020104; }
+        ::-webkit-scrollbar-thumb { background: linear-gradient(to bottom, #a855f7, #3b82f6); border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: linear-gradient(to bottom, #c084fc, #60a5fa); }
+        .wiki-scroll::-webkit-scrollbar { width: 4px; }
+        .wiki-scroll::-webkit-scrollbar-track { background: rgba(255,255,255,0.02); border-radius: 10px; }
+        .wiki-scroll::-webkit-scrollbar-thumb { background: rgba(168,85,247,0.5); border-radius: 10px; }
         
-        input[type=number]::-webkit-inner-spin-button, 
-        input[type=number]::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
+        input[type=number]::-webkit-inner-spin-button, input[type=number]::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
 
-        /* Custom TikTok Button Hover Effect */
-        .btn-tiktok:hover {
-            box-shadow: -2px 2px 0px 0px #00f2fe, 2px -2px 0px 0px #ff0050;
-            background-color: #000;
-            color: #fff;
-            border-color: transparent;
-        }
+        /* Social Buttons */
+        .btn-tiktok { position: relative; z-index: 1; overflow: hidden; }
+        .btn-tiktok::before { content: ''; position: absolute; inset: 0; z-index: -1; background: linear-gradient(45deg, #00f2fe, #ff0050); opacity: 0; transition: opacity 0.3s ease; }
+        .btn-tiktok:hover::before { opacity: 1; }
+        .btn-tiktok:hover { box-shadow: 0 0 15px rgba(255, 0, 80, 0.5); border-color: transparent; }
+
+        .btn-ig { position: relative; z-index: 1; overflow: hidden; }
+        .btn-ig::before { content: ''; position: absolute; inset: 0; z-index: -1; background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888); opacity: 0; transition: opacity 0.3s ease; }
+        .btn-ig:hover::before { opacity: 1; }
+        .btn-ig:hover { box-shadow: 0 0 15px rgba(220, 39, 67, 0.5); border-color: transparent; }
+        
+        .tier-sp { background: rgba(239, 68, 68, 0.2); color: #fca5a5; border: 1px solid rgba(239, 68, 68, 0.3); }
+        .tier-s { background: rgba(251, 191, 36, 0.2); color: #fcd34d; border: 1px solid rgba(251, 191, 36, 0.3); }
+        .tier-a { background: rgba(59, 130, 246, 0.2); color: #93c5fd; border: 1px solid rgba(59, 130, 246, 0.3); }
     </style>
 </head>
 <body class="antialiased selection:bg-tera-purple selection:text-white flex flex-col min-h-screen">
 
+    <!-- ADVANCED BACKGROUND ELEMENTS -->
+    <div class="bg-grid"></div>
+    <div class="bg-orb-1"></div>
+    <div class="bg-orb-2"></div>
+
     <!-- NAVBAR -->
-    <nav class="fixed w-full z-50 glass border-b border-white/5 transition-all duration-300" id="navbar">
+    <nav class="fixed w-full z-50 glass border-b border-white/5 transition-all duration-500" id="navbar">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 h-20 flex items-center justify-between">
-            <div class="flex items-center gap-3">
-               <img src="https://d.top4top.io/p_3783tlov21.jpg" alt="Logo TERA STORE" class="w-10 h-10 md:w-12 md:h-12 object-contain rounded-lg shadow-[0_0_15px_rgba(168,85,247,0.4)]">
+            <div class="flex items-center gap-3 cursor-pointer animate-float" onclick="switchPage('home')">
+               <img src="https://d.top4top.io/p_3783tlov21.jpg" alt="Logo TERA STORE" class="w-10 h-10 md:w-12 md:h-12 object-contain rounded-lg shadow-[0_0_15px_rgba(168,85,247,0.6)] border border-tera-purple/30">
                 <div>
                     <h1 class="font-heading font-bold text-xl md:text-2xl italic tracking-tighter">TERA <span class="text-tera-purple uppercase">STORE</span></h1>
                 </div>
             </div>
-            <div class="hidden md:flex gap-6 items-center text-sm font-semibold uppercase tracking-widest italic">
-                <a href="javascript:void(0)" onclick="switchPage('home')" class="nav-link active-nav hover:text-tera-purple transition-colors">Home</a>
-                <a href="javascript:void(0)" onclick="switchPage('joki')" class="nav-link hover:text-tera-purple transition-colors">Jasa Joki</a>
-                <a href="javascript:void(0)" onclick="switchPage('wiki')" class="nav-link hover:text-tera-purple transition-colors">Tier List</a>
-                <a href="javascript:void(0)" onclick="switchPage('katalog')" class="nav-link hover:text-tera-purple transition-colors">Katalog Item</a>
-                <a href="#contact" class="bg-black border border-white/10 hover:border-tiktok-pink btn-tiktok px-6 py-2 rounded-full text-white transition-all">DM Admin</a>
+            <div class="hidden md:flex gap-8 items-center text-sm font-semibold uppercase tracking-widest italic">
+                <a href="javascript:void(0)" onclick="switchPage('home')" class="nav-link active-nav text-gray-300 hover:text-white transition-all">Home</a>
+                <a href="javascript:void(0)" onclick="switchPage('joki')" class="nav-link text-gray-300 hover:text-white transition-all">Jasa Joki</a>
+                <a href="javascript:void(0)" onclick="switchPage('wiki')" class="nav-link text-gray-300 hover:text-white transition-all">Ensiklopedia</a>
+                <a href="javascript:void(0)" onclick="switchPage('katalog')" class="nav-link text-gray-300 hover:text-white transition-all">Katalog Item</a>
+                <a href="#contact" class="bg-black/50 border border-white/20 btn-ig px-6 py-2.5 rounded-full text-white transition-all flex items-center gap-2">
+                    <i class="fab fa-instagram"></i> DM Admin
+                </a>
             </div>
-            <button class="md:hidden text-white text-2xl" id="mobile-btn"><i class="fas fa-bars"></i></button>
+            <button class="md:hidden text-white text-2xl hover:text-tera-purple transition-colors" id="mobile-btn"><i class="fas fa-bars"></i></button>
         </div>
+        
         <!-- Mobile Menu -->
-        <div id="mobile-menu" class="hidden md:hidden glass border-t border-white/10 px-4 py-4 flex flex-col gap-4 text-center">
-            <a href="javascript:void(0)" onclick="switchPage('home')" class="nav-link active-nav text-white font-bold uppercase italic tracking-widest">Home</a>
-            <a href="javascript:void(0)" onclick="switchPage('joki')" class="nav-link text-white font-bold uppercase italic tracking-widest">Jasa Joki</a>
-            <a href="javascript:void(0)" onclick="switchPage('wiki')" class="nav-link text-white font-bold uppercase italic tracking-widest">Tier List</a>
-            <a href="javascript:void(0)" onclick="switchPage('katalog')" class="nav-link text-white font-bold uppercase italic tracking-widest">Katalog Item</a>
-            <a href="#contact" onclick="document.getElementById('mobile-menu').classList.add('hidden')" class="text-white bg-black border border-white/10 py-2 rounded-xl font-bold uppercase italic tracking-widest mt-2">DM Admin</a>
+        <div id="mobile-menu" class="hidden md:hidden glass border-t border-white/10 px-4 py-6 flex flex-col gap-6 text-center shadow-2xl">
+            <a href="javascript:void(0)" onclick="switchPage('home')" class="nav-link active-nav text-white font-bold uppercase italic tracking-widest text-lg">Home</a>
+            <a href="javascript:void(0)" onclick="switchPage('joki')" class="nav-link text-white font-bold uppercase italic tracking-widest text-lg">Jasa Joki</a>
+            <a href="javascript:void(0)" onclick="switchPage('wiki')" class="nav-link text-white font-bold uppercase italic tracking-widest text-lg">Ensiklopedia</a>
+            <a href="javascript:void(0)" onclick="switchPage('katalog')" class="nav-link text-white font-bold uppercase italic tracking-widest text-lg">Katalog Item</a>
+            <a href="#contact" onclick="document.getElementById('mobile-menu').classList.add('hidden')" class="btn-ig text-white bg-black border border-white/10 py-3 rounded-xl font-bold uppercase italic tracking-widest mt-4 mx-4 flex justify-center items-center gap-2"><i class="fab fa-instagram"></i> DM Admin</a>
         </div>
     </nav>
 
     <!-- KONTEN UTAMA -->
     <main class="flex-grow">
         <!-- 1. SECTION HOME -->
-        <section id="home" class="page-section active-page pt-32 pb-16 px-4 max-w-7xl mx-auto text-center">
-            <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full glass border-tera-gold/30 text-tera-gold text-xs font-bold mb-6 italic uppercase">
-                <i class="fas fa-star"></i> Verified Seller Sailor Piece
+        <section id="home" class="page-section active-page pt-36 pb-20 px-4 max-w-7xl mx-auto text-center relative">
+            <div class="inline-flex items-center gap-2 px-5 py-2 rounded-full bg-tera-gold/10 border border-tera-gold/30 text-tera-gold text-xs font-bold mb-8 italic uppercase tracking-wider animate-pulse-slow shadow-[0_0_20px_rgba(251,191,36,0.2)]">
+                <i class="fas fa-crown"></i> Verified Seller Sailor Piece
             </div>
-            <h2 class="text-4xl md:text-6xl lg:text-7xl font-heading font-black italic leading-tight mb-6">
+            <h2 class="text-5xl md:text-7xl lg:text-8xl font-heading font-black italic leading-tight mb-6 drop-shadow-2xl">
                 Pusat Item & Jasa <br>
-                <span class="text-gradient uppercase">The Honor One</span>
+                <span class="text-gradient-animated uppercase drop-shadow-[0_0_30px_rgba(168,85,247,0.5)]">The Honor One</span>
             </h2>
-            <p class="text-gray-400 text-sm md:text-base mb-10 max-w-2xl mx-auto">
-                Pelajari META Sailor Piece yang 100% akurat di Ensiklopedia Tier List kami, lalu order Item dan Jasa Joki impian Anda di Katalog TERA STORE!
+            <p class="text-gray-400 text-sm md:text-lg mb-12 max-w-2xl mx-auto font-medium leading-relaxed">
+                Pelajari seluruh rahasia, META, dan drop item Sailor Piece di Ensiklopedia kami, lalu wujudkan karakter impian Anda melalui Katalog TERA STORE!
             </p>
-            <div class="flex justify-center gap-4">
-                <button onclick="switchPage('katalog')" class="bg-tera-purple text-white px-8 py-3 rounded-xl font-bold uppercase tracking-widest italic hover:bg-purple-500 transition shadow-[0_0_20px_rgba(168,85,247,0.4)]">Buka Katalog</button>
-                <button onclick="switchPage('wiki')" class="glass text-white px-8 py-3 rounded-xl font-bold uppercase tracking-widest italic hover:bg-white/10 transition">Baca Wiki</button>
+            <div class="flex flex-col sm:flex-row justify-center gap-4">
+                <button onclick="switchPage('katalog')" class="relative group overflow-hidden bg-tera-purple text-white px-8 py-4 rounded-xl font-bold uppercase tracking-widest italic transition shadow-[0_0_20px_rgba(168,85,247,0.4)] hover:shadow-[0_0_30px_rgba(168,85,247,0.6)]">
+                    <span class="relative z-10">Buka Katalog</span>
+                    <div class="absolute inset-0 h-full w-full bg-white/20 scale-x-0 group-hover:scale-x-100 transform origin-left transition-transform duration-300 ease-out z-0"></div>
+                </button>
+                <button onclick="switchPage('wiki')" class="glass hover:bg-white/10 border border-white/20 text-white px-8 py-4 rounded-xl font-bold uppercase tracking-widest italic transition">Baca Ensiklopedia</button>
             </div>
         </section>
 
         <!-- 2. SECTION JOKI -->
         <section id="joki" class="page-section pt-32 pb-16 px-4 max-w-7xl mx-auto">
-            <div class="flex items-center gap-3 mb-8 border-b border-white/10 pb-3">
-                <i class="fas fa-bolt text-2xl text-tera-purple"></i>
-                <h3 class="text-3xl font-heading font-black italic uppercase">Layanan <span class="text-tera-purple">Joki</span></h3>
+            <div class="flex items-center gap-4 mb-10 border-b border-white/10 pb-4">
+                <div class="w-12 h-12 rounded-xl bg-tera-purple/20 flex items-center justify-center border border-tera-purple/30 shadow-[0_0_15px_rgba(168,85,247,0.3)]">
+                    <i class="fas fa-bolt text-2xl text-tera-purple animate-pulse"></i>
+                </div>
+                <h3 class="text-4xl font-heading font-black italic uppercase">Layanan <span class="text-gradient-animated">Joki</span></h3>
             </div>
             
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-                <div class="item-card rounded-2xl p-6 relative group overflow-hidden">
-                    <div class="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity"><i class="fas fa-level-up-alt text-6xl"></i></div>
-                    <h4 class="text-xl font-bold text-white mb-2 italic">Joki Leveling</h4>
-                    <p class="text-xs text-gray-400 mb-6 leading-relaxed">Tingkatkan level karakter Anda dengan cepat dan aman tanpa menggunakan eksploit/cheat.</p>
-                    <div class="flex justify-between items-center bg-black/30 p-3 rounded-xl border border-white/5 mb-4">
-                        <span class="text-[10px] text-gray-500 uppercase font-bold tracking-widest">Start Price</span>
-                        <span class="text-tera-gold font-bold">Rp 1.000+</span>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+                <!-- Joki Cards -->
+                <div class="glow-card-wrapper flex flex-col">
+                    <div class="item-card rounded-2xl p-6 relative overflow-hidden flex flex-col flex-grow">
+                        <div class="absolute -top-4 -right-4 p-6 opacity-5 transition-opacity"><i class="fas fa-level-up-alt text-8xl"></i></div>
+                        <h4 class="text-xl font-bold text-white mb-2 italic">Joki Leveling</h4>
+                        <p class="text-xs text-gray-400 mb-6 leading-relaxed flex-grow">Tingkatkan level karakter Anda dengan cepat dan aman tanpa menggunakan eksploit/cheat.</p>
+                        <div class="flex justify-between items-center bg-black/50 p-3 rounded-xl border border-white/5 mb-4 backdrop-blur-sm">
+                            <span class="text-[10px] text-gray-500 uppercase font-bold tracking-widest">Start Price</span>
+                            <span class="text-tera-gold font-bold">Rp 1.000+</span>
+                        </div>
+                        <div class="grid grid-cols-2 gap-2 mt-auto">
+                            <button onclick="orderJoki('Joki Leveling', 'tiktok')" class="btn-tiktok w-full bg-black text-white py-2.5 rounded-xl font-bold transition-all border border-white/10 uppercase italic text-[11px] tracking-widest flex items-center justify-center gap-1.5"><i class="fab fa-tiktok"></i> TikTok</button>
+                            <button onclick="orderJoki('Joki Leveling', 'instagram')" class="btn-ig w-full bg-black text-white py-2.5 rounded-xl font-bold transition-all border border-white/10 uppercase italic text-[11px] tracking-widest flex items-center justify-center gap-1.5"><i class="fab fa-instagram"></i> IG</button>
+                        </div>
                     </div>
-                    <button onclick="orderJoki('Joki Leveling')" class="btn-tiktok w-full bg-black text-white py-3 rounded-xl font-bold transition-all border border-white/10 uppercase italic text-xs tracking-widest flex items-center justify-center gap-2"><i class="fab fa-tiktok"></i> Order via TikTok</button>
                 </div>
 
-                <div class="item-card rounded-2xl p-6 relative group overflow-hidden border-tera-blue/20">
-                    <div class="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity"><i class="fas fa-fist-raised text-6xl"></i></div>
-                    <h4 class="text-xl font-bold text-white mb-2 italic">Joki Title</h4>
-                    <p class="text-xs text-gray-400 mb-6 leading-relaxed">Dapatkan Title yang keren dan unik untuk karakter Anda.</p>
-                    <div class="flex justify-between items-center bg-black/30 p-3 rounded-xl border border-white/5 mb-4">
-                        <span class="text-[10px] text-gray-500 uppercase font-bold tracking-widest">Start Price</span>
-                        <span class="text-tera-blue font-bold">Rp 5.000+</span>
+                <div class="glow-card-wrapper flex flex-col">
+                    <div class="item-card rounded-2xl p-6 relative overflow-hidden flex flex-col border-tera-blue/20 flex-grow">
+                        <div class="absolute -top-4 -right-4 p-6 opacity-5 transition-opacity"><i class="fas fa-fist-raised text-8xl"></i></div>
+                        <h4 class="text-xl font-bold text-white mb-2 italic">Joki Title</h4>
+                        <p class="text-xs text-gray-400 mb-6 leading-relaxed flex-grow">Dapatkan Title keren dan unik untuk karakter Anda (Cth: The Honor One).</p>
+                        <div class="flex justify-between items-center bg-black/50 p-3 rounded-xl border border-white/5 mb-4 backdrop-blur-sm">
+                            <span class="text-[10px] text-gray-500 uppercase font-bold tracking-widest">Start Price</span>
+                            <span class="text-tera-blue font-bold">Rp 5.000+</span>
+                        </div>
+                        <div class="grid grid-cols-2 gap-2 mt-auto">
+                            <button onclick="orderJoki('Joki Title', 'tiktok')" class="btn-tiktok w-full bg-black text-white py-2.5 rounded-xl font-bold transition-all border border-white/10 uppercase italic text-[11px] tracking-widest flex items-center justify-center gap-1.5"><i class="fab fa-tiktok"></i> TikTok</button>
+                            <button onclick="orderJoki('Joki Title', 'instagram')" class="btn-ig w-full bg-black text-white py-2.5 rounded-xl font-bold transition-all border border-white/10 uppercase italic text-[11px] tracking-widest flex items-center justify-center gap-1.5"><i class="fab fa-instagram"></i> IG</button>
+                        </div>
                     </div>
-                    <button onclick="orderJoki('Joki Title')" class="btn-tiktok w-full bg-black text-white py-3 rounded-xl font-bold transition-all border border-white/10 uppercase italic text-xs tracking-widest flex items-center justify-center gap-2"><i class="fab fa-tiktok"></i> Order via TikTok</button>
                 </div>
 
-                <div class="item-card rounded-2xl p-6 relative group overflow-hidden border-tera-gold/20">
-                    <div class="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity"><i class="fas fa-ship text-6xl"></i></div>
-                    <h4 class="text-xl font-bold text-white mb-2 italic">Joki Sea 2</h4>
-                    <p class="text-xs text-gray-400 mb-6 leading-relaxed">Buka akses laut baru dengan menyelesaikan semua persyaratannya. Terima beres akun langsung di Sea 2!</p>
-                    <div class="flex justify-between items-center bg-black/30 p-3 rounded-xl border border-white/5 mb-4">
-                        <span class="text-[10px] text-gray-500 uppercase font-bold tracking-widest">Package Price</span>
-                        <span class="text-tera-gold font-bold">Rp 50.000</span>
+                <div class="glow-card-wrapper flex flex-col">
+                    <div class="item-card rounded-2xl p-6 relative overflow-hidden flex flex-col border-tera-gold/20 flex-grow">
+                        <div class="absolute -top-4 -right-4 p-6 opacity-5 transition-opacity"><i class="fas fa-ship text-8xl"></i></div>
+                        <h4 class="text-xl font-bold text-white mb-2 italic">Joki Sea 2</h4>
+                        <p class="text-xs text-gray-400 mb-6 leading-relaxed flex-grow">Buka akses laut baru dengan menyelesaikan semua syarat. Terima beres akun di Sea 2!</p>
+                        <div class="flex justify-between items-center bg-black/50 p-3 rounded-xl border border-white/5 mb-4 backdrop-blur-sm">
+                            <span class="text-[10px] text-gray-500 uppercase font-bold tracking-widest">Package Price</span>
+                            <span class="text-tera-gold font-bold">Rp 50.000</span>
+                        </div>
+                        <div class="grid grid-cols-2 gap-2 mt-auto">
+                            <button onclick="orderJoki('Joki Buka Sea 2', 'tiktok')" class="btn-tiktok w-full bg-black text-white py-2.5 rounded-xl font-bold transition-all border border-white/10 uppercase italic text-[11px] tracking-widest flex items-center justify-center gap-1.5"><i class="fab fa-tiktok"></i> TikTok</button>
+                            <button onclick="orderJoki('Joki Buka Sea 2', 'instagram')" class="btn-ig w-full bg-black text-white py-2.5 rounded-xl font-bold transition-all border border-white/10 uppercase italic text-[11px] tracking-widest flex items-center justify-center gap-1.5"><i class="fab fa-instagram"></i> IG</button>
+                        </div>
                     </div>
-                    <button onclick="orderJoki('Joki Buka Sea 2')" class="btn-tiktok w-full bg-black text-white py-3 rounded-xl font-bold transition-all border border-white/10 uppercase italic text-xs tracking-widest flex items-center justify-center gap-2"><i class="fab fa-tiktok"></i> Order via TikTok</button>
                 </div>
 
-                <div class="item-card rounded-2xl p-6 relative group overflow-hidden border-green-500/20">
-                    <div class="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity"><i class="fas fa-dungeon text-6xl"></i></div>
-                    <h4 class="text-xl font-bold text-white mb-2 italic">Joki Rune Dungeon</h4>
-                    <p class="text-xs text-gray-400 mb-6 leading-relaxed">Farming bos di Dungeon untuk mendapatkan Runes atau material eksklusif tanpa perlu capek main manual.</p>
-                    <div class="flex justify-between items-center bg-black/30 p-3 rounded-xl border border-white/5 mb-4">
-                        <span class="text-[10px] text-gray-500 uppercase font-bold tracking-widest">Start Price</span>
-                        <span class="text-green-400 font-bold">Rp 10.000+</span>
+                <div class="glow-card-wrapper flex flex-col">
+                    <div class="item-card rounded-2xl p-6 relative overflow-hidden flex flex-col border-green-500/20 flex-grow">
+                        <div class="absolute -top-4 -right-4 p-6 opacity-5 transition-opacity"><i class="fas fa-dungeon text-8xl"></i></div>
+                        <h4 class="text-xl font-bold text-white mb-2 italic">Joki Rune Dungeon</h4>
+                        <p class="text-xs text-gray-400 mb-6 leading-relaxed flex-grow">Farming bos di Dungeon untuk mendapatkan Runes atau material eksklusif.</p>
+                        <div class="flex justify-between items-center bg-black/50 p-3 rounded-xl border border-white/5 mb-4 backdrop-blur-sm">
+                            <span class="text-[10px] text-gray-500 uppercase font-bold tracking-widest">Start Price</span>
+                            <span class="text-green-400 font-bold">Rp 10.000+</span>
+                        </div>
+                        <div class="grid grid-cols-2 gap-2 mt-auto">
+                            <button onclick="orderJoki('Joki Rune Dungeon', 'tiktok')" class="btn-tiktok w-full bg-black text-white py-2.5 rounded-xl font-bold transition-all border border-white/10 uppercase italic text-[11px] tracking-widest flex items-center justify-center gap-1.5"><i class="fab fa-tiktok"></i> TikTok</button>
+                            <button onclick="orderJoki('Joki Rune Dungeon', 'instagram')" class="btn-ig w-full bg-black text-white py-2.5 rounded-xl font-bold transition-all border border-white/10 uppercase italic text-[11px] tracking-widest flex items-center justify-center gap-1.5"><i class="fab fa-instagram"></i> IG</button>
+                        </div>
                     </div>
-                    <button onclick="orderJoki('Joki Rune Dungeon')" class="btn-tiktok w-full bg-black text-white py-3 rounded-xl font-bold transition-all border border-white/10 uppercase italic text-xs tracking-widest flex items-center justify-center gap-2"><i class="fab fa-tiktok"></i> Order via TikTok</button>
                 </div>
             </div>
         </section>
 
-        <!-- 3. SECTION WIKI -->
+        <!-- 3. SECTION ENSIKLOPEDIA (WIKI FULL) -->
         <section id="wiki" class="page-section pt-32 pb-16 px-4 max-w-7xl mx-auto">
-            <div class="flex flex-col md:flex-row justify-between items-end mb-8 border-b border-white/10 pb-4">
+            <div class="flex flex-col md:flex-row justify-between items-end mb-10 border-b border-white/10 pb-6">
                 <div>
-                    <h3 class="text-3xl md:text-5xl font-heading font-black italic uppercase"><span class="text-tera-gold">Tier List</span> Sailor Piece</h3>
-                    <p class="text-gray-400 mt-2 text-sm max-w-2xl">
-                        Diambil eksklusif dari data <strong>Destructoid</strong> terbaru. Pahami META terbaik untuk membangun karakter tak terkalahkan! Dipandu oleh <strong class="text-tera-purple">Tera</strong>.
+                    <h3 class="text-4xl md:text-5xl font-heading font-black italic uppercase drop-shadow-lg"><span class="text-tera-gold">Ensiklopedia</span> Sailor Piece</h3>
+                    <p class="text-gray-400 mt-3 text-sm max-w-2xl leading-relaxed">
+                        Data eksklusif terlengkap! Pahami META Spec, material crafting, Haki, hingga lokasi drop item rahasia dari Bos. Dipandu langsung oleh <strong class="text-tera-purple">Tera</strong>.
                     </p>
                 </div>
-                <div class="hidden md:flex items-center gap-3 bg-white/5 px-4 py-2 rounded-xl border border-white/10 mt-4 md:mt-0 relative overflow-hidden">
-                    <div class="w-10 h-10 rounded-full bg-tera-dark flex items-center justify-center border-2 border-tera-purple z-10 relative">
-                        <i class="fas fa-user-astronaut text-tera-purple"></i>
+                <div class="hidden md:flex items-center gap-4 bg-gradient-to-r from-black/80 to-tera-purple/10 px-5 py-3 rounded-2xl border border-tera-purple/30 mt-4 md:mt-0 relative overflow-hidden shadow-[0_0_20px_rgba(168,85,247,0.15)]">
+                    <div class="w-12 h-12 rounded-full bg-black flex items-center justify-center border-2 border-tera-purple z-10 relative shadow-inner">
+                        <i class="fas fa-user-astronaut text-xl text-tera-purple"></i>
                     </div>
                     <div class="text-right z-10">
-                        <p class="text-[10px] text-gray-400 uppercase tracking-widest mb-0">Compiled By</p>
-                        <p class="text-sm font-bold text-white italic leading-none">Tera</p>
+                        <p class="text-[10px] text-tera-purple uppercase font-bold tracking-widest mb-0">Database By</p>
+                        <p class="text-lg font-black text-white italic leading-none tracking-wider">Tera & Sukuboi</p>
                     </div>
-                    <div class="absolute bottom-0 right-0 w-16 h-16 bg-pink-500/10 blur-xl rounded-full"></div>
+                    <div class="absolute bottom-0 right-0 w-24 h-24 bg-tera-purple/20 blur-2xl rounded-full"></div>
                 </div>
             </div>
 
             <div class="flex flex-col lg:flex-row gap-8">
-                <div class="w-full lg:w-1/4 flex flex-row lg:flex-col gap-2 overflow-x-auto lg:overflow-visible pb-2 lg:pb-0 hide-scrollbar border-r border-transparent lg:border-white/5 pr-0 lg:pr-4">
-                    <button class="tab-btn active text-left px-4 py-3 rounded-lg text-sm font-bold text-gray-400 hover:text-white transition-all whitespace-nowrap lg:whitespace-normal" onclick="openWikiTab('tab-swords')">
-                        <i class="fas fa-khanda w-6"></i> Swords & Melee
+                <!-- Navigation Tabs -->
+                <div class="w-full lg:w-1/4 flex flex-row lg:flex-col gap-2 overflow-x-auto lg:overflow-visible pb-4 lg:pb-0 hide-scrollbar border-r border-transparent lg:border-white/5 pr-0 lg:pr-6 shrink-0">
+                    <button class="tab-btn active text-left px-5 py-4 rounded-xl text-sm font-bold text-gray-400 hover:text-white transition-all whitespace-nowrap lg:whitespace-normal flex items-center gap-3" onclick="openWikiTab('tab-swords')">
+                        <i class="fas fa-khanda w-5 text-center"></i> Swords & Melee
                     </button>
-                    <button class="tab-btn text-left px-4 py-3 rounded-lg text-sm font-bold text-gray-400 hover:text-white transition-all whitespace-nowrap lg:whitespace-normal" onclick="openWikiTab('tab-fruits')">
-                        <i class="fas fa-apple-alt w-6"></i> Fruits & Races
+                    <button class="tab-btn text-left px-5 py-4 rounded-xl text-sm font-bold text-gray-400 hover:text-white transition-all whitespace-nowrap lg:whitespace-normal flex items-center gap-3" onclick="openWikiTab('tab-fruits')">
+                        <i class="fas fa-apple-alt w-5 text-center"></i> Fruits & Races
                     </button>
-                    <button class="tab-btn text-left px-4 py-3 rounded-lg text-sm font-bold text-gray-400 hover:text-white transition-all whitespace-nowrap lg:whitespace-normal" onclick="openWikiTab('tab-traits')">
-                        <i class="fas fa-bolt w-6"></i> Traits & Powers
+                    <button class="tab-btn text-left px-5 py-4 rounded-xl text-sm font-bold text-gray-400 hover:text-white transition-all whitespace-nowrap lg:whitespace-normal flex items-center gap-3" onclick="openWikiTab('tab-traits')">
+                        <i class="fas fa-bolt w-5 text-center"></i> Traits, Powers & Haki
                     </button>
-                    <button class="tab-btn text-left px-4 py-3 rounded-lg text-sm font-bold text-gray-400 hover:text-white transition-all whitespace-nowrap lg:whitespace-normal" onclick="openWikiTab('tab-passives')">
-                        <i class="fas fa-star w-6"></i> Spec Passives
+                    <button class="tab-btn text-left px-5 py-4 rounded-xl text-sm font-bold text-gray-400 hover:text-white transition-all whitespace-nowrap lg:whitespace-normal flex items-center gap-3" onclick="openWikiTab('tab-passives')">
+                        <i class="fas fa-fire w-5 text-center"></i> Spec Passives
+                    </button>
+                    <button class="tab-btn text-left px-5 py-4 rounded-xl text-sm font-bold text-gray-400 hover:text-white transition-all whitespace-nowrap lg:whitespace-normal flex items-center gap-3" onclick="openWikiTab('tab-mats')">
+                        <i class="fas fa-gem w-5 text-center"></i> Boss Drops & Mats
                     </button>
                 </div>
 
-                <div class="w-full lg:w-3/4 glass p-6 md:p-8 rounded-2xl border border-white/5 min-h-[400px]">
-                    
-                    <div id="tab-swords" class="encyclopedia-tab active">
-                        <h4 class="text-2xl font-bold text-white mb-4 italic border-l-4 border-tera-blue pl-4">Tier List: Swords & Melee (Combat)</h4>
-                        
-                        <div class="space-y-4">
-                            <div class="bg-black/30 p-4 rounded-xl border border-white/5">
-                                <h5 class="font-bold text-tera-blue mb-2">Meta Swords Tier List</h5>
-                                <p class="text-sm text-gray-400 mb-3">Pedang terbaik dengan DPS tinggi, AoE besar, dan kemampuan Crowd Control (CC).</p>
-                                <ul class="text-sm text-gray-300 space-y-2 list-disc list-inside">
-                                    <li><strong class="text-white">S-Tier (Endgame):</strong> Dual Wielder, Sun God, Dragon Goddess, Ice Queen, Atomic, Anti Magic, True Aizen, Abyssal Empress.</li>
-                                    <li><strong class="text-tera-gold">A-Tier (Mid-game):</strong> Ichigo, Aizen, Ragna, Jinwoo, Saber, Gryphon. Sangat bagus dipakai sebelum beralih ke Mythical.</li>
-                                </ul>
+                <!-- Content Area -->
+                <div class="w-full lg:w-3/4 glass p-6 md:p-10 rounded-3xl border border-white/10 min-h-[500px] shadow-2xl relative overflow-hidden">
+                    <div class="absolute top-0 right-0 w-64 h-64 bg-tera-purple/10 blur-[80px] rounded-full pointer-events-none"></div>
+
+                    <!-- TAB 1: SWORDS & MELEE -->
+                    <div id="tab-swords" class="encyclopedia-tab active relative z-10">
+                        <h4 class="text-3xl font-heading font-black text-white mb-6 italic border-l-4 border-tera-blue pl-4">Swords & Combat Specs</h4>
+                        <div class="max-h-[450px] overflow-y-auto pr-3 wiki-scroll space-y-6">
+                            
+                            <div class="bg-black/40 p-5 rounded-2xl border border-white/5 backdrop-blur-md">
+                                <h5 class="font-bold text-lg text-tera-blue mb-4 flex items-center gap-2"><i class="fas fa-khanda"></i> Best Swords (Tier List)</h5>
+                                <div class="space-y-4 text-sm text-gray-300">
+                                    <div class="flex items-start gap-3">
+                                        <span class="px-2 py-0.5 rounded text-[10px] font-black tier-sp shrink-0 mt-0.5">S+ TIER</span>
+                                        <div><strong class="text-white">Corrupted Excalibur, Kamish Dagger, True Aizen, Sun God, Abyssal Empress.</strong><br><span class="text-gray-400 text-xs">Sangat mematikan di Endgame. AoE besar, Pierce damage tinggi, dan kemampuan membatalkan regenerasi musuh.</span></div>
+                                    </div>
+                                    <div class="flex items-start gap-3">
+                                        <span class="px-2 py-0.5 rounded text-[10px] font-black tier-s shrink-0 mt-0.5">S TIER</span>
+                                        <div><strong class="text-white">Excalibur, Ice Queen, Atomic, Yamato, Dragon Goddess.</strong><br><span class="text-gray-400 text-xs">Pilihan utama untuk masuk ke Sea 2 dan Raid. DPS stabil.</span></div>
+                                    </div>
+                                    <div class="flex items-start gap-3">
+                                        <span class="px-2 py-0.5 rounded text-[10px] font-black tier-a shrink-0 mt-0.5">A TIER</span>
+                                        <div><strong class="text-white">Ichigo, Ragna, Jinwoo, Saber, Gryphon, Anti Magic.</strong><br><span class="text-gray-400 text-xs">Solid untuk mid-game, mudah didapat dan efektif untuk grinding.</span></div>
+                                    </div>
+                                </div>
                             </div>
-                            <div class="bg-black/30 p-4 rounded-xl border border-white/5">
-                                <h5 class="font-bold text-red-400 mb-2">Meta Melee / Combat Tier List</h5>
-                                <ul class="text-sm text-gray-300 space-y-2 list-disc list-inside">
-                                    <li><strong class="text-white">S-Tier:</strong> Cosmic Being, The World, Spirit Warrior, Moon Slayer, Strongest Shinobi, Blessed Maiden, Saber Alter, Anos, Gilgamesh.</li>
-                                    <li><strong class="text-tera-gold">A-Tier (Early):</strong> Qin Shi (pilihan murah dan serbaguna di awal game).</li>
+
+                            <div class="bg-black/40 p-5 rounded-2xl border border-white/5 backdrop-blur-md">
+                                <h5 class="font-bold text-lg text-red-400 mb-4 flex items-center gap-2"><i class="fas fa-fist-raised"></i> Best Combat Specs (Tier List)</h5>
+                                <div class="space-y-4 text-sm text-gray-300">
+                                    <div class="flex items-start gap-3">
+                                        <span class="px-2 py-0.5 rounded text-[10px] font-black tier-sp shrink-0 mt-0.5">S+ TIER</span>
+                                        <div><strong class="text-white">Gojo V2, Sukuna V2, Shadow Monarch, Rimuru, Demon King, Cosmic Being.</strong><br><span class="text-gray-400 text-xs">Membutuhkan material langka untuk Crafting. Ultimate terkuat.</span></div>
+                                    </div>
+                                    <div class="flex items-start gap-3">
+                                        <span class="px-2 py-0.5 rounded text-[10px] font-black tier-s shrink-0 mt-0.5">S TIER</span>
+                                        <div><strong class="text-white">Gojo V1, Sukuna V1, Solo Hunter, Vampire King, The World, Moon Slayer.</strong><br><span class="text-gray-400 text-xs">Mendominasi PvP, memiliki CC (Stun) durasi panjang.</span></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- TAB 2: FRUITS & RACES -->
+                    <div id="tab-fruits" class="encyclopedia-tab relative z-10">
+                        <h4 class="text-3xl font-heading font-black text-white mb-6 italic border-l-4 border-green-400 pl-4">Fruits & Races Guide</h4>
+                        <div class="max-h-[450px] overflow-y-auto pr-3 wiki-scroll space-y-6">
+                            
+                            <div class="bg-black/40 p-5 rounded-2xl border border-white/5 backdrop-blur-md">
+                                <h5 class="font-bold text-lg text-green-400 mb-4 flex items-center gap-2"><i class="fas fa-apple-alt"></i> Devil Fruits Tier List</h5>
+                                <div class="grid md:grid-cols-2 gap-4 text-sm text-gray-300">
+                                    <div class="bg-black/30 p-3 rounded-lg border border-white/5">
+                                        <strong class="text-white text-base">Light Fruit</strong> <span class="tier-sp text-[9px] px-1.5 py-0.5 rounded ml-1">S+ TIER</span>
+                                        <p class="text-xs text-gray-400 mt-1">Terbaik untuk perjalanan karena skill terbang super cepat. AoE damage tinggi.</p>
+                                    </div>
+                                    <div class="bg-black/30 p-3 rounded-lg border border-white/5">
+                                        <strong class="text-white text-base">Quake / Kitsune</strong> <span class="tier-s text-[9px] px-1.5 py-0.5 rounded ml-1">S TIER</span>
+                                        <p class="text-xs text-gray-400 mt-1">Quake memberikan hitbox tsunami masif, Kitsune merubah form menjadi beast.</p>
+                                    </div>
+                                    <div class="bg-black/30 p-3 rounded-lg border border-white/5">
+                                        <strong class="text-white text-base">Magma / Dragon</strong> <span class="tier-s text-[9px] px-1.5 py-0.5 rounded ml-1">S TIER</span>
+                                        <p class="text-xs text-gray-400 mt-1">Damage over time (Burn) paling sakit di game. Boss melting.</p>
+                                    </div>
+                                    <div class="bg-black/30 p-3 rounded-lg border border-white/5">
+                                        <strong class="text-white text-base">Flame / Ice</strong> <span class="tier-a text-[9px] px-1.5 py-0.5 rounded ml-1">A TIER</span>
+                                        <p class="text-xs text-gray-400 mt-1">Pilihan paling solid dan budget-friendly untuk new player di Sea 1.</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="bg-black/40 p-5 rounded-2xl border border-white/5 backdrop-blur-md">
+                                <h5 class="font-bold text-lg text-tera-purple mb-4 flex items-center gap-2"><i class="fas fa-dna"></i> Race Buff Details</h5>
+                                <ul class="text-sm text-gray-300 space-y-4">
+                                    <li class="border-b border-white/5 pb-3">
+                                        <strong class="text-tera-purple block mb-1">Reaper (0.5% Chance)</strong>
+                                        <span class="text-xs">+120% Max HP | +105% Overall DMG | +35% Sword DMG | +12% DMG Reduction | +3% Lifesteal | +25% Execute DMG.</span>
+                                    </li>
+                                    <li class="border-b border-white/5 pb-3">
+                                        <strong class="text-tera-gold block mb-1">Archangel (1% Chance)</strong>
+                                        <span class="text-xs">+115% Max HP | +100% Overall DMG | +22% Combat DMG | +55% Luck | +15% Drop Double Chance | Akses terbang.</span>
+                                    </li>
                                 </ul>
                             </div>
                         </div>
                     </div>
 
-                    <div id="tab-fruits" class="encyclopedia-tab">
-                        <h4 class="text-2xl font-bold text-white mb-4 italic border-l-4 border-green-400 pl-4">Tier List: Fruits & Races</h4>
-                        
-                        <div class="grid md:grid-cols-2 gap-6 mb-6">
-                            <div class="bg-black/30 p-4 rounded-xl border border-white/5">
-                                <h5 class="font-bold text-green-400 mb-2 border-b border-white/10 pb-2"><i class="fas fa-apple-alt"></i> Fruit Tier List</h5>
-                                <ul class="text-sm text-gray-300 space-y-3 mt-3">
-                                    <li><strong class="text-white">S-Tier Terkuat:</strong> Light (Terbaik secara keseluruhan), diikuti sangat ketat oleh Quake Fruit.</li>
-                                    <li><strong class="text-white">Rekomendasi Early:</strong> Flame Fruit adalah opsi yang paling bagus untuk permulaan.</li>
-                                </ul>
+                    <!-- TAB 3: TRAITS & POWERS -->
+                    <div id="tab-traits" class="encyclopedia-tab relative z-10">
+                        <h4 class="text-3xl font-heading font-black text-white mb-6 italic border-l-4 border-tera-gold pl-4">Traits, Powers & Haki</h4>
+                        <div class="max-h-[450px] overflow-y-auto pr-3 wiki-scroll space-y-6">
+                            
+                            <div class="bg-black/40 p-5 rounded-2xl border border-white/5 backdrop-blur-md">
+                                <h5 class="font-bold text-lg text-tera-gold mb-3 flex items-center gap-2"><i class="fas fa-bolt"></i> Trait Rerolls</h5>
+                                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm text-gray-300">
+                                    <div class="bg-black/30 p-3 rounded border-l-2 border-tera-gold"><strong>Singularity:</strong> 1.75x Def | 2.10x DMG | 30% CD Reduc.</div>
+                                    <div class="bg-black/30 p-3 rounded border-l-2 border-red-500"><strong>Cataclysm:</strong> 1.70x Def | 2.00x DMG | 30% CD Reduc.</div>
+                                    <div class="bg-black/30 p-3 rounded border-l-2 border-blue-400"><strong>Celestial:</strong> 1.65x Def | 2.20x DMG | 30% CD Reduc.</div>
+                                    <div class="bg-black/30 p-3 rounded border-l-2 border-purple-400"><strong>Emperor:</strong> 1.60x Def | 2.30x DMG | 30% CD Reduc.</div>
+                                </div>
                             </div>
-                            <div class="bg-black/30 p-4 rounded-xl border border-white/5">
-                                <h5 class="font-bold text-tera-purple mb-2 border-b border-white/10 pb-2"><i class="fas fa-dna"></i> Race Tier List</h5>
-                                <ul class="text-sm text-gray-300 space-y-3 mt-3">
-                                    <li><strong class="text-white">Reaper:</strong> +120% HP, +105% DMG, +35% Sword DMG, +12% DMG Reduc, +3% Lifesteal, +25% Execute DMG.</li>
-                                    <li><strong class="text-white">Archangel:</strong> +115% HP, +100% DMG, +22% Sword/Melee DMG, +55% Luck, +15% Drop Double Chance, +2 Extra Jumps.</li>
-                                    <li><strong class="text-white">S-Tier Lainnya:</strong> Wraith, Warlord, Kitsune, Galevorn, Sunborn, Slime, Servant, dll.</li>
-                                </ul>
-                            </div>
-                        </div>
-                        <div class="p-3 border border-tera-purple/30 bg-tera-purple/10 rounded-lg text-xs text-white">
-                            <i class="fas fa-shopping-cart text-tera-gold mr-2"></i> <strong>Saran Sukuboi:</strong> Gacha ras untuk mendapatkan Reaper atau Archangel? Borong <strong>Race Reroll</strong> di TERA STORE sekarang juga!
-                        </div>
-                    </div>
 
-                    <div id="tab-traits" class="encyclopedia-tab">
-                        <h4 class="text-2xl font-bold text-white mb-4 italic border-l-4 border-tera-gold pl-4">Tier List: Traits & Powers</h4>
-                        <p class="text-gray-300 text-sm mb-6 leading-relaxed">Traits dan Powers akan secara permanen mendongkrak status dasar Anda gila-gilaan.</p>
-                        
-                        <div class="space-y-4 mb-6">
-                            <div class="bg-black/30 p-4 rounded-xl border border-white/5">
-                                <h5 class="font-bold text-tera-gold mb-2">Traits Tier List</h5>
-                                <ul class="text-sm text-gray-300 space-y-2 list-disc list-inside">
-                                    <li><strong>Emperor:</strong> 1.60x Defense, 2.30x Damage, 30% Cooldown Reduction.</li>
-                                    <li><strong>Celestial:</strong> 1.65x Defense, 2.20x Damage, 30% Cooldown Reduction.</li>
-                                    <li><strong>Singularity:</strong> 1.75x Defense, 2.10x Damage, 30% Cooldown Reduction.</li>
-                                    <li><strong>Cataclysm:</strong> 1.7x Defense, 2x Damage, 30% Cooldown Reduction.</li>
-                                    <li>Lainnya: <em>Overlord, Malevolent</em>.</li>
-                                </ul>
-                            </div>
-                            <div class="bg-black/30 p-4 rounded-xl border border-white/5">
-                                <h5 class="font-bold text-tera-blue mb-2">Powers Tier List</h5>
-                                <ul class="text-sm text-gray-300 space-y-2 list-disc list-inside">
-                                    <li><strong class="text-white">Apex (1% Chance):</strong> +10-20% DMG, +10-20% HP, +0.5-1.5% Crit Chance, +5-12.5% Luck.</li>
-                                    <li><strong class="text-white">Abyssal (1% Chance):</strong> +14-24% DMG, +10-20% HP, +1-3% Crit Chance, +4-8% Crit Damage.</li>
-                                    <li><strong class="text-white">Eternal (1% Chance):</strong> +13-22% DMG, +14-28% HP, +1-3% Crit Chance, +5-10% Crit Damage.</li>
-                                    <li>Lainnya: <em>Wrathful (15%), Infernal (15%), Ironclad (15%)</em>.</li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div id="tab-passives" class="encyclopedia-tab">
-                        <h4 class="text-2xl font-bold text-white mb-4 italic border-l-4 border-red-400 pl-4">Tier List: Spec Passives</h4>
-                        <p class="text-gray-300 text-sm mb-6 leading-relaxed">Spec Passives dapat diterapkan pada Melee Combat Specs atau Swords untuk memaksimalkan DPS.</p>
-                        
-                        <div class="space-y-4 mb-6">
-                            <div class="bg-black/30 p-4 rounded-xl border border-white/5">
-                                <h5 class="font-bold text-red-400 mb-2">S-Tier Passives</h5>
+                            <div class="bg-black/40 p-5 rounded-2xl border border-white/5 backdrop-blur-md">
+                                <h5 class="font-bold text-lg text-tera-blue mb-3 flex items-center gap-2"><i class="fas fa-star"></i> Character Powers</h5>
                                 <ul class="text-sm text-gray-300 space-y-3 list-disc list-inside">
-                                    <li><strong>Rampage (0.2% Chance):</strong> +15-30% DMG, +2-4% Crit Chance, +5-10% Crit DMG. Memberikan +0.002x DMG per hit hingga batas 1.3x DMG.</li>
-                                    <li><strong>Fortune Chosen (0.2% Chance):</strong> 17.5-30% Chance untuk mendapat +1 Drop. Memberikan +5-10% Luck & +5-12.5% DMG. (Terbaik untuk grinding item!).</li>
-                                    <li><strong>Executioner (0.2% Chance):</strong> +25-40% DMG kepada musuh dengan HP di bawah 50%. +2-4% Crit Chance, +7.5-15% Crit DMG.</li>
-                                    <li><strong>Berserker (1% Chance):</strong> +20-30% DMG, +5-15% Crit DMG.</li>
-                                    <li><strong>Eclipse (1% Chance):</strong> +2-3.5% Crit Chance, +10-20% DMG, +5-10% Luck.</li>
+                                    <li><strong class="text-white">Apex (1%):</strong> +10-20% DMG, +10-20% HP, +0.5-1.5% Crit Chance, +5-12.5% Luck.</li>
+                                    <li><strong class="text-white">Abyssal (1%):</strong> +14-24% DMG, +10-20% HP, +1-3% Crit Chance, +4-8% Crit Damage.</li>
+                                    <li><strong class="text-white">Eternal (1%):</strong> +13-22% DMG, +14-28% HP, +1-3% Crit Chance, +5-10% Crit Damage.</li>
                                 </ul>
                             </div>
                         </div>
-                        
-                        <div class="p-3 border border-tera-purple/30 bg-tera-purple/10 rounded-lg text-xs text-white">
-                            <i class="fas fa-shopping-cart text-tera-gold mr-2"></i> <strong>Saran Sukuboi:</strong> Agar item drop ganda dari pasif <em>Fortune Chosen</em> makin efektif, beli juga <strong>2x Drop / 2x Luck</strong> di TERA STORE!
+                    </div>
+
+                    <!-- TAB 4: SPEC PASSIVES -->
+                    <div id="tab-passives" class="encyclopedia-tab relative z-10">
+                        <h4 class="text-3xl font-heading font-black text-white mb-6 italic border-l-4 border-red-400 pl-4">Spec Passives</h4>
+                        <div class="max-h-[450px] overflow-y-auto pr-3 wiki-scroll space-y-6">
+                            <p class="text-gray-300 text-sm leading-relaxed bg-black/30 p-4 rounded-xl border border-white/5">
+                                Spec Passives dipasang ke senjata atau Melee menggunakan *Passive Shards*. Mereka memberikan kemampuan pasif permanen saat menyerang.
+                            </p>
+
+                            <div class="bg-black/40 p-5 rounded-2xl border border-white/5 backdrop-blur-md">
+                                <h5 class="font-bold text-lg text-red-400 mb-4 flex items-center gap-2"><i class="fas fa-fire"></i> S-Tier Passives (God Tier)</h5>
+                                <div class="space-y-4">
+                                    <div class="border-b border-white/10 pb-3">
+                                        <strong class="text-red-400 block mb-1">Rampage (0.2% Chance)</strong>
+                                        <span class="text-xs text-gray-300 block mb-1">Efek Dasar: +15-30% DMG, +2-4% Crit Chance, +5-10% Crit DMG.</span>
+                                        <span class="text-[11px] text-gray-400 italic">Mekanik: Memberikan stack +0.002x DMG per hit. Terbaik untuk Raid Boss!</span>
+                                    </div>
+                                    <div class="border-b border-white/10 pb-3">
+                                        <strong class="text-tera-gold block mb-1">Fortune Chosen (0.2% Chance)</strong>
+                                        <span class="text-xs text-gray-300 block mb-1">Efek Dasar: +5-10% Luck & +5-12.5% DMG.</span>
+                                        <span class="text-[11px] text-gray-400 italic">Mekanik: 17.5-30% Chance memicu +1 Drop tambahan pada item dari Boss. Wajib untuk Grinder!</span>
+                                    </div>
+                                    <div class="pb-1">
+                                        <strong class="text-purple-400 block mb-1">Executioner (0.2% Chance)</strong>
+                                        <span class="text-xs text-gray-300 block mb-1">Efek Dasar: +2-4% Crit Chance, +7.5-15% Crit DMG.</span>
+                                        <span class="text-[11px] text-gray-400 italic">Mekanik: +25-40% Damage Instan kepada musuh dengan HP di bawah 50%.</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- TAB 5: BOSS DROPS & MATS -->
+                    <div id="tab-mats" class="encyclopedia-tab relative z-10">
+                        <h4 class="text-3xl font-heading font-black text-white mb-6 italic border-l-4 border-pink-500 pl-4">Boss Drops & Material Guide</h4>
+                        <div class="max-h-[450px] overflow-y-auto pr-3 wiki-scroll space-y-6">
+                            
+                            <div class="bg-gradient-to-r from-red-900/40 to-black p-5 rounded-2xl border border-red-500/30">
+                                <div class="flex items-center gap-3 mb-3">
+                                    <img src="https://c.top4top.io/p_3784az9432.jpg" class="w-10 h-10 rounded border border-red-500/50 object-cover" onerror="this.src='https://via.placeholder.com/40/000000/FFFFFF/?text=SK'">
+                                    <h5 class="font-bold text-lg text-white">Sukuna (King of Curses)</h5>
+                                </div>
+                                <div class="text-sm text-gray-300 bg-black/50 p-3 rounded-xl border border-white/5">
+                                    <strong>Lokasi:</strong> Cursed Domain (Sea 2) <br>
+                                    <strong>Drop Items:</strong> Cursed Finger, Awakened Cursed Finger, Malevolent Soul, Dismantle Fang. <br>
+                                    <strong class="text-tera-gold mt-2 block">Fungsi:</strong> Crafting Spec Sukuna V1 & V2, Pedang Cursed Vessel.
+                                </div>
+                            </div>
+
+                            <div class="bg-gradient-to-r from-blue-900/40 to-black p-5 rounded-2xl border border-blue-500/30">
+                                <div class="flex items-center gap-3 mb-3">
+                                    <img src="https://a.top4top.io/p_3784qjgb00.jpg" class="w-10 h-10 rounded border border-blue-500/50 object-cover" onerror="this.src='https://via.placeholder.com/40/000000/FFFFFF/?text=GJ'">
+                                    <h5 class="font-bold text-lg text-white">Gojo (The Honored One)</h5>
+                                </div>
+                                <div class="text-sm text-gray-300 bg-black/50 p-3 rounded-xl border border-white/5">
+                                    <strong>Lokasi:</strong> Infinity Tower (Sea 2) <br>
+                                    <strong>Drop Items:</strong> Limitless Key, Reversal Pulse, Blue Singularity, Infinity Core, Six Eye. <br>
+                                    <strong class="text-tera-blue mt-2 block">Fungsi:</strong> Crafting Spec Gojo V1 & V2, Item Limitless Ring.
+                                </div>
+                            </div>
+
+                            <div class="bg-gradient-to-r from-purple-900/40 to-black p-5 rounded-2xl border border-purple-500/30">
+                                <div class="flex items-center gap-3 mb-3">
+                                    <img src="https://l.top4top.io/p_3784gtrtm6.jpg" class="w-10 h-10 rounded border border-purple-500/50 object-cover" onerror="this.src='https://via.placeholder.com/40/000000/FFFFFF/?text=SM'">
+                                    <h5 class="font-bold text-lg text-white">Shadow Monarch</h5>
+                                </div>
+                                <div class="text-sm text-gray-300 bg-black/50 p-3 rounded-xl border border-white/5">
+                                    <strong>Lokasi:</strong> Monarch's Throne Room <br>
+                                    <strong>Drop Items:</strong> Shadow Essence, Void Fragment, Throne Remnant, Kamish Dagger. <br>
+                                    <strong class="text-tera-purple mt-2 block">Fungsi:</strong> Crafting Shadow Monarch Spec, Pedang Kamish Dagger.
+                                </div>
+                            </div>
+
                         </div>
                     </div>
 
@@ -340,42 +479,53 @@
 
         <!-- 4. SECTION KATALOG -->
         <section id="katalog" class="page-section pt-32 pb-16 px-4 max-w-7xl mx-auto">
-            <div class="flex flex-col md:flex-row justify-between md:items-end gap-4 mb-8 pb-3">
-                <div class="flex items-center gap-3">
-                    <i class="fas fa-boxes text-3xl text-tera-blue"></i>
+            <div class="flex flex-col lg:flex-row justify-between lg:items-end gap-6 mb-10 border-b border-white/10 pb-6">
+                <div class="flex items-center gap-4">
+                    <div class="w-14 h-14 rounded-2xl bg-tera-blue/20 flex items-center justify-center border border-tera-blue/30 shadow-[0_0_20px_rgba(59,130,246,0.3)]">
+                        <i class="fas fa-boxes text-3xl text-tera-blue"></i>
+                    </div>
                     <div>
-                        <h3 class="text-3xl font-heading font-black italic uppercase">Katalog <span class="text-tera-blue">Item Terlengkap</span></h3>
-                        <p class="text-sm text-gray-400 mt-1">Pilih item, atur jumlah, dan klik Order via TikTok. Sistem otomatis meng-copy pesananmu.</p>
+                        <h3 class="text-4xl font-heading font-black italic uppercase">Katalog <span class="text-gradient-animated">Item</span></h3>
+                        <p class="text-sm text-gray-400 mt-1 tracking-wide">Pilih item, atur jumlah, lalu order via TikTok / IG.</p>
                     </div>
                 </div>
-                <div class="bg-white/5 border border-white/10 px-4 py-2 rounded-lg text-xs font-bold text-tera-gold animate-pulse">
-                    <i class="fab fa-tiktok mr-1"></i> Paste (Tempel) pesanan di DM TikTok kami.
+                
+                <div class="flex flex-col sm:flex-row gap-4 w-full lg:w-auto items-center">
+                    <div class="relative w-full sm:w-64 md:w-80">
+                        <input type="text" id="searchInput" placeholder="Cari nama item..." class="w-full bg-black/60 border border-white/20 rounded-xl py-3 pl-11 pr-4 text-sm text-white focus:outline-none focus:border-tera-blue transition-colors shadow-inner backdrop-blur-md">
+                        <i class="fas fa-search absolute left-4 top-1/2 -translate-y-1/2 text-gray-400"></i>
+                    </div>
+                    <div class="bg-black/60 border border-tera-gold/30 px-4 py-3 rounded-xl text-xs font-bold text-tera-gold animate-pulse-slow shadow-lg flex items-center gap-2 backdrop-blur-md w-full sm:w-auto justify-center whitespace-nowrap">
+                        <i class="fas fa-paste text-lg"></i> Auto-Copy Format
+                    </div>
                 </div>
             </div>
             
-            <div id="katalog-container" class="space-y-16">
+            <div id="katalog-container" class="space-y-20">
                 <!-- Data Katalog dirender JS -->
             </div>
         </section>
     </main>
 
-    <!-- FOOTER TETAP ADA DI BAWAH -->
-    <footer id="contact" class="mt-auto pt-16 pb-8 px-4 border-t border-white/5 bg-black/50">
-        <div class="max-w-4xl mx-auto text-center">
-            <h2 class="text-2xl md:text-3xl font-heading font-black italic mb-4 uppercase">Siap Mendominasi Server?</h2>
-            <p class="text-gray-400 text-sm mb-8">Pilih itemmu dan DM TikTok admin sekarang. TERA STORE siap memproses pesananmu dengan secepat kilat.</p>
+    <!-- FOOTER -->
+    <footer id="contact" class="mt-auto pt-20 pb-10 px-4 border-t border-white/10 bg-black/80 backdrop-blur-xl relative overflow-hidden">
+        <div class="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[400px] bg-tera-purple/5 blur-[100px] rounded-full pointer-events-none"></div>
+        <div class="max-w-4xl mx-auto text-center relative z-10">
+            <h2 class="text-3xl md:text-5xl font-heading font-black italic mb-4 uppercase drop-shadow-lg text-white">Siap Mendominasi Server?</h2>
+            <p class="text-gray-400 text-base mb-10 max-w-lg mx-auto">Pilih itemmu dan DM admin sekarang. TERA STORE siap memproses pesananmu dengan secepat kilat.</p>
             
-            <div class="flex flex-wrap justify-center gap-4 mb-12">
-                <a href="javascript:void(0)" onclick="window.open(TIKTOK_URL, '_blank')" class="btn-tiktok flex items-center gap-2 bg-black border border-white/10 px-6 py-3 rounded-xl font-bold text-white transition-all shadow-lg hover:scale-105">
-                    <i class="fab fa-tiktok text-xl"></i> DM TikTok
+            <div class="flex flex-wrap justify-center gap-5 mb-16">
+                <a href="javascript:void(0)" onclick="window.open(TIKTOK_URL, '_blank')" class="btn-tiktok flex items-center gap-3 bg-black border border-white/10 px-8 py-4 rounded-2xl font-bold text-white transition-all shadow-xl hover:-translate-y-1">
+                    <i class="fab fa-tiktok text-2xl"></i> DM via TikTok
                 </a>
-                <a href="#" class="flex items-center gap-2 bg-[#5865F2] hover:bg-[#4752c4] px-6 py-3 rounded-xl font-bold text-white transition-all shadow-[0_0_15px_rgba(88,101,242,0.3)] hover:scale-105">
-                    <i class="fab fa-discord text-xl"></i> Join Discord
+                <a href="javascript:void(0)" onclick="window.open(INSTAGRAM_URL, '_blank')" class="btn-ig flex items-center gap-3 bg-black border border-white/10 px-8 py-4 rounded-2xl font-bold text-white transition-all shadow-xl hover:-translate-y-1">
+                    <i class="fab fa-instagram text-2xl"></i> DM via Instagram
                 </a>
             </div>
 
-            <div class="text-xs text-gray-500 font-bold tracking-widest uppercase italic border-t border-white/10 pt-8 flex flex-col items-center gap-2">
-                <div class="flex items-center gap-2 text-gray-600">
+            <div class="text-xs text-gray-500 font-bold tracking-widest uppercase italic border-t border-white/10 pt-10 flex flex-col items-center gap-3">
+                <img src="https://d.top4top.io/p_3783tlov21.jpg" class="w-8 h-8 rounded opacity-50 mb-2 grayscale" alt="Logo">
+                <div class="flex items-center gap-2 text-gray-400">
                     <i class="fa-solid fa-anchor"></i> © 2026 TERA STORE. All Rights Reserved.
                 </div>
                 <span class="text-tera-purple hover:text-white transition-colors cursor-pointer text-sm">@tera.rblx</span>
@@ -384,351 +534,332 @@
     </footer>
 
     <script>
-        // === KONFIGURASI TIKTOK ===
         const TIKTOK_URL = "https://www.tiktok.com/@tera.rblx";
+        const INSTAGRAM_URL = "https://www.instagram.com/tera.rblx";
 
-        // === FUNGSI NAVIGASI HALAMAN (SPA System) ===
+        window.addEventListener('scroll', () => {
+            const nav = document.getElementById('navbar');
+            if(window.scrollY > 50) {
+                nav.classList.add('nav-scrolled');
+                nav.classList.remove('glass');
+            } else {
+                nav.classList.remove('nav-scrolled');
+                nav.classList.add('glass');
+            }
+        });
+
         function switchPage(pageId) {
-            // 1. Sembunyikan semua section
-            document.querySelectorAll('.page-section').forEach(page => {
-                page.classList.remove('active-page');
-            });
-            
-            // 2. Tampilkan section yang dipilih
+            document.querySelectorAll('.page-section').forEach(page => page.classList.remove('active-page'));
             document.getElementById(pageId).classList.add('active-page');
-            
-            // 3. Ubah warna Navigasi yang aktif
-            document.querySelectorAll('.nav-link').forEach(link => {
-                link.classList.remove('active-nav');
-            });
-            document.querySelectorAll(`[onclick="switchPage('${pageId}')"]`).forEach(link => {
-                link.classList.add('active-nav');
-            });
-
-            // 4. Tutup menu mobile jika sedang dibuka
+            document.querySelectorAll('.nav-link').forEach(link => { link.classList.remove('active-nav', 'text-white'); link.classList.add('text-gray-300'); });
+            document.querySelectorAll(`[onclick="switchPage('${pageId}')"]`).forEach(link => { link.classList.remove('text-gray-300'); link.classList.add('active-nav', 'text-white'); });
             document.getElementById('mobile-menu').classList.add('hidden');
-            
-            // 5. Scroll mulus ke paling atas
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
-        // === FUNGSI TAB WIKI / ENSIKLOPEDIA ===
         function openWikiTab(tabId) {
-            document.querySelectorAll('.encyclopedia-tab').forEach(tab => {
-                tab.classList.remove('active');
-            });
-            document.querySelectorAll('.tab-btn').forEach(btn => {
-                btn.classList.remove('active');
-            });
-            
+            document.querySelectorAll('.encyclopedia-tab').forEach(tab => tab.classList.remove('active'));
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
             document.getElementById(tabId).classList.add('active');
             event.currentTarget.classList.add('active');
         }
 
-        // === DATA ITEM TERA STORE (Sudah Dibersihkan dari Karakter Tersembunyi) ===
         const storeData = [
-            {
-                category: "Basic & Common Items",
-                color: "text-gray-300",
-                icon: "fa-cube",
-                items: [
-                    { name: "Wood", price: 1000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/wood-item-sailor-piece.jpg" },
-                    { name: "Iron", price: 1500, image: "https://bloxinformer.com/wp-content/uploads/2026/03/iron-item-sailor-piece.jpg" },
-                    { name: "Obsidian", price: 2000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/obsidian-item-sailor-piece-298x300.jpg" },
-                    { name: "Mythril", price: 3000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/mythril-item-sailor-piece.jpg" },
-                    { name: "Adamantite", price: 5000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/adamantine-item-sailor-piece.jpg" },
-                    { name: "Diamond", price: 10000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/image-8.webp" },
-                    { name: "Common Chest", price: 2000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/common-chest-item-sailor-piece.jpg" },
-                    { name: "Rare Chest", price: 5000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/rare-chest-item-sailor-piece-300x300.jpg" },
-                    { name: "Epic Chest", price: 10000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/epic-chest-item-sailor-piece-300x300.jpg" },
-                    { name: "Legendary Chest", price: 25000, tag: "HOT", image: "https://bloxinformer.com/wp-content/uploads/2026/03/legendary-chest-item-sailor-piece-300x300.jpg" },
-                    { name: "Mythical Chest", price: 25000, tag: "HOT", image: "https://bloxinformer.com/wp-content/uploads/2026/03/mythical-chest-item-sailor-piece-297x300.jpg" },
-                    { name: "Secret Chest", price: 50000, tag: "HOT", image: "https://bloxinformer.com/wp-content/uploads/2026/03/secret-chest-item-sailor-piece-300x300.jpg" }
-                ]
-            },
-            {
-                category: "Reroll & Utility",
-                color: "text-tera-purple",
-                icon: "fa-dice",
-                items: [
-                    { name: "Race Reroll", price: 10000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/race-reroll-item-sailor-piece-297x300.jpg" },
-                    { name: "Trait Reroll", price: 15000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/trait-reroll-item-sailor-piece-300x300.jpg" },
-                    { name: "Clan Reroll", price: 20000, tag: "HOT", image: "https://bloxinformer.com/wp-content/uploads/2026/03/clan-reroll-item-sailor-piece.jpg" },
-                    { name: "Haki Color Reroll", price: 10000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/haki-color-reroll-item-sailor-piece-296x300.jpg" },
-                    { name: "Aura Crate", price: 25000, tag: "HOT", image: "https://bloxinformer.com/wp-content/uploads/2026/03/aura-crate-item-sailor-piece.jpg" },
-                    { name: "Cosmetic Crate", price: 25000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/image-6.webp" },
-                    { name: "Boss Ticket", price: 15000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/boss-ticket-item-sailor-piece-295x300.jpg" },
-                    { name: "Boss Key", price: 15000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/boss-key-item-sailor-piece-296x300.jpg" },
-                    { name: "Dungeon Key", price: 20000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/dungeon-key-item-sailor-piece.jpg" },
-                    { name: "Dungeon Token", price: 15000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/dungeon-token-item-sailor-piece.jpg" },
-                    { name: "Tower Key", price: 20000, image: "https://i.etsystatic.com/48790973/r/il/00a0a2/7925047395/il_fullxfull.7925047395_2uze.jpg" },
-                    { name: "Rush Key", price: 20000, image: "https://imgop.itemku.com/?url=https%3A%2F%2Fd1x91p7vw3vuq8.cloudfront.net%2Fitemku-upload%2F202645%2F7pe0a6kz1tmqbxmkk8r25_thumbnail.jpg&w=1033&q=75" }
-                ]
-            },
-            {
-                category: "Crafting & Boss Drops",
-                color: "text-tera-gold",
-                icon: "fa-gem",
-                items: [
-                    { name: "Energy Core", price: 15000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/energy-core-item-sailor-piece.jpg" },
-                    { name: "Void Fragment", price: 20000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/void-fragment-item-sailor-piece-297x300.jpg" },
-                    { name: "Cursed Finger", price: 25000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/cursed-finger-item-sailor-piece-300x298.jpg" },
-                    { name: "Awakened Cursed Finger", price: 50000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/awakened-cursed-finger-item-sailor-piece.jpg" },
-                    { name: "Abyss Edge", price: 35000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/abyss-edge-item-sailor-piece-296x300.jpg" },
-                    { name: "Mirage Pendant", price: 40000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/mirage-pendant-item-sailor-piece-300x300.jpg" },
-                    { name: "Illusion Prism", price: 40000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/illusion-prism-item-sailor-piece.jpg" },
-                    { name: "Worthless Fragment", price: 5000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/worthless-fragment-item-sailor-piece-300x300.jpg" },
-                    { name: "Flash Impact", price: 30000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/flash-impact-item-sailor-piece.jpg" },
-                    { name: "Umbral Capsule", price: 35000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/umbra-capsule-item-sailor-piece.jpg" },
-                    { name: "Limitless Key", price: 45000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/limitless-key-item-sailor-piece.jpg" },
-                    { name: "Limitless Ring", price: 50000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/limitless-ring-item-sailor-piece-297x300.jpg" },
-                    { name: "Reversal Pulse", price: 45000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/reversal-pulse-item-sailor-piece.jpg" },
-                    { name: "Vessel Ring", price: 50000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/vessel-ring-item-sailor-piece.jpg" },
-                    { name: "Void Seed", price: 25000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/void-seed-item-sailor-piece.jpg" },
-                    { name: "Soul Fragment", price: 30000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/soul-fragment-item-sailor-piece.jpg" },
-                    { name: "Soul Amulet", price: 30000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/soul-amulet-item-sailor-piece.jpg" },
-                    { name: "Cursed Talisman", price: 35000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/cursed-talisman-item-sailor-piece.jpg" },
-                    { name: "Sage Pulse", price: 35000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/sage-pulse-item-sailor-piece.jpg" },
-                    { name: "Six Eye", price: 80000, tag: "RARE", image: "https://bloxinformer.com/wp-content/uploads/2026/03/six-eye-item-sailor-piece.jpg" },
-                    { name: "Energy Shard", price: 15000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/energy-shard-item-sailor-piece.jpg" },
-                    { name: "Malevolent Soul", price: 75000, tag: "RARE", image: "https://bloxinformer.com/wp-content/uploads/2026/03/malevolent-soul-item-sailor-piece.jpg" },
-                    { name: "Blue Singularity", price: 70000, tag: "RARE", image: "https://bloxinformer.com/wp-content/uploads/2026/03/blue-singularity-item-sailor-piece.jpg" },
-                    { name: "Tempest Seal", price: 40000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/tempest-seal-item-sailor-piece.jpg" },
-                    { name: "Slime Remnant", price: 30000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/slime-remnant-item-sailor-piece.jpg" },
-                    { name: "Slime Key", price: 30000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/slime-key-item-sailor-piece.jpg" },
-                    { name: "Slime Shard", price: 20000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/slime-shard-item-sailor-piece.jpg" },
-                    { name: "Slime Core", price: 35000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/slime-core-item-sailor-piece.jpg" },
-                    { name: "Reiatsu Core", price: 55000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/reiatsu-core-item-sailor-piece.jpg" },
-                    { name: "Throne Remnant", price: 55000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/throne-remnant-item-sailor-piece.jpg" },
-                    { name: "Power Remnant", price: 55000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/powa.png" },
-                    { name: "Battle Shard", price: 55000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/bat.png" },
-                    { name: "Monarch Core", price: 55000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/monarch-core-item-sailor-piece.jpg" },
-                    { name: "Dismantle Fang", price: 55000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/dismantle-fang-item-sailor-piece.jpg" },
-                    { name: "Dark Ring", price: 55000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/dark-ring-item-sailor-piece.jpg" },
-                    { name: "Infinity Core", price: 55000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/infinity-core-item-sailor-piece-300x300.jpg" },
-                    { name: "Bloodline Stone", price: 40000, tag: "HOT", image: "https://bloxinformer.com/wp-content/uploads/2026/03/Bloodine-Stone.png" },
-                    { name: "Power Shard", price: 20000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/Power-Shard.png" },
-                    { name: "Passive Shards", price: 20000, image: "https://imgop.itemku.com/?url=https%3A%2F%2Fd1x91p7vw3vuq8.cloudfront.net%2Fitemku-upload%2F2026317%2Fav6b71n61nn178ikoghir4_thumbnail.jpg&w=1033&q=75" },
-                    { name: "Jade Tablet", price: 30000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/jade-tablet-item-sailor-piece.jpg" },
-                    { name: "Divergent Pulse", price: 45000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/divergent-pulse-item-sailor-piece.jpg" },
-                    { name: "Shadow Essence", price: 40000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/shadow-essence-item-sailor-piece.jpg" },
-                    { name: "Golden Essence", price: 50000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/golden-essence-item-sailor-piece.jpg" },
-                    { name: "Lunar Essence", price: 45000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/Lunar-Essence.png" },
-                    { name: "Ancient Shard", price: 35000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/ancient-shard-item-sailor-piece.jpg" },
-                    { name: "Demonic Shard", price: 40000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/demonic-shard-item-sailor-piece.jpg" },
-                    { name: "Monarch Essence", price: 55000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/monarch-essence-item-sailor-piece.jpg" },
-                    { name: "Abyss Sigil", price: 45000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/Abyss-Sigil-Sailor-Piece-Item-for.webp" },
-                    { name: "Battle Sigil", price: 40000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/sigil.png" },
-                    { name: "Upper Seal", price: 45000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/image-1.webp" },
-                    { name: "Frost Relic", price: 35000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/image-2.webp" },
-                    { name: "Glacier Remnant", price: 40000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/glacier_rem.png" },
-                    { name: "Chrysalis Sigil", price: 35000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/image-3.webp" },
-                    { name: "Tempest Relic", price: 45000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/image-4.webp" },
-                    { name: "Dominion Brand", price: 50000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/Dominion-Brand.webp" },
-                    { name: "Transmutation Shard", price: 30000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/image-5.webp" },
-                    { name: "Ice Core", price: 35000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/ICE-1.png" },
-                    { name: "Frozen Brand", price: 40000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/froze.png" },
-                    { name: "Crimson Heart", price: 45000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/crimson-heart-item-sailor-piece.jpg" },
-                    { name: "Shadow Heart", price: 45000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/shadow-heart-item-sailor-piece.jpg" },
-                    { name: "Blood Ring", price: 30000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/blood-ring-item-sailor-piece.jpg" },
-                    { name: "Casull", price: 50000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/casull-item-sailor-piece.jpg" },
-                    { name: "Cursed Flesh", price: 25000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/cursed-flesh-item-sailor-piece.jpg" },
-                    { name: "Soul Flame", price: 35000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/soul-flame-item-sailor-piece.jpg" },
-                    { name: "Phantasm Core", price: 40000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/phanttasm-core-item-sailor-piece.jpg" },
-                    { name: "Shadow Crystal", price: 40000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/shadow-crystal-item-sailor-piece.jpg" },
-                    { name: "Path Fragment", price: 30000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/path_frag.png" },
-                    { name: "Crescent Shard", price: 35000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/Screscent-Shard-Item-in-Sailor-Piece.png" },
-                    { name: "Moon Crest", price: 45000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/Moon-Crest-Item-for-Moon-Slayer-Melee.png" }
-                ]
-            },
-            {
-                category: "Rare & Legendary Materials",
-                color: "text-red-400",
-                icon: "fa-khanda",
-                items: [
-                    { name: "Broken Sword", price: 45000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/broken-sword-item-sailor-piece.jpg" },
-                    { name: "Babylon Key", price: 60000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/babylon-key-item-sailor-piece.jpg" },
-                    { name: "Divine Grail", price: 75000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/divine-grail-item-sailor-piece.jpg" },
-                    { name: "Calamity Seal", price: 60000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/calamity-seal-item-sailor-piece.jpg" },
-                    { name: "World Core", price: 80000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/world-core.png" },
-                    { name: "Hogyoku Fragment", price: 75000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/hogyoku-fragment-item-sailor-piece.jpg" },
-                    { name: "Imperial Seal", price: 70000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/imperial-seal-item-sailor-piece.jpg" },
-                    { name: "Eminence Essence", price: 85000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/1000409969_0x0_670x519.png" },
-                    { name: "Atomic Core", price: 80000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/atomic-core-item-sailor-piece.jpg" },
-                    { name: "Infinity Essence", price: 90000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/inifinity-essence-item-sailor-piece.jpg" },
-                    { name: "Conqueror Fragment", price: 75000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/conqueror-fragment-item-sailor-piece.jpg" },
-                    { name: "Destruction Eye", price: 85000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/destruction-eye-item-sailor-piece.jpg" },
-                    { name: "Imperial Mark", price: 70000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/imperial-mark-item-sailor-piece.jpg" },
-                    { name: "Corruption Core", price: 75000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/Corruption-Core.png" },
-                    { name: "Vampire Omen", price: 130000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/Vampire-Omen.png" },
-                    { name: "Atomic Omen", price: 140000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/Atomic-Omen-item-in-Sailor-Piece-300x300.png" },
-                    { name: "Kamish Dagger", price: 150000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/kamish-dagger-item-sailor-piece.jpg" },
-                    { name: "Corrupt Crown", price: 80000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/Darkgrail_20260316_060344_0000.png" },
-                    { name: "Eternal Core", price: 90000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/Ete_core.png" }
-                ]
-            },
-            {
-                category: "Premium Sets / Weapon Materials",
-                color: "text-tera-blue",
-                icon: "fa-shield-halved",
-                items: [
-                    { name: "Ice Queen", price: 100000, image: "https://f.top4top.io/p_37845uvec0.jpg" },
-                    { name: "Great Mage", price: 180000, image: "https://g.top4top.io/p_3784v4afq1.jpg" }, 
-                    { name: "Sun God", price: 180000, image: "https://h.top4top.io/p_3784l9vur2.jpg" }, 
-                    { name: "Excalibur", price: 180000, image: "https://i.top4top.io/p_3784okt2i3.jpg" }, 
-                    { name: "Soul Reaper", price: 180000, image: "https://j.top4top.io/p_37849l8tm4.jpg" }, 
-                    { name: "Solo Hunter", price: 120000, image: "https://k.top4top.io/p_378415ufb5.jpg" },
-                    { name: "Shadow Monarch", price: 135000, image: "https://l.top4top.io/p_3784gtrtm6.jpg" },
-                    { name: "Yamato", price: 110000, image: "https://a.top4top.io/p_3784tzl5h7.jpg" },
-                    { name: "Manipulator", price: 180000, image: "https://b.top4top.io/p_3784ndzgw8.jpg" }, 
-                    { name: "True Manipulator", price: 140000, image: "https://c.top4top.io/p_3784wxecm9.jpg" },
-                    { name: "Shadow", price: 180000, image: "https://b.top4top.io/p_3784ksrlc0.jpg" }, 
-                    { name: "Atomic", price: 115000, image: "https://c.top4top.io/p_3784t0whf1.jpg" },
-                    { name: "Rimuru", price: 125000, image: "https://d.top4top.io/p_3784vaxp32.jpg" },
-                    { name: "Vampire King", price: 130000, image: "https://j.top4top.io/p_3784arf2o0.jpg" },
-                    { name: "The World", price: 145000, image: "https://f.top4top.io/p_378489mj74.jpg" },
-                    { name: "Cosmic Being", price: 145000, image: "https://g.top4top.io/p_3784xplm35.jpg" },
-                    { name: "Qin Shi", price: 180000, image: "https://h.top4top.io/p_3784fslvs6.jpg" },
-                    { name: "Corrupted Excalibur", price: 180000, image: "https://i.top4top.io/p_3784c2as47.jpg" }, 
-                    { name: "Gilgamesh", price: 140000, image: "https://j.top4top.io/p_3784z685t8.jpg" },
-                    { name: "Madara", price: 150000, image: "https://k.top4top.io/p_3784gr70t9.jpg" },
-                    { name: "Gojo V1", price: 180000, image: "https://a.top4top.io/p_3784qjgb00.jpg" }, 
-                    { name: "Gojo V2", price: 160000, image: "https://b.top4top.io/p_3784a2rcq1.jpg" },
-                    { name: "Sukuna V1", price: 180000, image: "https://c.top4top.io/p_3784az9432.jpg" }, 
-                    { name: "Sukuna V2", price: 160000, image: "https://d.top4top.io/p_3784as8ta3.jpg" },
-                    { name: "Cursed Vessel", price: 180000, image: "https://f.top4top.io/p_37849p4ts0.jpg" }, 
-                    { name: "Blessed Maiden", price: 120000, image: "https://g.top4top.io/p_3784piqjn1.jpg" },
-                    { name: "Demon King", price: 180000, image: "https://h.top4top.io/p_3784lfaem2.jpg" }, 
-                    { name: "Moon Slayer", price: 180000, image: "https://i.top4top.io/p_3784q543p3.jpg" }
-                ]
-            },
-            {
-                category: "Boosts & Event Items",
-                color: "text-green-400",
-                icon: "fa-bolt",
-                items: [
-                    { name: "2x Drop", price: 25000, tag: "HOT", image: "https://static.wixstatic.com/media/c4d9b1_fbe8462bad5b43558c1e150435939dff~mv2.png/v1/fill/w_339,h_375,al_c,lg_1,q_85,enc_avif,quality_auto/c4d9b1_fbe8462bad5b43558c1e150435939dff~mv2.png" },
-                    { name: "2x Luck", price: 25000, tag: "HOT", image: "https://assetsdelivery.eldorado.gg/v7/_offers-v2_/f27dc565-3aac-4aa5-915d-07d6d465a445_Offer_20260328120619_438449Large.png?w=600" },
-                    { name: "Easter Eggs", price: 30000, image: "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcSi0S5tnaB0uT4-0IldurXaJ5LxpjNExZxPrT5oCp0n8odC6GSRqJ2tBaMW6g6lHcQJ9m2h6IzNMFbHJUj0PKwadQKcBpulxQ&usqp=CAc" },
-                    { name: "Easter Keys", price: 35000, image: "https://assetsdelivery.eldorado.gg/v7/_offers-v2_/bf393df2-c4f2-4530-b576-1114f04b12c0_Offer_20260422091436_8526484Large.jpeg?w=600" },
-                    { name: "Spirit Keys", price: 35000, image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRCbcl1kO0wMX5CIlB6utXgjr9QOLw9ufm7bw0MvevIOA&s" },
-                    { name: "Raid Keys", price: 35000, image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSbytNnTSpGYOzniNKY9_5Ma_cZY0vtDDemhhL3nldR2A&s" },
-                    { name: "Crystal Keys", price: 35000, image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRDdIgoXPOO_yLO7kBhusbZX1J7TTN9rDZ3qQIMO0QSVQ&s" }, 
-                    { name: "Relic Sets", price: 200000, image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTVorkCMTEclDDaZpyYSEKDEReuKOponp3qa2lcN9hTkyUSBKocjaa3gZFh&s=10" }
-                ]
-            }
+          { category: "Basic & Common Items", color: "text-gray-300", icon: "fa-cube", items: [
+            { name: "Wood", price: 1000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/wood-item-sailor-piece.jpg" },
+            { name: "Iron", price: 1500, image: "https://bloxinformer.com/wp-content/uploads/2026/03/iron-item-sailor-piece.jpg" },
+            { name: "Obsidian", price: 2000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/obsidian-item-sailor-piece-298x300.jpg" },
+            { name: "Mythril", price: 3000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/mythril-item-sailor-piece.jpg" },
+            { name: "Adamantite", price: 5000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/adamantine-item-sailor-piece.jpg" },
+            { name: "Diamond", price: 10000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/image-8.webp" },
+            { name: "Common Chest", price: 2000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/common-chest-item-sailor-piece.jpg" },
+            { name: "Rare Chest", price: 5000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/rare-chest-item-sailor-piece-300x300.jpg" },
+            { name: "Epic Chest", price: 10000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/epic-chest-item-sailor-piece-300x300.jpg" },
+            { name: "Legendary Chest", price: 25000, tag: "HOT", image: "https://bloxinformer.com/wp-content/uploads/2026/03/legendary-chest-item-sailor-piece-300x300.jpg" },
+            { name: "Mythical Chest", price: 25000, tag: "HOT", image: "https://bloxinformer.com/wp-content/uploads/2026/03/mythical-chest-item-sailor-piece-297x300.jpg" },
+            { name: "Secret Chest", price: 50000, tag: "HOT", image: "https://bloxinformer.com/wp-content/uploads/2026/03/secret-chest-item-sailor-piece-300x300.jpg" }
+          ]},
+          { category: "Reroll & Utility", color: "text-tera-purple", icon: "fa-dice", items: [
+            { name: "Race Reroll", price: 10000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/race-reroll-item-sailor-piece-297x300.jpg" },
+            { name: "Trait Reroll", price: 15000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/trait-reroll-item-sailor-piece-300x300.jpg" },
+            { name: "Clan Reroll", price: 20000, tag: "HOT", image: "https://bloxinformer.com/wp-content/uploads/2026/03/clan-reroll-item-sailor-piece.jpg" },
+            { name: "Haki Color Reroll", price: 10000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/haki-color-reroll-item-sailor-piece-296x300.jpg" },
+            { name: "Aura Crate", price: 25000, tag: "HOT", image: "https://bloxinformer.com/wp-content/uploads/2026/03/aura-crate-item-sailor-piece.jpg" },
+            { name: "Cosmetic Crate", price: 25000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/image-6.webp" },
+            { name: "Boss Ticket", price: 15000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/boss-ticket-item-sailor-piece-295x300.jpg" },
+            { name: "Boss Key", price: 15000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/boss-key-item-sailor-piece-296x300.jpg" },
+            { name: "Dungeon Key", price: 20000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/dungeon-key-item-sailor-piece.jpg" },
+            { name: "Dungeon Token", price: 15000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/dungeon-token-item-sailor-piece.jpg" },
+            { name: "Tower Key", price: 20000, image: "https://i.etsystatic.com/48790973/r/il/00a0a2/7925047395/il_fullxfull.7925047395_2uze.jpg" },
+            { name: "Rush Key", price: 20000, image: "https://imgop.itemku.com/?url=https%3A%2F%2Fd1x91p7vw3vuq8.cloudfront.net%2Fitemku-upload%2F202645%2F7pe0a6kz1tmqbxmkk8r25_thumbnail.jpg&w=1033&q=75" }
+          ]},
+          { category: "Crafting & Boss Drops", color: "text-tera-gold", icon: "fa-gem", items: [
+            { name: "Energy Core", price: 15000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/energy-core-item-sailor-piece.jpg" },
+            { name: "Void Fragment", price: 20000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/void-fragment-item-sailor-piece-297x300.jpg" },
+            { name: "Cursed Finger", price: 25000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/cursed-finger-item-sailor-piece-300x298.jpg" },
+            { name: "Awakened Cursed Finger", price: 50000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/awakened-cursed-finger-item-sailor-piece.jpg" },
+            { name: "Abyss Edge", price: 35000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/abyss-edge-item-sailor-piece-296x300.jpg" },
+            { name: "Mirage Pendant", price: 40000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/mirage-pendant-item-sailor-piece-300x300.jpg" },
+            { name: "Illusion Prism", price: 40000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/illusion-prism-item-sailor-piece.jpg" },
+            { name: "Worthless Fragment", price: 5000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/worthless-fragment-item-sailor-piece-300x300.jpg" },
+            { name: "Flash Impact", price: 30000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/flash-impact-item-sailor-piece.jpg" },
+            { name: "Umbral Capsule", price: 35000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/umbra-capsule-item-sailor-piece.jpg" },
+            { name: "Limitless Key", price: 45000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/limitless-key-item-sailor-piece.jpg" },
+            { name: "Limitless Ring", price: 50000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/limitless-ring-item-sailor-piece-297x300.jpg" },
+            { name: "Reversal Pulse", price: 45000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/reversal-pulse-item-sailor-piece.jpg" },
+            { name: "Vessel Ring", price: 50000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/vessel-ring-item-sailor-piece.jpg" },
+            { name: "Void Seed", price: 25000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/void-seed-item-sailor-piece.jpg" },
+            { name: "Soul Fragment", price: 30000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/soul-fragment-item-sailor-piece.jpg" },
+            { name: "Soul Amulet", price: 30000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/soul-amulet-item-sailor-piece.jpg" },
+            { name: "Cursed Talisman", price: 35000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/cursed-talisman-item-sailor-piece.jpg" },
+            { name: "Sage Pulse", price: 35000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/sage-pulse-item-sailor-piece.jpg" },
+            { name: "Six Eye", price: 80000, tag: "RARE", image: "https://bloxinformer.com/wp-content/uploads/2026/03/six-eye-item-sailor-piece.jpg" },
+            { name: "Energy Shard", price: 15000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/energy-shard-item-sailor-piece.jpg" },
+            { name: "Malevolent Soul", price: 75000, tag: "RARE", image: "https://bloxinformer.com/wp-content/uploads/2026/03/malevolent-soul-item-sailor-piece.jpg" },
+            { name: "Blue Singularity", price: 70000, tag: "RARE", image: "https://bloxinformer.com/wp-content/uploads/2026/03/blue-singularity-item-sailor-piece.jpg" },
+            { name: "Tempest Seal", price: 40000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/tempest-seal-item-sailor-piece.jpg" },
+            { name: "Slime Remnant", price: 30000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/slime-remnant-item-sailor-piece.jpg" },
+            { name: "Slime Key", price: 30000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/slime-key-item-sailor-piece.jpg" },
+            { name: "Slime Shard", price: 20000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/slime-shard-item-sailor-piece.jpg" },
+            { name: "Slime Core", price: 35000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/slime-core-item-sailor-piece.jpg" },
+            { name: "Reiatsu Core", price: 55000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/reiatsu-core-item-sailor-piece.jpg" },
+            { name: "Throne Remnant", price: 55000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/throne-remnant-item-sailor-piece.jpg" },
+            { name: "Power Remnant", price: 55000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/powa.png" },
+            { name: "Battle Shard", price: 55000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/bat.png" },
+            { name: "Monarch Core", price: 55000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/monarch-core-item-sailor-piece.jpg" },
+            { name: "Dismantle Fang", price: 55000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/dismantle-fang-item-sailor-piece.jpg" },
+            { name: "Dark Ring", price: 55000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/dark-ring-item-sailor-piece.jpg" },
+            { name: "Infinity Core", price: 55000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/infinity-core-item-sailor-piece-300x300.jpg" },
+            { name: "Bloodline Stone", price: 40000, tag: "HOT", image: "https://bloxinformer.com/wp-content/uploads/2026/03/Bloodine-Stone.png" },
+            { name: "Power Shard", price: 20000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/Power-Shard.png" },
+            { name: "Passive Shards", price: 20000, image: "https://imgop.itemku.com/?url=https%3A%2F%2Fd1x91p7vw3vuq8.cloudfront.net%2Fitemku-upload%2F2026317%2Fav6b71n61nn178ikoghir4_thumbnail.jpg&w=1033&q=75" },
+            { name: "Jade Tablet", price: 30000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/jade-tablet-item-sailor-piece.jpg" },
+            { name: "Divergent Pulse", price: 45000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/divergent-pulse-item-sailor-piece.jpg" },
+            { name: "Shadow Essence", price: 40000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/shadow-essence-item-sailor-piece.jpg" },
+            { name: "Golden Essence", price: 50000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/golden-essence-item-sailor-piece.jpg" },
+            { name: "Lunar Essence", price: 45000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/Lunar-Essence.png" },
+            { name: "Ancient Shard", price: 35000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/ancient-shard-item-sailor-piece.jpg" },
+            { name: "Demonic Shard", price: 40000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/demonic-shard-item-sailor-piece.jpg" },
+            { name: "Monarch Essence", price: 55000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/monarch-essence-item-sailor-piece.jpg" },
+            { name: "Abyss Sigil", price: 45000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/Abyss-Sigil-Sailor-Piece-Item-for.webp" },
+            { name: "Battle Sigil", price: 40000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/sigil.png" },
+            { name: "Upper Seal", price: 45000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/image-1.webp" },
+            { name: "Frost Relic", price: 35000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/image-2.webp" },
+            { name: "Glacier Remnant", price: 40000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/glacier_rem.png" },
+            { name: "Chrysalis Sigil", price: 35000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/image-3.webp" },
+            { name: "Tempest Relic", price: 45000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/image-4.webp" },
+            { name: "Dominion Brand", price: 50000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/Dominion-Brand.webp" },
+            { name: "Transmutation Shard", price: 30000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/image-5.webp" },
+            { name: "Ice Core", price: 35000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/ICE-1.png" },
+            { name: "Frozen Brand", price: 40000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/froze.png" },
+            { name: "Crimson Heart", price: 45000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/crimson-heart-item-sailor-piece.jpg" },
+            { name: "Shadow Heart", price: 45000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/shadow-heart-item-sailor-piece.jpg" },
+            { name: "Blood Ring", price: 30000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/blood-ring-item-sailor-piece.jpg" },
+            { name: "Casull", price: 50000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/casull-item-sailor-piece.jpg" },
+            { name: "Cursed Flesh", price: 25000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/cursed-flesh-item-sailor-piece.jpg" },
+            { name: "Soul Flame", price: 35000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/soul-flame-item-sailor-piece.jpg" },
+            { name: "Phantasm Core", price: 40000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/phanttasm-core-item-sailor-piece.jpg" },
+            { name: "Shadow Crystal", price: 40000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/shadow-crystal-item-sailor-piece.jpg" },
+            { name: "Path Fragment", price: 30000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/path_frag.png" },
+            { name: "Crescent Shard", price: 35000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/Screscent-Shard-Item-in-Sailor-Piece.png" },
+            { name: "Moon Crest", price: 45000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/Moon-Crest-Item-for-Moon-Slayer-Melee.png" }
+          ]},
+          { category: "Rare & Legendary Materials", color: "text-red-400", icon: "fa-khanda", items: [
+            { name: "Broken Sword", price: 45000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/broken-sword-item-sailor-piece.jpg" },
+            { name: "Babylon Key", price: 60000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/babylon-key-item-sailor-piece.jpg" },
+            { name: "Divine Grail", price: 75000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/divine-grail-item-sailor-piece.jpg" },
+            { name: "Calamity Seal", price: 60000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/calamity-seal-item-sailor-piece.jpg" },
+            { name: "World Core", price: 80000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/world-core.png" },
+            { name: "Hogyoku Fragment", price: 75000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/hogyoku-fragment-item-sailor-piece.jpg" },
+            { name: "Imperial Seal", price: 70000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/imperial-seal-item-sailor-piece.jpg" },
+            { name: "Eminence Essence", price: 85000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/1000409969_0x0_670x519.png" },
+            { name: "Atomic Core", price: 80000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/atomic-core-item-sailor-piece.jpg" },
+            { name: "Infinity Essence", price: 90000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/inifinity-essence-item-sailor-piece.jpg" },
+            { name: "Conqueror Fragment", price: 75000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/conqueror-fragment-item-sailor-piece.jpg" },
+            { name: "Destruction Eye", price: 85000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/destruction-eye-item-sailor-piece.jpg" },
+            { name: "Imperial Mark", price: 70000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/imperial-mark-item-sailor-piece.jpg" },
+            { name: "Corruption Core", price: 75000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/Corruption-Core.png" },
+            { name: "Vampire Omen", price: 130000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/Vampire-Omen.png" },
+            { name: "Atomic Omen", price: 140000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/Atomic-Omen-item-in-Sailor-Piece-300x300.png" },
+            { name: "Kamish Dagger", price: 150000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/kamish-dagger-item-sailor-piece.jpg" },
+            { name: "Corrupt Crown", price: 80000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/Darkgrail_20260316_060344_0000.png" },
+            { name: "Eternal Core", price: 90000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/Ete_core.png" }
+          ]},
+          { category: "Premium Sets / Weapon Materials", color: "text-tera-blue", icon: "fa-shield-halved", items: [
+            { name: "Ice Queen", price: 100000, image: "https://f.top4top.io/p_37845uvec0.jpg" },
+            { name: "Great Mage", price: 180000, image: "https://g.top4top.io/p_3784v4afq1.jpg" }, 
+            { name: "Sun God", price: 180000, image: "https://h.top4top.io/p_3784l9vur2.jpg" }, 
+            { name: "Excalibur", price: 180000, image: "https://i.top4top.io/p_3784okt2i3.jpg" }, 
+            { name: "Soul Reaper", price: 180000, image: "https://j.top4top.io/p_37849l8tm4.jpg" }, 
+            { name: "Solo Hunter", price: 120000, image: "https://k.top4top.io/p_378415ufb5.jpg" },
+            { name: "Shadow Monarch", price: 135000, image: "https://l.top4top.io/p_3784gtrtm6.jpg" },
+            { name: "Yamato", price: 110000, image: "https://a.top4top.io/p_3784tzl5h7.jpg" },
+            { name: "Manipulator", price: 180000, image: "https://b.top4top.io/p_3784ndzgw8.jpg" }, 
+            { name: "True Manipulator", price: 140000, image: "https://c.top4top.io/p_3784wxecm9.jpg" },
+            { name: "Shadow", price: 180000, image: "https://b.top4top.io/p_3784ksrlc0.jpg" }, 
+            { name: "Atomic", price: 115000, image: "https://c.top4top.io/p_3784t0whf1.jpg" },
+            { name: "Rimuru", price: 125000, image: "https://d.top4top.io/p_3784vaxp32.jpg" },
+            { name: "Vampire King", price: 130000, image: "https://j.top4top.io/p_3784arf2o0.jpg" },
+            { name: "The World", price: 145000, image: "https://f.top4top.io/p_378489mj74.jpg" },
+            { name: "Cosmic Being", price: 145000, image: "https://g.top4top.io/p_3784xplm35.jpg" },
+            { name: "Qin Shi", price: 180000, image: "https://h.top4top.io/p_3784fslvs6.jpg" },
+            { name: "Corrupted Excalibur", price: 180000, image: "https://i.top4top.io/p_3784c2as47.jpg" }, 
+            { name: "Gilgamesh", price: 140000, image: "https://j.top4top.io/p_3784z685t8.jpg" },
+            { name: "Madara", price: 150000, image: "https://k.top4top.io/p_3784gr70t9.jpg" },
+            { name: "Gojo V1", price: 180000, image: "https://a.top4top.io/p_3784qjgb00.jpg" }, 
+            { name: "Gojo V2", price: 160000, image: "https://b.top4top.io/p_3784a2rcq1.jpg" },
+            { name: "Sukuna V1", price: 180000, image: "https://c.top4top.io/p_3784az9432.jpg" }, 
+            { name: "Sukuna V2", price: 160000, image: "https://d.top4top.io/p_3784as8ta3.jpg" },
+            { name: "Cursed Vessel", price: 180000, image: "https://f.top4top.io/p_37849p4ts0.jpg" }, 
+            { name: "Blessed Maiden", price: 120000, image: "https://g.top4top.io/p_3784piqjn1.jpg" },
+            { name: "Demon King", price: 180000, image: "https://h.top4top.io/p_3784lfaem2.jpg" }, 
+            { name: "Moon Slayer", price: 180000, image: "https://i.top4top.io/p_3784q543p3.jpg" }
+          ]},
+          { category: "Boosts & Event Items", color: "text-green-400", icon: "fa-bolt", items: [
+            { name: "2x Drop", price: 25000, tag: "HOT", image: "https://static.wixstatic.com/media/c4d9b1_fbe8462bad5b43558c1e150435939dff~mv2.png/v1/fill/w_339,h_375,al_c,lg_1,q_85,enc_avif,quality_auto/c4d9b1_fbe8462bad5b43558c1e150435939dff~mv2.png" },
+            { name: "2x Luck", price: 25000, tag: "HOT", image: "https://assetsdelivery.eldorado.gg/v7/_offers-v2_/f27dc565-3aac-4aa5-915d-07d6d465a445_Offer_20260328120619_438449Large.png?w=600" },
+            { name: "Easter Eggs", price: 30000, image: "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcSi0S5tnaB0uT4-0IldurXaJ5LxpjNExZxPrT5oCp0n8odC6GSRqJ2tBaMW6g6lHcQJ9m2h6IzNMFbHJUj0PKwadQKcBpulxQ&usqp=CAc" },
+            { name: "Easter Keys", price: 35000, image: "https://assetsdelivery.eldorado.gg/v7/_offers-v2_/bf393df2-c4f2-4530-b576-1114f04b12c0_Offer_20260422091436_8526484Large.jpeg?w=600" },
+            { name: "Spirit Keys", price: 35000, image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRCbcl1kO0wMX5CIlB6utXgjr9QOLw9ufm7bw0MvevIOA&s" },
+            { name: "Raid Keys", price: 35000, image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSbytNnTSpGYOzniNKY9_5Ma_cZY0vtDDemhhL3nldR2A&s" },
+            { name: "Crystal Keys", price: 35000, image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRDdIgoXPOO_yLO7kBhusbZX1J7TTN9rDZ3qQIMO0QSVQ&s" }, 
+            { name: "Relic Sets", price: 200000, image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTVorkCMTEclDDaZpyYSEKDEReuKOponp3qa2lcN9hTkyUSBKocjaa3gZFh&s=10" }
+          ]}
         ];
+
+        function renderCatalog(searchQuery = "") {
+            const container = document.getElementById('katalog-container');
+            if(!container) return;
+            container.innerHTML = "";
+            let lowerQuery = searchQuery.toLowerCase();
+            let foundItems = false;
+
+            storeData.forEach((section, sIndex) => {
+                let filteredItems = section.items.filter(item => item.name.toLowerCase().includes(lowerQuery));
+                if(filteredItems.length === 0) return;
+                foundItems = true;
+
+                let sectionHTML = `
+                    <div class="glass p-6 md:p-10 rounded-3xl border border-white/5 shadow-xl relative overflow-hidden">
+                        <div class="absolute top-0 right-0 w-32 h-32 bg-white/5 blur-3xl rounded-full"></div>
+                        <div class="flex items-center gap-4 mb-8 border-b border-white/10 pb-4 relative z-10">
+                            <div class="w-12 h-12 rounded-xl bg-black/40 flex items-center justify-center border border-white/10 shadow-inner">
+                                <i class="fas ${section.icon} text-2xl ${section.color}"></i>
+                            </div>
+                            <h4 class="text-2xl md:text-3xl font-bold italic ${section.color}">${section.category}</h4>
+                        </div>
+                        <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-6 relative z-10">
+                `;
+
+                filteredItems.forEach((item, iIndex) => {
+                    let badge = item.tag ? `<div class="absolute -top-3 -right-3 bg-gradient-to-br from-red-500 to-pink-600 text-white text-[10px] font-black px-3 py-1 rounded-full shadow-[0_0_15px_rgba(239,68,68,0.6)] italic z-20">${item.tag}</div>` : '';
+                    let itemId = `item-${sIndex}-${iIndex}`;
+                    
+                    let imageElement = '';
+                    if(item.image && item.image !== "") {
+                        imageElement = `<img src="${item.image}" alt="${item.name}" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" onerror="this.onerror=null; this.src='https://via.placeholder.com/150/0a0514/a855f7?text=No+Image';">`;
+                    } else {
+                        imageElement = `<div class="w-full h-full flex items-center justify-center bg-black/40 group-hover:scale-110 transition-transform duration-500"><i class="fas ${section.icon} text-3xl text-white/20"></i></div>`;
+                    }
+                    
+                    sectionHTML += `
+                        <div class="glow-card-wrapper flex flex-col">
+                            <div class="item-card rounded-2xl p-4 flex flex-col items-center text-center relative group flex-grow">
+                                ${badge}
+                                <div class="w-full aspect-square mb-4 rounded-xl overflow-hidden border border-white/10 bg-[#0a0514] relative shadow-inner">
+                                    ${imageElement}
+                                    <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                                </div>
+                                <h5 class="text-sm font-bold text-white mb-2 h-10 flex items-center justify-center leading-tight w-full drop-shadow-md">${item.name}</h5>
+                                <span class="text-[10px] text-gray-400 mb-2 tracking-wider">Harga: ${formatRupiah(item.price)}</span>
+                                <p id="total-${itemId}" class="text-tera-gold text-sm font-black mb-4 bg-gradient-to-r from-tera-gold/5 via-tera-gold/10 to-tera-gold/5 px-2 py-1.5 rounded-lg w-full border border-tera-gold/30 shadow-inner" data-baseprice="${item.price}">
+                                    ${formatRupiah(item.price)}
+                                </p>
+                                <div class="flex items-center justify-between w-full bg-black/80 rounded-xl p-1.5 border border-white/10 mb-4 shadow-inner mt-auto">
+                                    <button onclick="updateQty('${itemId}', -1)" class="w-7 h-7 rounded-lg flex items-center justify-center text-gray-400 hover:text-white hover:bg-white/10 transition-colors">
+                                        <i class="fas fa-minus text-xs"></i>
+                                    </button>
+                                    <span id="qty-${itemId}" class="text-sm font-bold w-8 text-center text-white">1</span>
+                                    <button onclick="updateQty('${itemId}', 1)" class="w-7 h-7 rounded-lg flex items-center justify-center text-gray-400 hover:text-white hover:bg-white/10 transition-colors">
+                                        <i class="fas fa-plus text-xs"></i>
+                                    </button>
+                                </div>
+                                <div class="grid grid-cols-2 gap-2 w-full">
+                                    <button onclick="orderItem('${item.name}', '${itemId}', 'tiktok')" class="btn-tiktok w-full bg-black text-white text-[10px] font-bold py-2.5 rounded-xl transition-all uppercase tracking-wider flex items-center justify-center gap-1 border border-white/10 shadow-lg hover:shadow-tiktok-pink/30">
+                                        <i class="fab fa-tiktok"></i> TikTok
+                                    </button>
+                                    <button onclick="orderItem('${item.name}', '${itemId}', 'instagram')" class="btn-ig w-full bg-black text-white text-[10px] font-bold py-2.5 rounded-xl transition-all uppercase tracking-wider flex items-center justify-center gap-1 border border-white/10 shadow-lg">
+                                        <i class="fab fa-instagram"></i> IG
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                });
+                sectionHTML += `</div></div>`;
+                container.innerHTML += sectionHTML;
+            });
+
+            if (!foundItems) {
+                container.innerHTML = `
+                    <div class="glass p-10 rounded-3xl text-center border border-white/5">
+                        <i class="fas fa-search text-4xl text-gray-500 mb-4"></i>
+                        <h4 class="text-xl font-bold text-gray-400 italic">Item tidak ditemukan</h4>
+                        <p class="text-sm text-gray-500 mt-2">Coba gunakan kata kunci yang lain.</p>
+                    </div>
+                `;
+            }
+        }
 
         const formatRupiah = (angka) => {
             return new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(angka);
         };
 
-        const container = document.getElementById('katalog-container');
-
-        storeData.forEach((section, sIndex) => {
-            let sectionHTML = `
-                <div class="glass p-6 rounded-2xl border border-white/5">
-                    <div class="flex items-center gap-3 mb-6 border-b border-white/10 pb-3">
-                        <div class="w-10 h-10 rounded-lg bg-black/40 flex items-center justify-center border border-white/10">
-                            <i class="fas ${section.icon} text-lg ${section.color}"></i>
-                        </div>
-                        <h4 class="text-xl md:text-2xl font-bold italic ${section.color}">${section.category}</h4>
-                    </div>
-                    <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4">
-            `;
-
-            section.items.forEach((item, iIndex) => {
-                let badge = item.tag ? `<div class="absolute -top-2 -right-2 bg-red-500 text-white text-[10px] font-black px-2 py-0.5 rounded-full shadow-lg shadow-red-500/50 italic z-20">${item.tag}</div>` : '';
-                let itemId = `item-${sIndex}-${iIndex}`;
-                
-                let imageElement = '';
-                if(item.image && item.image !== "") {
-                    imageElement = `<img src="${item.image}" alt="${item.name}" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" onerror="this.outerHTML='<div class=\\'w-full h-full flex items-center justify-center bg-black/40 group-hover:scale-110 transition-transform duration-500\\'><i class=\\'fas ${section.icon} text-3xl text-white/20\\'></i></div>'">`;
-                } else {
-                    imageElement = `
-                        <div class="w-full h-full flex items-center justify-center bg-black/40 group-hover:scale-110 transition-transform duration-500">
-                            <i class="fas ${section.icon} text-3xl text-white/20"></i>
-                        </div>
-                    `;
-                }
-                
-                sectionHTML += `
-                    <div class="item-card rounded-xl p-4 flex flex-col items-center text-center relative group bg-[#08040d]">
-                        ${badge}
-                        
-                        <div class="w-full aspect-square mb-3 rounded-lg overflow-hidden border border-white/5 bg-[#0a0514] relative shadow-inner">
-                            ${imageElement}
-                        </div>
-
-                        <h5 class="text-sm font-bold text-white mb-2 h-10 flex items-center justify-center leading-tight w-full">${item.name}</h5>
-                        <span class="text-[10px] text-gray-400 mb-1">Harga Satuan: ${formatRupiah(item.price)}</span>
-                        
-                        <p id="total-${itemId}" class="text-tera-gold text-xs font-bold mb-3 bg-tera-gold/10 px-2 py-1 rounded w-full border border-tera-gold/20 shadow-inner" data-baseprice="${item.price}">
-                            ${formatRupiah(item.price)}
-                        </p>
-                        
-                        <div class="flex items-center justify-between w-full bg-black/60 rounded-lg p-1 border border-white/10 mb-3">
-                            <button onclick="updateQty('${itemId}', -1)" class="w-6 h-6 rounded flex items-center justify-center text-gray-400 hover:text-white hover:bg-white/10 transition-colors">
-                                <i class="fas fa-minus text-xs"></i>
-                            </button>
-                            <span id="qty-${itemId}" class="text-sm font-bold w-8 text-center text-white">1</span>
-                            <button onclick="updateQty('${itemId}', 1)" class="w-6 h-6 rounded flex items-center justify-center text-gray-400 hover:text-white hover:bg-white/10 transition-colors">
-                                <i class="fas fa-plus text-xs"></i>
-                            </button>
-                        </div>
-
-                        <button onclick="orderItem('${item.name}', '${itemId}')" class="btn-tiktok w-full bg-black text-white text-[10px] font-bold py-2.5 rounded transition-colors uppercase tracking-widest flex items-center justify-center gap-1.5 border border-white/10">
-                            <i class="fab fa-tiktok"></i> Order via TikTok
-                        </button>
-                    </div>
-                `;
-            });
-
-            sectionHTML += `</div></div>`;
-            container.innerHTML += sectionHTML;
-        });
-
         function updateQty(itemId, change) {
             const qtyElement = document.getElementById(`qty-${itemId}`);
             const totalElement = document.getElementById(`total-${itemId}`);
             const basePrice = parseInt(totalElement.getAttribute('data-baseprice'));
-            
             let currentQty = parseInt(qtyElement.innerText);
             let newQty = currentQty + change;
-            
             if (newQty < 1) newQty = 1;
-            
             qtyElement.innerText = newQty;
             totalElement.innerText = formatRupiah(basePrice * newQty);
         }
 
-        function copyToClipboardAndRedirect(textMsg) {
+        function copyToClipboardAndRedirect(textMsg, platform) {
+            let targetUrl = platform === 'instagram' ? INSTAGRAM_URL : TIKTOK_URL;
+            let platformName = platform === 'instagram' ? 'Instagram' : 'TikTok';
             navigator.clipboard.writeText(textMsg).then(() => {
-                alert("Format pesanan berhasil disalin!\n\nWebsite akan membuka TikTok. Silakan Paste (Tempel) pesan ini di DM TikTok kami: @tera.rblx");
-                window.open(TIKTOK_URL, '_blank');
+                alert(`Format pesanan berhasil disalin!\n\nWebsite akan membuka ${platformName}. Silakan Paste (Tempel) pesan ini di DM ${platformName} kami: @tera.rblx`);
+                window.open(targetUrl, '_blank');
             }).catch(err => {
-                alert("Silakan kirimkan DM secara manual ke TikTok kami: @tera.rblx");
-                window.open(TIKTOK_URL, '_blank');
+                alert(`Silakan kirimkan DM secara manual ke ${platformName} kami: @tera.rblx`);
+                window.open(targetUrl, '_blank');
             });
         }
 
-        function orderItem(itemName, itemId) {
+        function orderItem(itemName, itemId, platform) {
             const qty = document.getElementById(`qty-${itemId}`).innerText;
             const totalPrice = document.getElementById(`total-${itemId}`).innerText;
-            
             const textMsg = `Halo Admin TERA STORE,\n\nSaya ingin memesan item berikut:\n📌 Item: ${itemName}\n🔢 Jumlah: ${qty}x\n💰 Total Harga: ${totalPrice}\n\nMohon infokan ketersediaannya.`;
-            
-            copyToClipboardAndRedirect(textMsg);
+            copyToClipboardAndRedirect(textMsg, platform);
         }
 
-        function orderJoki(jokiName) {
+        function orderJoki(jokiName, platform) {
             const textMsg = `Halo Admin TERA STORE,\n\nSaya tertarik dengan layanan Joki:\n⚡ ${jokiName}\n\nBoleh tanya detail prosedur dan estimasi harganya?`;
-            
-            copyToClipboardAndRedirect(textMsg);
+            copyToClipboardAndRedirect(textMsg, platform);
         }
 
         document.getElementById('mobile-btn').addEventListener('click', () => {
             document.getElementById('mobile-menu').classList.toggle('hidden');
+        });
+
+        // Initialize Catalog upon Load
+        document.addEventListener('DOMContentLoaded', () => {
+            document.getElementById('searchInput').addEventListener('input', function(e) {
+                renderCatalog(e.target.value);
+            });
+            renderCatalog();
         });
     </script>
 </body>
