@@ -123,16 +123,27 @@
                     <h1 class="font-heading font-bold text-xl md:text-2xl italic tracking-tighter">TERA <span class="text-tera-purple uppercase">STORE</span></h1>
                 </div>
             </div>
-            <div class="hidden md:flex gap-8 items-center text-sm font-semibold uppercase tracking-widest italic">
-                <a href="javascript:void(0)" onclick="switchPage('home')" class="nav-link active-nav text-gray-300 hover:text-white transition-all">Home</a>
-                <a href="javascript:void(0)" onclick="switchPage('joki')" class="nav-link text-gray-300 hover:text-white transition-all">Jasa Joki</a>
-                <a href="javascript:void(0)" onclick="switchPage('wiki')" class="nav-link text-gray-300 hover:text-white transition-all">Ensiklopedia</a>
-                <a href="javascript:void(0)" onclick="switchPage('katalog')" class="nav-link text-gray-300 hover:text-white transition-all">Katalog Item</a>
-                <a href="#contact" class="bg-black/50 border border-white/20 btn-ig px-6 py-2.5 rounded-full text-white transition-all flex items-center gap-2">
-                    <i class="fab fa-instagram"></i> DM Admin
-                </a>
+            
+            <div class="flex items-center">
+                <div class="hidden md:flex gap-8 items-center text-sm font-semibold uppercase tracking-widest italic">
+                    <a href="javascript:void(0)" onclick="switchPage('home')" class="nav-link active-nav text-gray-300 hover:text-white transition-all">Home</a>
+                    <a href="javascript:void(0)" onclick="switchPage('joki')" class="nav-link text-gray-300 hover:text-white transition-all">Jasa Joki</a>
+                    <a href="javascript:void(0)" onclick="switchPage('wiki')" class="nav-link text-gray-300 hover:text-white transition-all">Ensiklopedia</a>
+                    <a href="javascript:void(0)" onclick="switchPage('katalog')" class="nav-link text-gray-300 hover:text-white transition-all">Katalog Item</a>
+                    <a href="#contact" class="bg-black/50 border border-white/20 btn-ig px-6 py-2.5 rounded-full text-white transition-all flex items-center gap-2">
+                        <i class="fab fa-instagram"></i> DM Admin
+                    </a>
+                </div>
+                
+                <!-- CART BUTTON (Desktop & Mobile) -->
+                <button onclick="toggleCart()" class="relative text-white hover:text-tera-purple transition-colors text-2xl ml-6 mr-4 md:mr-0">
+                    <i class="fas fa-shopping-cart"></i>
+                    <span id="cart-count" class="absolute -top-2 -right-2 bg-red-500 text-white text-[10px] font-bold w-5 h-5 rounded-full flex items-center justify-center shadow-lg border border-white/20">0</span>
+                </button>
+
+                <!-- Mobile Menu Button -->
+                <button class="md:hidden text-white text-2xl hover:text-tera-purple transition-colors" id="mobile-btn"><i class="fas fa-bars"></i></button>
             </div>
-            <button class="md:hidden text-white text-2xl hover:text-tera-purple transition-colors" id="mobile-btn"><i class="fas fa-bars"></i></button>
         </div>
         
         <!-- Mobile Menu -->
@@ -434,7 +445,7 @@
                     </div>
                     <div>
                         <h3 class="text-4xl font-heading font-black italic uppercase">Katalog <span class="text-gradient-animated">Item</span></h3>
-                        <p class="text-sm text-gray-400 mt-1 tracking-wide">Pilih item, atur jumlah, lalu order via TikTok / IG.</p>
+                        <p class="text-sm text-gray-400 mt-1 tracking-wide">Pilih item, atur jumlah, dan masukkan ke keranjang.</p>
                     </div>
                 </div>
                 
@@ -481,9 +492,46 @@
         </div>
     </footer>
 
+    <!-- CART MODAL (Slide Sidebar) -->
+    <div id="cartModal" class="fixed inset-0 z-[100] hidden">
+        <!-- Backdrop -->
+        <div class="absolute inset-0 bg-black/60 backdrop-blur-sm transition-opacity" onclick="toggleCart()"></div>
+        <!-- Modal Content -->
+        <div class="absolute right-0 top-0 bottom-0 w-full sm:w-[400px] glass border-l border-white/10 shadow-2xl flex flex-col transform transition-transform duration-300">
+            <!-- Header Modal -->
+            <div class="p-5 border-b border-white/10 flex justify-between items-center bg-black/60">
+                <h3 class="text-xl font-heading font-black italic text-white flex items-center gap-2">
+                    <i class="fas fa-shopping-cart text-tera-purple"></i> Keranjang Anda
+                </h3>
+                <button onclick="toggleCart()" class="text-gray-400 hover:text-white transition-colors p-2 rounded-lg hover:bg-white/10">
+                    <i class="fas fa-times text-xl"></i>
+                </button>
+            </div>
+            
+            <!-- Items Container -->
+            <div id="cart-items" class="flex-grow overflow-y-auto p-5 wiki-scroll space-y-3">
+                <!-- Cart items dirender via JS -->
+            </div>
+            
+            <!-- Footer Modal (Checkout) -->
+            <div class="p-5 border-t border-white/10 bg-black/80">
+                <div class="flex justify-between items-center mb-5 bg-white/5 p-3 rounded-xl border border-white/10 shadow-inner">
+                    <span class="text-xs text-gray-400 font-bold uppercase tracking-widest">Total Harga</span>
+                    <span id="cart-total" class="text-lg font-black text-tera-gold">Rp 0</span>
+                </div>
+                <div class="grid grid-cols-2 gap-3">
+                    <button onclick="checkoutCart('tiktok')" class="btn-tiktok w-full bg-black text-white py-3.5 rounded-xl font-bold transition-all border border-white/10 uppercase italic text-[11px] tracking-widest flex items-center justify-center gap-1.5 shadow-lg"><i class="fab fa-tiktok text-lg"></i> Checkout</button>
+                    <button onclick="checkoutCart('instagram')" class="btn-ig w-full bg-black text-white py-3.5 rounded-xl font-bold transition-all border border-white/10 uppercase italic text-[11px] tracking-widest flex items-center justify-center gap-1.5 shadow-lg"><i class="fab fa-instagram text-lg"></i> Checkout</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script>
         const TIKTOK_URL = "https://www.tiktok.com/@tera.rblx";
         const INSTAGRAM_URL = "https://www.instagram.com/tera.rblx";
+
+        let cart = []; // Array untuk menampung data keranjang
 
         window.addEventListener('scroll', () => {
             const nav = document.getElementById('navbar');
@@ -505,12 +553,119 @@
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
-        // Perbaikan: menerima parameter 'event'
         function openWikiTab(event, tabId) {
             document.querySelectorAll('.encyclopedia-tab').forEach(tab => tab.classList.remove('active'));
             document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
             document.getElementById(tabId).classList.add('active');
             event.currentTarget.classList.add('active');
+        }
+
+        // =======================
+        // SISTEM KERANJANG (CART)
+        // =======================
+        function toggleCart() {
+            const modal = document.getElementById('cartModal');
+            modal.classList.toggle('hidden');
+        }
+
+        function addToCart(sIndex, iIndex, itemId) {
+            const item = storeData[sIndex].items[iIndex];
+            const qtyElement = document.getElementById(`qty-${itemId}`);
+            const qty = parseInt(qtyElement.innerText);
+            
+            // Cek apakah item sudah ada di keranjang
+            const existingItem = cart.find(c => c.name === item.name);
+            if (existingItem) {
+                existingItem.qty += qty;
+            } else {
+                cart.push({
+                    name: item.name,
+                    price: item.price,
+                    qty: qty,
+                    image: item.image
+                });
+            }
+            
+            updateCartUI();
+            
+            // Animasi kecil pada icon cart
+            const cartIcon = document.getElementById('cart-count');
+            cartIcon.classList.add('animate-ping');
+            setTimeout(() => cartIcon.classList.remove('animate-ping'), 300);
+            
+            // Reset quantity kembali ke 1 setelah ditambahkan
+            qtyElement.innerText = 1;
+            const totalElement = document.getElementById(`total-${itemId}`);
+            totalElement.innerText = formatRupiah(item.price);
+        }
+
+        function removeFromCart(index) {
+            cart.splice(index, 1);
+            updateCartUI();
+        }
+
+        function updateCartUI() {
+            const cartCount = document.getElementById('cart-count');
+            const cartItemsContainer = document.getElementById('cart-items');
+            const cartTotal = document.getElementById('cart-total');
+            
+            let totalItems = 0;
+            let totalPrice = 0;
+            
+            cartItemsContainer.innerHTML = '';
+            
+            if(cart.length === 0) {
+                cartItemsContainer.innerHTML = `
+                    <div class="h-full flex flex-col items-center justify-center text-gray-500 py-10 opacity-60">
+                        <i class="fas fa-box-open text-4xl mb-3"></i>
+                        <p class="text-sm italic">Keranjang masih kosong.</p>
+                    </div>`;
+            } else {
+                cart.forEach((c, index) => {
+                    totalItems += c.qty;
+                    totalPrice += (c.price * c.qty);
+                    
+                    let imgSrc = (c.image && c.image !== "") ? c.image : 'https://via.placeholder.com/150/0a0514/a855f7?text=No+Image';
+                    
+                    cartItemsContainer.innerHTML += `
+                        <div class="flex items-center gap-3 bg-black/40 p-3 rounded-xl border border-white/5 hover:border-white/10 transition-colors">
+                            <img src="${imgSrc}" class="w-14 h-14 object-cover rounded-lg border border-white/10" onerror="this.onerror=null; this.src='https://via.placeholder.com/150/0a0514/a855f7?text=No+Image';">
+                            <div class="flex-grow">
+                                <h6 class="text-white text-xs font-bold leading-tight mb-1">${c.name}</h6>
+                                <p class="text-tera-gold text-[11px] font-semibold">${formatRupiah(c.price)} <span class="text-gray-400 font-normal">x ${c.qty}</span></p>
+                            </div>
+                            <div class="text-right flex flex-col items-end gap-1">
+                                <span class="text-white text-xs font-bold">${formatRupiah(c.price * c.qty)}</span>
+                                <button onclick="removeFromCart(${index})" class="text-red-500 hover:text-red-400 bg-red-500/10 hover:bg-red-500/20 w-6 h-6 rounded flex items-center justify-center transition-colors">
+                                    <i class="fas fa-trash text-[10px]"></i>
+                                </button>
+                            </div>
+                        </div>
+                    `;
+                });
+            }
+            
+            if (cartCount) cartCount.innerText = totalItems;
+            if (cartTotal) cartTotal.innerText = formatRupiah(totalPrice);
+        }
+
+        function checkoutCart(platform) {
+            if(cart.length === 0) {
+                alert("Keranjang masih kosong! Silakan tambahkan item terlebih dahulu.");
+                return;
+            }
+            
+            let textMsg = "Halo min,\n\nSaya ingin memesan list item berikut dari TERA STORE:\n\n";
+            let totalAll = 0;
+            
+            cart.forEach((c, i) => {
+                textMsg += `${i+1}. ${c.name}\n   └ ${c.qty}x = ${formatRupiah(c.price * c.qty)}\n`;
+                totalAll += (c.price * c.qty);
+            });
+            
+            textMsg += `\n💰 Total Harga Keseluruhan: ${formatRupiah(totalAll)}\n\nMohon infokan ketersediaannya.`;
+            
+            copyToClipboardAndRedirect(textMsg, platform);
         }
 
         const storeData = [
@@ -711,6 +866,7 @@
                         imageElement = `<div class="w-full h-full flex items-center justify-center bg-black/40 group-hover:scale-110 transition-transform duration-500"><i class="fas ${section.icon} text-3xl text-white/20"></i></div>`;
                     }
                     
+                    // Modifikasi Tombol untuk hanya menampilkan Cart
                     sectionHTML += `
                         <div class="glow-card-wrapper flex flex-col">
                             <div class="item-card rounded-2xl p-4 flex flex-col items-center text-center relative group flex-grow">
@@ -733,14 +889,10 @@
                                         <i class="fas fa-plus text-xs"></i>
                                     </button>
                                 </div>
-                                <div class="grid grid-cols-2 gap-2 w-full">
-                                    <button onclick="orderItem('${item.name}', '${itemId}', 'tiktok')" class="btn-tiktok w-full bg-black text-white text-[10px] font-bold py-2.5 rounded-xl transition-all uppercase tracking-wider flex items-center justify-center gap-1 border border-white/10 shadow-lg hover:shadow-tiktok-pink/30">
-                                        <i class="fab fa-tiktok"></i> TikTok
-                                    </button>
-                                    <button onclick="orderItem('${item.name}', '${itemId}', 'instagram')" class="btn-ig w-full bg-black text-white text-[10px] font-bold py-2.5 rounded-xl transition-all uppercase tracking-wider flex items-center justify-center gap-1 border border-white/10 shadow-lg">
-                                        <i class="fab fa-instagram"></i> IG
-                                    </button>
-                                </div>
+                                
+                                <button onclick="addToCart(${sIndex}, ${iIndex}, '${itemId}')" class="w-full bg-tera-purple text-white hover:bg-purple-600 border border-tera-purple/50 text-xs font-bold py-2.5 rounded-xl transition-all uppercase tracking-wider flex items-center justify-center gap-2 shadow-[0_0_15px_rgba(168,85,247,0.4)]">
+                                    <i class="fas fa-cart-plus"></i> Add to Cart
+                                </button>
                             </div>
                         </div>
                     `;
@@ -760,7 +912,6 @@
             }
         }
 
-        // Perbaikan: Fungsi formatRupiah terkena hoisting
         function formatRupiah(angka) {
             return new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(angka);
         }
@@ -788,13 +939,6 @@
             });
         }
 
-        function orderItem(itemName, itemId, platform) {
-            const qty = document.getElementById(`qty-${itemId}`).innerText;
-            const totalPrice = document.getElementById(`total-${itemId}`).innerText;
-            const textMsg = `Halo min,\n\nSaya ingin memesan item berikut:\n📌 Item: ${itemName}\n🔢 Jumlah: ${qty}x\n💰 Total Harga: ${totalPrice}\n\nMohon infokan ketersediaannya.`;
-            copyToClipboardAndRedirect(textMsg, platform);
-        }
-
         function orderJoki(jokiName, platform) {
             const textMsg = `Halo min,\n\nSaya tertarik dengan layanan Joki:\n⚡ ${jokiName}\n\nBoleh tanya detail prosedur dan estimasi harganya?`;
             copyToClipboardAndRedirect(textMsg, platform);
@@ -804,7 +948,6 @@
             document.getElementById('mobile-menu').classList.toggle('hidden');
         });
 
-        // Perbaikan: Inisialisasi Event Listener Search langsung
         const searchInput = document.getElementById('searchInput');
         if (searchInput) {
             searchInput.addEventListener('input', function(e) {
@@ -812,7 +955,6 @@
             });
         }
         
-        // Perbaikan: Eksekusi rendering katalog secara instan
         renderCatalog();
 
     </script>
