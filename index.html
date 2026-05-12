@@ -218,7 +218,7 @@
                         <p class="text-xs text-gray-400 mb-6 leading-relaxed flex-grow">Buka akses laut baru dengan menyelesaikan semua syarat. Terima beres akun di Sea 2!</p>
                         <div class="flex justify-between items-center bg-black/50 p-3 rounded-xl border border-white/5 mb-4 backdrop-blur-sm">
                             <span class="text-[10px] text-gray-500 uppercase font-bold tracking-widest">Package Price</span>
-                            <span class="text-tera-gold font-bold">Rp 50.000</span>
+                            <span class="text-tera-gold font-bold">Rp 10.000</span>
                         </div>
                         <div class="grid grid-cols-2 gap-2 mt-auto">
                             <button onclick="orderJoki('Joki Buka Sea 2', 'tiktok')" class="btn-tiktok w-full bg-black text-white py-2.5 rounded-xl font-bold transition-all border border-white/10 uppercase italic text-[11px] tracking-widest flex items-center justify-center gap-1.5"><i class="fab fa-tiktok"></i> TikTok</button>
@@ -234,7 +234,7 @@
                         <p class="text-xs text-gray-400 mb-6 leading-relaxed flex-grow">Farming bos di Dungeon untuk mendapatkan Runes atau material eksklusif.</p>
                         <div class="flex justify-between items-center bg-black/50 p-3 rounded-xl border border-white/5 mb-4 backdrop-blur-sm">
                             <span class="text-[10px] text-gray-500 uppercase font-bold tracking-widest">Start Price</span>
-                            <span class="text-green-400 font-bold">Rp 10.000+</span>
+                            <span class="text-green-400 font-bold">Rp 5.000+</span>
                         </div>
                         <div class="grid grid-cols-2 gap-2 mt-auto">
                             <button onclick="orderJoki('Joki Rune Dungeon', 'tiktok')" class="btn-tiktok w-full bg-black text-white py-2.5 rounded-xl font-bold transition-all border border-white/10 uppercase italic text-[11px] tracking-widest flex items-center justify-center gap-1.5"><i class="fab fa-tiktok"></i> TikTok</button>
@@ -260,7 +260,7 @@
                     </div>
                     <div class="text-right z-10">
                         <p class="text-[10px] text-tera-purple uppercase font-bold tracking-widest mb-0">Database By</p>
-                        <p class="text-lg font-black text-white italic leading-none tracking-wider">Tera & Sukuboi</p>
+                        <p class="text-lg font-black text-white italic leading-none tracking-wider">Admin Tera</p>
                     </div>
                     <div class="absolute bottom-0 right-0 w-24 h-24 bg-tera-purple/20 blur-2xl rounded-full"></div>
                 </div>
@@ -269,20 +269,17 @@
             <div class="flex flex-col lg:flex-row gap-8">
                 <!-- Navigation Tabs -->
                 <div class="w-full lg:w-1/4 flex flex-row lg:flex-col gap-2 overflow-x-auto lg:overflow-visible pb-4 lg:pb-0 hide-scrollbar border-r border-transparent lg:border-white/5 pr-0 lg:pr-6 shrink-0">
-                    <button class="tab-btn active text-left px-5 py-4 rounded-xl text-sm font-bold text-gray-400 hover:text-white transition-all whitespace-nowrap lg:whitespace-normal flex items-center gap-3" onclick="openWikiTab('tab-swords')">
+                    <button class="tab-btn active text-left px-5 py-4 rounded-xl text-sm font-bold text-gray-400 hover:text-white transition-all whitespace-nowrap lg:whitespace-normal flex items-center gap-3" onclick="openWikiTab(event, 'tab-swords')">
                         <i class="fas fa-khanda w-5 text-center"></i> Swords & Melee
                     </button>
-                    <button class="tab-btn text-left px-5 py-4 rounded-xl text-sm font-bold text-gray-400 hover:text-white transition-all whitespace-nowrap lg:whitespace-normal flex items-center gap-3" onclick="openWikiTab('tab-fruits')">
+                    <button class="tab-btn text-left px-5 py-4 rounded-xl text-sm font-bold text-gray-400 hover:text-white transition-all whitespace-nowrap lg:whitespace-normal flex items-center gap-3" onclick="openWikiTab(event, 'tab-fruits')">
                         <i class="fas fa-apple-alt w-5 text-center"></i> Fruits & Races
                     </button>
-                    <button class="tab-btn text-left px-5 py-4 rounded-xl text-sm font-bold text-gray-400 hover:text-white transition-all whitespace-nowrap lg:whitespace-normal flex items-center gap-3" onclick="openWikiTab('tab-traits')">
+                    <button class="tab-btn text-left px-5 py-4 rounded-xl text-sm font-bold text-gray-400 hover:text-white transition-all whitespace-nowrap lg:whitespace-normal flex items-center gap-3" onclick="openWikiTab(event, 'tab-traits')">
                         <i class="fas fa-bolt w-5 text-center"></i> Traits, Powers & Haki
                     </button>
-                    <button class="tab-btn text-left px-5 py-4 rounded-xl text-sm font-bold text-gray-400 hover:text-white transition-all whitespace-nowrap lg:whitespace-normal flex items-center gap-3" onclick="openWikiTab('tab-passives')">
+                    <button class="tab-btn text-left px-5 py-4 rounded-xl text-sm font-bold text-gray-400 hover:text-white transition-all whitespace-nowrap lg:whitespace-normal flex items-center gap-3" onclick="openWikiTab(event, 'tab-passives')">
                         <i class="fas fa-fire w-5 text-center"></i> Spec Passives
-                    </button>
-                    <button class="tab-btn text-left px-5 py-4 rounded-xl text-sm font-bold text-gray-400 hover:text-white transition-all whitespace-nowrap lg:whitespace-normal flex items-center gap-3" onclick="openWikiTab('tab-mats')">
-                        <i class="fas fa-gem w-5 text-center"></i> Boss Drops & Mats
                     </button>
                 </div>
 
@@ -300,15 +297,15 @@
                                 <div class="space-y-4 text-sm text-gray-300">
                                     <div class="flex items-start gap-3">
                                         <span class="px-2 py-0.5 rounded text-[10px] font-black tier-sp shrink-0 mt-0.5">S+ TIER</span>
-                                        <div><strong class="text-white">Corrupted Excalibur, Kamish Dagger, True Aizen, Sun God, Abyssal Empress.</strong><br><span class="text-gray-400 text-xs">Sangat mematikan di Endgame. AoE besar, Pierce damage tinggi, dan kemampuan membatalkan regenerasi musuh.</span></div>
+                                        <div><strong class="text-white">Dual Wielding, Sun God, Great Mage, Ice Queen, Dragon Goddess.</strong><br><span class="text-gray-400 text-xs">Sangat mematikan di Endgame. AoE besar, Pierce damage tinggi, dan kemampuan membatalkan regenerasi musuh.</span></div>
                                     </div>
                                     <div class="flex items-start gap-3">
                                         <span class="px-2 py-0.5 rounded text-[10px] font-black tier-s shrink-0 mt-0.5">S TIER</span>
-                                        <div><strong class="text-white">Excalibur, Ice Queen, Atomic, Yamato, Dragon Goddess.</strong><br><span class="text-gray-400 text-xs">Pilihan utama untuk masuk ke Sea 2 dan Raid. DPS stabil.</span></div>
+                                        <div><strong class="text-white">Abyssal Empress, Anti Magic, Atomic, True Manipulator, Escanor.</strong><br><span class="text-gray-400 text-xs">Pilihan utama untuk masuk ke Sea 2 dan Raid. DPS stabil.</span></div>
                                     </div>
                                     <div class="flex items-start gap-3">
                                         <span class="px-2 py-0.5 rounded text-[10px] font-black tier-a shrink-0 mt-0.5">A TIER</span>
-                                        <div><strong class="text-white">Ichigo, Ragna, Jinwoo, Saber, Gryphon, Anti Magic.</strong><br><span class="text-gray-400 text-xs">Solid untuk mid-game, mudah didapat dan efektif untuk grinding.</span></div>
+                                        <div><strong class="text-white">Soul Reaper, Ragna, Jinwoo, Excalibur, Gryphon, Shadow, Manipulator.</strong><br><span class="text-gray-400 text-xs">Solid untuk mid-game, mudah didapat dan efektif untuk grinding.</span></div>
                                     </div>
                                 </div>
                             </div>
@@ -318,11 +315,11 @@
                                 <div class="space-y-4 text-sm text-gray-300">
                                     <div class="flex items-start gap-3">
                                         <span class="px-2 py-0.5 rounded text-[10px] font-black tier-sp shrink-0 mt-0.5">S+ TIER</span>
-                                        <div><strong class="text-white">Gojo V2, Sukuna V2, Shadow Monarch, Rimuru, Demon King, Cosmic Being.</strong><br><span class="text-gray-400 text-xs">Membutuhkan material langka untuk Crafting. Ultimate terkuat.</span></div>
+                                        <div><strong class="text-white">Gojo V2, Sukuna V2, The World, Spirit Warrior, Demon King, Cosmic Being, Soul Slayer, Gilgamesh, Madara.</strong><br><span class="text-gray-400 text-xs">Membutuhkan material langka untuk Crafting. Ultimate terkuat.</span></div>
                                     </div>
                                     <div class="flex items-start gap-3">
                                         <span class="px-2 py-0.5 rounded text-[10px] font-black tier-s shrink-0 mt-0.5">S TIER</span>
-                                        <div><strong class="text-white">Gojo V1, Sukuna V1, Solo Hunter, Vampire King, The World, Moon Slayer.</strong><br><span class="text-gray-400 text-xs">Mendominasi PvP, memiliki CC (Stun) durasi panjang.</span></div>
+                                        <div><strong class="text-white">Gojo V1, Sukuna V1, Vampire King, Blessed Maiden, Qin Shi, Saber Alter.</strong><br><span class="text-gray-400 text-xs">Mendominasi PvP, memiliki CC (Stun) durasi panjang.</span></div>
                                     </div>
                                 </div>
                             </div>
@@ -342,15 +339,11 @@
                                         <p class="text-xs text-gray-400 mt-1">Terbaik untuk perjalanan karena skill terbang super cepat. AoE damage tinggi.</p>
                                     </div>
                                     <div class="bg-black/30 p-3 rounded-lg border border-white/5">
-                                        <strong class="text-white text-base">Quake / Kitsune</strong> <span class="tier-s text-[9px] px-1.5 py-0.5 rounded ml-1">S TIER</span>
+                                        <strong class="text-white text-base">Quake</strong> <span class="tier-s text-[9px] px-1.5 py-0.5 rounded ml-1">S TIER</span>
                                         <p class="text-xs text-gray-400 mt-1">Quake memberikan hitbox tsunami masif, Kitsune merubah form menjadi beast.</p>
                                     </div>
                                     <div class="bg-black/30 p-3 rounded-lg border border-white/5">
-                                        <strong class="text-white text-base">Magma / Dragon</strong> <span class="tier-s text-[9px] px-1.5 py-0.5 rounded ml-1">S TIER</span>
-                                        <p class="text-xs text-gray-400 mt-1">Damage over time (Burn) paling sakit di game. Boss melting.</p>
-                                    </div>
-                                    <div class="bg-black/30 p-3 rounded-lg border border-white/5">
-                                        <strong class="text-white text-base">Flame / Ice</strong> <span class="tier-a text-[9px] px-1.5 py-0.5 rounded ml-1">A TIER</span>
+                                        <strong class="text-white text-base">Flame</strong> <span class="tier-a text-[9px] px-1.5 py-0.5 rounded ml-1">A TIER</span>
                                         <p class="text-xs text-gray-400 mt-1">Pilihan paling solid dan budget-friendly untuk new player di Sea 1.</p>
                                     </div>
                                 </div>
@@ -360,11 +353,11 @@
                                 <h5 class="font-bold text-lg text-tera-purple mb-4 flex items-center gap-2"><i class="fas fa-dna"></i> Race Buff Details</h5>
                                 <ul class="text-sm text-gray-300 space-y-4">
                                     <li class="border-b border-white/5 pb-3">
-                                        <strong class="text-tera-purple block mb-1">Reaper (0.5% Chance)</strong>
+                                        <strong class="text-tera-purple block mb-1">Reaper SSS TIER</strong>
                                         <span class="text-xs">+120% Max HP | +105% Overall DMG | +35% Sword DMG | +12% DMG Reduction | +3% Lifesteal | +25% Execute DMG.</span>
                                     </li>
                                     <li class="border-b border-white/5 pb-3">
-                                        <strong class="text-tera-gold block mb-1">Archangel (1% Chance)</strong>
+                                        <strong class="text-tera-gold block mb-1">Archangel SSS TIER</strong>
                                         <span class="text-xs">+115% Max HP | +100% Overall DMG | +22% Combat DMG | +55% Luck | +15% Drop Double Chance | Akses terbang.</span>
                                     </li>
                                 </ul>
@@ -390,9 +383,9 @@
                             <div class="bg-black/40 p-5 rounded-2xl border border-white/5 backdrop-blur-md">
                                 <h5 class="font-bold text-lg text-tera-blue mb-3 flex items-center gap-2"><i class="fas fa-star"></i> Character Powers</h5>
                                 <ul class="text-sm text-gray-300 space-y-3 list-disc list-inside">
-                                    <li><strong class="text-white">Apex (1%):</strong> +10-20% DMG, +10-20% HP, +0.5-1.5% Crit Chance, +5-12.5% Luck.</li>
-                                    <li><strong class="text-white">Abyssal (1%):</strong> +14-24% DMG, +10-20% HP, +1-3% Crit Chance, +4-8% Crit Damage.</li>
-                                    <li><strong class="text-white">Eternal (1%):</strong> +13-22% DMG, +14-28% HP, +1-3% Crit Chance, +5-10% Crit Damage.</li>
+                                    <li><strong class="text-white">Colossus (1%):</strong> +20-34% DMG, +15-30% HP, +2-4% Crit Chance, +5-10% Crit Damage, +7.5-15% Luck, Deal 15-25% more Damage to bosses</li>
+                                    <li><strong class="text-white">Cursebrand (1%):</strong> +18-30% DMG, +15-30% HP, +2-4% Crit Chance, +6-12% Crit Damage, Hitting an NPC makes it take 10-15% more Damage Up to 2 players can stack the debuff on the same enemy.</li>
+                                    <li><strong class="text-white">Subjugator (1%):</strong> +24-40% DMG, +24-40% HP, +1.75-3.5% Crit Chance, +6.5-13% Crit Damage, +8.5-17.5% Luck, Slow NPCs on hit by 20% for 5s.</li>
                                 </ul>
                             </div>
                         </div>
@@ -428,51 +421,6 @@
                             </div>
                         </div>
                     </div>
-
-                    <!-- TAB 5: BOSS DROPS & MATS -->
-                    <div id="tab-mats" class="encyclopedia-tab relative z-10">
-                        <h4 class="text-3xl font-heading font-black text-white mb-6 italic border-l-4 border-pink-500 pl-4">Boss Drops & Material Guide</h4>
-                        <div class="max-h-[450px] overflow-y-auto pr-3 wiki-scroll space-y-6">
-                            
-                            <div class="bg-gradient-to-r from-red-900/40 to-black p-5 rounded-2xl border border-red-500/30">
-                                <div class="flex items-center gap-3 mb-3">
-                                    <img src="https://c.top4top.io/p_3784az9432.jpg" class="w-10 h-10 rounded border border-red-500/50 object-cover" onerror="this.src='https://via.placeholder.com/40/000000/FFFFFF/?text=SK'">
-                                    <h5 class="font-bold text-lg text-white">Sukuna (King of Curses)</h5>
-                                </div>
-                                <div class="text-sm text-gray-300 bg-black/50 p-3 rounded-xl border border-white/5">
-                                    <strong>Lokasi:</strong> Cursed Domain (Sea 2) <br>
-                                    <strong>Drop Items:</strong> Cursed Finger, Awakened Cursed Finger, Malevolent Soul, Dismantle Fang. <br>
-                                    <strong class="text-tera-gold mt-2 block">Fungsi:</strong> Crafting Spec Sukuna V1 & V2, Pedang Cursed Vessel.
-                                </div>
-                            </div>
-
-                            <div class="bg-gradient-to-r from-blue-900/40 to-black p-5 rounded-2xl border border-blue-500/30">
-                                <div class="flex items-center gap-3 mb-3">
-                                    <img src="https://a.top4top.io/p_3784qjgb00.jpg" class="w-10 h-10 rounded border border-blue-500/50 object-cover" onerror="this.src='https://via.placeholder.com/40/000000/FFFFFF/?text=GJ'">
-                                    <h5 class="font-bold text-lg text-white">Gojo (The Honored One)</h5>
-                                </div>
-                                <div class="text-sm text-gray-300 bg-black/50 p-3 rounded-xl border border-white/5">
-                                    <strong>Lokasi:</strong> Infinity Tower (Sea 2) <br>
-                                    <strong>Drop Items:</strong> Limitless Key, Reversal Pulse, Blue Singularity, Infinity Core, Six Eye. <br>
-                                    <strong class="text-tera-blue mt-2 block">Fungsi:</strong> Crafting Spec Gojo V1 & V2, Item Limitless Ring.
-                                </div>
-                            </div>
-
-                            <div class="bg-gradient-to-r from-purple-900/40 to-black p-5 rounded-2xl border border-purple-500/30">
-                                <div class="flex items-center gap-3 mb-3">
-                                    <img src="https://l.top4top.io/p_3784gtrtm6.jpg" class="w-10 h-10 rounded border border-purple-500/50 object-cover" onerror="this.src='https://via.placeholder.com/40/000000/FFFFFF/?text=SM'">
-                                    <h5 class="font-bold text-lg text-white">Shadow Monarch</h5>
-                                </div>
-                                <div class="text-sm text-gray-300 bg-black/50 p-3 rounded-xl border border-white/5">
-                                    <strong>Lokasi:</strong> Monarch's Throne Room <br>
-                                    <strong>Drop Items:</strong> Shadow Essence, Void Fragment, Throne Remnant, Kamish Dagger. <br>
-                                    <strong class="text-tera-purple mt-2 block">Fungsi:</strong> Crafting Shadow Monarch Spec, Pedang Kamish Dagger.
-                                </div>
-                            </div>
-
-                        </div>
-                    </div>
-
                 </div>
             </div>
         </section>
@@ -557,7 +505,8 @@
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
-        function openWikiTab(tabId) {
+        // Perbaikan: menerima parameter 'event'
+        function openWikiTab(event, tabId) {
             document.querySelectorAll('.encyclopedia-tab').forEach(tab => tab.classList.remove('active'));
             document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
             document.getElementById(tabId).classList.add('active');
@@ -566,164 +515,164 @@
 
         const storeData = [
           { category: "Basic & Common Items", color: "text-gray-300", icon: "fa-cube", items: [
-            { name: "Wood", price: 1000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/wood-item-sailor-piece.jpg" },
-            { name: "Iron", price: 1500, image: "https://bloxinformer.com/wp-content/uploads/2026/03/iron-item-sailor-piece.jpg" },
-            { name: "Obsidian", price: 2000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/obsidian-item-sailor-piece-298x300.jpg" },
-            { name: "Mythril", price: 3000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/mythril-item-sailor-piece.jpg" },
-            { name: "Adamantite", price: 5000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/adamantine-item-sailor-piece.jpg" },
-            { name: "Diamond", price: 10000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/image-8.webp" },
-            { name: "Common Chest", price: 2000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/common-chest-item-sailor-piece.jpg" },
-            { name: "Rare Chest", price: 5000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/rare-chest-item-sailor-piece-300x300.jpg" },
-            { name: "Epic Chest", price: 10000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/epic-chest-item-sailor-piece-300x300.jpg" },
-            { name: "Legendary Chest", price: 25000, tag: "HOT", image: "https://bloxinformer.com/wp-content/uploads/2026/03/legendary-chest-item-sailor-piece-300x300.jpg" },
-            { name: "Mythical Chest", price: 25000, tag: "HOT", image: "https://bloxinformer.com/wp-content/uploads/2026/03/mythical-chest-item-sailor-piece-297x300.jpg" },
-            { name: "Secret Chest", price: 50000, tag: "HOT", image: "https://bloxinformer.com/wp-content/uploads/2026/03/secret-chest-item-sailor-piece-300x300.jpg" }
+            { name: "10K Wood", price: 1000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/wood-item-sailor-piece.jpg" },
+            { name: "5K Iron", price: 1000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/iron-item-sailor-piece.jpg" },
+            { name: "1K Obsidian", price: 1000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/obsidian-item-sailor-piece-298x300.jpg" },
+            { name: "1K Mythril", price: 1000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/mythril-item-sailor-piece.jpg" },
+            { name: "500 Adamantite", price: 1000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/adamantine-item-sailor-piece.jpg" },
+            { name: "500 Diamond", price: 1000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/image-8.webp" },
+            { name: "10K Common Chest", price: 1000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/common-chest-item-sailor-piece.jpg" },
+            { name: "6K Rare Chest", price: 1000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/rare-chest-item-sailor-piece-300x300.jpg" },
+            { name: "3K Epic Chest", price: 1000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/epic-chest-item-sailor-piece-300x300.jpg" },
+            { name: "1K Legendary Chest", price: 1000, tag: "HOT", image: "https://bloxinformer.com/wp-content/uploads/2026/03/legendary-chest-item-sailor-piece-300x300.jpg" },
+            { name: "500 Mythical Chest", price: 1000, tag: "HOT", image: "https://bloxinformer.com/wp-content/uploads/2026/03/mythical-chest-item-sailor-piece-297x300.jpg" },
+            { name: "100 Secret Chest", price: 1000, tag: "HOT", image: "https://bloxinformer.com/wp-content/uploads/2026/03/secret-chest-item-sailor-piece-300x300.jpg" }
           ]},
           { category: "Reroll & Utility", color: "text-tera-purple", icon: "fa-dice", items: [
-            { name: "Race Reroll", price: 10000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/race-reroll-item-sailor-piece-297x300.jpg" },
-            { name: "Trait Reroll", price: 15000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/trait-reroll-item-sailor-piece-300x300.jpg" },
-            { name: "Clan Reroll", price: 20000, tag: "HOT", image: "https://bloxinformer.com/wp-content/uploads/2026/03/clan-reroll-item-sailor-piece.jpg" },
-            { name: "Haki Color Reroll", price: 10000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/haki-color-reroll-item-sailor-piece-296x300.jpg" },
-            { name: "Aura Crate", price: 25000, tag: "HOT", image: "https://bloxinformer.com/wp-content/uploads/2026/03/aura-crate-item-sailor-piece.jpg" },
-            { name: "Cosmetic Crate", price: 25000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/image-6.webp" },
-            { name: "Boss Ticket", price: 15000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/boss-ticket-item-sailor-piece-295x300.jpg" },
-            { name: "Boss Key", price: 15000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/boss-key-item-sailor-piece-296x300.jpg" },
-            { name: "Dungeon Key", price: 20000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/dungeon-key-item-sailor-piece.jpg" },
-            { name: "Dungeon Token", price: 15000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/dungeon-token-item-sailor-piece.jpg" },
-            { name: "Tower Key", price: 20000, image: "https://i.etsystatic.com/48790973/r/il/00a0a2/7925047395/il_fullxfull.7925047395_2uze.jpg" },
-            { name: "Rush Key", price: 20000, image: "https://imgop.itemku.com/?url=https%3A%2F%2Fd1x91p7vw3vuq8.cloudfront.net%2Fitemku-upload%2F202645%2F7pe0a6kz1tmqbxmkk8r25_thumbnail.jpg&w=1033&q=75" }
+            { name: "3K Race Reroll", price: 1000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/race-reroll-item-sailor-piece-297x300.jpg" },
+            { name: "3K Trait Reroll", price: 1000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/trait-reroll-item-sailor-piece-300x300.jpg" },
+            { name: "3K Clan Reroll", price: 1000, tag: "HOT", image: "https://bloxinformer.com/wp-content/uploads/2026/03/clan-reroll-item-sailor-piece.jpg" },
+            { name: "5K Haki Color Reroll", price: 1000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/haki-color-reroll-item-sailor-piece-296x300.jpg" },
+            { name: "10 Aura Crate", price: 500, tag: "HOT", image: "https://bloxinformer.com/wp-content/uploads/2026/03/aura-crate-item-sailor-piece.jpg" },
+            { name: "10 Cosmetic Crate", price: 500, image: "https://bloxinformer.com/wp-content/uploads/2026/03/image-6.webp" },
+            { name: "200 Boss Ticket", price: 1000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/boss-ticket-item-sailor-piece-295x300.jpg" },
+            { name: "400 Boss Key", price: 1000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/boss-key-item-sailor-piece-296x300.jpg" },
+            { name: "400 Dungeon Key", price: 1000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/dungeon-key-item-sailor-piece.jpg" },
+            { name: "400 Tower Key", price: 1000, image: "https://i.etsystatic.com/48790973/r/il/00a0a2/7925047395/il_fullxfull.7925047395_2uze.jpg" },
+            { name: "400 Rush Key", price: 1000, image: "https://imgop.itemku.com/?url=https%3A%2F%2Fd1x91p7vw3vuq8.cloudfront.net%2Fitemku-upload%2F202645%2F7pe0a6kz1tmqbxmkk8r25_thumbnail.jpg&w=1033&q=75" }
           ]},
           { category: "Crafting & Boss Drops", color: "text-tera-gold", icon: "fa-gem", items: [
-            { name: "Energy Core", price: 15000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/energy-core-item-sailor-piece.jpg" },
-            { name: "Void Fragment", price: 20000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/void-fragment-item-sailor-piece-297x300.jpg" },
-            { name: "Cursed Finger", price: 25000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/cursed-finger-item-sailor-piece-300x298.jpg" },
-            { name: "Awakened Cursed Finger", price: 50000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/awakened-cursed-finger-item-sailor-piece.jpg" },
-            { name: "Abyss Edge", price: 35000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/abyss-edge-item-sailor-piece-296x300.jpg" },
-            { name: "Mirage Pendant", price: 40000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/mirage-pendant-item-sailor-piece-300x300.jpg" },
-            { name: "Illusion Prism", price: 40000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/illusion-prism-item-sailor-piece.jpg" },
-            { name: "Worthless Fragment", price: 5000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/worthless-fragment-item-sailor-piece-300x300.jpg" },
-            { name: "Flash Impact", price: 30000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/flash-impact-item-sailor-piece.jpg" },
-            { name: "Umbral Capsule", price: 35000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/umbra-capsule-item-sailor-piece.jpg" },
-            { name: "Limitless Key", price: 45000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/limitless-key-item-sailor-piece.jpg" },
-            { name: "Limitless Ring", price: 50000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/limitless-ring-item-sailor-piece-297x300.jpg" },
-            { name: "Reversal Pulse", price: 45000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/reversal-pulse-item-sailor-piece.jpg" },
-            { name: "Vessel Ring", price: 50000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/vessel-ring-item-sailor-piece.jpg" },
-            { name: "Void Seed", price: 25000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/void-seed-item-sailor-piece.jpg" },
-            { name: "Soul Fragment", price: 30000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/soul-fragment-item-sailor-piece.jpg" },
-            { name: "Soul Amulet", price: 30000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/soul-amulet-item-sailor-piece.jpg" },
-            { name: "Cursed Talisman", price: 35000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/cursed-talisman-item-sailor-piece.jpg" },
-            { name: "Sage Pulse", price: 35000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/sage-pulse-item-sailor-piece.jpg" },
-            { name: "Six Eye", price: 80000, tag: "RARE", image: "https://bloxinformer.com/wp-content/uploads/2026/03/six-eye-item-sailor-piece.jpg" },
-            { name: "Energy Shard", price: 15000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/energy-shard-item-sailor-piece.jpg" },
-            { name: "Malevolent Soul", price: 75000, tag: "RARE", image: "https://bloxinformer.com/wp-content/uploads/2026/03/malevolent-soul-item-sailor-piece.jpg" },
-            { name: "Blue Singularity", price: 70000, tag: "RARE", image: "https://bloxinformer.com/wp-content/uploads/2026/03/blue-singularity-item-sailor-piece.jpg" },
-            { name: "Tempest Seal", price: 40000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/tempest-seal-item-sailor-piece.jpg" },
-            { name: "Slime Remnant", price: 30000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/slime-remnant-item-sailor-piece.jpg" },
-            { name: "Slime Key", price: 30000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/slime-key-item-sailor-piece.jpg" },
-            { name: "Slime Shard", price: 20000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/slime-shard-item-sailor-piece.jpg" },
-            { name: "Slime Core", price: 35000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/slime-core-item-sailor-piece.jpg" },
-            { name: "Reiatsu Core", price: 55000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/reiatsu-core-item-sailor-piece.jpg" },
-            { name: "Throne Remnant", price: 55000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/throne-remnant-item-sailor-piece.jpg" },
-            { name: "Power Remnant", price: 55000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/powa.png" },
-            { name: "Battle Shard", price: 55000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/bat.png" },
-            { name: "Monarch Core", price: 55000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/monarch-core-item-sailor-piece.jpg" },
-            { name: "Dismantle Fang", price: 55000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/dismantle-fang-item-sailor-piece.jpg" },
-            { name: "Dark Ring", price: 55000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/dark-ring-item-sailor-piece.jpg" },
-            { name: "Infinity Core", price: 55000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/infinity-core-item-sailor-piece-300x300.jpg" },
-            { name: "Bloodline Stone", price: 40000, tag: "HOT", image: "https://bloxinformer.com/wp-content/uploads/2026/03/Bloodine-Stone.png" },
-            { name: "Power Shard", price: 20000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/Power-Shard.png" },
-            { name: "Passive Shards", price: 20000, image: "https://imgop.itemku.com/?url=https%3A%2F%2Fd1x91p7vw3vuq8.cloudfront.net%2Fitemku-upload%2F2026317%2Fav6b71n61nn178ikoghir4_thumbnail.jpg&w=1033&q=75" },
-            { name: "Jade Tablet", price: 30000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/jade-tablet-item-sailor-piece.jpg" },
-            { name: "Divergent Pulse", price: 45000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/divergent-pulse-item-sailor-piece.jpg" },
-            { name: "Shadow Essence", price: 40000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/shadow-essence-item-sailor-piece.jpg" },
-            { name: "Golden Essence", price: 50000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/golden-essence-item-sailor-piece.jpg" },
-            { name: "Lunar Essence", price: 45000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/Lunar-Essence.png" },
-            { name: "Ancient Shard", price: 35000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/ancient-shard-item-sailor-piece.jpg" },
-            { name: "Demonic Shard", price: 40000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/demonic-shard-item-sailor-piece.jpg" },
-            { name: "Monarch Essence", price: 55000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/monarch-essence-item-sailor-piece.jpg" },
-            { name: "Abyss Sigil", price: 45000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/Abyss-Sigil-Sailor-Piece-Item-for.webp" },
-            { name: "Battle Sigil", price: 40000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/sigil.png" },
-            { name: "Upper Seal", price: 45000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/image-1.webp" },
-            { name: "Frost Relic", price: 35000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/image-2.webp" },
-            { name: "Glacier Remnant", price: 40000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/glacier_rem.png" },
-            { name: "Chrysalis Sigil", price: 35000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/image-3.webp" },
-            { name: "Tempest Relic", price: 45000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/image-4.webp" },
-            { name: "Dominion Brand", price: 50000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/Dominion-Brand.webp" },
-            { name: "Transmutation Shard", price: 30000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/image-5.webp" },
-            { name: "Ice Core", price: 35000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/ICE-1.png" },
-            { name: "Frozen Brand", price: 40000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/froze.png" },
-            { name: "Crimson Heart", price: 45000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/crimson-heart-item-sailor-piece.jpg" },
-            { name: "Shadow Heart", price: 45000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/shadow-heart-item-sailor-piece.jpg" },
-            { name: "Blood Ring", price: 30000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/blood-ring-item-sailor-piece.jpg" },
-            { name: "Casull", price: 50000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/casull-item-sailor-piece.jpg" },
-            { name: "Cursed Flesh", price: 25000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/cursed-flesh-item-sailor-piece.jpg" },
-            { name: "Soul Flame", price: 35000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/soul-flame-item-sailor-piece.jpg" },
-            { name: "Phantasm Core", price: 40000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/phanttasm-core-item-sailor-piece.jpg" },
-            { name: "Shadow Crystal", price: 40000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/shadow-crystal-item-sailor-piece.jpg" },
-            { name: "Path Fragment", price: 30000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/path_frag.png" },
-            { name: "Crescent Shard", price: 35000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/Screscent-Shard-Item-in-Sailor-Piece.png" },
-            { name: "Moon Crest", price: 45000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/Moon-Crest-Item-for-Moon-Slayer-Melee.png" }
+            { name: "Energy Core", price: 50, image: "https://bloxinformer.com/wp-content/uploads/2026/03/energy-core-item-sailor-piece.jpg" },
+            { name: "Void Fragment", price: 100, image: "https://bloxinformer.com/wp-content/uploads/2026/03/void-fragment-item-sailor-piece-297x300.jpg" },
+            { name: "Cursed Finger", price: 100, image: "https://bloxinformer.com/wp-content/uploads/2026/03/cursed-finger-item-sailor-piece-300x298.jpg" },
+            { name: "Awakened Cursed Finger", price: 100, image: "https://bloxinformer.com/wp-content/uploads/2026/03/awakened-cursed-finger-item-sailor-piece.jpg" },
+            { name: "Abyss Edge", price: 100, image: "https://bloxinformer.com/wp-content/uploads/2026/03/abyss-edge-item-sailor-piece-296x300.jpg" },
+            { name: "Mirage Pendant", price: 100, image: "https://bloxinformer.com/wp-content/uploads/2026/03/mirage-pendant-item-sailor-piece-300x300.jpg" },
+            { name: "Illusion Prism", price: 100, image: "https://bloxinformer.com/wp-content/uploads/2026/03/illusion-prism-item-sailor-piece.jpg" },
+            { name: "Worthless Fragment", price: 100, image: "https://bloxinformer.com/wp-content/uploads/2026/03/worthless-fragment-item-sailor-piece-300x300.jpg" },
+            { name: "Flash Impact", price: 100, image: "https://bloxinformer.com/wp-content/uploads/2026/03/flash-impact-item-sailor-piece.jpg" },
+            { name: "Umbral Capsule", price: 100, image: "https://bloxinformer.com/wp-content/uploads/2026/03/umbra-capsule-item-sailor-piece.jpg" },
+            { name: "Limitless Key", price: 100, image: "https://bloxinformer.com/wp-content/uploads/2026/03/limitless-key-item-sailor-piece.jpg" },
+            { name: "Limitless Ring", price: 100, image: "https://bloxinformer.com/wp-content/uploads/2026/03/limitless-ring-item-sailor-piece-297x300.jpg" },
+            { name: "Reversal Pulse", price: 100, image: "https://bloxinformer.com/wp-content/uploads/2026/03/reversal-pulse-item-sailor-piece.jpg" },
+            { name: "Vessel Ring", price: 100, image: "https://bloxinformer.com/wp-content/uploads/2026/03/vessel-ring-item-sailor-piece.jpg" },
+            { name: "Void Seed", price: 200, image: "https://bloxinformer.com/wp-content/uploads/2026/03/void-seed-item-sailor-piece.jpg" },
+            { name: "Soul Fragment", price: 100, image: "https://bloxinformer.com/wp-content/uploads/2026/03/soul-fragment-item-sailor-piece.jpg" },
+            { name: "Soul Amulet", price: 200, image: "https://bloxinformer.com/wp-content/uploads/2026/03/soul-amulet-item-sailor-piece.jpg" },
+            { name: "Cursed Talisman", price: 200, image: "https://bloxinformer.com/wp-content/uploads/2026/03/cursed-talisman-item-sailor-piece.jpg" },
+            { name: "Sage Pulse", price: 100, image: "https://bloxinformer.com/wp-content/uploads/2026/03/sage-pulse-item-sailor-piece.jpg" },
+            { name: "Six Eye", price: 200, tag: "RARE", image: "https://bloxinformer.com/wp-content/uploads/2026/03/six-eye-item-sailor-piece.jpg" },
+            { name: "Energy Shard", price: 200, image: "https://bloxinformer.com/wp-content/uploads/2026/03/energy-shard-item-sailor-piece.jpg" },
+            { name: "Malevolent Soul", price: 200, tag: "RARE", image: "https://bloxinformer.com/wp-content/uploads/2026/03/malevolent-soul-item-sailor-piece.jpg" },
+            { name: "Blue Singularity", price: 200, tag: "RARE", image: "https://bloxinformer.com/wp-content/uploads/2026/03/blue-singularity-item-sailor-piece.jpg" },
+            { name: "Tempest Seal", price: 200, image: "https://bloxinformer.com/wp-content/uploads/2026/03/tempest-seal-item-sailor-piece.jpg" },
+            { name: "Slime Remnant", price: 200, image: "https://bloxinformer.com/wp-content/uploads/2026/03/slime-remnant-item-sailor-piece.jpg" },
+            { name: "50 Slime Key", price: 1000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/slime-key-item-sailor-piece.jpg" },
+            { name: "100 Slime Shard", price: 1000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/slime-shard-item-sailor-piece.jpg" },
+            { name: "Slime Core", price: 300, image: "https://bloxinformer.com/wp-content/uploads/2026/03/slime-core-item-sailor-piece.jpg" },
+            { name: "Reiatsu Core", price: 200, image: "https://bloxinformer.com/wp-content/uploads/2026/03/reiatsu-core-item-sailor-piece.jpg" },
+            { name: "Throne Remnant", price: 100, image: "https://bloxinformer.com/wp-content/uploads/2026/03/throne-remnant-item-sailor-piece.jpg" },
+            { name: "Power Remnant", price: 200, image: "https://bloxinformer.com/wp-content/uploads/2026/03/powa.png" },
+            { name: "Battle Shard", price: 100, image: "https://bloxinformer.com/wp-content/uploads/2026/03/bat.png" },
+            { name: "Monarch Core", price: 200, image: "https://bloxinformer.com/wp-content/uploads/2026/03/monarch-core-item-sailor-piece.jpg" },
+            { name: "Dismantle Fang", price: 200, image: "https://bloxinformer.com/wp-content/uploads/2026/03/dismantle-fang-item-sailor-piece.jpg" },
+            { name: "Dark Ring", price: 300, image: "https://bloxinformer.com/wp-content/uploads/2026/03/dark-ring-item-sailor-piece.jpg" },
+            { name: "Infinity Core", price: 300, image: "https://bloxinformer.com/wp-content/uploads/2026/03/infinity-core-item-sailor-piece-300x300.jpg" },
+            { name: "200 Bloodline Stone", price: 1000, tag: "HOT", image: "https://bloxinformer.com/wp-content/uploads/2026/03/Bloodine-Stone.png" },
+            { name: "500 Power Shard", price: 1000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/Power-Shard.png" },
+            { name: "1K Passive Shards", price: 1000, image: "https://imgop.itemku.com/?url=https%3A%2F%2Fd1x91p7vw3vuq8.cloudfront.net%2Fitemku-upload%2F2026317%2Fav6b71n61nn178ikoghir4_thumbnail.jpg&w=1033&q=75" },
+            { name: "Jade Tablet", price: 200, image: "https://bloxinformer.com/wp-content/uploads/2026/03/jade-tablet-item-sailor-piece.jpg" },
+            { name: "Divergent Pulse", price: 200, image: "https://bloxinformer.com/wp-content/uploads/2026/03/divergent-pulse-item-sailor-piece.jpg" },
+            { name: "Shadow Essence", price: 200, image: "https://bloxinformer.com/wp-content/uploads/2026/03/shadow-essence-item-sailor-piece.jpg" },
+            { name: "Golden Essence", price: 300, image: "https://bloxinformer.com/wp-content/uploads/2026/03/golden-essence-item-sailor-piece.jpg" },
+            { name: "Lunar Essence", price: 200, image: "https://bloxinformer.com/wp-content/uploads/2026/03/Lunar-Essence.png" },
+            { name: "Ancient Shard", price: 200, image: "https://bloxinformer.com/wp-content/uploads/2026/03/ancient-shard-item-sailor-piece.jpg" },
+            { name: "Demonic Shard", price: 200, image: "https://bloxinformer.com/wp-content/uploads/2026/03/demonic-shard-item-sailor-piece.jpg" },
+            { name: "Monarch Essence", price: 300, image: "https://bloxinformer.com/wp-content/uploads/2026/03/monarch-essence-item-sailor-piece.jpg" },
+            { name: "500 Abyss Sigil", price: 1000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/Abyss-Sigil-Sailor-Piece-Item-for.webp" },
+            { name: "10 Battle Sigil", price: 1000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/sigil.png" },
+            { name: "500 Upper Seal", price: 1000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/image-1.webp" },
+            { name: "500 Frost Relic", price: 1000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/image-2.webp" },
+            { name: "Glacier Remnant", price: 300, image: "https://bloxinformer.com/wp-content/uploads/2026/03/glacier_rem.png" },
+            { name: "400 Chrysalis Sigil", price: 1000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/image-3.webp" },
+            { name: "500 Tempest Relic", price: 1000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/image-4.webp" },
+            { name: "100 Dominion Brand", price: 1000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/Dominion-Brand.webp" },
+            { name: "Transmutation Shard", price: 500, image: "https://bloxinformer.com/wp-content/uploads/2026/03/image-5.webp" },
+            { name: "Ice Core", price: 500, image: "https://bloxinformer.com/wp-content/uploads/2026/03/ICE-1.png" },
+            { name: "Frozen Brand", price: 300, image: "https://bloxinformer.com/wp-content/uploads/2026/03/froze.png" },
+            { name: "Crimson Heart", price: 300, image: "https://bloxinformer.com/wp-content/uploads/2026/03/crimson-heart-item-sailor-piece.jpg" },
+            { name: "Shadow Heart", price: 300, image: "https://bloxinformer.com/wp-content/uploads/2026/03/shadow-heart-item-sailor-piece.jpg" },
+            { name: "Blood Ring", price: 500, image: "https://bloxinformer.com/wp-content/uploads/2026/03/blood-ring-item-sailor-piece.jpg" },
+            { name: "Casull", price: 500, image: "https://bloxinformer.com/wp-content/uploads/2026/03/casull-item-sailor-piece.jpg" },
+            { name: "Cursed Flesh", price: 300, image: "https://bloxinformer.com/wp-content/uploads/2026/03/cursed-flesh-item-sailor-piece.jpg" },
+            { name: "Soul Flame", price: 300, image: "https://bloxinformer.com/wp-content/uploads/2026/03/soul-flame-item-sailor-piece.jpg" },
+            { name: "Phantasm Core", price: 500, image: "https://bloxinformer.com/wp-content/uploads/2026/03/phanttasm-core-item-sailor-piece.jpg" },
+            { name: "Shadow Crystal", price: 300, image: "https://bloxinformer.com/wp-content/uploads/2026/03/shadow-crystal-item-sailor-piece.jpg" },
+            { name: "Path Fragment", price: 500, image: "https://bloxinformer.com/wp-content/uploads/2026/03/path_frag.png" },
+            { name: "Crescent Shard", price: 200, image: "https://bloxinformer.com/wp-content/uploads/2026/03/Screscent-Shard-Item-in-Sailor-Piece.png" },
+            { name: "Moon Crest", price: 500, image: "https://bloxinformer.com/wp-content/uploads/2026/03/Moon-Crest-Item-for-Moon-Slayer-Melee.png" }
           ]},
           { category: "Rare & Legendary Materials", color: "text-red-400", icon: "fa-khanda", items: [
-            { name: "Broken Sword", price: 45000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/broken-sword-item-sailor-piece.jpg" },
-            { name: "Babylon Key", price: 60000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/babylon-key-item-sailor-piece.jpg" },
-            { name: "Divine Grail", price: 75000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/divine-grail-item-sailor-piece.jpg" },
-            { name: "Calamity Seal", price: 60000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/calamity-seal-item-sailor-piece.jpg" },
-            { name: "World Core", price: 80000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/world-core.png" },
-            { name: "Hogyoku Fragment", price: 75000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/hogyoku-fragment-item-sailor-piece.jpg" },
-            { name: "Imperial Seal", price: 70000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/imperial-seal-item-sailor-piece.jpg" },
-            { name: "Eminence Essence", price: 85000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/1000409969_0x0_670x519.png" },
-            { name: "Atomic Core", price: 80000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/atomic-core-item-sailor-piece.jpg" },
-            { name: "Infinity Essence", price: 90000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/inifinity-essence-item-sailor-piece.jpg" },
-            { name: "Conqueror Fragment", price: 75000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/conqueror-fragment-item-sailor-piece.jpg" },
-            { name: "Destruction Eye", price: 85000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/destruction-eye-item-sailor-piece.jpg" },
-            { name: "Imperial Mark", price: 70000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/imperial-mark-item-sailor-piece.jpg" },
-            { name: "Corruption Core", price: 75000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/Corruption-Core.png" },
-            { name: "Vampire Omen", price: 130000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/Vampire-Omen.png" },
-            { name: "Atomic Omen", price: 140000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/Atomic-Omen-item-in-Sailor-Piece-300x300.png" },
-            { name: "Kamish Dagger", price: 150000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/kamish-dagger-item-sailor-piece.jpg" },
-            { name: "Corrupt Crown", price: 80000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/Darkgrail_20260316_060344_0000.png" },
-            { name: "Eternal Core", price: 90000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/Ete_core.png" }
+            { name: "500 Broken Sword", price: 1000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/broken-sword-item-sailor-piece.jpg" },
+            { name: "Babylon Key", price: 1000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/babylon-key-item-sailor-piece.jpg" },
+            { name: "300 Divine Grail", price: 1000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/divine-grail-item-sailor-piece.jpg" },
+            { name: "400 Calamity Seal", price: 1000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/calamity-seal-item-sailor-piece.jpg" },
+            { name: "World Core", price: 1000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/world-core.png" },
+            { name: "Hogyoku Fragment", price: 500, image: "https://bloxinformer.com/wp-content/uploads/2026/03/hogyoku-fragment-item-sailor-piece.jpg" },
+            { name: "Imperial Seal", price: 200, image: "https://bloxinformer.com/wp-content/uploads/2026/03/imperial-seal-item-sailor-piece.jpg" },
+            { name: "Eminence Essence", price: 300, image: "https://bloxinformer.com/wp-content/uploads/2026/03/1000409969_0x0_670x519.png" },
+            { name: "Atomic Core", price: 500, image: "https://bloxinformer.com/wp-content/uploads/2026/03/atomic-core-item-sailor-piece.jpg" },
+            { name: "Infinity Essence", price: 500, image: "https://bloxinformer.com/wp-content/uploads/2026/03/inifinity-essence-item-sailor-piece.jpg" },
+            { name: "Conqueror Fragment", price: 200, image: "https://bloxinformer.com/wp-content/uploads/2026/03/conqueror-fragment-item-sailor-piece.jpg" },
+            { name: "Destruction Eye", price: 300, image: "https://bloxinformer.com/wp-content/uploads/2026/03/destruction-eye-item-sailor-piece.jpg" },
+            { name: "Imperial Mark", price: 500, image: "https://bloxinformer.com/wp-content/uploads/2026/03/imperial-mark-item-sailor-piece.jpg" },
+            { name: "Corruption Core", price: 500, image: "https://bloxinformer.com/wp-content/uploads/2026/03/Corruption-Core.png" },
+            { name: "Vampire Omen", price: 2000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/Vampire-Omen.png" },
+            { name: "Atomic Omen", price: 200, image: "https://bloxinformer.com/wp-content/uploads/2026/03/Atomic-Omen-item-in-Sailor-Piece-300x300.png" },
+            { name: "Kamish Dagger", price: 200, image: "https://bloxinformer.com/wp-content/uploads/2026/03/kamish-dagger-item-sailor-piece.jpg" },
+            { name: "Corrupt Crown", price: 400, image: "https://bloxinformer.com/wp-content/uploads/2026/03/Darkgrail_20260316_060344_0000.png" },
+            { name: "Eternal Core", price: 500, image: "https://bloxinformer.com/wp-content/uploads/2026/03/Ete_core.png" }
           ]},
           { category: "Premium Sets / Weapon Materials", color: "text-tera-blue", icon: "fa-shield-halved", items: [
-            { name: "Ice Queen", price: 100000, image: "https://f.top4top.io/p_37845uvec0.jpg" },
-            { name: "Great Mage", price: 180000, image: "https://g.top4top.io/p_3784v4afq1.jpg" }, 
-            { name: "Sun God", price: 180000, image: "https://h.top4top.io/p_3784l9vur2.jpg" }, 
-            { name: "Excalibur", price: 180000, image: "https://i.top4top.io/p_3784okt2i3.jpg" }, 
-            { name: "Soul Reaper", price: 180000, image: "https://j.top4top.io/p_37849l8tm4.jpg" }, 
-            { name: "Solo Hunter", price: 120000, image: "https://k.top4top.io/p_378415ufb5.jpg" },
-            { name: "Shadow Monarch", price: 135000, image: "https://l.top4top.io/p_3784gtrtm6.jpg" },
-            { name: "Yamato", price: 110000, image: "https://a.top4top.io/p_3784tzl5h7.jpg" },
-            { name: "Manipulator", price: 180000, image: "https://b.top4top.io/p_3784ndzgw8.jpg" }, 
-            { name: "True Manipulator", price: 140000, image: "https://c.top4top.io/p_3784wxecm9.jpg" },
-            { name: "Shadow", price: 180000, image: "https://b.top4top.io/p_3784ksrlc0.jpg" }, 
-            { name: "Atomic", price: 115000, image: "https://c.top4top.io/p_3784t0whf1.jpg" },
-            { name: "Rimuru", price: 125000, image: "https://d.top4top.io/p_3784vaxp32.jpg" },
-            { name: "Vampire King", price: 130000, image: "https://j.top4top.io/p_3784arf2o0.jpg" },
-            { name: "The World", price: 145000, image: "https://f.top4top.io/p_378489mj74.jpg" },
-            { name: "Cosmic Being", price: 145000, image: "https://g.top4top.io/p_3784xplm35.jpg" },
-            { name: "Qin Shi", price: 180000, image: "https://h.top4top.io/p_3784fslvs6.jpg" },
-            { name: "Corrupted Excalibur", price: 180000, image: "https://i.top4top.io/p_3784c2as47.jpg" }, 
-            { name: "Gilgamesh", price: 140000, image: "https://j.top4top.io/p_3784z685t8.jpg" },
-            { name: "Madara", price: 150000, image: "https://k.top4top.io/p_3784gr70t9.jpg" },
-            { name: "Gojo V1", price: 180000, image: "https://a.top4top.io/p_3784qjgb00.jpg" }, 
-            { name: "Gojo V2", price: 160000, image: "https://b.top4top.io/p_3784a2rcq1.jpg" },
-            { name: "Sukuna V1", price: 180000, image: "https://c.top4top.io/p_3784az9432.jpg" }, 
-            { name: "Sukuna V2", price: 160000, image: "https://d.top4top.io/p_3784as8ta3.jpg" },
-            { name: "Cursed Vessel", price: 180000, image: "https://f.top4top.io/p_37849p4ts0.jpg" }, 
-            { name: "Blessed Maiden", price: 120000, image: "https://g.top4top.io/p_3784piqjn1.jpg" },
-            { name: "Demon King", price: 180000, image: "https://h.top4top.io/p_3784lfaem2.jpg" }, 
-            { name: "Moon Slayer", price: 180000, image: "https://i.top4top.io/p_3784q543p3.jpg" }
+            { name: "Ice Queen", price: 5000, image: "https://f.top4top.io/p_37845uvec0.jpg" },
+            { name: "Great Mage", tag: "LIMITED", price: 20000, image: "https://g.top4top.io/p_3784v4afq1.jpg" }, 
+            { name: "Sun God", price: 50000, image: "https://h.top4top.io/p_3784l9vur2.jpg" }, 
+            { name: "Excalibur", price: 1000, image: "https://i.top4top.io/p_3784okt2i3.jpg" }, 
+            { name: "Soul Reaper", price: 2000, image: "https://j.top4top.io/p_37849l8tm4.jpg" }, 
+            { name: "Solo Hunter", price: 3000, image: "https://k.top4top.io/p_378415ufb5.jpg" },
+            { name: "Shadow Monarch", price: 3000, image: "https://l.top4top.io/p_3784gtrtm6.jpg" },
+            { name: "Yamato", price: 4000, image: "https://a.top4top.io/p_3784tzl5h7.jpg" },
+            { name: "Manipulator", price: 3000, image: "https://b.top4top.io/p_3784ndzgw8.jpg" }, 
+            { name: "True Manipulator", price: 5000, image: "https://c.top4top.io/p_3784wxecm9.jpg" },
+            { name: "Shadow", price: 3000, image: "https://b.top4top.io/p_3784ksrlc0.jpg" }, 
+            { name: "Atomic", price: 5000, image: "https://c.top4top.io/p_3784t0whf1.jpg" },
+            { name: "Rimuru", price: 4000, image: "https://d.top4top.io/p_3784vaxp32.jpg" },
+            { name: "Vampire King", price: 3000, image: "https://j.top4top.io/p_3784arf2o0.jpg" },
+            { name: "The World", price: 8000, image: "https://f.top4top.io/p_378489mj74.jpg" },
+            { name: "Cosmic Being", price: 10000, image: "https://g.top4top.io/p_3784xplm35.jpg" },
+            { name: "Qin Shi", price: 2000, image: "https://h.top4top.io/p_3784fslvs6.jpg" },
+            { name: "Corrupted Excalibur", price: 3000, image: "https://i.top4top.io/p_3784c2as47.jpg" }, 
+            { name: "Gilgamesh", price: 3000, image: "https://j.top4top.io/p_3784z685t8.jpg" },
+            { name: "Madara", price: 5000, image: "https://k.top4top.io/p_3784gr70t9.jpg" },
+            { name: "Gojo V1", price: 3000, image: "https://a.top4top.io/p_3784qjgb00.jpg" }, 
+            { name: "Gojo V2", price: 4000, image: "https://b.top4top.io/p_3784a2rcq1.jpg" },
+            { name: "Sukuna V1", price: 3000, image: "https://c.top4top.io/p_3784az9432.jpg" }, 
+            { name: "Sukuna V2", price: 4000, image: "https://d.top4top.io/p_3784as8ta3.jpg" },
+            { name: "Cursed Vessel", price: 2000, image: "https://f.top4top.io/p_37849p4ts0.jpg" }, 
+            { name: "Blessed Maiden", price: 3000, image: "https://g.top4top.io/p_3784piqjn1.jpg" },
+            { name: "Demon King", price: 3000, image: "https://h.top4top.io/p_3784lfaem2.jpg" }, 
+            { name: "Moon Slayer", price: 4000, image: "https://i.top4top.io/p_3784q543p3.jpg" }
           ]},
           { category: "Boosts & Event Items", color: "text-green-400", icon: "fa-bolt", items: [
-            { name: "2x Drop", price: 25000, tag: "HOT", image: "https://static.wixstatic.com/media/c4d9b1_fbe8462bad5b43558c1e150435939dff~mv2.png/v1/fill/w_339,h_375,al_c,lg_1,q_85,enc_avif,quality_auto/c4d9b1_fbe8462bad5b43558c1e150435939dff~mv2.png" },
-            { name: "2x Luck", price: 25000, tag: "HOT", image: "https://assetsdelivery.eldorado.gg/v7/_offers-v2_/f27dc565-3aac-4aa5-915d-07d6d465a445_Offer_20260328120619_438449Large.png?w=600" },
-            { name: "Easter Eggs", price: 30000, image: "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcSi0S5tnaB0uT4-0IldurXaJ5LxpjNExZxPrT5oCp0n8odC6GSRqJ2tBaMW6g6lHcQJ9m2h6IzNMFbHJUj0PKwadQKcBpulxQ&usqp=CAc" },
-            { name: "Easter Keys", price: 35000, image: "https://assetsdelivery.eldorado.gg/v7/_offers-v2_/bf393df2-c4f2-4530-b576-1114f04b12c0_Offer_20260422091436_8526484Large.jpeg?w=600" },
-            { name: "Spirit Keys", price: 35000, image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRCbcl1kO0wMX5CIlB6utXgjr9QOLw9ufm7bw0MvevIOA&s" },
-            { name: "Raid Keys", price: 35000, image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSbytNnTSpGYOzniNKY9_5Ma_cZY0vtDDemhhL3nldR2A&s" },
-            { name: "Crystal Keys", price: 35000, image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRDdIgoXPOO_yLO7kBhusbZX1J7TTN9rDZ3qQIMO0QSVQ&s" }, 
-            { name: "Relic Sets", price: 200000, image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTVorkCMTEclDDaZpyYSEKDEReuKOponp3qa2lcN9hTkyUSBKocjaa3gZFh&s=10" }
+            { name: "2x Drop", tag: "HOT", price: 20000, tag: "HOT", image: "https://static.wixstatic.com/media/c4d9b1_fbe8462bad5b43558c1e150435939dff~mv2.png/v1/fill/w_339,h_375,al_c,lg_1,q_85,enc_avif,quality_auto/c4d9b1_fbe8462bad5b43558c1e150435939dff~mv2.png" },
+            { name: "2x Luck", tag: "HOT", price: 20000, tag: "HOT", image: "https://assetsdelivery.eldorado.gg/v7/_offers-v2_/f27dc565-3aac-4aa5-915d-07d6d465a445_Offer_20260328120619_438449Large.png?w=600" },
+            { name: "100 Easter Eggs", price: 4000, image: "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcSi0S5tnaB0uT4-0IldurXaJ5LxpjNExZxPrT5oCp0n8odC6GSRqJ2tBaMW6g6lHcQJ9m2h6IzNMFbHJUj0PKwadQKcBpulxQ&usqp=CAc" },
+            { name: "100 Easter Keys", price: 3000, image: "https://assetsdelivery.eldorado.gg/v7/_offers-v2_/bf393df2-c4f2-4530-b576-1114f04b12c0_Offer_20260422091436_8526484Large.jpeg?w=600" },
+            { name: "100 Spirit Keys", price: 3000, image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRCbcl1kO0wMX5CIlB6utXgjr9QOLw9ufm7bw0MvevIOA&s" },
+            { name: "100 Raid Keys", price: 3000, image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSbytNnTSpGYOzniNKY9_5Ma_cZY0vtDDemhhL3nldR2A&s" },
+            { name: "100 Crystal Keys", price: 1000, image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRDdIgoXPOO_yLO7kBhusbZX1J7TTN9rDZ3qQIMO0QSVQ&s" }, 
+            { name: "Ascension (2-MAX)", price: 8000, image: "https://l.top4top.io/p_3784k25wd1.png" },
+            { name: "Relic Sets", price: 10000, image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTVorkCMTEclDDaZpyYSEKDEReuKOponp3qa2lcN9hTkyUSBKocjaa3gZFh&s=10" }
           ]}
         ];
 
@@ -811,9 +760,10 @@
             }
         }
 
-        const formatRupiah = (angka) => {
+        // Perbaikan: Fungsi formatRupiah terkena hoisting
+        function formatRupiah(angka) {
             return new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(angka);
-        };
+        }
 
         function updateQty(itemId, change) {
             const qtyElement = document.getElementById(`qty-${itemId}`);
@@ -854,13 +804,17 @@
             document.getElementById('mobile-menu').classList.toggle('hidden');
         });
 
-        // Initialize Catalog upon Load
-        document.addEventListener('DOMContentLoaded', () => {
-            document.getElementById('searchInput').addEventListener('input', function(e) {
+        // Perbaikan: Inisialisasi Event Listener Search langsung
+        const searchInput = document.getElementById('searchInput');
+        if (searchInput) {
+            searchInput.addEventListener('input', function(e) {
                 renderCatalog(e.target.value);
             });
-            renderCatalog();
-        });
+        }
+        
+        // Perbaikan: Eksekusi rendering katalog secara instan
+        renderCatalog();
+
     </script>
 </body>
 </html>
