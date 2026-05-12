@@ -514,6 +514,47 @@
         }
 
         const storeData = [
+            { category: "Premium Sets / Weapon Materials", color: "text-tera-blue", icon: "fa-shield-halved", items: [
+            { name: "Ice Queen", price: 5000, image: "https://f.top4top.io/p_37845uvec0.jpg" },
+            { name: "Great Mage", tag: "LIMITED", price: 20000, image: "https://g.top4top.io/p_3784v4afq1.jpg" }, 
+            { name: "Sun God", price: 50000, image: "https://h.top4top.io/p_3784l9vur2.jpg" }, 
+            { name: "Excalibur", price: 1000, image: "https://i.top4top.io/p_3784okt2i3.jpg" }, 
+            { name: "Soul Reaper", price: 2000, image: "https://j.top4top.io/p_37849l8tm4.jpg" }, 
+            { name: "Solo Hunter", price: 3000, image: "https://k.top4top.io/p_378415ufb5.jpg" },
+            { name: "Shadow Monarch", price: 3000, image: "https://l.top4top.io/p_3784gtrtm6.jpg" },
+            { name: "Yamato", price: 4000, image: "https://a.top4top.io/p_3784tzl5h7.jpg" },
+            { name: "Manipulator", price: 3000, image: "https://b.top4top.io/p_3784ndzgw8.jpg" }, 
+            { name: "True Manipulator", price: 5000, image: "https://c.top4top.io/p_3784wxecm9.jpg" },
+            { name: "Shadow", price: 3000, image: "https://b.top4top.io/p_3784ksrlc0.jpg" }, 
+            { name: "Atomic", price: 5000, image: "https://c.top4top.io/p_3784t0whf1.jpg" },
+            { name: "Rimuru", price: 4000, image: "https://d.top4top.io/p_3784vaxp32.jpg" },
+            { name: "Vampire King", price: 3000, image: "https://j.top4top.io/p_3784arf2o0.jpg" },
+            { name: "The World", price: 8000, image: "https://f.top4top.io/p_378489mj74.jpg" },
+            { name: "Cosmic Being", price: 10000, image: "https://g.top4top.io/p_3784xplm35.jpg" },
+            { name: "Qin Shi", price: 2000, image: "https://h.top4top.io/p_3784fslvs6.jpg" },
+            { name: "Corrupted Excalibur", price: 3000, image: "https://i.top4top.io/p_3784c2as47.jpg" }, 
+            { name: "Gilgamesh", price: 3000, image: "https://j.top4top.io/p_3784z685t8.jpg" },
+            { name: "Madara", price: 5000, image: "https://k.top4top.io/p_3784gr70t9.jpg" },
+            { name: "Gojo V1", price: 3000, image: "https://a.top4top.io/p_3784qjgb00.jpg" }, 
+            { name: "Gojo V2", price: 4000, image: "https://b.top4top.io/p_3784a2rcq1.jpg" },
+            { name: "Sukuna V1", price: 3000, image: "https://c.top4top.io/p_3784az9432.jpg" }, 
+            { name: "Sukuna V2", price: 4000, image: "https://d.top4top.io/p_3784as8ta3.jpg" },
+            { name: "Cursed Vessel", price: 2000, image: "https://f.top4top.io/p_37849p4ts0.jpg" }, 
+            { name: "Blessed Maiden", price: 3000, image: "https://g.top4top.io/p_3784piqjn1.jpg" },
+            { name: "Demon King", price: 3000, image: "https://h.top4top.io/p_3784lfaem2.jpg" }, 
+            { name: "Moon Slayer", price: 4000, image: "https://i.top4top.io/p_3784q543p3.jpg" }
+          ]},
+          { category: "Boosts & Event Items", color: "text-green-400", icon: "fa-bolt", items: [
+            { name: "2x Drop", tag: "HOT", price: 20000, tag: "HOT", image: "https://static.wixstatic.com/media/c4d9b1_fbe8462bad5b43558c1e150435939dff~mv2.png/v1/fill/w_339,h_375,al_c,lg_1,q_85,enc_avif,quality_auto/c4d9b1_fbe8462bad5b43558c1e150435939dff~mv2.png" },
+            { name: "2x Luck", tag: "HOT", price: 20000, tag: "HOT", image: "https://assetsdelivery.eldorado.gg/v7/_offers-v2_/f27dc565-3aac-4aa5-915d-07d6d465a445_Offer_20260328120619_438449Large.png?w=600" },
+            { name: "100 Easter Eggs", price: 4000, image: "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcSi0S5tnaB0uT4-0IldurXaJ5LxpjNExZxPrT5oCp0n8odC6GSRqJ2tBaMW6g6lHcQJ9m2h6IzNMFbHJUj0PKwadQKcBpulxQ&usqp=CAc" },
+            { name: "100 Easter Keys", price: 3000, image: "https://assetsdelivery.eldorado.gg/v7/_offers-v2_/bf393df2-c4f2-4530-b576-1114f04b12c0_Offer_20260422091436_8526484Large.jpeg?w=600" },
+            { name: "100 Spirit Keys", price: 3000, image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRCbcl1kO0wMX5CIlB6utXgjr9QOLw9ufm7bw0MvevIOA&s" },
+            { name: "100 Raid Keys", price: 3000, image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSbytNnTSpGYOzniNKY9_5Ma_cZY0vtDDemhhL3nldR2A&s" },
+            { name: "100 Crystal Keys", price: 1000, image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRDdIgoXPOO_yLO7kBhusbZX1J7TTN9rDZ3qQIMO0QSVQ&s" }, 
+            { name: "Ascension (2-MAX)", price: 8000, image: "https://l.top4top.io/p_3784k25wd1.png" },
+            { name: "Relic Sets", price: 10000, image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTVorkCMTEclDDaZpyYSEKDEReuKOponp3qa2lcN9hTkyUSBKocjaa3gZFh&s=10" }
+          ]},
           { category: "Basic & Common Items", color: "text-gray-300", icon: "fa-cube", items: [
             { name: "10K Wood", price: 1000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/wood-item-sailor-piece.jpg" },
             { name: "5K Iron", price: 1000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/iron-item-sailor-piece.jpg" },
@@ -632,47 +673,6 @@
             { name: "Kamish Dagger", price: 200, image: "https://bloxinformer.com/wp-content/uploads/2026/03/kamish-dagger-item-sailor-piece.jpg" },
             { name: "Corrupt Crown", price: 400, image: "https://bloxinformer.com/wp-content/uploads/2026/03/Darkgrail_20260316_060344_0000.png" },
             { name: "Eternal Core", price: 500, image: "https://bloxinformer.com/wp-content/uploads/2026/03/Ete_core.png" }
-          ]},
-          { category: "Premium Sets / Weapon Materials", color: "text-tera-blue", icon: "fa-shield-halved", items: [
-            { name: "Ice Queen", price: 5000, image: "https://f.top4top.io/p_37845uvec0.jpg" },
-            { name: "Great Mage", tag: "LIMITED", price: 20000, image: "https://g.top4top.io/p_3784v4afq1.jpg" }, 
-            { name: "Sun God", price: 50000, image: "https://h.top4top.io/p_3784l9vur2.jpg" }, 
-            { name: "Excalibur", price: 1000, image: "https://i.top4top.io/p_3784okt2i3.jpg" }, 
-            { name: "Soul Reaper", price: 2000, image: "https://j.top4top.io/p_37849l8tm4.jpg" }, 
-            { name: "Solo Hunter", price: 3000, image: "https://k.top4top.io/p_378415ufb5.jpg" },
-            { name: "Shadow Monarch", price: 3000, image: "https://l.top4top.io/p_3784gtrtm6.jpg" },
-            { name: "Yamato", price: 4000, image: "https://a.top4top.io/p_3784tzl5h7.jpg" },
-            { name: "Manipulator", price: 3000, image: "https://b.top4top.io/p_3784ndzgw8.jpg" }, 
-            { name: "True Manipulator", price: 5000, image: "https://c.top4top.io/p_3784wxecm9.jpg" },
-            { name: "Shadow", price: 3000, image: "https://b.top4top.io/p_3784ksrlc0.jpg" }, 
-            { name: "Atomic", price: 5000, image: "https://c.top4top.io/p_3784t0whf1.jpg" },
-            { name: "Rimuru", price: 4000, image: "https://d.top4top.io/p_3784vaxp32.jpg" },
-            { name: "Vampire King", price: 3000, image: "https://j.top4top.io/p_3784arf2o0.jpg" },
-            { name: "The World", price: 8000, image: "https://f.top4top.io/p_378489mj74.jpg" },
-            { name: "Cosmic Being", price: 10000, image: "https://g.top4top.io/p_3784xplm35.jpg" },
-            { name: "Qin Shi", price: 2000, image: "https://h.top4top.io/p_3784fslvs6.jpg" },
-            { name: "Corrupted Excalibur", price: 3000, image: "https://i.top4top.io/p_3784c2as47.jpg" }, 
-            { name: "Gilgamesh", price: 3000, image: "https://j.top4top.io/p_3784z685t8.jpg" },
-            { name: "Madara", price: 5000, image: "https://k.top4top.io/p_3784gr70t9.jpg" },
-            { name: "Gojo V1", price: 3000, image: "https://a.top4top.io/p_3784qjgb00.jpg" }, 
-            { name: "Gojo V2", price: 4000, image: "https://b.top4top.io/p_3784a2rcq1.jpg" },
-            { name: "Sukuna V1", price: 3000, image: "https://c.top4top.io/p_3784az9432.jpg" }, 
-            { name: "Sukuna V2", price: 4000, image: "https://d.top4top.io/p_3784as8ta3.jpg" },
-            { name: "Cursed Vessel", price: 2000, image: "https://f.top4top.io/p_37849p4ts0.jpg" }, 
-            { name: "Blessed Maiden", price: 3000, image: "https://g.top4top.io/p_3784piqjn1.jpg" },
-            { name: "Demon King", price: 3000, image: "https://h.top4top.io/p_3784lfaem2.jpg" }, 
-            { name: "Moon Slayer", price: 4000, image: "https://i.top4top.io/p_3784q543p3.jpg" }
-          ]},
-          { category: "Boosts & Event Items", color: "text-green-400", icon: "fa-bolt", items: [
-            { name: "2x Drop", tag: "HOT", price: 20000, tag: "HOT", image: "https://static.wixstatic.com/media/c4d9b1_fbe8462bad5b43558c1e150435939dff~mv2.png/v1/fill/w_339,h_375,al_c,lg_1,q_85,enc_avif,quality_auto/c4d9b1_fbe8462bad5b43558c1e150435939dff~mv2.png" },
-            { name: "2x Luck", tag: "HOT", price: 20000, tag: "HOT", image: "https://assetsdelivery.eldorado.gg/v7/_offers-v2_/f27dc565-3aac-4aa5-915d-07d6d465a445_Offer_20260328120619_438449Large.png?w=600" },
-            { name: "100 Easter Eggs", price: 4000, image: "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcSi0S5tnaB0uT4-0IldurXaJ5LxpjNExZxPrT5oCp0n8odC6GSRqJ2tBaMW6g6lHcQJ9m2h6IzNMFbHJUj0PKwadQKcBpulxQ&usqp=CAc" },
-            { name: "100 Easter Keys", price: 3000, image: "https://assetsdelivery.eldorado.gg/v7/_offers-v2_/bf393df2-c4f2-4530-b576-1114f04b12c0_Offer_20260422091436_8526484Large.jpeg?w=600" },
-            { name: "100 Spirit Keys", price: 3000, image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRCbcl1kO0wMX5CIlB6utXgjr9QOLw9ufm7bw0MvevIOA&s" },
-            { name: "100 Raid Keys", price: 3000, image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSbytNnTSpGYOzniNKY9_5Ma_cZY0vtDDemhhL3nldR2A&s" },
-            { name: "100 Crystal Keys", price: 1000, image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRDdIgoXPOO_yLO7kBhusbZX1J7TTN9rDZ3qQIMO0QSVQ&s" }, 
-            { name: "Ascension (2-MAX)", price: 8000, image: "https://l.top4top.io/p_3784k25wd1.png" },
-            { name: "Relic Sets", price: 10000, image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTVorkCMTEclDDaZpyYSEKDEReuKOponp3qa2lcN9hTkyUSBKocjaa3gZFh&s=10" }
           ]}
         ];
 
@@ -791,12 +791,12 @@
         function orderItem(itemName, itemId, platform) {
             const qty = document.getElementById(`qty-${itemId}`).innerText;
             const totalPrice = document.getElementById(`total-${itemId}`).innerText;
-            const textMsg = `Halo Admin TERA STORE,\n\nSaya ingin memesan item berikut:\n📌 Item: ${itemName}\n🔢 Jumlah: ${qty}x\n💰 Total Harga: ${totalPrice}\n\nMohon infokan ketersediaannya.`;
+            const textMsg = `Halo min,\n\nSaya ingin memesan item berikut:\n📌 Item: ${itemName}\n🔢 Jumlah: ${qty}x\n💰 Total Harga: ${totalPrice}\n\nMohon infokan ketersediaannya.`;
             copyToClipboardAndRedirect(textMsg, platform);
         }
 
         function orderJoki(jokiName, platform) {
-            const textMsg = `Halo Admin TERA STORE,\n\nSaya tertarik dengan layanan Joki:\n⚡ ${jokiName}\n\nBoleh tanya detail prosedur dan estimasi harganya?`;
+            const textMsg = `Halo min,\n\nSaya tertarik dengan layanan Joki:\n⚡ ${jokiName}\n\nBoleh tanya detail prosedur dan estimasi harganya?`;
             copyToClipboardAndRedirect(textMsg, platform);
         }
 
