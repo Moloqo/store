@@ -1698,7 +1698,7 @@ const TERA_SESSION_KEY = 'tera_session';
 // Tambahkan Redirect URI: URL halaman ini (misal: https://toko-mu.com/index.html)
 // =====================================================
 const DISCORD_CLIENT_ID = '1520336034678706336';
-const DISCORD_REDIRECT_URI = window.location.href.split('?')[0].split('#')[0]; // URL halaman ini
+const DISCORD_REDIRECT_URL = window.location.href.split('?')[0].split('#')[0]; // URL halaman ini
 const DISCORD_SCOPE = 'identify email';
 
 function initLoginState() {
@@ -1804,7 +1804,7 @@ function handleDiscordLogin() {
     sessionStorage.setItem('discord_oauth_state', state);
     const params = new URLSearchParams({
         client_id: DISCORD_CLIENT_ID,
-        redirect_uri: DISCORD_REDIRECT_URI,
+        redirect_url: DISCORD_REDIRECT_URL,
         response_type: 'code',
         scope: DISCORD_SCOPE,
         state: state
@@ -1892,7 +1892,7 @@ function showOAuthInfo(provider) {
         <li>Buka <a href="https://discord.com/developers/applications" target="_blank" style="color:#a78bfa;text-decoration:underline;">discord.com/developers/applications</a></li>
         <li>Buat aplikasi baru → buka tab <b>OAuth2</b></li>
         <li>Salin <b>CLIENT ID</b> dan tempel ke variabel <code style="background:rgba(255,255,255,0.1);padding:2px 6px;border-radius:4px;">DISCORD_CLIENT_ID</code></li>
-        <li>Di bagian <b>Redirects</b>, tambahkan URL halaman ini:<br><code style="background:rgba(255,255,255,0.1);padding:2px 6px;border-radius:4px;font-size:11px;word-break:break-all;">${DISCORD_REDIRECT_URI}</code></li>
+        <li>Di bagian <b>Redirects</b>, tambahkan URL halaman ini:<br><code style="background:rgba(255,255,255,0.1);padding:2px 6px;border-radius:4px;font-size:11px;word-break:break-all;">${DISCORD_REDIRECT_URL}</code></li>
         <li>⚠️ Untuk production: exchange token di <b>backend/server</b> agar CLIENT_SECRET aman</li>
     `;
 
