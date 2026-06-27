@@ -1699,7 +1699,7 @@ const TERA_SESSION_KEY = 'tera_session';
 // =====================================================
 const DISCORD_CLIENT_ID = '1520336034678706336';
 const DISCORD_REDIRECT_URI = window.location.href.split('?')[0].split('#')[0]; // URL halaman ini
-const DISCORD_SCOPE = 'https://discord.com/oauth2/authorize?client_id=1520336034678706336&response_type=code&redirect_uri=https%3A%2F%2Fterablox.store&scope=identify+email+openid';
+const DISCORD_SCOPE = 'identify email';
 
 function initLoginState() {
     // Cek Discord OAuth callback
@@ -1796,7 +1796,7 @@ function handleModalLogin() {
 
 // ===== DISCORD LOGIN =====
 function handleDiscordLogin() {
-    if (DISCORD_CLIENT_ID === 'GANTI_DENGAN_CLIENT_ID_DISCORD_MU') {
+    if (DISCORD_CLIENT_ID === '1520336034678706336') {
         showOAuthInfo('discord');
         return;
     }
@@ -1812,25 +1812,61 @@ function handleDiscordLogin() {
     window.location.href = `https://discord.com/api/oauth2/authorize?${params.toString()}`;
 }
 
+// =====================================================
+// URL Backend Worker untuk exchange Discord OAuth token
+// GANTI dengan URL worker milikmu sendiri setelah deploy
+// (lihat README.md di folder discord-worker)
+// =====================================================
+const DISCORD_WORKER_URL = 'https://odd-math-ff8b.lazulias00.workers.dev/';
+
 async function handleDiscordCallback(code) {
-    // CATATAN: Untuk production, exchange code di backend/server-side
-    // Di sini kita simulasi dengan menyimpan bahwa user sudah login via Discord
-    // Untuk implementasi penuh, kamu butuh backend untuk exchange token
-    
     // Bersihkan URL dari query params
     const cleanUrl = window.location.pathname;
     window.history.replaceState({}, document.title, cleanUrl);
 
-    // Tampilkan loading state
-    const session = { 
-        username: 'Discord User', 
-        avatar: null, 
-        provider: 'discord', 
-        code: code,
-        loggedAt: Date.now() 
-    };
-    sessionStorage.setItem(TERA_SESSION_KEY, JSON.stringify(session));
-    setLoggedInUI('Discord User', null, 'discord');
+    if (DISCORD_WORKER_URL === 'GANTI_DENGAN_URL_WORKER_MU') {
+        // Worker belum disetup, fallback ke simulasi lama
+        const session = {
+            username: 'Discord User',
+            avatar: null,
+            provider: 'discord',
+            loggedAt: Date.now()
+        };
+        sessionStorage.setItem(TERA_SESSION_KEY, JSON.stringify(session));
+        setLoggedInUI('Discord User', null, 'discord');
+        return;
+    }
+
+    try {
+        const res = await fetch(DISCORD_WORKER_URL, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ code: code })
+        });
+        const data = await res.json();
+
+        if (!res.ok) {
+            throw new Error(data.error || 'Gagal login Discord');
+        }
+
+        const session = {
+            username: data.username,
+            avatar: data.avatar,
+            email: data.email,
+            provider: 'discord',
+            loggedAt: Date.now()
+        };
+        sessionStorage.setItem(TERA_SESSION_KEY, JSON.stringify(session));
+        setLoggedInUI(data.username, data.avatar, 'discord');
+    } catch (err) {
+        const alertEl = document.getElementById('modal-alert-error');
+        const alertMsg = document.getElementById('modal-alert-msg');
+        if (alertEl && alertMsg) {
+            alertMsg.textContent = 'Login Discord gagal: ' + err.message;
+            alertEl.classList.remove('hidden');
+            openLoginModal();
+        }
+    }
 }
 
 // ===== GOOGLE LOGIN (dipanggil dari Firebase module) =====
