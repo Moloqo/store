@@ -9,6 +9,79 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Rajdhani:ital,wght@0,600;0,700;1,700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Firebase SDK -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+        import { getAuth, signInWithPopup, GoogleAuthProvider, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+
+        // =====================================================
+        // KONFIGURASI FIREBASE - ISI DENGAN DATA PROYEKMU
+        // Buat proyek di: https://console.firebase.google.com
+        // Aktifkan Authentication > Sign-in method > Google
+        // =====================================================
+        const firebaseConfig = {
+            apiKey: "AIzaSyBSK0g6QOlhAC7Fy0DfmS6faAuLWyKhZS0",
+            authDomain: "authentication-9409d.firebaseapp.com",
+            projectId: "authentication-9409d",
+            storageBucket: "authentication-9409d.firebasestorage.app",
+            messagingSenderId: "344371781780",
+            appId: "G-JWNZKCE8G7"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const googleProvider = new GoogleAuthProvider();
+
+        window._firebaseAuth = auth;
+        window._googleProvider = googleProvider;
+        window._firebaseSignOut = signOut;
+
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                const displayName = user.displayName || user.email || 'User';
+                const photoURL = user.photoURL || null;
+                window._currentFirebaseUser = user;
+                if (typeof setLoggedInUI === 'function') {
+                    setLoggedInUI(displayName, photoURL, 'google');
+                    if (typeof closeLoginModal === 'function') closeLoginModal();
+                }
+            }
+        });
+
+        window.handleGoogleLogin = async function() {
+            const btn = document.getElementById('btn-google-login');
+            if (!btn) return;
+            const originalHTML = btn.innerHTML;
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Memproses...';
+            btn.disabled = true;
+
+            if (firebaseConfig.apiKey === "AIzaSyBSK0g6QOlhAC7Fy0DfmS6faAuLWyKhZS0") {
+                btn.innerHTML = originalHTML;
+                btn.disabled = false;
+                if (typeof showOAuthInfo === 'function') showOAuthInfo('google');
+                return;
+            }
+
+            try {
+                await signInWithPopup(auth, googleProvider);
+            } catch (err) {
+                btn.innerHTML = originalHTML;
+                btn.disabled = false;
+                const alertEl = document.getElementById('modal-alert-error');
+                const alertMsg = document.getElementById('modal-alert-msg');
+                if (alertEl && alertMsg) {
+                    alertMsg.textContent = 'Login Google gagal: ' + (err.message || 'Coba lagi.');
+                    alertEl.classList.remove('hidden');
+                }
+            }
+        };
+
+        window.handleGoogleSignOut = async function() {
+            try { await signOut(auth); } catch(e) {}
+            if (typeof handleLogout === 'function') handleLogout();
+        };
+    </script>
+
     <script src="https://cdn.tailwindcss.com"></script>
 
     <script>
@@ -334,11 +407,11 @@
 
                     <!-- Social Login -->
                     <div class="grid grid-cols-2 gap-3">
-                        <button class="btn-social rounded-xl py-3 text-sm font-bold text-slate-300 flex items-center justify-center gap-2 transition-all">
+                        <button id="btn-google-login" onclick="handleGoogleLogin()" class="btn-social rounded-xl py-3 text-sm font-bold text-slate-300 flex items-center justify-center gap-2 transition-all hover:border-[#4285F4]/50 hover:bg-[#4285F4]/10">
                             <svg class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg>
                             Google
                         </button>
-                        <button class="btn-social rounded-xl py-3 text-sm font-bold text-slate-300 flex items-center justify-center gap-2 transition-all">
+                        <button id="btn-discord-login" onclick="handleDiscordLogin()" class="btn-social rounded-xl py-3 text-sm font-bold text-slate-300 flex items-center justify-center gap-2 transition-all hover:border-[#5865F2]/50 hover:bg-[#5865F2]/10">
                             <i class="fab fa-discord text-[#5865F2]"></i>
                             Discord
                         </button>
@@ -1619,10 +1692,27 @@ document.addEventListener('DOMContentLoaded', () => {
 // ===== LOGIN SYSTEM =====
 const TERA_SESSION_KEY = 'tera_session';
 
+// =====================================================
+// KONFIGURASI DISCORD OAUTH2
+// Buat aplikasi di: https://discord.com/developers/applications
+// Tambahkan Redirect URI: URL halaman ini (misal: https://toko-mu.com/index.html)
+// =====================================================
+const DISCORD_CLIENT_ID = '1520336034678706336';
+const DISCORD_REDIRECT_URI = window.location.href.split('?')[0].split('#')[0]; // URL halaman ini
+const DISCORD_SCOPE = 'https://discord.com/oauth2/authorize?client_id=1520336034678706336&response_type=code&redirect_uri=https%3A%2F%2Fterablox.store&scope=identify+email';
+
 function initLoginState() {
+    // Cek Discord OAuth callback
+    const urlParams = new URLSearchParams(window.location.search);
+    const discordCode = urlParams.get('code');
+    if (discordCode) {
+        handleDiscordCallback(discordCode);
+        return;
+    }
+    // Cek sesi tersimpan
     const session = getSession();
     if (session) {
-        setLoggedInUI(session.username);
+        setLoggedInUI(session.username, session.avatar || null, session.provider || 'manual');
     }
 }
 
@@ -1689,13 +1779,13 @@ function handleModalLogin() {
 
         // Demo: hanya "admin" / "tera123" yang diterima
         if (username === 'admin' && password === 'tera123') {
-            const session = { username: username, loggedAt: Date.now() };
+            const session = { username: username, avatar: null, provider: 'manual', loggedAt: Date.now() };
             if (remember) {
                 localStorage.setItem(TERA_SESSION_KEY, JSON.stringify(session));
             } else {
                 sessionStorage.setItem(TERA_SESSION_KEY, JSON.stringify(session));
             }
-            setLoggedInUI(username);
+            setLoggedInUI(username, null, 'manual');
             closeLoginModal();
         } else {
             alertMsg.textContent = 'Username atau password salah. Coba lagi.';
@@ -1704,12 +1794,113 @@ function handleModalLogin() {
     }, 1500);
 }
 
-function setLoggedInUI(username) {
+// ===== DISCORD LOGIN =====
+function handleDiscordLogin() {
+    if (DISCORD_CLIENT_ID === '1520336034678706336') {
+        showOAuthInfo('discord');
+        return;
+    }
+    const state = Math.random().toString(36).substring(2);
+    sessionStorage.setItem('discord_oauth_state', state);
+    const params = new URLSearchParams({
+        client_id: DISCORD_CLIENT_ID,
+        redirect_uri: DISCORD_REDIRECT_URI,
+        response_type: 'code',
+        scope: DISCORD_SCOPE,
+        state: state
+    });
+    window.location.href = `https://discord.com/api/oauth2/authorize?${params.toString()}`;
+}
+
+async function handleDiscordCallback(code) {
+    // CATATAN: Untuk production, exchange code di backend/server-side
+    // Di sini kita simulasi dengan menyimpan bahwa user sudah login via Discord
+    // Untuk implementasi penuh, kamu butuh backend untuk exchange token
+    
+    // Bersihkan URL dari query params
+    const cleanUrl = window.location.pathname;
+    window.history.replaceState({}, document.title, cleanUrl);
+
+    // Tampilkan loading state
+    const session = { 
+        username: 'Discord User', 
+        avatar: null, 
+        provider: 'discord', 
+        code: code,
+        loggedAt: Date.now() 
+    };
+    sessionStorage.setItem(TERA_SESSION_KEY, JSON.stringify(session));
+    setLoggedInUI('Discord User', null, 'discord');
+}
+
+// ===== GOOGLE LOGIN (dipanggil dari Firebase module) =====
+// handleGoogleLogin() dan handleGoogleSignOut() didefinisikan di Firebase module di atas
+
+// ===== SHOW SETUP INFO MODAL =====
+function showOAuthInfo(provider) {
+    const isGoogle = provider === 'google';
+    const title = isGoogle ? 'Setup Login Google' : 'Setup Login Discord';
+    const color = isGoogle ? '#4285F4' : '#5865F2';
+    const icon = isGoogle 
+        ? '<svg class="w-6 h-6 inline mr-2" viewBox="0 0 24 24"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg>'
+        : '<i class="fab fa-discord mr-2" style="color:#5865F2;font-size:1.4rem;vertical-align:middle;"></i>';
+    
+    const steps = isGoogle ? `
+        <li>Buka <a href="https://console.firebase.google.com" target="_blank" style="color:#a78bfa;text-decoration:underline;">console.firebase.google.com</a></li>
+        <li>Buat proyek baru → pilih <b>Authentication</b> → <b>Sign-in method</b></li>
+        <li>Aktifkan <b>Google</b> sebagai provider</li>
+        <li>Di Project Settings → salin <b>firebaseConfig</b></li>
+        <li>Tempel konfigurasi ke bagian <code style="background:rgba(255,255,255,0.1);padding:2px 6px;border-radius:4px;">firebaseConfig</code> di kode HTML</li>
+        <li>Tambahkan domain situsmu ke <b>Authorized domains</b></li>
+    ` : `
+        <li>Buka <a href="https://discord.com/developers/applications" target="_blank" style="color:#a78bfa;text-decoration:underline;">discord.com/developers/applications</a></li>
+        <li>Buat aplikasi baru → buka tab <b>OAuth2</b></li>
+        <li>Salin <b>CLIENT ID</b> dan tempel ke variabel <code style="background:rgba(255,255,255,0.1);padding:2px 6px;border-radius:4px;">DISCORD_CLIENT_ID</code></li>
+        <li>Di bagian <b>Redirects</b>, tambahkan URL halaman ini:<br><code style="background:rgba(255,255,255,0.1);padding:2px 6px;border-radius:4px;font-size:11px;word-break:break-all;">${DISCORD_REDIRECT_URI}</code></li>
+        <li>⚠️ Untuk production: exchange token di <b>backend/server</b> agar CLIENT_SECRET aman</li>
+    `;
+
+    const overlay = document.createElement('div');
+    overlay.id = 'oauth-info-overlay';
+    overlay.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,0.85);z-index:9999;display:flex;align-items:center;justify-content:center;padding:1rem;backdrop-filter:blur(4px);';
+    overlay.innerHTML = `
+        <div style="background:#0f1020;border:1px solid rgba(139,92,246,0.3);border-radius:1.25rem;padding:2rem;max-width:480px;width:100%;box-shadow:0 0 60px rgba(139,92,246,0.2);animation:slideUp 0.4s ease forwards;">
+            <div style="text-align:center;margin-bottom:1.5rem;">
+                <div style="font-size:1.4rem;font-weight:900;font-style:italic;text-transform:uppercase;font-family:'Rajdhani',sans-serif;">${icon}${title}</div>
+                <p style="color:#94a3b8;font-size:0.8rem;margin-top:0.5rem;">Ikuti langkah berikut untuk mengaktifkan login ini</p>
+            </div>
+            <ol style="color:#e2e8f0;font-size:0.85rem;line-height:1.8;padding-left:1.25rem;display:flex;flex-direction:column;gap:0.4rem;">
+                ${steps}
+            </ol>
+            <button onclick="document.getElementById('oauth-info-overlay').remove()" style="margin-top:1.5rem;width:100%;padding:0.85rem;background:linear-gradient(135deg,#8b5cf6,#6366f1);color:white;font-weight:700;border:none;border-radius:0.75rem;cursor:pointer;text-transform:uppercase;letter-spacing:0.1em;font-size:0.8rem;">
+                Mengerti, Tutup
+            </button>
+        </div>
+    `;
+    document.body.appendChild(overlay);
+    overlay.addEventListener('click', (e) => { if (e.target === overlay) overlay.remove(); });
+}
+
+function setLoggedInUI(username, avatarUrl, provider) {
+    // Buat avatar HTML berdasarkan provider
+    let avatarHTML = '';
+    if (avatarUrl) {
+        avatarHTML = `<img src="${avatarUrl}" class="w-6 h-6 rounded-full object-cover border border-tera-purple/50" alt="avatar">`;
+    } else if (provider === 'discord') {
+        avatarHTML = `<div class="w-6 h-6 rounded-full bg-[#5865F2]/30 border border-[#5865F2]/50 flex items-center justify-center"><i class="fab fa-discord text-[10px] text-[#5865F2]"></i></div>`;
+    } else if (provider === 'google') {
+        avatarHTML = `<div class="w-6 h-6 rounded-full bg-[#4285F4]/30 border border-[#4285F4]/50 flex items-center justify-center"><svg class="w-3 h-3" viewBox="0 0 24 24"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg></div>`;
+    } else {
+        avatarHTML = `<div class="w-6 h-6 rounded-full bg-tera-purple/30 border border-tera-purple/50 flex items-center justify-center"><i class="fas fa-user text-[10px] text-tera-purple"></i></div>`;
+    }
+
     // Desktop
     document.getElementById('nav-login-btn').classList.add('hidden');
     const userInfo = document.getElementById('nav-user-info');
     userInfo.classList.remove('hidden');
     userInfo.classList.add('flex');
+    const navAvatarEl = userInfo.querySelector('.w-6.h-6.rounded-full');
+    if (navAvatarEl) navAvatarEl.outerHTML = avatarHTML;
     document.getElementById('nav-username').textContent = username;
     // Mobile
     document.getElementById('mobile-login-btn').classList.add('hidden');
@@ -1720,6 +1911,11 @@ function setLoggedInUI(username) {
 }
 
 function handleLogout() {
+    // Google sign out jika ada
+    if (window.handleGoogleSignOut && window._currentFirebaseUser) {
+        window._currentFirebaseUser = null;
+        window.handleGoogleSignOut();
+    }
     localStorage.removeItem(TERA_SESSION_KEY);
     sessionStorage.removeItem(TERA_SESSION_KEY);
     // Desktop
@@ -1736,7 +1932,11 @@ function handleLogout() {
 
 // ESC key to close modal
 document.addEventListener('keydown', function(e) {
-    if (e.key === 'Escape') closeLoginModal();
+    if (e.key === 'Escape') {
+        closeLoginModal();
+        const oauthOverlay = document.getElementById('oauth-info-overlay');
+        if (oauthOverlay) oauthOverlay.remove();
+    }
     if (e.key === 'Enter' && !document.getElementById('login-modal').classList.contains('hidden')) {
         handleModalLogin();
     }
