@@ -4,23 +4,24 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>TERA STORE | The Honor One</title>
-    
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Rajdhani:ital,wght@0,600;0,700;1,700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://cdn.tailwindcss.com"></script>
-    
+
     <script>
         tailwind.config = {
             theme: {
                 extend: {
                     colors: {
-                        'tera-dark': '#05020a',
-                        'tera-darker': '#020104',
-                        'tera-purple': '#a855f7',
-                        'tera-blue': '#3b82f6',
-                        'tera-gold': '#fbbf24',
+                        'tera-dark': '#0d0e1a',
+                        'tera-darker': '#07080f',
+                        'tera-purple': '#8b5cf6',
+                        'tera-blue': '#6366f1',
+                        'tera-gold': '#f59e0b',
+                        'tera-green': '#10b981',
                         'tiktok-pink': '#ff0050',
                         'tiktok-cyan': '#00f2fe',
                     },
@@ -49,65 +50,139 @@
     </script>
 
     <style>
-        body { background-color: #05020a; color: #ffffff; overflow-x: hidden; position: relative; }
-        .bg-grid { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background-image: linear-gradient(to right, rgba(255,255,255,0.02) 1px, transparent 1px), linear-gradient(to bottom, rgba(255,255,255,0.02) 1px, transparent 1px); background-size: 40px 40px; z-index: -2; pointer-events: none; }
-        .bg-orb-1, .bg-orb-2 { position: fixed; border-radius: 50%; filter: blur(100px); z-index: -1; opacity: 0.4; pointer-events: none; }
-        .bg-orb-1 { width: 40vw; height: 40vw; background: rgba(168, 85, 247, 0.15); top: -10%; left: -10%; animation: float 10s ease-in-out infinite alternate; }
-        .bg-orb-2 { width: 50vw; height: 50vw; background: rgba(59, 130, 246, 0.1); bottom: -20%; right: -10%; animation: float 12s ease-in-out infinite alternate-reverse; }
-        .glass { background: rgba(10, 5, 20, 0.4); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.05); }
-        .nav-scrolled { background: rgba(5, 2, 10, 0.85); box-shadow: 0 10px 30px -10px rgba(0,0,0,0.8); border-bottom: 1px solid rgba(168, 85, 247, 0.2); }
-        
+        body { background-color: #0d0e1a; color: #e2e8f0; overflow-x: hidden; position: relative; }
+        .bg-grid { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background-image: linear-gradient(to right, rgba(139,92,246,0.04) 1px, transparent 1px), linear-gradient(to bottom, rgba(139,92,246,0.04) 1px, transparent 1px); background-size: 40px 40px; z-index: -2; pointer-events: none; }
+        .bg-orb-1, .bg-orb-2 { position: fixed; border-radius: 50%; filter: blur(110px); z-index: -1; opacity: 0.6; pointer-events: none; }
+        .bg-orb-1 { width: 40vw; height: 40vw; background: rgba(139, 92, 246, 0.18); top: -10%; left: -10%; animation: float 10s ease-in-out infinite alternate; }
+        .bg-orb-2 { width: 50vw; height: 50vw; background: rgba(245, 158, 11, 0.1); bottom: -20%; right: -10%; animation: float 12s ease-in-out infinite alternate-reverse; }
+        .glass { background: rgba(15, 16, 30, 0.75); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); border: 1px solid rgba(139, 92, 246, 0.15); }
+        .nav-scrolled { background: rgba(10, 11, 20, 0.95); box-shadow: 0 10px 30px -12px rgba(139,92,246,0.25); border-bottom: 1px solid rgba(139,92,246,0.15); }
+
         .glow-card-wrapper { position: relative; border-radius: 1rem; z-index: 1; }
-        .glow-card-wrapper::before { content: ""; position: absolute; inset: -2px; border-radius: 1.1rem; background: linear-gradient(45deg, #a855f7, #3b82f6, #a855f7, #fbbf24); background-size: 300%; z-index: -1; opacity: 0; transition: opacity 0.4s ease; filter: blur(8px); animation: gradient-x 4s linear infinite; }
-        .glow-card-wrapper:hover::before { opacity: 1; }
-        .item-card { background: linear-gradient(145deg, rgba(20,10,35,0.8) 0%, rgba(10,5,15,0.95) 100%); border: 1px solid rgba(168,85,247,0.15); transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); height: 100%; }
-        .glow-card-wrapper:hover .item-card { transform: translateY(-5px); border-color: rgba(255,255,255,0.1); }
-        
-        .text-gradient-animated { background: linear-gradient(to right, #a855f7, #3b82f6, #fbbf24, #a855f7); background-size: 300% auto; -webkit-background-clip: text; -webkit-text-fill-color: transparent; animation: gradient-x 4s linear infinite; }
-        
+        .glow-card-wrapper::before { content: ""; position: absolute; inset: -2px; border-radius: 1.1rem; background: linear-gradient(45deg, #8b5cf6, #6366f1, #f59e0b, #8b5cf6); background-size: 300%; z-index: -1; opacity: 0; transition: opacity 0.4s ease; filter: blur(8px); animation: gradient-x 4s linear infinite; }
+        .glow-card-wrapper:hover::before { opacity: 0.65; }
+        .item-card { background: #12131f; border: 1px solid rgba(139, 92, 246, 0.15); box-shadow: 0 1px 3px rgba(0,0,0,0.3); transition: all 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275); height: 100%; }
+        .glow-card-wrapper:hover .item-card { transform: translateY(-5px); border-color: rgba(139,92,246,0.35); box-shadow: 0 12px 28px -10px rgba(139,92,246,0.3); }
+
+        .text-gradient-animated { background: linear-gradient(to right, #a78bfa, #818cf8, #fbbf24, #a78bfa); background-size: 300% auto; -webkit-background-clip: text; -webkit-text-fill-color: transparent; animation: gradient-x 4s linear infinite; }
+        .text-gradient-green { background: linear-gradient(to right, #34d399, #fbbf24, #34d399); background-size: 300% auto; -webkit-background-clip: text; -webkit-text-fill-color: transparent; animation: gradient-x 4s linear infinite; }
+
         /* Encyclopedia Tab System */
         .encyclopedia-tab { display: none; }
         .encyclopedia-tab.active { display: block; animation: slideInRight 0.4s ease-out forwards; }
         .tab-btn { position: relative; overflow: hidden; }
-        .tab-btn::before { content: ''; position: absolute; left: 0; top: 0; height: 100%; width: 0; background: linear-gradient(90deg, rgba(168,85,247,0.2), transparent); transition: width 0.3s ease; z-index: -1; }
+        .tab-btn::before { content: ''; position: absolute; left: 0; top: 0; height: 100%; width: 0; background: linear-gradient(90deg, rgba(139,92,246,0.12), transparent); transition: width 0.3s ease; z-index: -1; }
         .tab-btn:hover::before { width: 100%; }
-        .tab-btn.active { border-left: 4px solid #a855f7; color: #fff; background: rgba(168,85,247,0.1); }
+        .tab-btn.active { border-left: 4px solid #8b5cf6; color: #e2e8f0; background: rgba(139,92,246,0.12); }
         @keyframes slideInRight { from { opacity: 0; transform: translateX(20px); } to { opacity: 1; transform: translateX(0); } }
 
         /* Navigation Page System */
         .page-section { display: none; }
         .page-section.active-page { display: block; animation: slideUpFade 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
-        .active-nav { color: #a855f7 !important; text-shadow: 0 0 10px rgba(168,85,247,0.5); }
+        .active-nav { color: #a78bfa !important; }
         @keyframes slideUpFade { from { opacity: 0; transform: translateY(30px) scale(0.98); } to { opacity: 1; transform: translateY(0) scale(1); } }
+
+        /* Catalog game (Sailor Piece / Grow a Garden) switch */
+        .game-pane { display: none; }
+        .game-pane.active-game { display: block; animation: slideUpFade 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+        .game-tab-btn.active-game-btn { color: #fff; }
+
+        /* Section group collapse (Katalog) */
+        .section-group .section-body { display: grid; grid-template-rows: 0fr; overflow: hidden; transition: grid-template-rows 0.45s cubic-bezier(0.16, 1, 0.3, 1); }
+        .section-group .section-body > div { overflow: hidden; min-height: 0; }
+        .section-group.open .section-body { grid-template-rows: 1fr; }
+        .section-chevron { transition: transform 0.35s ease; }
+        .section-group.open .section-chevron { transform: rotate(180deg); }
 
         /* Scrollbars */
         ::-webkit-scrollbar { width: 8px; height: 8px; }
-        ::-webkit-scrollbar-track { background: #020104; }
-        ::-webkit-scrollbar-thumb { background: linear-gradient(to bottom, #a855f7, #3b82f6); border-radius: 10px; }
-        ::-webkit-scrollbar-thumb:hover { background: linear-gradient(to bottom, #c084fc, #60a5fa); }
+        ::-webkit-scrollbar-track { background: #0d0e1a; }
+        ::-webkit-scrollbar-thumb { background: linear-gradient(to bottom, #8b5cf6, #6366f1); border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: linear-gradient(to bottom, #7c3aed, #4f46e5); }
         .wiki-scroll::-webkit-scrollbar { width: 4px; }
-        .wiki-scroll::-webkit-scrollbar-track { background: rgba(255,255,255,0.02); border-radius: 10px; }
-        .wiki-scroll::-webkit-scrollbar-thumb { background: rgba(168,85,247,0.5); border-radius: 10px; }
-        
+        .wiki-scroll::-webkit-scrollbar-track { background: rgba(139,92,246,0.05); border-radius: 10px; }
+        .wiki-scroll::-webkit-scrollbar-thumb { background: rgba(139,92,246,0.4); border-radius: 10px; }
+        .hide-scrollbar::-webkit-scrollbar { display: none; }
+        .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
         input[type=number]::-webkit-inner-spin-button, input[type=number]::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
 
         /* Social Buttons */
         .btn-tiktok { position: relative; z-index: 1; overflow: hidden; }
-        .btn-tiktok::before { content: ''; position: absolute; inset: 0; z-index: -1; background: linear-gradient(45deg, #00f2fe, #ff0050); opacity: 0; transition: opacity 0.3s ease; }
+        .btn-tiktok::before { content: ''; position: absolute; inset: 0; z-index: -1; background: linear-gradient(45deg, #00c2cc, #ff0050); opacity: 0; transition: opacity 0.3s ease; }
         .btn-tiktok:hover::before { opacity: 1; }
-        .btn-tiktok:hover { box-shadow: 0 0 15px rgba(255, 0, 80, 0.5); border-color: transparent; }
+        .btn-tiktok:hover { box-shadow: 0 4px 18px rgba(255, 0, 80, 0.35); border-color: transparent; }
 
         .btn-ig { position: relative; z-index: 1; overflow: hidden; }
         .btn-ig::before { content: ''; position: absolute; inset: 0; z-index: -1; background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888); opacity: 0; transition: opacity 0.3s ease; }
         .btn-ig:hover::before { opacity: 1; }
-        .btn-ig:hover { box-shadow: 0 0 15px rgba(220, 39, 67, 0.5); border-color: transparent; }
-        
-        .tier-sp { background: rgba(239, 68, 68, 0.2); color: #fca5a5; border: 1px solid rgba(239, 68, 68, 0.3); }
-        .tier-s { background: rgba(251, 191, 36, 0.2); color: #fcd34d; border: 1px solid rgba(251, 191, 36, 0.3); }
-        .tier-a { background: rgba(59, 130, 246, 0.2); color: #93c5fd; border: 1px solid rgba(59, 130, 246, 0.3); }
+        .btn-ig:hover { box-shadow: 0 4px 18px rgba(220, 39, 67, 0.35); border-color: transparent; }
+
+        .tier-sp { background: rgba(239, 68, 68, 0.15); color: #f87171; border: 1px solid rgba(239, 68, 68, 0.3); }
+        .tier-s { background: rgba(245, 158, 11, 0.15); color: #fbbf24; border: 1px solid rgba(245, 158, 11, 0.3); }
+        .tier-a { background: rgba(99, 102, 241, 0.15); color: #818cf8; border: 1px solid rgba(99, 102, 241, 0.3); }
+
+        /* ===== LOGIN MODAL STYLES ===== */
+        .input-field { background: rgba(10,11,25,0.8); border: 1px solid rgba(139,92,246,0.2); color: #e2e8f0; transition: all 0.3s ease; outline: none; }
+        .input-field:focus { border-color: rgba(139,92,246,0.6); box-shadow: 0 0 0 3px rgba(139,92,246,0.12), 0 0 20px rgba(139,92,246,0.1); }
+        .input-field::placeholder { color: rgba(148,163,184,0.5); }
+        .login-card-wrapper-modal { position: relative; border-radius: 1.5rem; }
+        .login-card-wrapper-modal::before { content: ""; position: absolute; inset: -1.5px; border-radius: 1.6rem; background: linear-gradient(45deg, #8b5cf6, #6366f1, #f59e0b, #8b5cf6); background-size: 300%; z-index: -1; opacity: 0.5; filter: blur(4px); animation: gradient-x 4s linear infinite; }
+        .btn-primary { background: linear-gradient(135deg, #8b5cf6, #6366f1); transition: all 0.3s ease; position: relative; overflow: hidden; }
+        .btn-primary::before { content: ''; position: absolute; inset: 0; background: linear-gradient(135deg, #7c3aed, #4f46e5); opacity: 0; transition: opacity 0.3s ease; }
+        .btn-primary:hover::before { opacity: 1; }
+        .btn-primary:hover { box-shadow: 0 0 25px rgba(139,92,246,0.5); transform: translateY(-1px); }
+        .btn-primary:active { transform: translateY(0); }
+        .btn-social { background: rgba(10,11,25,0.8); border: 1px solid rgba(139,92,246,0.2); transition: all 0.3s ease; }
+        .btn-social:hover { border-color: rgba(139,92,246,0.5); background: rgba(139,92,246,0.08); box-shadow: 0 0 15px rgba(139,92,246,0.15); }
+        .toggle-pass { cursor: pointer; color: rgba(148,163,184,0.6); transition: color 0.2s; }
+        .toggle-pass:hover { color: #a78bfa; }
+        input[type="checkbox"]:checked { accent-color: #8b5cf6; }
+        #login-modal { transition: opacity 0.3s ease; }
+        #login-modal.show { opacity: 1; }
+        @keyframes slideUp { from { opacity: 0; transform: translateY(30px) scale(0.97); } to { opacity: 1; transform: translateY(0) scale(1); } }
+        .animate-slide-up { animation: slideUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+
+        .rarity-common { background: rgba(148,163,184,0.12); color: #94a3b8; border: 1px solid rgba(148,163,184,0.25); }
+        .rarity-uncommon { background: rgba(52,211,153,0.12); color: #34d399; border: 1px solid rgba(52,211,153,0.25); }
+        .rarity-rare { background: rgba(99,102,241,0.12); color: #818cf8; border: 1px solid rgba(99,102,241,0.25); }
+        .rarity-epic { background: rgba(139,92,246,0.15); color: #a78bfa; border: 1px solid rgba(139,92,246,0.3); }
+        .rarity-legendary { background: rgba(245,158,11,0.15); color: #fbbf24; border: 1px solid rgba(245,158,11,0.3); }
+        .rarity-mythical { background: rgba(244,114,182,0.15); color: #f472b6; border: 1px solid rgba(244,114,182,0.3); }
+        .rarity-divine { background: rgba(239,68,68,0.15); color: #f87171; border: 1px solid rgba(239,68,68,0.3); }
+        .rarity-prismatic { background: linear-gradient(45deg, rgba(139,92,246,0.15), rgba(99,102,241,0.15), rgba(245,158,11,0.15)); color: #e2e8f0; border: 1px solid rgba(139,92,246,0.3); }
+
+        /* ===== OVERRIDE: BLACK BACKGROUND & DOMINANT WHITE TEXT ===== */
+        body { background-color: #000000 !important; color: #ffffff !important; }
+        .bg-grid { background-image: linear-gradient(to right, rgba(255,255,255,0.04) 1px, transparent 1px), linear-gradient(to bottom, rgba(255,255,255,0.04) 1px, transparent 1px) !important; }
+        .bg-orb-1 { background: rgba(139, 92, 246, 0.12) !important; }
+        .bg-orb-2 { background: rgba(245, 158, 11, 0.08) !important; }
+        .glass { background: rgba(0, 0, 0, 0.85) !important; border-color: rgba(255,255,255,0.12) !important; }
+        .nav-scrolled { background: rgba(0, 0, 0, 0.97) !important; border-bottom: 1px solid rgba(255,255,255,0.12) !important; }
+        .item-card { background: #0a0a0a !important; border-color: rgba(255,255,255,0.12) !important; color: #ffffff !important; }
+        .input-field { background: rgba(0,0,0,0.9) !important; border-color: rgba(255,255,255,0.15) !important; color: #ffffff !important; }
+        .btn-social { background: rgba(0,0,0,0.9) !important; border-color: rgba(255,255,255,0.15) !important; }
+        ::-webkit-scrollbar-track { background: #000000 !important; }
+        .wiki-scroll::-webkit-scrollbar-track { background: rgba(255,255,255,0.05) !important; }
+
+        body, p, span, div, li, td, th, label, a, h1, h2, h3, h4, h5, h6 {
+            color: #ffffff;
+        }
+        /* Keep accent / gradient text and tier badges using their own colors */
+        .text-gradient-animated, .text-gradient-green,
+        .tier-sp, .tier-s, .tier-a,
+        [class*="text-tera-"], [class*="text-tiktok-"],
+        .text-gray-400, .text-gray-500, .text-slate-400, .text-slate-500 {
+            color: revert;
+            -webkit-text-fill-color: revert;
+        }
+        .text-gradient-animated, .text-gradient-green {
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
     </style>
 </head>
-<body class="antialiased selection:bg-tera-purple selection:text-white flex flex-col min-h-screen">
+<body class="antialiased selection:bg-tera-purple selection:text-slate-100 flex flex-col min-h-screen">
 
     <!-- ADVANCED BACKGROUND ELEMENTS -->
     <div class="bg-grid"></div>
@@ -115,88 +190,252 @@
     <div class="bg-orb-2"></div>
 
     <!-- NAVBAR -->
-    <nav class="fixed w-full z-50 glass border-b border-white/5 transition-all duration-500" id="navbar">
+    <nav class="fixed w-full z-50 glass border-b border-purple-900/40 transition-all duration-500" id="navbar">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 h-20 flex items-center justify-between">
             <div class="flex items-center gap-3 cursor-pointer animate-float" onclick="switchPage('home')">
-               <img src="https://d.top4top.io/p_3783tlov21.jpg" alt="Logo TERA STORE" class="w-10 h-10 md:w-12 md:h-12 object-contain rounded-lg shadow-[0_0_15px_rgba(168,85,247,0.6)] border border-tera-purple/30">
+               <video src="https://a.top4top.io/m_3830vjpd61.mp4" autoplay loop muted playsinline class="w-10 h-10 md:w-12 md:h-12 object-contain rounded-lg" style="border:none;box-shadow:none;outline:none;"></video>
                 <div>
                     <h1 class="font-heading font-bold text-xl md:text-2xl italic tracking-tighter">TERA <span class="text-tera-purple uppercase">STORE</span></h1>
                 </div>
             </div>
-            
+
             <div class="flex items-center">
                 <div class="hidden md:flex gap-8 items-center text-sm font-semibold uppercase tracking-widest italic">
-                    <a href="javascript:void(0)" onclick="switchPage('home')" class="nav-link active-nav text-gray-300 hover:text-white transition-all">Home</a>
-                    <a href="javascript:void(0)" onclick="switchPage('joki')" class="nav-link text-gray-300 hover:text-white transition-all">Jasa Joki</a>
-                    <a href="javascript:void(0)" onclick="switchPage('wiki')" class="nav-link text-gray-300 hover:text-white transition-all">Ensiklopedia</a>
-                    <a href="javascript:void(0)" onclick="switchPage('katalog')" class="nav-link text-gray-300 hover:text-white transition-all">Katalog Item</a>
-                    <a href="#contact" class="bg-black/50 border border-white/20 btn-ig px-6 py-2.5 rounded-full text-white transition-all flex items-center gap-2">
+                    <a href="javascript:void(0)" onclick="switchPage('home')" class="nav-link active-nav text-slate-300 hover:text-slate-100 transition-all">Home</a>
+                    <a href="javascript:void(0)" onclick="switchPage('joki')" class="nav-link text-slate-300 hover:text-slate-100 transition-all">Jasa Joki</a>
+                    <a href="javascript:void(0)" onclick="switchPage('wiki')" class="nav-link text-slate-300 hover:text-slate-100 transition-all">Ensiklopedia</a>
+                    <a href="javascript:void(0)" onclick="switchPage('katalog')" class="nav-link text-slate-300 hover:text-slate-100 transition-all">Katalog Item</a>
+                    <a href="#contact" class="bg-black border border-white/10 btn-ig px-6 py-2.5 rounded-full text-white transition-all flex items-center gap-2">
                         <i class="fab fa-instagram"></i> DM Admin
                     </a>
+                    <!-- LOGIN BUTTON (Desktop) -->
+                    <button id="nav-login-btn" onclick="openLoginModal()" class="glass border border-tera-purple/40 hover:border-tera-purple/70 px-5 py-2 rounded-full text-sm font-bold uppercase italic tracking-widest text-tera-purple hover:text-white hover:bg-tera-purple/20 transition-all flex items-center gap-2">
+                        <i class="fas fa-right-to-bracket"></i> Login
+                    </button>
+                    <div id="nav-user-info" class="hidden items-center gap-3">
+                        <div class="flex items-center gap-2 glass border border-tera-purple/30 px-4 py-2 rounded-full">
+                            <div class="w-6 h-6 rounded-full bg-tera-purple/30 border border-tera-purple/50 flex items-center justify-center">
+                                <i class="fas fa-user text-[10px] text-tera-purple"></i>
+                            </div>
+                            <span id="nav-username" class="text-sm font-bold text-slate-200 italic"></span>
+                        </div>
+                        <button onclick="handleLogout()" class="text-xs text-slate-400 hover:text-red-400 transition-colors font-semibold uppercase tracking-wider">
+                            <i class="fas fa-right-from-bracket"></i>
+                        </button>
+                    </div>
                 </div>
-                
+
                 <!-- CART BUTTON (Desktop & Mobile) -->
-                <button onclick="toggleCart()" class="relative text-white hover:text-tera-purple transition-colors text-2xl ml-6 mr-4 md:mr-0">
+                <button onclick="toggleCart()" class="relative text-slate-100 hover:text-tera-purple transition-colors text-2xl ml-6 mr-4 md:mr-0">
                     <i class="fas fa-shopping-cart"></i>
-                    <span id="cart-count" class="absolute -top-2 -right-2 bg-red-500 text-white text-[10px] font-bold w-5 h-5 rounded-full flex items-center justify-center shadow-lg border border-white/20">0</span>
+                    <span id="cart-count" class="absolute -top-2 -right-2 bg-red-500 text-white text-[10px] font-bold w-5 h-5 rounded-full flex items-center justify-center shadow-lg border border-purple-800/40">0</span>
                 </button>
 
                 <!-- Mobile Menu Button -->
-                <button class="md:hidden text-white text-2xl hover:text-tera-purple transition-colors" id="mobile-btn"><i class="fas fa-bars"></i></button>
+                <button class="md:hidden text-slate-100 text-2xl hover:text-tera-purple transition-colors" id="mobile-btn"><i class="fas fa-bars"></i></button>
             </div>
         </div>
-        
+
         <!-- Mobile Menu -->
-        <div id="mobile-menu" class="hidden md:hidden glass border-t border-white/10 px-4 py-6 flex flex-col gap-6 text-center shadow-2xl">
-            <a href="javascript:void(0)" onclick="switchPage('home')" class="nav-link active-nav text-white font-bold uppercase italic tracking-widest text-lg">Home</a>
-            <a href="javascript:void(0)" onclick="switchPage('joki')" class="nav-link text-white font-bold uppercase italic tracking-widest text-lg">Jasa Joki</a>
-            <a href="javascript:void(0)" onclick="switchPage('wiki')" class="nav-link text-white font-bold uppercase italic tracking-widest text-lg">Ensiklopedia</a>
-            <a href="javascript:void(0)" onclick="switchPage('katalog')" class="nav-link text-white font-bold uppercase italic tracking-widest text-lg">Katalog Item</a>
+        <div id="mobile-menu" class="hidden md:hidden glass border-t border-purple-900/40 px-4 py-6 flex flex-col gap-6 text-center shadow-2xl">
+            <a href="javascript:void(0)" onclick="switchPage('home')" class="nav-link active-nav text-slate-100 font-bold uppercase italic tracking-widest text-lg">Home</a>
+            <a href="javascript:void(0)" onclick="switchPage('joki')" class="nav-link text-slate-100 font-bold uppercase italic tracking-widest text-lg">Jasa Joki</a>
+            <a href="javascript:void(0)" onclick="switchPage('wiki')" class="nav-link text-slate-100 font-bold uppercase italic tracking-widest text-lg">Ensiklopedia</a>
+            <a href="javascript:void(0)" onclick="switchPage('katalog')" class="nav-link text-slate-100 font-bold uppercase italic tracking-widest text-lg">Katalog Item</a>
             <a href="#contact" onclick="document.getElementById('mobile-menu').classList.add('hidden')" class="btn-ig text-white bg-black border border-white/10 py-3 rounded-xl font-bold uppercase italic tracking-widest mt-4 mx-4 flex justify-center items-center gap-2"><i class="fab fa-instagram"></i> DM Admin</a>
+            <button id="mobile-login-btn" onclick="openLoginModal(); document.getElementById('mobile-menu').classList.add('hidden')" class="glass border border-tera-purple/40 text-tera-purple py-3 rounded-xl font-bold uppercase italic tracking-widest mx-4 flex justify-center items-center gap-2"><i class="fas fa-right-to-bracket"></i> Login</button>
+            <div id="mobile-user-info" class="hidden items-center justify-center gap-3 mx-4 glass border border-tera-purple/30 py-3 px-4 rounded-xl">
+                <i class="fas fa-user text-tera-purple text-sm"></i>
+                <span id="mobile-username" class="text-sm font-bold text-slate-200 italic"></span>
+                <button onclick="handleLogout()" class="text-xs text-red-400 font-bold ml-auto"><i class="fas fa-right-from-bracket"></i> Logout</button>
+            </div>
         </div>
     </nav>
+
+    <!-- ======= LOGIN MODAL ======= -->
+    <div id="login-modal" class="fixed inset-0 z-[999] flex items-center justify-center px-4 py-8 hidden">
+        <!-- Backdrop -->
+        <div class="absolute inset-0 bg-tera-darker/80 backdrop-blur-sm" onclick="closeLoginModal()"></div>
+
+        <!-- Modal Card -->
+        <div class="relative w-full max-w-md animate-slide-up z-10">
+
+            <!-- Close Button -->
+            <button onclick="closeLoginModal()" class="absolute -top-4 -right-4 w-9 h-9 rounded-full glass border border-purple-900/40 text-slate-400 hover:text-white hover:border-red-500/50 transition-all flex items-center justify-center text-sm z-20">
+                <i class="fas fa-times"></i>
+            </button>
+
+            <!-- Logo & Title -->
+            <div class="text-center mb-6">
+                <div class="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-tera-purple/15 border border-tera-purple/30 shadow-[0_0_30px_rgba(139,92,246,0.25)] mb-4 mx-auto">
+                    <i class="fas fa-shield-halved text-2xl text-tera-purple"></i>
+                </div>
+                <h2 class="font-heading font-black text-3xl italic uppercase">
+                    Masuk ke <span class="text-gradient-animated">Akun</span>
+                </h2>
+                <p class="text-slate-400 text-sm mt-1">Selamat datang kembali di TERA STORE!</p>
+            </div>
+
+            <!-- Card -->
+            <div class="login-card-wrapper-modal">
+                <div class="glass rounded-3xl p-7 border border-tera-purple/20">
+
+                    <!-- Alert Error -->
+                    <div id="modal-alert-error" class="hidden rounded-xl px-4 py-3 mb-5 text-sm flex items-center gap-2" style="background:rgba(239,68,68,0.1);border:1px solid rgba(239,68,68,0.3);color:#f87171;">
+                        <i class="fas fa-circle-exclamation shrink-0"></i>
+                        <span id="modal-alert-msg">Username atau password salah.</span>
+                    </div>
+
+                    <!-- Form -->
+                    <div class="flex flex-col gap-5">
+                        <!-- Username -->
+                        <div class="flex flex-col gap-1.5">
+                            <label class="text-xs font-bold uppercase tracking-widest text-slate-400">Username / Email</label>
+                            <div class="relative">
+                                <span class="absolute left-4 top-1/2 -translate-y-1/2 text-purple-400 text-sm"><i class="fas fa-user"></i></span>
+                                <input type="text" id="modal-username" class="input-field w-full pl-10 pr-4 py-3.5 rounded-xl text-sm font-medium" placeholder="Masukkan username atau email" autocomplete="username">
+                            </div>
+                        </div>
+
+                        <!-- Password -->
+                        <div class="flex flex-col gap-1.5">
+                            <div class="flex justify-between items-center">
+                                <label class="text-xs font-bold uppercase tracking-widest text-slate-400">Password</label>
+                                <a href="#" class="text-xs text-tera-purple hover:text-purple-300 transition-colors font-medium">Lupa Password?</a>
+                            </div>
+                            <div class="relative">
+                                <span class="absolute left-4 top-1/2 -translate-y-1/2 text-purple-400 text-sm"><i class="fas fa-lock"></i></span>
+                                <input type="password" id="modal-password" class="input-field w-full pl-10 pr-12 py-3.5 rounded-xl text-sm font-medium" placeholder="Masukkan password" autocomplete="current-password">
+                                <button type="button" class="toggle-pass absolute right-4 top-1/2 -translate-y-1/2 text-sm" onclick="toggleModalPassword()">
+                                    <i class="fas fa-eye" id="modal-eye-icon"></i>
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Remember me -->
+                        <label class="flex items-center gap-3 cursor-pointer select-none">
+                            <input type="checkbox" id="modal-remember" class="w-4 h-4 rounded accent-purple-500">
+                            <span class="text-sm text-slate-400">Ingat saya di perangkat ini</span>
+                        </label>
+
+                        <!-- Submit -->
+                        <button onclick="handleModalLogin()" class="btn-primary w-full text-white font-bold py-4 rounded-xl uppercase tracking-widest italic text-sm flex items-center justify-center gap-2 shadow-[0_0_20px_rgba(139,92,246,0.3)] mt-1 relative z-10">
+                            <span id="modal-btn-text"><i class="fas fa-right-to-bracket mr-1"></i> Masuk Sekarang</span>
+                            <span id="modal-btn-loading" class="hidden"><i class="fas fa-spinner fa-spin mr-1"></i> Memproses...</span>
+                        </button>
+                    </div>
+
+                    <!-- Divider -->
+                    <div class="flex items-center gap-4 my-5">
+                        <div class="flex-1 h-px" style="background:linear-gradient(to right, transparent, rgba(139,92,246,0.3), transparent)"></div>
+                        <span class="text-xs text-slate-500 font-semibold uppercase tracking-wider">atau masuk dengan</span>
+                        <div class="flex-1 h-px" style="background:linear-gradient(to right, transparent, rgba(139,92,246,0.3), transparent)"></div>
+                    </div>
+
+                    <!-- Social Login -->
+                    <div class="grid grid-cols-2 gap-3">
+                        <button class="btn-social rounded-xl py-3 text-sm font-bold text-slate-300 flex items-center justify-center gap-2 transition-all">
+                            <svg class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg>
+                            Google
+                        </button>
+                        <button class="btn-social rounded-xl py-3 text-sm font-bold text-slate-300 flex items-center justify-center gap-2 transition-all">
+                            <i class="fab fa-discord text-[#5865F2]"></i>
+                            Discord
+                        </button>
+                    </div>
+
+                    <!-- Register link -->
+                    <p class="text-center text-sm text-slate-500 mt-5">
+                        Belum punya akun?
+                        <a href="#" class="text-tera-purple hover:text-purple-300 font-bold transition-colors ml-1">Daftar Sekarang</a>
+                    </p>
+                </div>
+            </div>
+
+            <!-- Trust badges -->
+            <div class="flex items-center justify-center gap-5 mt-5">
+                <div class="flex items-center gap-1.5 text-xs text-slate-500"><i class="fas fa-lock text-tera-green text-[10px]"></i> SSL Terenkripsi</div>
+                <div class="w-px h-4 bg-purple-900/40"></div>
+                <div class="flex items-center gap-1.5 text-xs text-slate-500"><i class="fas fa-shield-check text-tera-purple text-[10px]"></i> Data Aman</div>
+                <div class="w-px h-4 bg-purple-900/40"></div>
+                <div class="flex items-center gap-1.5 text-xs text-slate-500"><i class="fas fa-crown text-tera-gold text-[10px]"></i> Verified Seller</div>
+            </div>
+        </div>
+    </div>
+    <!-- ======= END LOGIN MODAL ======= -->
 
     <!-- KONTEN UTAMA -->
     <main class="flex-grow">
         <!-- 1. SECTION HOME -->
         <section id="home" class="page-section active-page pt-36 pb-20 px-4 max-w-7xl mx-auto text-center relative">
-            <div class="inline-flex items-center gap-2 px-5 py-2 rounded-full bg-tera-gold/10 border border-tera-gold/30 text-tera-gold text-xs font-bold mb-8 italic uppercase tracking-wider animate-pulse-slow shadow-[0_0_20px_rgba(251,191,36,0.2)]">
-                <i class="fas fa-crown"></i> Verified Seller Sailor Piece
+            <div class="inline-flex items-center gap-2 px-5 py-2 rounded-full bg-tera-gold/10 border border-tera-gold/30 text-tera-gold text-xs font-bold mb-8 italic uppercase tracking-wider animate-pulse-slow shadow-[0_0_20px_rgba(217,119,6,0.2)]">
+                <i class="fas fa-crown"></i> Verified Seller Sailor Piece & Grow a Garden
             </div>
             <h2 class="text-5xl md:text-7xl lg:text-8xl font-heading font-black italic leading-tight mb-6 drop-shadow-2xl">
                 Pusat Item & Jasa <br>
-                <span class="text-gradient-animated uppercase drop-shadow-[0_0_30px_rgba(168,85,247,0.5)]">The Honor One</span>
+                <span class="text-gradient-animated uppercase drop-shadow-[0_0_30px_rgba(5,150,105,0.5)]">Roblox Terpercaya</span>
             </h2>
-            <p class="text-gray-400 text-sm md:text-lg mb-12 max-w-2xl mx-auto font-medium leading-relaxed">
-                Pelajari seluruh rahasia, META, dan drop item Sailor Piece di Ensiklopedia kami, lalu wujudkan karakter impian Anda melalui Katalog TERA STORE!
+            <p class="text-slate-300 text-sm md:text-lg mb-12 max-w-2xl mx-auto font-medium leading-relaxed">
+                Pelajari seluruh rahasia, META, dan drop item Sailor Piece di Ensiklopedia kami, atau langsung borong Sheckles dan item Grow a Garden lewat Katalog TERA STORE!
             </p>
             <div class="flex flex-col sm:flex-row justify-center gap-4">
-                <button onclick="switchPage('katalog')" class="relative group overflow-hidden bg-tera-purple text-white px-8 py-4 rounded-xl font-bold uppercase tracking-widest italic transition shadow-[0_0_20px_rgba(168,85,247,0.4)] hover:shadow-[0_0_30px_rgba(168,85,247,0.6)]">
+                <button onclick="switchPage('katalog')" class="relative group overflow-hidden bg-tera-purple text-white px-8 py-4 rounded-xl font-bold uppercase tracking-widest italic transition shadow-[0_0_20px_rgba(5,150,105,0.4)] hover:shadow-[0_0_30px_rgba(5,150,105,0.6)]">
                     <span class="relative z-10">Buka Katalog</span>
                     <div class="absolute inset-0 h-full w-full bg-white/20 scale-x-0 group-hover:scale-x-100 transform origin-left transition-transform duration-300 ease-out z-0"></div>
                 </button>
-                <button onclick="switchPage('wiki')" class="glass hover:bg-white/10 border border-white/20 text-white px-8 py-4 rounded-xl font-bold uppercase tracking-widest italic transition">Baca Ensiklopedia</button>
+                <button onclick="switchPage('wiki')" class="glass hover:bg-[#1a1b2e] border border-purple-800/40 text-slate-100 px-8 py-4 rounded-xl font-bold uppercase tracking-widest italic transition">Baca Ensiklopedia</button>
+            </div>
+
+            <!-- Game shortcuts -->
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-6 max-w-4xl mx-auto mt-16">
+                <button onclick="switchPage('katalog'); setActiveGame('sailorpiece')" class="glow-card-wrapper text-left">
+                    <div class="item-card rounded-2xl p-6 flex items-center gap-4 border-tera-purple/20">
+                        <div class="w-14 h-14 rounded-xl bg-tera-purple/15 border border-tera-purple/30 flex items-center justify-center text-2xl text-tera-purple shrink-0"><i class="fas fa-anchor"></i></div>
+                        <div>
+                            <h4 class="font-heading font-bold text-lg italic text-slate-100">Sailor Piece</h4>
+                            <p class="text-xs text-slate-400 mt-1">Spec, sword, race & material crafting</p>
+                        </div>
+                    </div>
+                </button>
+                <button onclick="switchPage('katalog'); setActiveGame('gag1')" class="glow-card-wrapper text-left">
+                    <div class="item-card rounded-2xl p-6 flex items-center gap-4 border-tera-green/20">
+                        <div class="w-14 h-14 rounded-xl bg-tera-green/15 border border-tera-green/30 flex items-center justify-center text-2xl text-tera-green shrink-0"><i class="fas fa-seedling"></i></div>
+                        <div>
+                            <h4 class="font-heading font-bold text-lg italic text-slate-100">Grow a Garden 1</h4>
+                            <p class="text-xs text-slate-400 mt-1">Sheckles, seeds, pets, eggs & gear</p>
+                        </div>
+                    </div>
+                </button>
+                <button onclick="switchPage('katalog'); setActiveGame('gag2')" class="glow-card-wrapper text-left">
+                    <div class="item-card rounded-2xl p-6 flex items-center gap-4 border-yellow-500/20">
+                        <div class="w-14 h-14 rounded-xl bg-yellow-500/15 border border-yellow-500/30 flex items-center justify-center text-2xl text-yellow-400 shrink-0"><i class="fas fa-leaf"></i></div>
+                        <div>
+                            <h4 class="font-heading font-bold text-lg italic text-slate-100">Grow a Garden 2</h4>
+                            <p class="text-xs text-slate-400 mt-1">Item & konten eksklusif seri kedua</p>
+                        </div>
+                    </div>
+                </button>
             </div>
         </section>
 
         <!-- 2. SECTION JOKI -->
         <section id="joki" class="page-section pt-32 pb-16 px-4 max-w-7xl mx-auto">
-            <div class="flex items-center gap-4 mb-10 border-b border-white/10 pb-4">
-                <div class="w-12 h-12 rounded-xl bg-tera-purple/20 flex items-center justify-center border border-tera-purple/30 shadow-[0_0_15px_rgba(168,85,247,0.3)]">
+            <div class="flex items-center gap-4 mb-10 border-b border-purple-900/40 pb-4">
+                <div class="w-12 h-12 rounded-xl bg-tera-purple/20 flex items-center justify-center border border-tera-purple/30 shadow-[0_0_15px_rgba(5,150,105,0.3)]">
                     <i class="fas fa-bolt text-2xl text-tera-purple animate-pulse"></i>
                 </div>
                 <h3 class="text-4xl font-heading font-black italic uppercase">Layanan <span class="text-gradient-animated">Joki</span></h3>
             </div>
-            
+
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
                 <!-- Joki Cards -->
                 <div class="glow-card-wrapper flex flex-col">
                     <div class="item-card rounded-2xl p-6 relative overflow-hidden flex flex-col flex-grow">
                         <div class="absolute -top-4 -right-4 p-6 opacity-5 transition-opacity"><i class="fas fa-level-up-alt text-8xl"></i></div>
                         <h4 class="text-xl font-bold text-white mb-2 italic">Joki Leveling</h4>
-                        <p class="text-xs text-gray-400 mb-6 leading-relaxed flex-grow">Tingkatkan level karakter Anda dengan cepat dan aman tanpa menggunakan eksploit/cheat.</p>
-                        <div class="flex justify-between items-center bg-black/50 p-3 rounded-xl border border-white/5 mb-4 backdrop-blur-sm">
-                            <span class="text-[10px] text-gray-500 uppercase font-bold tracking-widest">Start Price</span>
+                        <p class="text-xs text-slate-400 mb-6 leading-relaxed flex-grow">Tingkatkan level karakter Anda dengan cepat dan aman tanpa menggunakan eksploit/cheat.</p>
+                        <div class="flex justify-between items-center bg-[#0f1020] p-3 rounded-xl border border-purple-900/40 mb-4 backdrop-blur-sm">
+                            <span class="text-[10px] text-slate-400 uppercase font-bold tracking-widest">Start Price</span>
                             <span class="text-tera-gold font-bold">Rp 1.000+</span>
                         </div>
                         <div class="grid grid-cols-2 gap-2 mt-auto">
@@ -210,10 +449,10 @@
                     <div class="item-card rounded-2xl p-6 relative overflow-hidden flex flex-col border-tera-blue/20 flex-grow">
                         <div class="absolute -top-4 -right-4 p-6 opacity-5 transition-opacity"><i class="fas fa-fist-raised text-8xl"></i></div>
                         <h4 class="text-xl font-bold text-white mb-2 italic">Joki Title</h4>
-                        <p class="text-xs text-gray-400 mb-6 leading-relaxed flex-grow">Dapatkan Title keren dan unik untuk karakter Anda (Cth: The Honor One).</p>
-                        <div class="flex justify-between items-center bg-black/50 p-3 rounded-xl border border-white/5 mb-4 backdrop-blur-sm">
-                            <span class="text-[10px] text-gray-500 uppercase font-bold tracking-widest">Start Price</span>
-                            <span class="text-tera-blue font-bold">Rp 5.000+</span>
+                        <p class="text-xs text-slate-400 mb-6 leading-relaxed flex-grow">Dapatkan Title keren dan unik untuk karakter Anda (Cth: The Honor One).</p>
+                        <div class="flex justify-between items-center bg-[#0f1020] p-3 rounded-xl border border-purple-900/40 mb-4 backdrop-blur-sm">
+                            <span class="text-[10px] text-slate-400 uppercase font-bold tracking-widest">Start Price</span>
+                            <span class="text-indigo-400 font-bold">Rp 5.000+</span>
                         </div>
                         <div class="grid grid-cols-2 gap-2 mt-auto">
                             <button onclick="orderJoki('Joki Title', 'tiktok')" class="btn-tiktok w-full bg-black text-white py-2.5 rounded-xl font-bold transition-all border border-white/10 uppercase italic text-[11px] tracking-widest flex items-center justify-center gap-1.5"><i class="fab fa-tiktok"></i> TikTok</button>
@@ -226,9 +465,9 @@
                     <div class="item-card rounded-2xl p-6 relative overflow-hidden flex flex-col border-tera-gold/20 flex-grow">
                         <div class="absolute -top-4 -right-4 p-6 opacity-5 transition-opacity"><i class="fas fa-ship text-8xl"></i></div>
                         <h4 class="text-xl font-bold text-white mb-2 italic">Joki Sea 2</h4>
-                        <p class="text-xs text-gray-400 mb-6 leading-relaxed flex-grow">Buka akses laut baru dengan menyelesaikan semua syarat. Terima beres akun di Sea 2!</p>
-                        <div class="flex justify-between items-center bg-black/50 p-3 rounded-xl border border-white/5 mb-4 backdrop-blur-sm">
-                            <span class="text-[10px] text-gray-500 uppercase font-bold tracking-widest">Package Price</span>
+                        <p class="text-xs text-slate-400 mb-6 leading-relaxed flex-grow">Buka akses laut baru dengan menyelesaikan semua syarat. Terima beres akun di Sea 2!</p>
+                        <div class="flex justify-between items-center bg-[#0f1020] p-3 rounded-xl border border-purple-900/40 mb-4 backdrop-blur-sm">
+                            <span class="text-[10px] text-slate-400 uppercase font-bold tracking-widest">Package Price</span>
                             <span class="text-tera-gold font-bold">Rp 10.000</span>
                         </div>
                         <div class="grid grid-cols-2 gap-2 mt-auto">
@@ -239,13 +478,13 @@
                 </div>
 
                 <div class="glow-card-wrapper flex flex-col">
-                    <div class="item-card rounded-2xl p-6 relative overflow-hidden flex flex-col border-green-500/20 flex-grow">
+                    <div class="item-card rounded-2xl p-6 relative overflow-hidden flex flex-col border-emerald-500/20 flex-grow">
                         <div class="absolute -top-4 -right-4 p-6 opacity-5 transition-opacity"><i class="fas fa-dungeon text-8xl"></i></div>
                         <h4 class="text-xl font-bold text-white mb-2 italic">Joki Rune Dungeon</h4>
-                        <p class="text-xs text-gray-400 mb-6 leading-relaxed flex-grow">Farming bos di Dungeon untuk mendapatkan Runes atau material eksklusif.</p>
-                        <div class="flex justify-between items-center bg-black/50 p-3 rounded-xl border border-white/5 mb-4 backdrop-blur-sm">
-                            <span class="text-[10px] text-gray-500 uppercase font-bold tracking-widest">Start Price</span>
-                            <span class="text-green-400 font-bold">Rp 5.000+</span>
+                        <p class="text-xs text-slate-400 mb-6 leading-relaxed flex-grow">Farming bos di Dungeon untuk mendapatkan Runes atau material eksklusif.</p>
+                        <div class="flex justify-between items-center bg-[#0f1020] p-3 rounded-xl border border-purple-900/40 mb-4 backdrop-blur-sm">
+                            <span class="text-[10px] text-slate-400 uppercase font-bold tracking-widest">Start Price</span>
+                            <span class="text-emerald-400 font-bold">Rp 5.000+</span>
                         </div>
                         <div class="grid grid-cols-2 gap-2 mt-auto">
                             <button onclick="orderJoki('Joki Rune Dungeon', 'tiktok')" class="btn-tiktok w-full bg-black text-white py-2.5 rounded-xl font-bold transition-all border border-white/10 uppercase italic text-[11px] tracking-widest flex items-center justify-center gap-1.5"><i class="fab fa-tiktok"></i> TikTok</button>
@@ -258,14 +497,14 @@
 
         <!-- 3. SECTION ENSIKLOPEDIA (WIKI FULL) -->
         <section id="wiki" class="page-section pt-32 pb-16 px-4 max-w-7xl mx-auto">
-            <div class="flex flex-col md:flex-row justify-between items-end mb-10 border-b border-white/10 pb-6">
+            <div class="flex flex-col md:flex-row justify-between items-end mb-10 border-b border-purple-900/40 pb-6">
                 <div>
                     <h3 class="text-4xl md:text-5xl font-heading font-black italic uppercase drop-shadow-lg"><span class="text-tera-gold">Ensiklopedia</span> Sailor Piece</h3>
-                    <p class="text-gray-400 mt-3 text-sm max-w-2xl leading-relaxed">
+                    <p class="text-slate-400 mt-3 text-sm max-w-2xl leading-relaxed">
                         Data eksklusif terlengkap! Pahami META Spec, material crafting, Haki, hingga lokasi drop item rahasia dari Bos. Dipandu langsung oleh <strong class="text-tera-purple">Tera</strong>.
                     </p>
                 </div>
-                <div class="hidden md:flex items-center gap-4 bg-gradient-to-r from-black/80 to-tera-purple/10 px-5 py-3 rounded-2xl border border-tera-purple/30 mt-4 md:mt-0 relative overflow-hidden shadow-[0_0_20px_rgba(168,85,247,0.15)]">
+                <div class="hidden md:flex items-center gap-4 bg-gradient-to-r from-black/80 to-tera-purple/10 px-5 py-3 rounded-2xl border border-tera-purple/30 mt-4 md:mt-0 relative overflow-hidden shadow-[0_0_20px_rgba(5,150,105,0.15)]">
                     <div class="w-12 h-12 rounded-full bg-black flex items-center justify-center border-2 border-tera-purple z-10 relative shadow-inner">
                         <i class="fas fa-user-astronaut text-xl text-tera-purple"></i>
                     </div>
@@ -279,58 +518,58 @@
 
             <div class="flex flex-col lg:flex-row gap-8">
                 <!-- Navigation Tabs -->
-                <div class="w-full lg:w-1/4 flex flex-row lg:flex-col gap-2 overflow-x-auto lg:overflow-visible pb-4 lg:pb-0 hide-scrollbar border-r border-transparent lg:border-white/5 pr-0 lg:pr-6 shrink-0">
-                    <button class="tab-btn active text-left px-5 py-4 rounded-xl text-sm font-bold text-gray-400 hover:text-white transition-all whitespace-nowrap lg:whitespace-normal flex items-center gap-3" onclick="openWikiTab(event, 'tab-swords')">
+                <div class="w-full lg:w-1/4 flex flex-row lg:flex-col gap-2 overflow-x-auto lg:overflow-visible pb-4 lg:pb-0 hide-scrollbar border-r border-transparent lg:border-purple-900/40 pr-0 lg:pr-6 shrink-0">
+                    <button class="tab-btn active text-left px-5 py-4 rounded-xl text-sm font-bold text-slate-400 hover:text-slate-100 transition-all whitespace-nowrap lg:whitespace-normal flex items-center gap-3" onclick="openWikiTab(event, 'tab-swords')">
                         <i class="fas fa-khanda w-5 text-center"></i> Swords & Melee
                     </button>
-                    <button class="tab-btn text-left px-5 py-4 rounded-xl text-sm font-bold text-gray-400 hover:text-white transition-all whitespace-nowrap lg:whitespace-normal flex items-center gap-3" onclick="openWikiTab(event, 'tab-fruits')">
+                    <button class="tab-btn text-left px-5 py-4 rounded-xl text-sm font-bold text-slate-400 hover:text-slate-100 transition-all whitespace-nowrap lg:whitespace-normal flex items-center gap-3" onclick="openWikiTab(event, 'tab-fruits')">
                         <i class="fas fa-apple-alt w-5 text-center"></i> Fruits & Races
                     </button>
-                    <button class="tab-btn text-left px-5 py-4 rounded-xl text-sm font-bold text-gray-400 hover:text-white transition-all whitespace-nowrap lg:whitespace-normal flex items-center gap-3" onclick="openWikiTab(event, 'tab-traits')">
+                    <button class="tab-btn text-left px-5 py-4 rounded-xl text-sm font-bold text-slate-400 hover:text-slate-100 transition-all whitespace-nowrap lg:whitespace-normal flex items-center gap-3" onclick="openWikiTab(event, 'tab-traits')">
                         <i class="fas fa-bolt w-5 text-center"></i> Traits, Powers & Haki
                     </button>
-                    <button class="tab-btn text-left px-5 py-4 rounded-xl text-sm font-bold text-gray-400 hover:text-white transition-all whitespace-nowrap lg:whitespace-normal flex items-center gap-3" onclick="openWikiTab(event, 'tab-passives')">
+                    <button class="tab-btn text-left px-5 py-4 rounded-xl text-sm font-bold text-slate-400 hover:text-slate-100 transition-all whitespace-nowrap lg:whitespace-normal flex items-center gap-3" onclick="openWikiTab(event, 'tab-passives')">
                         <i class="fas fa-fire w-5 text-center"></i> Spec Passives
                     </button>
                 </div>
 
                 <!-- Content Area -->
-                <div class="w-full lg:w-3/4 glass p-6 md:p-10 rounded-3xl border border-white/10 min-h-[500px] shadow-2xl relative overflow-hidden">
+                <div class="w-full lg:w-3/4 glass p-6 md:p-10 rounded-3xl border border-purple-900/40 min-h-[500px] shadow-2xl relative overflow-hidden">
                     <div class="absolute top-0 right-0 w-64 h-64 bg-tera-purple/10 blur-[80px] rounded-full pointer-events-none"></div>
 
                     <!-- TAB 1: SWORDS & MELEE -->
                     <div id="tab-swords" class="encyclopedia-tab active relative z-10">
                         <h4 class="text-3xl font-heading font-black text-white mb-6 italic border-l-4 border-tera-blue pl-4">Swords & Combat Specs</h4>
                         <div class="max-h-[450px] overflow-y-auto pr-3 wiki-scroll space-y-6">
-                            
-                            <div class="bg-black/40 p-5 rounded-2xl border border-white/5 backdrop-blur-md">
-                                <h5 class="font-bold text-lg text-tera-blue mb-4 flex items-center gap-2"><i class="fas fa-khanda"></i> Best Swords (Tier List)</h5>
-                                <div class="space-y-4 text-sm text-gray-300">
+
+                            <div class="bg-[#1a1b2e] p-5 rounded-2xl border border-purple-800/30 backdrop-blur-md">
+                                <h5 class="font-bold text-lg text-indigo-400 mb-4 flex items-center gap-2"><i class="fas fa-khanda"></i> Best Swords (Tier List)</h5>
+                                <div class="space-y-4 text-sm text-slate-300">
                                     <div class="flex items-start gap-3">
                                         <span class="px-2 py-0.5 rounded text-[10px] font-black tier-sp shrink-0 mt-0.5">S+ TIER</span>
-                                        <div><strong class="text-white">Dual Wielding, Sun God, Great Mage, Ice Queen, Dragon Goddess.</strong><br><span class="text-gray-400 text-xs">Sangat mematikan di Endgame. AoE besar, Pierce damage tinggi, dan kemampuan membatalkan regenerasi musuh.</span></div>
+                                        <div><strong class="text-slate-100">Dual Wielding, Sun God, Great Mage, Ice Queen, Dragon Goddess.</strong><br><span class="text-slate-400 text-xs">Sangat mematikan di Endgame. AoE besar, Pierce damage tinggi, dan kemampuan membatalkan regenerasi musuh.</span></div>
                                     </div>
                                     <div class="flex items-start gap-3">
                                         <span class="px-2 py-0.5 rounded text-[10px] font-black tier-s shrink-0 mt-0.5">S TIER</span>
-                                        <div><strong class="text-white">Abyssal Empress, Anti Magic, Atomic, True Manipulator, Escanor.</strong><br><span class="text-gray-400 text-xs">Pilihan utama untuk masuk ke Sea 2 dan Raid. DPS stabil.</span></div>
+                                        <div><strong class="text-slate-100">Abyssal Empress, Anti Magic, Atomic, True Manipulator, Escanor.</strong><br><span class="text-slate-400 text-xs">Pilihan utama untuk masuk ke Sea 2 dan Raid. DPS stabil.</span></div>
                                     </div>
                                     <div class="flex items-start gap-3">
                                         <span class="px-2 py-0.5 rounded text-[10px] font-black tier-a shrink-0 mt-0.5">A TIER</span>
-                                        <div><strong class="text-white">Soul Reaper, Ragna, Jinwoo, Excalibur, Gryphon, Shadow, Manipulator.</strong><br><span class="text-gray-400 text-xs">Solid untuk mid-game, mudah didapat dan efektif untuk grinding.</span></div>
+                                        <div><strong class="text-slate-100">Soul Reaper, Ragna, Jinwoo, Excalibur, Gryphon, Shadow, Manipulator.</strong><br><span class="text-slate-400 text-xs">Solid untuk mid-game, mudah didapat dan efektif untuk grinding.</span></div>
                                     </div>
                                 </div>
                             </div>
 
-                            <div class="bg-black/40 p-5 rounded-2xl border border-white/5 backdrop-blur-md">
+                            <div class="bg-[#1a1b2e] p-5 rounded-2xl border border-purple-800/30 backdrop-blur-md">
                                 <h5 class="font-bold text-lg text-red-400 mb-4 flex items-center gap-2"><i class="fas fa-fist-raised"></i> Best Combat Specs (Tier List)</h5>
-                                <div class="space-y-4 text-sm text-gray-300">
+                                <div class="space-y-4 text-sm text-slate-300">
                                     <div class="flex items-start gap-3">
                                         <span class="px-2 py-0.5 rounded text-[10px] font-black tier-sp shrink-0 mt-0.5">S+ TIER</span>
-                                        <div><strong class="text-white">Gojo V2, Sukuna V2, The World, Spirit Warrior, Demon King, Cosmic Being, Soul Slayer, Gilgamesh, Madara.</strong><br><span class="text-gray-400 text-xs">Membutuhkan material langka untuk Crafting. Ultimate terkuat.</span></div>
+                                        <div><strong class="text-slate-100">Gojo V2, Sukuna V2, The World, Spirit Warrior, Demon King, Cosmic Being, Soul Slayer, Gilgamesh, Madara.</strong><br><span class="text-slate-400 text-xs">Membutuhkan material langka untuk Crafting. Ultimate terkuat.</span></div>
                                     </div>
                                     <div class="flex items-start gap-3">
                                         <span class="px-2 py-0.5 rounded text-[10px] font-black tier-s shrink-0 mt-0.5">S TIER</span>
-                                        <div><strong class="text-white">Gojo V1, Sukuna V1, Vampire King, Blessed Maiden, Qin Shi, Saber Alter.</strong><br><span class="text-gray-400 text-xs">Mendominasi PvP, memiliki CC (Stun) durasi panjang.</span></div>
+                                        <div><strong class="text-slate-100">Gojo V1, Sukuna V1, Vampire King, Blessed Maiden, Qin Shi, Saber Alter.</strong><br><span class="text-slate-400 text-xs">Mendominasi PvP, memiliki CC (Stun) durasi panjang.</span></div>
                                     </div>
                                 </div>
                             </div>
@@ -341,33 +580,33 @@
                     <div id="tab-fruits" class="encyclopedia-tab relative z-10">
                         <h4 class="text-3xl font-heading font-black text-white mb-6 italic border-l-4 border-green-400 pl-4">Fruits & Races Guide</h4>
                         <div class="max-h-[450px] overflow-y-auto pr-3 wiki-scroll space-y-6">
-                            
-                            <div class="bg-black/40 p-5 rounded-2xl border border-white/5 backdrop-blur-md">
-                                <h5 class="font-bold text-lg text-green-400 mb-4 flex items-center gap-2"><i class="fas fa-apple-alt"></i> Devil Fruits Tier List</h5>
-                                <div class="grid md:grid-cols-2 gap-4 text-sm text-gray-300">
-                                    <div class="bg-black/30 p-3 rounded-lg border border-white/5">
-                                        <strong class="text-white text-base">Light Fruit</strong> <span class="tier-sp text-[9px] px-1.5 py-0.5 rounded ml-1">S+ TIER</span>
-                                        <p class="text-xs text-gray-400 mt-1">Terbaik untuk perjalanan karena skill terbang super cepat. AoE damage tinggi.</p>
+
+                            <div class="bg-[#1a1b2e] p-5 rounded-2xl border border-purple-800/30 backdrop-blur-md">
+                                <h5 class="font-bold text-lg text-emerald-400 mb-4 flex items-center gap-2"><i class="fas fa-apple-alt"></i> Devil Fruits Tier List</h5>
+                                <div class="grid md:grid-cols-2 gap-4 text-sm text-slate-300">
+                                    <div class="bg-[#1a1b2e] p-3 rounded-lg border border-purple-900/40">
+                                        <strong class="text-slate-100 text-base">Light Fruit</strong> <span class="tier-sp text-[9px] px-1.5 py-0.5 rounded ml-1">S+ TIER</span>
+                                        <p class="text-xs text-slate-400 mt-1">Terbaik untuk perjalanan karena skill terbang super cepat. AoE damage tinggi.</p>
                                     </div>
-                                    <div class="bg-black/30 p-3 rounded-lg border border-white/5">
-                                        <strong class="text-white text-base">Quake</strong> <span class="tier-s text-[9px] px-1.5 py-0.5 rounded ml-1">S TIER</span>
-                                        <p class="text-xs text-gray-400 mt-1">Quake memberikan hitbox tsunami masif, Kitsune merubah form menjadi beast.</p>
+                                    <div class="bg-[#1a1b2e] p-3 rounded-lg border border-purple-900/40">
+                                        <strong class="text-slate-100 text-base">Quake</strong> <span class="tier-s text-[9px] px-1.5 py-0.5 rounded ml-1">S TIER</span>
+                                        <p class="text-xs text-slate-400 mt-1">Quake memberikan hitbox tsunami masif, Kitsune merubah form menjadi beast.</p>
                                     </div>
-                                    <div class="bg-black/30 p-3 rounded-lg border border-white/5">
-                                        <strong class="text-white text-base">Flame</strong> <span class="tier-a text-[9px] px-1.5 py-0.5 rounded ml-1">A TIER</span>
-                                        <p class="text-xs text-gray-400 mt-1">Pilihan paling solid dan budget-friendly untuk new player di Sea 1.</p>
+                                    <div class="bg-[#1a1b2e] p-3 rounded-lg border border-purple-900/40">
+                                        <strong class="text-slate-100 text-base">Flame</strong> <span class="tier-a text-[9px] px-1.5 py-0.5 rounded ml-1">A TIER</span>
+                                        <p class="text-xs text-slate-400 mt-1">Pilihan paling solid dan budget-friendly untuk new player di Sea 1.</p>
                                     </div>
                                 </div>
                             </div>
 
-                            <div class="bg-black/40 p-5 rounded-2xl border border-white/5 backdrop-blur-md">
+                            <div class="bg-[#1a1b2e] p-5 rounded-2xl border border-purple-800/30 backdrop-blur-md">
                                 <h5 class="font-bold text-lg text-tera-purple mb-4 flex items-center gap-2"><i class="fas fa-dna"></i> Race Buff Details</h5>
-                                <ul class="text-sm text-gray-300 space-y-4">
-                                    <li class="border-b border-white/5 pb-3">
+                                <ul class="text-sm text-slate-300 space-y-4">
+                                    <li class="border-b border-purple-900/40 pb-3">
                                         <strong class="text-tera-purple block mb-1">Reaper SSS TIER</strong>
                                         <span class="text-xs">+120% Max HP | +105% Overall DMG | +35% Sword DMG | +12% DMG Reduction | +3% Lifesteal | +25% Execute DMG.</span>
                                     </li>
-                                    <li class="border-b border-white/5 pb-3">
+                                    <li class="border-b border-purple-900/40 pb-3">
                                         <strong class="text-tera-gold block mb-1">Archangel SSS TIER</strong>
                                         <span class="text-xs">+115% Max HP | +100% Overall DMG | +22% Combat DMG | +55% Luck | +15% Drop Double Chance | Akses terbang.</span>
                                     </li>
@@ -380,23 +619,23 @@
                     <div id="tab-traits" class="encyclopedia-tab relative z-10">
                         <h4 class="text-3xl font-heading font-black text-white mb-6 italic border-l-4 border-tera-gold pl-4">Traits, Powers & Haki</h4>
                         <div class="max-h-[450px] overflow-y-auto pr-3 wiki-scroll space-y-6">
-                            
-                            <div class="bg-black/40 p-5 rounded-2xl border border-white/5 backdrop-blur-md">
+
+                            <div class="bg-[#1a1b2e] p-5 rounded-2xl border border-purple-800/30 backdrop-blur-md">
                                 <h5 class="font-bold text-lg text-tera-gold mb-3 flex items-center gap-2"><i class="fas fa-bolt"></i> Trait Rerolls</h5>
-                                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm text-gray-300">
-                                    <div class="bg-black/30 p-3 rounded border-l-2 border-tera-gold"><strong>Singularity:</strong> 1.75x Def | 2.10x DMG | 30% CD Reduc.</div>
-                                    <div class="bg-black/30 p-3 rounded border-l-2 border-red-500"><strong>Cataclysm:</strong> 1.70x Def | 2.00x DMG | 30% CD Reduc.</div>
-                                    <div class="bg-black/30 p-3 rounded border-l-2 border-blue-400"><strong>Celestial:</strong> 1.65x Def | 2.20x DMG | 30% CD Reduc.</div>
-                                    <div class="bg-black/30 p-3 rounded border-l-2 border-purple-400"><strong>Emperor:</strong> 1.60x Def | 2.30x DMG | 30% CD Reduc.</div>
+                                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm text-slate-300">
+                                    <div class="bg-[#1a1b2e] p-3 rounded border-l-2 border-tera-gold"><strong>Singularity:</strong> 1.75x Def | 2.10x DMG | 30% CD Reduc.</div>
+                                    <div class="bg-[#1a1b2e] p-3 rounded border-l-2 border-red-500"><strong>Cataclysm:</strong> 1.70x Def | 2.00x DMG | 30% CD Reduc.</div>
+                                    <div class="bg-[#1a1b2e] p-3 rounded border-l-2 border-blue-400"><strong>Celestial:</strong> 1.65x Def | 2.20x DMG | 30% CD Reduc.</div>
+                                    <div class="bg-[#1a1b2e] p-3 rounded border-l-2 border-emerald-400"><strong>Emperor:</strong> 1.60x Def | 2.30x DMG | 30% CD Reduc.</div>
                                 </div>
                             </div>
 
-                            <div class="bg-black/40 p-5 rounded-2xl border border-white/5 backdrop-blur-md">
-                                <h5 class="font-bold text-lg text-tera-blue mb-3 flex items-center gap-2"><i class="fas fa-star"></i> Character Powers</h5>
-                                <ul class="text-sm text-gray-300 space-y-3 list-disc list-inside">
-                                    <li><strong class="text-white">Colossus (1%):</strong> +20-34% DMG, +15-30% HP, +2-4% Crit Chance, +5-10% Crit Damage, +7.5-15% Luck, Deal 15-25% more Damage to bosses</li>
-                                    <li><strong class="text-white">Cursebrand (1%):</strong> +18-30% DMG, +15-30% HP, +2-4% Crit Chance, +6-12% Crit Damage, Hitting an NPC makes it take 10-15% more Damage Up to 2 players can stack the debuff on the same enemy.</li>
-                                    <li><strong class="text-white">Subjugator (1%):</strong> +24-40% DMG, +24-40% HP, +1.75-3.5% Crit Chance, +6.5-13% Crit Damage, +8.5-17.5% Luck, Slow NPCs on hit by 20% for 5s.</li>
+                            <div class="bg-[#1a1b2e] p-5 rounded-2xl border border-purple-800/30 backdrop-blur-md">
+                                <h5 class="font-bold text-lg text-indigo-400 mb-3 flex items-center gap-2"><i class="fas fa-star"></i> Character Powers</h5>
+                                <ul class="text-sm text-slate-300 space-y-3 list-disc list-inside">
+                                    <li><strong class="text-slate-100">Colossus (1%):</strong> +20-34% DMG, +15-30% HP, +2-4% Crit Chance, +5-10% Crit Damage, +7.5-15% Luck, Deal 15-25% more Damage to bosses</li>
+                                    <li><strong class="text-slate-100">Cursebrand (1%):</strong> +18-30% DMG, +15-30% HP, +2-4% Crit Chance, +6-12% Crit Damage, Hitting an NPC makes it take 10-15% more Damage Up to 2 players can stack the debuff on the same enemy.</li>
+                                    <li><strong class="text-slate-100">Subjugator (1%):</strong> +24-40% DMG, +24-40% HP, +1.75-3.5% Crit Chance, +6.5-13% Crit Damage, +8.5-17.5% Luck, Slow NPCs on hit by 20% for 5s.</li>
                                 </ul>
                             </div>
                         </div>
@@ -406,27 +645,27 @@
                     <div id="tab-passives" class="encyclopedia-tab relative z-10">
                         <h4 class="text-3xl font-heading font-black text-white mb-6 italic border-l-4 border-red-400 pl-4">Spec Passives</h4>
                         <div class="max-h-[450px] overflow-y-auto pr-3 wiki-scroll space-y-6">
-                            <p class="text-gray-300 text-sm leading-relaxed bg-black/30 p-4 rounded-xl border border-white/5">
+                            <p class="text-slate-300 text-sm leading-relaxed bg-[#1a1b2e] p-4 rounded-xl border border-purple-900/40">
                                 Spec Passives dipasang ke senjata atau Melee menggunakan *Passive Shards*. Mereka memberikan kemampuan pasif permanen saat menyerang.
                             </p>
 
-                            <div class="bg-black/40 p-5 rounded-2xl border border-white/5 backdrop-blur-md">
+                            <div class="bg-[#1a1b2e] p-5 rounded-2xl border border-purple-800/30 backdrop-blur-md">
                                 <h5 class="font-bold text-lg text-red-400 mb-4 flex items-center gap-2"><i class="fas fa-fire"></i> S-Tier Passives (God Tier)</h5>
                                 <div class="space-y-4">
-                                    <div class="border-b border-white/10 pb-3">
+                                    <div class="border-b border-purple-900/40 pb-3">
                                         <strong class="text-red-400 block mb-1">Rampage (0.2% Chance)</strong>
-                                        <span class="text-xs text-gray-300 block mb-1">Efek Dasar: +15-30% DMG, +2-4% Crit Chance, +5-10% Crit DMG.</span>
-                                        <span class="text-[11px] text-gray-400 italic">Mekanik: Memberikan stack +0.002x DMG per hit. Terbaik untuk Raid Boss!</span>
+                                        <span class="text-xs text-slate-300 block mb-1">Efek Dasar: +15-30% DMG, +2-4% Crit Chance, +5-10% Crit DMG.</span>
+                                        <span class="text-[11px] text-slate-400 italic">Mekanik: Memberikan stack +0.002x DMG per hit. Terbaik untuk Raid Boss!</span>
                                     </div>
-                                    <div class="border-b border-white/10 pb-3">
+                                    <div class="border-b border-purple-900/40 pb-3">
                                         <strong class="text-tera-gold block mb-1">Fortune Chosen (0.2% Chance)</strong>
-                                        <span class="text-xs text-gray-300 block mb-1">Efek Dasar: +5-10% Luck & +5-12.5% DMG.</span>
-                                        <span class="text-[11px] text-gray-400 italic">Mekanik: 17.5-30% Chance memicu +1 Drop tambahan pada item dari Boss. Wajib untuk Grinder!</span>
+                                        <span class="text-xs text-slate-300 block mb-1">Efek Dasar: +5-10% Luck & +5-12.5% DMG.</span>
+                                        <span class="text-[11px] text-slate-400 italic">Mekanik: 17.5-30% Chance memicu +1 Drop tambahan pada item dari Boss. Wajib untuk Grinder!</span>
                                     </div>
                                     <div class="pb-1">
-                                        <strong class="text-purple-400 block mb-1">Executioner (0.2% Chance)</strong>
-                                        <span class="text-xs text-gray-300 block mb-1">Efek Dasar: +2-4% Crit Chance, +7.5-15% Crit DMG.</span>
-                                        <span class="text-[11px] text-gray-400 italic">Mekanik: +25-40% Damage Instan kepada musuh dengan HP di bawah 50%.</span>
+                                        <strong class="text-emerald-400 block mb-1">Executioner (0.2% Chance)</strong>
+                                        <span class="text-xs text-slate-300 block mb-1">Efek Dasar: +2-4% Crit Chance, +7.5-15% Crit DMG.</span>
+                                        <span class="text-[11px] text-slate-400 italic">Mekanik: +25-40% Damage Instan kepada musuh dengan HP di bawah 50%.</span>
                                     </div>
                                 </div>
                             </div>
@@ -438,41 +677,68 @@
 
         <!-- 4. SECTION KATALOG -->
         <section id="katalog" class="page-section pt-32 pb-16 px-4 max-w-7xl mx-auto">
-            <div class="flex flex-col lg:flex-row justify-between lg:items-end gap-6 mb-10 border-b border-white/10 pb-6">
+            <div class="flex flex-col lg:flex-row justify-between lg:items-end gap-6 mb-8 border-b border-purple-900/40 pb-6">
                 <div class="flex items-center gap-4">
                     <div class="w-14 h-14 rounded-2xl bg-tera-blue/20 flex items-center justify-center border border-tera-blue/30 shadow-[0_0_20px_rgba(59,130,246,0.3)]">
-                        <i class="fas fa-boxes text-3xl text-tera-blue"></i>
+                        <i class="fas fa-boxes text-3xl text-indigo-400"></i>
                     </div>
                     <div>
                         <h3 class="text-4xl font-heading font-black italic uppercase">Katalog <span class="text-gradient-animated">Item</span></h3>
-                        <p class="text-sm text-gray-400 mt-1 tracking-wide">Pilih item, atur jumlah, dan masukkan ke keranjang.</p>
+                        <p class="text-sm text-slate-400 mt-1 tracking-wide">Pilih game, buka section, atur jumlah, lalu masukkan ke keranjang.</p>
                     </div>
                 </div>
-                
+
                 <div class="flex flex-col sm:flex-row gap-4 w-full lg:w-auto items-center">
                     <div class="relative w-full sm:w-64 md:w-80">
-                        <input type="text" id="searchInput" placeholder="Cari nama item..." class="w-full bg-black/60 border border-white/20 rounded-xl py-3 pl-11 pr-4 text-sm text-white focus:outline-none focus:border-tera-blue transition-colors shadow-inner backdrop-blur-md">
-                        <i class="fas fa-search absolute left-4 top-1/2 -translate-y-1/2 text-gray-400"></i>
+                        <input type="text" id="searchInput" placeholder="Cari nama item..." class="w-full bg-[#1a1b2e] border border-purple-800/40 rounded-xl py-3 pl-11 pr-4 text-sm text-slate-100 focus:outline-none focus:border-tera-blue transition-colors shadow-inner backdrop-blur-md">
+                        <i class="fas fa-search absolute left-4 top-1/2 -translate-y-1/2 text-slate-400"></i>
                     </div>
-                    <div class="bg-black/60 border border-tera-gold/30 px-4 py-3 rounded-xl text-xs font-bold text-tera-gold animate-pulse-slow shadow-lg flex items-center gap-2 backdrop-blur-md w-full sm:w-auto justify-center whitespace-nowrap">
+                    <div class="bg-[#1a1b2e] border border-tera-gold/30 px-4 py-3 rounded-xl text-xs font-bold text-tera-gold animate-pulse-slow shadow-lg flex items-center gap-2 backdrop-blur-md w-full sm:w-auto justify-center whitespace-nowrap">
                         <i class="fas fa-paste text-lg"></i> Auto-Copy Format
                     </div>
                 </div>
             </div>
-            
-            <div id="katalog-container" class="space-y-20">
-                <!-- Data Katalog dirender JS -->
+
+            <!-- GAME TOGGLE -->
+            <div class="grid grid-cols-3 gap-3 mb-10 max-w-2xl">
+                <button id="game-btn-sailorpiece" onclick="setActiveGame('sailorpiece')" class="game-tab-btn relative overflow-hidden border border-tera-purple/30 rounded-2xl py-4 px-4 flex items-center justify-center gap-3 font-bold uppercase italic text-sm tracking-wide text-slate-400 transition-all">
+                    <i class="fas fa-anchor text-lg"></i> Sailor Piece
+                </button>
+                <button id="game-btn-gag1" onclick="setActiveGame('gag1')" class="game-tab-btn relative overflow-hidden border border-tera-green/30 rounded-2xl py-4 px-4 flex items-center justify-center gap-3 font-bold uppercase italic text-sm tracking-wide text-slate-400 transition-all">
+                    <i class="fas fa-seedling text-lg"></i> GAG 1
+                </button>
+                <button id="game-btn-gag2" onclick="setActiveGame('gag2')" class="game-tab-btn relative overflow-hidden border border-yellow-500/30 rounded-2xl py-4 px-4 flex items-center justify-center gap-3 font-bold uppercase italic text-sm tracking-wide text-slate-400 transition-all">
+                    <i class="fas fa-leaf text-lg"></i> GAG 2
+                </button>
+            </div>
+
+            <!-- GAME PANE: SAILOR PIECE -->
+            <div id="game-pane-sailorpiece" class="game-pane">
+                <div class="flex flex-wrap gap-2 mb-8" id="sailorpiece-section-pills"></div>
+                <div id="katalog-container-sailorpiece" class="space-y-6"></div>
+            </div>
+
+            <!-- GAME PANE: GROW A GARDEN 1 -->
+            <div id="game-pane-gag1" class="game-pane">
+                <div class="flex flex-wrap gap-2 mb-8" id="gag1-section-pills"></div>
+                <div id="katalog-container-gag1" class="space-y-6"></div>
+            </div>
+
+            <!-- GAME PANE: GROW A GARDEN 2 -->
+            <div id="game-pane-gag2" class="game-pane">
+                <div class="flex flex-wrap gap-2 mb-8" id="gag2-section-pills"></div>
+                <div id="katalog-container-gag2" class="space-y-6"></div>
             </div>
         </section>
     </main>
 
     <!-- FOOTER -->
-    <footer id="contact" class="mt-auto pt-20 pb-10 px-4 border-t border-white/10 bg-black/80 backdrop-blur-xl relative overflow-hidden">
+    <footer id="contact" class="mt-auto pt-20 pb-10 px-4 border-t border-purple-900/30 bg-[#07080f] backdrop-blur-xl relative overflow-hidden">
         <div class="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[400px] bg-tera-purple/5 blur-[100px] rounded-full pointer-events-none"></div>
         <div class="max-w-4xl mx-auto text-center relative z-10">
             <h2 class="text-3xl md:text-5xl font-heading font-black italic mb-4 uppercase drop-shadow-lg text-white">Siap Mendominasi Server?</h2>
-            <p class="text-gray-400 text-base mb-10 max-w-lg mx-auto">Pilih itemmu dan DM admin sekarang. TERA STORE siap memproses pesananmu dengan secepat kilat.</p>
-            
+            <p class="text-slate-400 text-base mb-10 max-w-lg mx-auto">Pilih itemmu dan DM admin sekarang. TERA STORE siap memproses pesananmu dengan secepat kilat.</p>
+
             <div class="flex flex-wrap justify-center gap-5 mb-16">
                 <a href="javascript:void(0)" onclick="window.open(TIKTOK_URL, '_blank')" class="btn-tiktok flex items-center gap-3 bg-black border border-white/10 px-8 py-4 rounded-2xl font-bold text-white transition-all shadow-xl hover:-translate-y-1">
                     <i class="fab fa-tiktok text-2xl"></i> DM via TikTok
@@ -482,9 +748,9 @@
                 </a>
             </div>
 
-            <div class="text-xs text-gray-500 font-bold tracking-widest uppercase italic border-t border-white/10 pt-10 flex flex-col items-center gap-3">
-                <img src="https://d.top4top.io/p_3783tlov21.jpg" class="w-8 h-8 rounded opacity-50 mb-2 grayscale" alt="Logo">
-                <div class="flex items-center gap-2 text-gray-400">
+            <div class="text-xs text-slate-400 font-bold tracking-widest uppercase italic border-t border-white/10 pt-10 flex flex-col items-center gap-3">
+                <img src="https://i.top4top.io/p_3830gr6t71.png" class="w-8 h-8 rounded opacity-50 mb-2 grayscale" alt="Logo">
+                <div class="flex items-center gap-2 text-slate-400">
                     <i class="fa-solid fa-anchor"></i> © 2026 TERA STORE. All Rights Reserved.
                 </div>
                 <span class="text-tera-purple hover:text-white transition-colors cursor-pointer text-sm">@tera.rblx</span>
@@ -495,33 +761,88 @@
     <!-- CART MODAL (Slide Sidebar) -->
     <div id="cartModal" class="fixed inset-0 z-[100] hidden">
         <!-- Backdrop -->
-        <div class="absolute inset-0 bg-black/60 backdrop-blur-sm transition-opacity" onclick="toggleCart()"></div>
+        <div class="absolute inset-0 bg-black/70 backdrop-blur-sm transition-opacity" onclick="toggleCart()"></div>
         <!-- Modal Content -->
-        <div class="absolute right-0 top-0 bottom-0 w-full sm:w-[400px] glass border-l border-white/10 shadow-2xl flex flex-col transform transition-transform duration-300">
+        <div class="absolute right-0 top-0 bottom-0 w-full sm:w-[400px] glass border-l border-purple-900/40 shadow-2xl flex flex-col transform transition-transform duration-300">
             <!-- Header Modal -->
-            <div class="p-5 border-b border-white/10 flex justify-between items-center bg-black/60">
-                <h3 class="text-xl font-heading font-black italic text-white flex items-center gap-2">
+            <div class="p-5 border-b border-purple-900/40 flex justify-between items-center bg-[#1a1b2e]">
+                <h3 class="text-xl font-heading font-black italic text-slate-100 flex items-center gap-2">
                     <i class="fas fa-shopping-cart text-tera-purple"></i> Keranjang Anda
                 </h3>
-                <button onclick="toggleCart()" class="text-gray-400 hover:text-white transition-colors p-2 rounded-lg hover:bg-white/10">
+                <button onclick="toggleCart()" class="text-slate-400 hover:text-slate-100 transition-colors p-2 rounded-lg hover:bg-purple-900/40">
                     <i class="fas fa-times text-xl"></i>
                 </button>
             </div>
-            
+
             <!-- Items Container -->
             <div id="cart-items" class="flex-grow overflow-y-auto p-5 wiki-scroll space-y-3">
                 <!-- Cart items dirender via JS -->
             </div>
-            
+
             <!-- Footer Modal (Checkout) -->
-            <div class="p-5 border-t border-white/10 bg-black/80">
-                <div class="flex justify-between items-center mb-5 bg-white/5 p-3 rounded-xl border border-white/10 shadow-inner">
-                    <span class="text-xs text-gray-400 font-bold uppercase tracking-widest">Total Harga</span>
+            <div class="p-5 border-t border-purple-900/40 bg-[#0f1020]">
+                <div class="flex justify-between items-center mb-5 bg-[#1a1b2e] p-3 rounded-xl border border-purple-900/40 shadow-inner">
+                    <span class="text-xs text-slate-400 font-bold uppercase tracking-widest">Total Harga</span>
                     <span id="cart-total" class="text-lg font-black text-tera-gold">Rp 0</span>
                 </div>
-                <div class="grid grid-cols-2 gap-3">
-                    <button onclick="checkoutCart('tiktok')" class="btn-tiktok w-full bg-black text-white py-3.5 rounded-xl font-bold transition-all border border-white/10 uppercase italic text-[11px] tracking-widest flex items-center justify-center gap-1.5 shadow-lg"><i class="fab fa-tiktok text-lg"></i> Checkout</button>
-                    <button onclick="checkoutCart('instagram')" class="btn-ig w-full bg-black text-white py-3.5 rounded-xl font-bold transition-all border border-white/10 uppercase italic text-[11px] tracking-widest flex items-center justify-center gap-1.5 shadow-lg"><i class="fab fa-instagram text-lg"></i> Checkout</button>
+                <button onclick="openPaymentModal()" class="w-full bg-gradient-to-r from-tera-purple to-tera-blue text-white py-3.5 rounded-xl font-bold transition-all border border-white/10 uppercase italic text-[12px] tracking-widest flex items-center justify-center gap-2 shadow-[0_0_20px_rgba(139,92,246,0.4)] hover:shadow-[0_0_28px_rgba(139,92,246,0.6)] hover:-translate-y-0.5">
+                    <i class="fas fa-qrcode text-lg"></i> Bayar dengan QRIS
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ======================= -->
+    <!-- MODAL PEMBAYARAN QRIS   -->
+    <!-- ======================= -->
+    <div id="paymentModal" class="fixed inset-0 z-[110] hidden">
+        <div class="absolute inset-0 bg-black/80 backdrop-blur-sm transition-opacity" onclick="closePaymentModal()"></div>
+        <div class="relative w-full h-full flex items-center justify-center p-4 overflow-y-auto">
+            <div class="glass border border-purple-900/40 rounded-3xl shadow-2xl w-full max-w-sm my-auto relative overflow-hidden">
+                <div class="absolute top-0 right-0 w-40 h-40 bg-tera-gold/10 blur-3xl rounded-full pointer-events-none"></div>
+
+                <!-- Header -->
+                <div class="p-5 border-b border-purple-900/40 flex justify-between items-center bg-[#1a1b2e] relative z-10">
+                    <h3 class="text-lg font-heading font-black italic text-slate-100 flex items-center gap-2">
+                        <i class="fas fa-qrcode text-tera-gold"></i> Pembayaran QRIS
+                    </h3>
+                    <button onclick="closePaymentModal()" class="text-slate-400 hover:text-slate-100 transition-colors p-2 rounded-lg hover:bg-purple-900/40">
+                        <i class="fas fa-times text-xl"></i>
+                    </button>
+                </div>
+
+                <!-- Body -->
+                <div class="p-5 relative z-10 space-y-4">
+                    <!-- Order info -->
+                    <div class="bg-[#1a1b2e] rounded-xl p-3 border border-purple-900/40 flex items-center justify-between">
+                        <div>
+                            <p class="text-[10px] text-slate-400 uppercase tracking-wider font-bold">No. Pesanan</p>
+                            <p id="payment-order-id" class="text-sm font-black text-purple-300">-</p>
+                        </div>
+                        <div class="text-right">
+                            <p class="text-[10px] text-slate-400 uppercase tracking-wider font-bold">Total Bayar</p>
+                            <p id="payment-total" class="text-lg font-black text-tera-gold">Rp 0</p>
+                        </div>
+                    </div>
+
+                    <!-- QRIS Image -->
+                    <div class="rounded-2xl overflow-hidden border border-purple-900/40 shadow-inner bg-white p-2">
+                        <img src="assets/qris.jpg" alt="QRIS TERA STORE" class="w-full rounded-xl">
+                    </div>
+
+                    <div class="bg-amber-500/10 border border-amber-500/30 rounded-xl p-3 flex gap-2.5">
+                        <i class="fas fa-circle-info text-amber-400 mt-0.5 shrink-0"></i>
+                        <p class="text-[11px] text-amber-200 leading-relaxed">
+                            Scan QRIS di atas menggunakan aplikasi m-banking / e-wallet (DANA, GoPay, OVO, dll) sejumlah <span class="font-bold">total bayar</span> di atas. Setelah transfer berhasil, klik tombol konfirmasi di bawah dan kirimkan <span class="font-bold">screenshot bukti bayar</span> beserta No. Pesanan ke admin.
+                        </p>
+                    </div>
+
+                    <p class="text-center text-[11px] text-slate-400 italic">Pilih kanal konfirmasi pembayaran:</p>
+
+                    <div class="grid grid-cols-2 gap-3">
+                        <button onclick="confirmPayment('tiktok')" class="btn-tiktok w-full bg-black text-white py-3 rounded-xl font-bold transition-all border border-white/10 uppercase italic text-[11px] tracking-widest flex items-center justify-center gap-1.5 shadow-lg"><i class="fab fa-tiktok text-lg"></i> Konfirmasi</button>
+                        <button onclick="confirmPayment('instagram')" class="btn-ig w-full bg-black text-white py-3 rounded-xl font-bold transition-all border border-white/10 uppercase italic text-[11px] tracking-widest flex items-center justify-center gap-1.5 shadow-lg"><i class="fab fa-instagram text-lg"></i> Konfirmasi</button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -532,6 +853,7 @@
         const INSTAGRAM_URL = "https://www.instagram.com/tera.rblx";
 
         let cart = []; // Array untuk menampung data keranjang
+        let activeGame = "sailorpiece";
 
         window.addEventListener('scroll', () => {
             const nav = document.getElementById('navbar');
@@ -547,8 +869,8 @@
         function switchPage(pageId) {
             document.querySelectorAll('.page-section').forEach(page => page.classList.remove('active-page'));
             document.getElementById(pageId).classList.add('active-page');
-            document.querySelectorAll('.nav-link').forEach(link => { link.classList.remove('active-nav', 'text-white'); link.classList.add('text-gray-300'); });
-            document.querySelectorAll(`[onclick="switchPage('${pageId}')"]`).forEach(link => { link.classList.remove('text-gray-300'); link.classList.add('active-nav', 'text-white'); });
+            document.querySelectorAll('.nav-link').forEach(link => { link.classList.remove('active-nav', 'text-slate-100'); link.classList.add('text-slate-300'); });
+            document.querySelectorAll(`[onclick="switchPage('${pageId}')"]`).forEach(link => { link.classList.remove('text-slate-300'); link.classList.add('active-nav', 'text-slate-100'); });
             document.getElementById('mobile-menu').classList.add('hidden');
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
@@ -568,13 +890,13 @@
             modal.classList.toggle('hidden');
         }
 
-        function addToCart(sIndex, iIndex, itemId) {
-            const item = storeData[sIndex].items[iIndex];
+        function addToCart(game, sIndex, iIndex, itemId) {
+            const item = storeData[game][sIndex].items[iIndex];
             const qtyElement = document.getElementById(`qty-${itemId}`);
             const qty = parseInt(qtyElement.innerText);
-            
-            // Cek apakah item sudah ada di keranjang
-            const existingItem = cart.find(c => c.name === item.name);
+
+            // Cek apakah item sudah ada di keranjang (per game, biar nama sama beda game tidak nyampur)
+            const existingItem = cart.find(c => c.name === item.name && c.game === game);
             if (existingItem) {
                 existingItem.qty += qty;
             } else {
@@ -582,17 +904,18 @@
                     name: item.name,
                     price: item.price,
                     qty: qty,
-                    image: item.image
+                    image: item.image,
+                    game: game
                 });
             }
-            
+
             updateCartUI();
-            
+
             // Animasi kecil pada icon cart
             const cartIcon = document.getElementById('cart-count');
             cartIcon.classList.add('animate-ping');
             setTimeout(() => cartIcon.classList.remove('animate-ping'), 300);
-            
+
             // Reset quantity kembali ke 1 setelah ditambahkan
             qtyElement.innerText = 1;
             const totalElement = document.getElementById(`total-${itemId}`);
@@ -608,15 +931,15 @@
             const cartCount = document.getElementById('cart-count');
             const cartItemsContainer = document.getElementById('cart-items');
             const cartTotal = document.getElementById('cart-total');
-            
+
             let totalItems = 0;
             let totalPrice = 0;
-            
+
             cartItemsContainer.innerHTML = '';
-            
+
             if(cart.length === 0) {
                 cartItemsContainer.innerHTML = `
-                    <div class="h-full flex flex-col items-center justify-center text-gray-500 py-10 opacity-60">
+                    <div class="h-full flex flex-col items-center justify-center text-slate-400 py-10 opacity-60">
                         <i class="fas fa-box-open text-4xl mb-3"></i>
                         <p class="text-sm italic">Keranjang masih kosong.</p>
                     </div>`;
@@ -624,18 +947,21 @@
                 cart.forEach((c, index) => {
                     totalItems += c.qty;
                     totalPrice += (c.price * c.qty);
-                    
-                    let imgSrc = (c.image && c.image !== "") ? c.image : 'https://via.placeholder.com/150/0a0514/a855f7?text=No+Image';
-                    
+
+                    let imgSrc = (c.image && c.image !== "") ? c.image : '';
+                    let mediaHtml = imgSrc
+                        ? `<img src="${imgSrc}" class="w-14 h-14 object-cover rounded-lg border border-purple-900/40" onerror="this.onerror=null; this.replaceWith(Object.assign(document.createElement('div'), {className:'w-14 h-14 rounded-lg border border-purple-900/40 bg-[#1a1b2e] flex items-center justify-center text-lg', textContent:'🎁'}));">`
+                        : `<div class="w-14 h-14 rounded-lg border border-purple-900/40 bg-[#1a1b2e] flex items-center justify-center text-lg">🎁</div>`;
+
                     cartItemsContainer.innerHTML += `
-                        <div class="flex items-center gap-3 bg-black/40 p-3 rounded-xl border border-white/5 hover:border-white/10 transition-colors">
-                            <img src="${imgSrc}" class="w-14 h-14 object-cover rounded-lg border border-white/10" onerror="this.onerror=null; this.src='https://via.placeholder.com/150/0a0514/a855f7?text=No+Image';">
+                        <div class="flex items-center gap-3 bg-[#1a1b2e] p-3 rounded-xl border border-purple-900/40 hover:border-purple-900/40 transition-colors">
+                            ${mediaHtml}
                             <div class="flex-grow">
-                                <h6 class="text-white text-xs font-bold leading-tight mb-1">${c.name}</h6>
-                                <p class="text-tera-gold text-[11px] font-semibold">${formatRupiah(c.price)} <span class="text-gray-400 font-normal">x ${c.qty}</span></p>
+                                <h6 class="text-slate-100 text-xs font-bold leading-tight mb-1">${c.name}</h6>
+                                <p class="text-tera-gold text-[11px] font-semibold">${formatRupiah(c.price)} <span class="text-slate-400 font-normal">x ${c.qty}</span></p>
                             </div>
                             <div class="text-right flex flex-col items-end gap-1">
-                                <span class="text-white text-xs font-bold">${formatRupiah(c.price * c.qty)}</span>
+                                <span class="text-slate-100 text-xs font-bold">${formatRupiah(c.price * c.qty)}</span>
                                 <button onclick="removeFromCart(${index})" class="text-red-500 hover:text-red-400 bg-red-500/10 hover:bg-red-500/20 w-6 h-6 rounded flex items-center justify-center transition-colors">
                                     <i class="fas fa-trash text-[10px]"></i>
                                 </button>
@@ -644,272 +970,62 @@
                     `;
                 });
             }
-            
+
             if (cartCount) cartCount.innerText = totalItems;
             if (cartTotal) cartTotal.innerText = formatRupiah(totalPrice);
         }
 
-        function checkoutCart(platform) {
-            if(cart.length === 0) {
+        let currentOrderId = null;
+
+        function generateOrderId() {
+            const now = new Date();
+            const datePart = now.getFullYear().toString().slice(2) +
+                String(now.getMonth() + 1).padStart(2, '0') +
+                String(now.getDate()).padStart(2, '0');
+            const randPart = Math.floor(1000 + Math.random() * 9000);
+            return `TERA-${datePart}-${randPart}`;
+        }
+
+        function openPaymentModal() {
+            if (cart.length === 0) {
                 alert("Keranjang masih kosong! Silakan tambahkan item terlebih dahulu.");
                 return;
             }
-            
-            let textMsg = "Halo min,\n\nSaya ingin memesan list item berikut dari TERA STORE:\n\n";
+
             let totalAll = 0;
-            
-            cart.forEach((c, i) => {
-                textMsg += `${i+1}. ${c.name}\n   └ ${c.qty}x = ${formatRupiah(c.price * c.qty)}\n`;
-                totalAll += (c.price * c.qty);
-            });
-            
-            textMsg += `\n💰 Total Harga Keseluruhan: ${formatRupiah(totalAll)}\n\nMohon infokan ketersediaannya.`;
-            
-            copyToClipboardAndRedirect(textMsg, platform);
+            cart.forEach(c => { totalAll += (c.price * c.qty); });
+
+            currentOrderId = generateOrderId();
+            document.getElementById('payment-order-id').innerText = currentOrderId;
+            document.getElementById('payment-total').innerText = formatRupiah(totalAll);
+
+            document.getElementById('cartModal').classList.add('hidden');
+            document.getElementById('paymentModal').classList.remove('hidden');
         }
 
-        const storeData = [
-            { category: "Premium Sets / Weapon Materials", color: "text-tera-blue", icon: "fa-shield-halved", items: [
-            { name: "Ice Queen", price: 5000, image: "https://f.top4top.io/p_37845uvec0.jpg" },
-            { name: "Great Mage", tag: "LIMITED", price: 20000, image: "https://g.top4top.io/p_3784v4afq1.jpg" }, 
-            { name: "Sun God", price: 20000, image: "https://h.top4top.io/p_3784l9vur2.jpg" }, 
-            { name: "Excalibur", price: 1000, image: "https://i.top4top.io/p_3784okt2i3.jpg" }, 
-            { name: "Soul Reaper", price: 2000, image: "https://j.top4top.io/p_37849l8tm4.jpg" }, 
-            { name: "Solo Hunter", price: 3000, image: "https://k.top4top.io/p_378415ufb5.jpg" },
-            { name: "Shadow Monarch", price: 3000, image: "https://l.top4top.io/p_3784gtrtm6.jpg" },
-            { name: "Yamato", price: 4000, image: "https://a.top4top.io/p_3784tzl5h7.jpg" },
-            { name: "Manipulator", price: 3000, image: "https://b.top4top.io/p_3784ndzgw8.jpg" }, 
-            { name: "True Manipulator", price: 5000, image: "https://c.top4top.io/p_3784wxecm9.jpg" },
-            { name: "Shadow", price: 3000, image: "https://b.top4top.io/p_3784ksrlc0.jpg" }, 
-            { name: "Atomic", price: 5000, image: "https://c.top4top.io/p_3784t0whf1.jpg" },
-            { name: "Rimuru", price: 4000, image: "https://d.top4top.io/p_3784vaxp32.jpg" },
-            { name: "Vampire King", price: 3000, image: "https://j.top4top.io/p_3784arf2o0.jpg" },
-            { name: "The World", price: 8000, image: "https://f.top4top.io/p_378489mj74.jpg" },
-            { name: "Cosmic Being", price: 10000, image: "https://g.top4top.io/p_3784xplm35.jpg" },
-            { name: "Qin Shi", price: 2000, image: "https://h.top4top.io/p_3784fslvs6.jpg" },
-            { name: "Corrupted Excalibur", price: 3000, image: "https://i.top4top.io/p_3784c2as47.jpg" }, 
-            { name: "Gilgamesh", price: 3000, image: "https://j.top4top.io/p_3784z685t8.jpg" },
-            { name: "Madara", price: 5000, image: "https://k.top4top.io/p_3784gr70t9.jpg" },
-            { name: "Gojo V1", price: 3000, image: "https://a.top4top.io/p_3784qjgb00.jpg" }, 
-            { name: "Gojo V2", price: 4000, image: "https://b.top4top.io/p_3784a2rcq1.jpg" },
-            { name: "Sukuna V1", price: 3000, image: "https://c.top4top.io/p_3784az9432.jpg" }, 
-            { name: "Sukuna V2", price: 4000, image: "https://d.top4top.io/p_3784as8ta3.jpg" },
-            { name: "Cursed Vessel", price: 2000, image: "https://f.top4top.io/p_37849p4ts0.jpg" }, 
-            { name: "Blessed Maiden", price: 3000, image: "https://g.top4top.io/p_3784piqjn1.jpg" },
-            { name: "Demon King", price: 3000, image: "https://h.top4top.io/p_3784lfaem2.jpg" }, 
-            { name: "Moon Slayer", price: 4000, image: "https://i.top4top.io/p_3784q543p3.jpg" }
-          ]},
-          { category: "Boosts & Event Items", color: "text-green-400", icon: "fa-bolt", items: [
-            { name: "2x Drop", tag: "HOT", price: 20000, tag: "HOT", image: "https://static.wixstatic.com/media/c4d9b1_fbe8462bad5b43558c1e150435939dff~mv2.png/v1/fill/w_339,h_375,al_c,lg_1,q_85,enc_avif,quality_auto/c4d9b1_fbe8462bad5b43558c1e150435939dff~mv2.png" },
-            { name: "2x Luck", tag: "HOT", price: 20000, tag: "HOT", image: "https://assetsdelivery.eldorado.gg/v7/_offers-v2_/f27dc565-3aac-4aa5-915d-07d6d465a445_Offer_20260328120619_438449Large.png?w=600" },
-            { name: "100 Easter Eggs", price: 4000, image: "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcSi0S5tnaB0uT4-0IldurXaJ5LxpjNExZxPrT5oCp0n8odC6GSRqJ2tBaMW6g6lHcQJ9m2h6IzNMFbHJUj0PKwadQKcBpulxQ&usqp=CAc" },
-            { name: "100 Easter Keys", price: 3000, image: "https://assetsdelivery.eldorado.gg/v7/_offers-v2_/bf393df2-c4f2-4530-b576-1114f04b12c0_Offer_20260422091436_8526484Large.jpeg?w=600" },
-            { name: "100 Spirit Keys", price: 3000, image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRCbcl1kO0wMX5CIlB6utXgjr9QOLw9ufm7bw0MvevIOA&s" },
-            { name: "100 Raid Keys", price: 3000, image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSbytNnTSpGYOzniNKY9_5Ma_cZY0vtDDemhhL3nldR2A&s" },
-            { name: "100 Crystal Keys", price: 1000, image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRDdIgoXPOO_yLO7kBhusbZX1J7TTN9rDZ3qQIMO0QSVQ&s" }, 
-            { name: "Ascension (2-MAX)", price: 8000, image: "https://l.top4top.io/p_3784k25wd1.png" },
-            { name: "Relic Sets", price: 10000, image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTVorkCMTEclDDaZpyYSEKDEReuKOponp3qa2lcN9hTkyUSBKocjaa3gZFh&s=10" }
-          ]},
-          { category: "Basic & Common Items", color: "text-gray-300", icon: "fa-cube", items: [
-            { name: "10K Wood", price: 1000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/wood-item-sailor-piece.jpg" },
-            { name: "5K Iron", price: 1000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/iron-item-sailor-piece.jpg" },
-            { name: "1K Obsidian", price: 1000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/obsidian-item-sailor-piece-298x300.jpg" },
-            { name: "1K Mythril", price: 1000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/mythril-item-sailor-piece.jpg" },
-            { name: "500 Adamantite", price: 1000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/adamantine-item-sailor-piece.jpg" },
-            { name: "500 Diamond", price: 1000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/image-8.webp" },
-            { name: "10K Common Chest", price: 1000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/common-chest-item-sailor-piece.jpg" },
-            { name: "6K Rare Chest", price: 1000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/rare-chest-item-sailor-piece-300x300.jpg" },
-            { name: "3K Epic Chest", price: 1000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/epic-chest-item-sailor-piece-300x300.jpg" },
-            { name: "1K Legendary Chest", price: 1000, tag: "HOT", image: "https://bloxinformer.com/wp-content/uploads/2026/03/legendary-chest-item-sailor-piece-300x300.jpg" },
-            { name: "500 Mythical Chest", price: 1000, tag: "HOT", image: "https://bloxinformer.com/wp-content/uploads/2026/03/mythical-chest-item-sailor-piece-297x300.jpg" },
-            { name: "100 Secret Chest", price: 1000, tag: "HOT", image: "https://bloxinformer.com/wp-content/uploads/2026/03/secret-chest-item-sailor-piece-300x300.jpg" }
-          ]},
-          { category: "Reroll & Utility", color: "text-tera-purple", icon: "fa-dice", items: [
-            { name: "3K Race Reroll", price: 1000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/race-reroll-item-sailor-piece-297x300.jpg" },
-            { name: "3K Trait Reroll", price: 1000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/trait-reroll-item-sailor-piece-300x300.jpg" },
-            { name: "3K Clan Reroll", price: 1000, tag: "HOT", image: "https://bloxinformer.com/wp-content/uploads/2026/03/clan-reroll-item-sailor-piece.jpg" },
-            { name: "5K Haki Color Reroll", price: 1000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/haki-color-reroll-item-sailor-piece-296x300.jpg" },
-            { name: "10 Aura Crate", price: 500, tag: "HOT", image: "https://bloxinformer.com/wp-content/uploads/2026/03/aura-crate-item-sailor-piece.jpg" },
-            { name: "10 Cosmetic Crate", price: 500, image: "https://bloxinformer.com/wp-content/uploads/2026/03/image-6.webp" },
-            { name: "200 Boss Ticket", price: 1000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/boss-ticket-item-sailor-piece-295x300.jpg" },
-            { name: "400 Boss Key", price: 1000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/boss-key-item-sailor-piece-296x300.jpg" },
-            { name: "400 Dungeon Key", price: 1000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/dungeon-key-item-sailor-piece.jpg" },
-            { name: "400 Tower Key", price: 1000, image: "https://i.etsystatic.com/48790973/r/il/00a0a2/7925047395/il_fullxfull.7925047395_2uze.jpg" },
-            { name: "400 Rush Key", price: 1000, image: "https://imgop.itemku.com/?url=https%3A%2F%2Fd1x91p7vw3vuq8.cloudfront.net%2Fitemku-upload%2F202645%2F7pe0a6kz1tmqbxmkk8r25_thumbnail.jpg&w=1033&q=75" }
-          ]},
-          { category: "Crafting & Boss Drops", color: "text-tera-gold", icon: "fa-gem", items: [
-            { name: "Energy Core", price: 50, image: "https://bloxinformer.com/wp-content/uploads/2026/03/energy-core-item-sailor-piece.jpg" },
-            { name: "Void Fragment", price: 100, image: "https://bloxinformer.com/wp-content/uploads/2026/03/void-fragment-item-sailor-piece-297x300.jpg" },
-            { name: "Cursed Finger", price: 100, image: "https://bloxinformer.com/wp-content/uploads/2026/03/cursed-finger-item-sailor-piece-300x298.jpg" },
-            { name: "Awakened Cursed Finger", price: 100, image: "https://bloxinformer.com/wp-content/uploads/2026/03/awakened-cursed-finger-item-sailor-piece.jpg" },
-            { name: "Abyss Edge", price: 100, image: "https://bloxinformer.com/wp-content/uploads/2026/03/abyss-edge-item-sailor-piece-296x300.jpg" },
-            { name: "Mirage Pendant", price: 100, image: "https://bloxinformer.com/wp-content/uploads/2026/03/mirage-pendant-item-sailor-piece-300x300.jpg" },
-            { name: "Illusion Prism", price: 100, image: "https://bloxinformer.com/wp-content/uploads/2026/03/illusion-prism-item-sailor-piece.jpg" },
-            { name: "Worthless Fragment", price: 100, image: "https://bloxinformer.com/wp-content/uploads/2026/03/worthless-fragment-item-sailor-piece-300x300.jpg" },
-            { name: "Flash Impact", price: 100, image: "https://bloxinformer.com/wp-content/uploads/2026/03/flash-impact-item-sailor-piece.jpg" },
-            { name: "Umbral Capsule", price: 100, image: "https://bloxinformer.com/wp-content/uploads/2026/03/umbra-capsule-item-sailor-piece.jpg" },
-            { name: "Limitless Key", price: 100, image: "https://bloxinformer.com/wp-content/uploads/2026/03/limitless-key-item-sailor-piece.jpg" },
-            { name: "Limitless Ring", price: 100, image: "https://bloxinformer.com/wp-content/uploads/2026/03/limitless-ring-item-sailor-piece-297x300.jpg" },
-            { name: "Reversal Pulse", price: 100, image: "https://bloxinformer.com/wp-content/uploads/2026/03/reversal-pulse-item-sailor-piece.jpg" },
-            { name: "Vessel Ring", price: 100, image: "https://bloxinformer.com/wp-content/uploads/2026/03/vessel-ring-item-sailor-piece.jpg" },
-            { name: "Void Seed", price: 200, image: "https://bloxinformer.com/wp-content/uploads/2026/03/void-seed-item-sailor-piece.jpg" },
-            { name: "Soul Fragment", price: 100, image: "https://bloxinformer.com/wp-content/uploads/2026/03/soul-fragment-item-sailor-piece.jpg" },
-            { name: "Soul Amulet", price: 200, image: "https://bloxinformer.com/wp-content/uploads/2026/03/soul-amulet-item-sailor-piece.jpg" },
-            { name: "Cursed Talisman", price: 200, image: "https://bloxinformer.com/wp-content/uploads/2026/03/cursed-talisman-item-sailor-piece.jpg" },
-            { name: "Sage Pulse", price: 100, image: "https://bloxinformer.com/wp-content/uploads/2026/03/sage-pulse-item-sailor-piece.jpg" },
-            { name: "Six Eye", price: 200, tag: "RARE", image: "https://bloxinformer.com/wp-content/uploads/2026/03/six-eye-item-sailor-piece.jpg" },
-            { name: "Energy Shard", price: 200, image: "https://bloxinformer.com/wp-content/uploads/2026/03/energy-shard-item-sailor-piece.jpg" },
-            { name: "Malevolent Soul", price: 200, tag: "RARE", image: "https://bloxinformer.com/wp-content/uploads/2026/03/malevolent-soul-item-sailor-piece.jpg" },
-            { name: "Blue Singularity", price: 200, tag: "RARE", image: "https://bloxinformer.com/wp-content/uploads/2026/03/blue-singularity-item-sailor-piece.jpg" },
-            { name: "Tempest Seal", price: 200, image: "https://bloxinformer.com/wp-content/uploads/2026/03/tempest-seal-item-sailor-piece.jpg" },
-            { name: "Slime Remnant", price: 200, image: "https://bloxinformer.com/wp-content/uploads/2026/03/slime-remnant-item-sailor-piece.jpg" },
-            { name: "50 Slime Key", price: 1000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/slime-key-item-sailor-piece.jpg" },
-            { name: "100 Slime Shard", price: 1000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/slime-shard-item-sailor-piece.jpg" },
-            { name: "Slime Core", price: 300, image: "https://bloxinformer.com/wp-content/uploads/2026/03/slime-core-item-sailor-piece.jpg" },
-            { name: "Reiatsu Core", price: 200, image: "https://bloxinformer.com/wp-content/uploads/2026/03/reiatsu-core-item-sailor-piece.jpg" },
-            { name: "Throne Remnant", price: 100, image: "https://bloxinformer.com/wp-content/uploads/2026/03/throne-remnant-item-sailor-piece.jpg" },
-            { name: "Power Remnant", price: 200, image: "https://bloxinformer.com/wp-content/uploads/2026/03/powa.png" },
-            { name: "Battle Shard", price: 100, image: "https://bloxinformer.com/wp-content/uploads/2026/03/bat.png" },
-            { name: "Monarch Core", price: 200, image: "https://bloxinformer.com/wp-content/uploads/2026/03/monarch-core-item-sailor-piece.jpg" },
-            { name: "Dismantle Fang", price: 200, image: "https://bloxinformer.com/wp-content/uploads/2026/03/dismantle-fang-item-sailor-piece.jpg" },
-            { name: "Dark Ring", price: 300, image: "https://bloxinformer.com/wp-content/uploads/2026/03/dark-ring-item-sailor-piece.jpg" },
-            { name: "Infinity Core", price: 300, image: "https://bloxinformer.com/wp-content/uploads/2026/03/infinity-core-item-sailor-piece-300x300.jpg" },
-            { name: "200 Bloodline Stone", price: 1000, tag: "HOT", image: "https://bloxinformer.com/wp-content/uploads/2026/03/Bloodine-Stone.png" },
-            { name: "500 Power Shard", price: 1000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/Power-Shard.png" },
-            { name: "1K Passive Shards", price: 1000, image: "https://imgop.itemku.com/?url=https%3A%2F%2Fd1x91p7vw3vuq8.cloudfront.net%2Fitemku-upload%2F2026317%2Fav6b71n61nn178ikoghir4_thumbnail.jpg&w=1033&q=75" },
-            { name: "Jade Tablet", price: 200, image: "https://bloxinformer.com/wp-content/uploads/2026/03/jade-tablet-item-sailor-piece.jpg" },
-            { name: "Divergent Pulse", price: 200, image: "https://bloxinformer.com/wp-content/uploads/2026/03/divergent-pulse-item-sailor-piece.jpg" },
-            { name: "Shadow Essence", price: 200, image: "https://bloxinformer.com/wp-content/uploads/2026/03/shadow-essence-item-sailor-piece.jpg" },
-            { name: "Golden Essence", price: 300, image: "https://bloxinformer.com/wp-content/uploads/2026/03/golden-essence-item-sailor-piece.jpg" },
-            { name: "Lunar Essence", price: 200, image: "https://bloxinformer.com/wp-content/uploads/2026/03/Lunar-Essence.png" },
-            { name: "Ancient Shard", price: 200, image: "https://bloxinformer.com/wp-content/uploads/2026/03/ancient-shard-item-sailor-piece.jpg" },
-            { name: "Demonic Shard", price: 200, image: "https://bloxinformer.com/wp-content/uploads/2026/03/demonic-shard-item-sailor-piece.jpg" },
-            { name: "Monarch Essence", price: 300, image: "https://bloxinformer.com/wp-content/uploads/2026/03/monarch-essence-item-sailor-piece.jpg" },
-            { name: "500 Abyss Sigil", price: 1000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/Abyss-Sigil-Sailor-Piece-Item-for.webp" },
-            { name: "10 Battle Sigil", price: 1000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/sigil.png" },
-            { name: "500 Upper Seal", price: 1000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/image-1.webp" },
-            { name: "500 Frost Relic", price: 1000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/image-2.webp" },
-            { name: "Glacier Remnant", price: 300, image: "https://bloxinformer.com/wp-content/uploads/2026/03/glacier_rem.png" },
-            { name: "400 Chrysalis Sigil", price: 1000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/image-3.webp" },
-            { name: "500 Tempest Relic", price: 1000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/image-4.webp" },
-            { name: "100 Dominion Brand", price: 1000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/Dominion-Brand.webp" },
-            { name: "Transmutation Shard", price: 500, image: "https://bloxinformer.com/wp-content/uploads/2026/03/image-5.webp" },
-            { name: "Ice Core", price: 500, image: "https://bloxinformer.com/wp-content/uploads/2026/03/ICE-1.png" },
-            { name: "Frozen Brand", price: 300, image: "https://bloxinformer.com/wp-content/uploads/2026/03/froze.png" },
-            { name: "Crimson Heart", price: 300, image: "https://bloxinformer.com/wp-content/uploads/2026/03/crimson-heart-item-sailor-piece.jpg" },
-            { name: "Shadow Heart", price: 300, image: "https://bloxinformer.com/wp-content/uploads/2026/03/shadow-heart-item-sailor-piece.jpg" },
-            { name: "Blood Ring", price: 500, image: "https://bloxinformer.com/wp-content/uploads/2026/03/blood-ring-item-sailor-piece.jpg" },
-            { name: "Casull", price: 500, image: "https://bloxinformer.com/wp-content/uploads/2026/03/casull-item-sailor-piece.jpg" },
-            { name: "Cursed Flesh", price: 300, image: "https://bloxinformer.com/wp-content/uploads/2026/03/cursed-flesh-item-sailor-piece.jpg" },
-            { name: "Soul Flame", price: 300, image: "https://bloxinformer.com/wp-content/uploads/2026/03/soul-flame-item-sailor-piece.jpg" },
-            { name: "Phantasm Core", price: 500, image: "https://bloxinformer.com/wp-content/uploads/2026/03/phanttasm-core-item-sailor-piece.jpg" },
-            { name: "Shadow Crystal", price: 300, image: "https://bloxinformer.com/wp-content/uploads/2026/03/shadow-crystal-item-sailor-piece.jpg" },
-            { name: "Path Fragment", price: 500, image: "https://bloxinformer.com/wp-content/uploads/2026/03/path_frag.png" },
-            { name: "Crescent Shard", price: 200, image: "https://bloxinformer.com/wp-content/uploads/2026/03/Screscent-Shard-Item-in-Sailor-Piece.png" },
-            { name: "Moon Crest", price: 500, image: "https://bloxinformer.com/wp-content/uploads/2026/03/Moon-Crest-Item-for-Moon-Slayer-Melee.png" }
-          ]},
-          { category: "Rare & Legendary Materials", color: "text-red-400", icon: "fa-khanda", items: [
-            { name: "500 Broken Sword", price: 1000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/broken-sword-item-sailor-piece.jpg" },
-            { name: "Babylon Key", price: 1000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/babylon-key-item-sailor-piece.jpg" },
-            { name: "300 Divine Grail", price: 1000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/divine-grail-item-sailor-piece.jpg" },
-            { name: "400 Calamity Seal", price: 1000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/calamity-seal-item-sailor-piece.jpg" },
-            { name: "World Core", price: 1000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/world-core.png" },
-            { name: "Hogyoku Fragment", price: 500, image: "https://bloxinformer.com/wp-content/uploads/2026/03/hogyoku-fragment-item-sailor-piece.jpg" },
-            { name: "Imperial Seal", price: 200, image: "https://bloxinformer.com/wp-content/uploads/2026/03/imperial-seal-item-sailor-piece.jpg" },
-            { name: "Eminence Essence", price: 300, image: "https://bloxinformer.com/wp-content/uploads/2026/03/1000409969_0x0_670x519.png" },
-            { name: "Atomic Core", price: 500, image: "https://bloxinformer.com/wp-content/uploads/2026/03/atomic-core-item-sailor-piece.jpg" },
-            { name: "Infinity Essence", price: 500, image: "https://bloxinformer.com/wp-content/uploads/2026/03/inifinity-essence-item-sailor-piece.jpg" },
-            { name: "Conqueror Fragment", price: 200, image: "https://bloxinformer.com/wp-content/uploads/2026/03/conqueror-fragment-item-sailor-piece.jpg" },
-            { name: "Destruction Eye", price: 300, image: "https://bloxinformer.com/wp-content/uploads/2026/03/destruction-eye-item-sailor-piece.jpg" },
-            { name: "Imperial Mark", price: 500, image: "https://bloxinformer.com/wp-content/uploads/2026/03/imperial-mark-item-sailor-piece.jpg" },
-            { name: "Corruption Core", price: 500, image: "https://bloxinformer.com/wp-content/uploads/2026/03/Corruption-Core.png" },
-            { name: "Vampire Omen", price: 2000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/Vampire-Omen.png" },
-            { name: "Atomic Omen", price: 200, image: "https://bloxinformer.com/wp-content/uploads/2026/03/Atomic-Omen-item-in-Sailor-Piece-300x300.png" },
-            { name: "Kamish Dagger", price: 200, image: "https://bloxinformer.com/wp-content/uploads/2026/03/kamish-dagger-item-sailor-piece.jpg" },
-            { name: "Corrupt Crown", price: 400, image: "https://bloxinformer.com/wp-content/uploads/2026/03/Darkgrail_20260316_060344_0000.png" },
-            { name: "Eternal Core", price: 500, image: "https://bloxinformer.com/wp-content/uploads/2026/03/Ete_core.png" }
-          ]}
-        ];
+        function closePaymentModal() {
+            document.getElementById('paymentModal').classList.add('hidden');
+        }
 
-        function renderCatalog(searchQuery = "") {
-            const container = document.getElementById('katalog-container');
-            if(!container) return;
-            container.innerHTML = "";
-            let lowerQuery = searchQuery.toLowerCase();
-            let foundItems = false;
+        function confirmPayment(platform) {
+            if (cart.length === 0) {
+                alert("Keranjang masih kosong! Silakan tambahkan item terlebih dahulu.");
+                return;
+            }
 
-            storeData.forEach((section, sIndex) => {
-                let filteredItems = section.items.filter(item => item.name.toLowerCase().includes(lowerQuery));
-                if(filteredItems.length === 0) return;
-                foundItems = true;
+            let textMsg = `Halo min,\n\nSaya sudah melakukan pembayaran QRIS untuk pesanan berikut dari TERA STORE:\n\n`;
+            textMsg += `No. Pesanan: ${currentOrderId}\n\n`;
+            let totalAll = 0;
 
-                let sectionHTML = `
-                    <div class="glass p-6 md:p-10 rounded-3xl border border-white/5 shadow-xl relative overflow-hidden">
-                        <div class="absolute top-0 right-0 w-32 h-32 bg-white/5 blur-3xl rounded-full"></div>
-                        <div class="flex items-center gap-4 mb-8 border-b border-white/10 pb-4 relative z-10">
-                            <div class="w-12 h-12 rounded-xl bg-black/40 flex items-center justify-center border border-white/10 shadow-inner">
-                                <i class="fas ${section.icon} text-2xl ${section.color}"></i>
-                            </div>
-                            <h4 class="text-2xl md:text-3xl font-bold italic ${section.color}">${section.category}</h4>
-                        </div>
-                        <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-6 relative z-10">
-                `;
-
-                filteredItems.forEach((item, iIndex) => {
-                    let badge = item.tag ? `<div class="absolute -top-3 -right-3 bg-gradient-to-br from-red-500 to-pink-600 text-white text-[10px] font-black px-3 py-1 rounded-full shadow-[0_0_15px_rgba(239,68,68,0.6)] italic z-20">${item.tag}</div>` : '';
-                    let itemId = `item-${sIndex}-${iIndex}`;
-                    
-                    let imageElement = '';
-                    if(item.image && item.image !== "") {
-                        imageElement = `<img src="${item.image}" alt="${item.name}" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" onerror="this.onerror=null; this.src='https://via.placeholder.com/150/0a0514/a855f7?text=No+Image';">`;
-                    } else {
-                        imageElement = `<div class="w-full h-full flex items-center justify-center bg-black/40 group-hover:scale-110 transition-transform duration-500"><i class="fas ${section.icon} text-3xl text-white/20"></i></div>`;
-                    }
-                    
-                    // Modifikasi Tombol untuk hanya menampilkan Cart
-                    sectionHTML += `
-                        <div class="glow-card-wrapper flex flex-col">
-                            <div class="item-card rounded-2xl p-4 flex flex-col items-center text-center relative group flex-grow">
-                                ${badge}
-                                <div class="w-full aspect-square mb-4 rounded-xl overflow-hidden border border-white/10 bg-[#0a0514] relative shadow-inner">
-                                    ${imageElement}
-                                    <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                                </div>
-                                <h5 class="text-sm font-bold text-white mb-2 h-10 flex items-center justify-center leading-tight w-full drop-shadow-md">${item.name}</h5>
-                                <span class="text-[10px] text-gray-400 mb-2 tracking-wider">Harga: ${formatRupiah(item.price)}</span>
-                                <p id="total-${itemId}" class="text-tera-gold text-sm font-black mb-4 bg-gradient-to-r from-tera-gold/5 via-tera-gold/10 to-tera-gold/5 px-2 py-1.5 rounded-lg w-full border border-tera-gold/30 shadow-inner" data-baseprice="${item.price}">
-                                    ${formatRupiah(item.price)}
-                                </p>
-                                <div class="flex items-center justify-between w-full bg-black/80 rounded-xl p-1.5 border border-white/10 mb-4 shadow-inner mt-auto">
-                                    <button onclick="updateQty('${itemId}', -1)" class="w-7 h-7 rounded-lg flex items-center justify-center text-gray-400 hover:text-white hover:bg-white/10 transition-colors">
-                                        <i class="fas fa-minus text-xs"></i>
-                                    </button>
-                                    <span id="qty-${itemId}" class="text-sm font-bold w-8 text-center text-white">1</span>
-                                    <button onclick="updateQty('${itemId}', 1)" class="w-7 h-7 rounded-lg flex items-center justify-center text-gray-400 hover:text-white hover:bg-white/10 transition-colors">
-                                        <i class="fas fa-plus text-xs"></i>
-                                    </button>
-                                </div>
-                                
-                                <button onclick="addToCart(${sIndex}, ${iIndex}, '${itemId}')" class="w-full bg-tera-purple text-white hover:bg-purple-600 border border-tera-purple/50 text-xs font-bold py-2.5 rounded-xl transition-all uppercase tracking-wider flex items-center justify-center gap-2 shadow-[0_0_15px_rgba(168,85,247,0.4)]">
-                                    <i class="fas fa-cart-plus"></i> Add to Cart
-                                </button>
-                            </div>
-                        </div>
-                    `;
-                });
-                sectionHTML += `</div></div>`;
-                container.innerHTML += sectionHTML;
+            cart.forEach((c, i) => {
+                const gameLabel = c.game === 'gag' ? '[Grow a Garden]' : '[Sailor Piece]';
+                textMsg += `${i+1}. ${gameLabel} ${c.name}\n   └ ${c.qty}x = ${formatRupiah(c.price * c.qty)}\n`;
+                totalAll += (c.price * c.qty);
             });
 
-            if (!foundItems) {
-                container.innerHTML = `
-                    <div class="glass p-10 rounded-3xl text-center border border-white/5">
-                        <i class="fas fa-search text-4xl text-gray-500 mb-4"></i>
-                        <h4 class="text-xl font-bold text-gray-400 italic">Item tidak ditemukan</h4>
-                        <p class="text-sm text-gray-500 mt-2">Coba gunakan kata kunci yang lain.</p>
-                    </div>
-                `;
-            }
+            textMsg += `\n💰 Total Pembayaran: ${formatRupiah(totalAll)}\n\nBerikut saya lampirkan screenshot bukti transfer QRIS. Mohon segera diproses, terima kasih!`;
+
+            copyToClipboardAndRedirect(textMsg, platform);
         }
 
         function formatRupiah(angka) {
@@ -930,13 +1046,74 @@
         function copyToClipboardAndRedirect(textMsg, platform) {
             let targetUrl = platform === 'instagram' ? INSTAGRAM_URL : TIKTOK_URL;
             let platformName = platform === 'instagram' ? 'Instagram' : 'TikTok';
-            navigator.clipboard.writeText(textMsg).then(() => {
-                alert(`Format pesanan berhasil disalin!\n\nWebsite akan membuka ${platformName}. Silakan Paste (Tempel) pesan ini di DM ${platformName} kami: @tera.rblx`);
-                window.open(targetUrl, '_blank');
-            }).catch(err => {
-                alert(`Silakan kirimkan DM secara manual ke ${platformName} kami: @tera.rblx`);
-                window.open(targetUrl, '_blank');
-            });
+
+            const proceed = (copied) => {
+                showCopyToast(copied, platformName);
+                // Beri sedikit delay supaya toast sempat terlihat sebelum tab/app berpindah
+                setTimeout(() => { window.location.href = targetUrl; }, 900);
+            };
+
+            // Metode 1: Clipboard API modern (butuh HTTPS + secure context)
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard.writeText(textMsg).then(() => {
+                    proceed(true);
+                }).catch(() => {
+                    // Metode 2: Fallback pakai textarea + execCommand (untuk browser/webview lama)
+                    proceed(fallbackCopyText(textMsg));
+                });
+            } else {
+                proceed(fallbackCopyText(textMsg));
+            }
+        }
+
+        function fallbackCopyText(text) {
+            try {
+                const ta = document.createElement('textarea');
+                ta.value = text;
+                ta.style.position = 'fixed';
+                ta.style.top = '0';
+                ta.style.left = '0';
+                ta.style.width = '1px';
+                ta.style.height = '1px';
+                ta.style.padding = '0';
+                ta.style.opacity = '0';
+                document.body.appendChild(ta);
+                ta.focus();
+                ta.select();
+                ta.setSelectionRange(0, text.length);
+                const success = document.execCommand('copy');
+                document.body.removeChild(ta);
+                return success;
+            } catch (err) {
+                return false;
+            }
+        }
+
+        function showCopyToast(success, platformName) {
+            const existing = document.getElementById('copy-toast');
+            if (existing) existing.remove();
+
+            const toast = document.createElement('div');
+            toast.id = 'copy-toast';
+            toast.style.position = 'fixed';
+            toast.style.bottom = '24px';
+            toast.style.left = '50%';
+            toast.style.transform = 'translateX(-50%)';
+            toast.style.zIndex = '9999';
+            toast.style.maxWidth = '90vw';
+            toast.style.padding = '14px 18px';
+            toast.style.borderRadius = '14px';
+            toast.style.fontSize = '13px';
+            toast.style.fontWeight = '600';
+            toast.style.textAlign = 'center';
+            toast.style.boxShadow = '0 8px 24px rgba(0,0,0,0.4)';
+            toast.style.color = '#fff';
+            toast.style.background = success ? 'linear-gradient(135deg, #8b5cf6, #6366f1)' : '#dc2626';
+            toast.innerText = success
+                ? `Pesan tersalin! Tempel (paste) di kolom chat DM ${platformName}.`
+                : `Gagal menyalin otomatis. Silakan ketik manual pesan pesananmu di DM ${platformName}.`;
+            document.body.appendChild(toast);
+            setTimeout(() => toast.remove(), 4500);
         }
 
         function orderJoki(jokiName, platform) {
@@ -951,11 +1128,619 @@
         const searchInput = document.getElementById('searchInput');
         if (searchInput) {
             searchInput.addEventListener('input', function(e) {
-                renderCatalog(e.target.value);
+                renderCatalog(activeGame, e.target.value);
             });
         }
-        
-        renderCatalog();
+    </script>
+
+
+    <script>
+// =======================
+// DATA: SAILOR PIECE
+// =======================
+const sailorPieceData = [
+  { id: "sp-premium", category: "Premium Sets / Weapon Materials", color: "text-indigo-400", icon: "fa-shield-halved", items: [
+    { name: "Ice Queen", price: 5000, image: "https://f.top4top.io/p_37845uvec0.jpg" },
+    { name: "Great Mage", tag: "LIMITED", price: 20000, image: "https://g.top4top.io/p_3784v4afq1.jpg" },
+    { name: "Sun God", price: 20000, image: "https://h.top4top.io/p_3784l9vur2.jpg" },
+    { name: "Excalibur", price: 1000, image: "https://i.top4top.io/p_3784okt2i3.jpg" },
+    { name: "Soul Reaper", price: 2000, image: "https://j.top4top.io/p_37849l8tm4.jpg" },
+    { name: "Solo Hunter", price: 3000, image: "https://k.top4top.io/p_378415ufb5.jpg" },
+    { name: "Shadow Monarch", price: 3000, image: "https://l.top4top.io/p_3784gtrtm6.jpg" },
+    { name: "Yamato", price: 4000, image: "https://a.top4top.io/p_3784tzl5h7.jpg" },
+    { name: "Manipulator", price: 3000, image: "https://b.top4top.io/p_3784ndzgw8.jpg" },
+    { name: "True Manipulator", price: 5000, image: "https://c.top4top.io/p_3784wxecm9.jpg" },
+    { name: "Shadow", price: 3000, image: "https://b.top4top.io/p_3784ksrlc0.jpg" },
+    { name: "Atomic", price: 5000, image: "https://c.top4top.io/p_3784t0whf1.jpg" },
+    { name: "Rimuru", price: 4000, image: "https://d.top4top.io/p_3784vaxp32.jpg" },
+    { name: "Vampire King", price: 3000, image: "https://j.top4top.io/p_3784arf2o0.jpg" },
+    { name: "The World", price: 8000, image: "https://f.top4top.io/p_378489mj74.jpg" },
+    { name: "Cosmic Being", price: 10000, image: "https://g.top4top.io/p_3784xplm35.jpg" },
+    { name: "Qin Shi", price: 2000, image: "https://h.top4top.io/p_3784fslvs6.jpg" },
+    { name: "Corrupted Excalibur", price: 3000, image: "https://i.top4top.io/p_3784c2as47.jpg" },
+    { name: "Gilgamesh", price: 3000, image: "https://j.top4top.io/p_3784z685t8.jpg" },
+    { name: "Madara", price: 5000, image: "https://k.top4top.io/p_3784gr70t9.jpg" },
+    { name: "Gojo V1", price: 3000, image: "https://a.top4top.io/p_3784qjgb00.jpg" },
+    { name: "Gojo V2", price: 4000, image: "https://b.top4top.io/p_3784a2rcq1.jpg" },
+    { name: "Sukuna V1", price: 3000, image: "https://c.top4top.io/p_3784az9432.jpg" },
+    { name: "Sukuna V2", price: 4000, image: "https://d.top4top.io/p_3784as8ta3.jpg" },
+    { name: "Cursed Vessel", price: 2000, image: "https://f.top4top.io/p_37849p4ts0.jpg" },
+    { name: "Blessed Maiden", price: 3000, image: "https://g.top4top.io/p_3784piqjn1.jpg" },
+    { name: "Demon King", price: 3000, image: "https://h.top4top.io/p_3784lfaem2.jpg" },
+    { name: "Moon Slayer", price: 4000, image: "https://i.top4top.io/p_3784q543p3.jpg" }
+  ]},
+  { id: "sp-boosts", category: "Boosts & Event Items", color: "text-emerald-400", icon: "fa-bolt", items: [
+    { name: "2x Drop", tag: "HOT", price: 20000, image: "https://static.wixstatic.com/media/c4d9b1_fbe8462bad5b43558c1e150435939dff~mv2.png/v1/fill/w_339,h_375,al_c,lg_1,q_85,enc_avif,quality_auto/c4d9b1_fbe8462bad5b43558c1e150435939dff~mv2.png" },
+    { name: "2x Luck", tag: "HOT", price: 20000, image: "https://assetsdelivery.eldorado.gg/v7/_offers-v2_/f27dc565-3aac-4aa5-915d-07d6d465a445_Offer_20260328120619_438449Large.png?w=600" },
+    { name: "100 Easter Eggs", price: 4000, image: "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcSi0S5tnaB0uT4-0IldurXaJ5LxpjNExZxPrT5oCp0n8odC6GSRqJ2tBaMW6g6lHcQJ9m2h6IzNMFbHJUj0PKwadQKcBpulxQ&usqp=CAc" },
+    { name: "100 Easter Keys", price: 3000, image: "https://assetsdelivery.eldorado.gg/v7/_offers-v2_/bf393df2-c4f2-4530-b576-1114f04b12c0_Offer_20260422091436_8526484Large.jpeg?w=600" },
+    { name: "100 Spirit Keys", price: 3000, image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRCbcl1kO0wMX5CIlB6utXgjr9QOLw9ufm7bw0MvevIOA&s" },
+    { name: "100 Raid Keys", price: 3000, image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSbytNnTSpGYOzniNKY9_5Ma_cZY0vtDDemhhL3nldR2A&s" },
+    { name: "100 Crystal Keys", price: 1000, image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRDdIgoXPOO_yLO7kBhusbZX1J7TTN9rDZ3qQIMO0QSVQ&s" },
+    { name: "Ascension (2-MAX)", price: 8000, image: "https://l.top4top.io/p_3784k25wd1.png" },
+    { name: "Relic Sets", price: 10000, image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTVorkCMTEclDDaZpyYSEKDEReuKOponp3qa2lcN9hTkyUSBKocjaa3gZFh&s=10" }
+  ]},
+  { id: "sp-basic", category: "Basic & Common Items", color: "text-slate-300", icon: "fa-cube", items: [
+    { name: "10K Wood", price: 1000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/wood-item-sailor-piece.jpg" },
+    { name: "5K Iron", price: 1000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/iron-item-sailor-piece.jpg" },
+    { name: "1K Obsidian", price: 1000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/obsidian-item-sailor-piece-298x300.jpg" },
+    { name: "1K Mythril", price: 1000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/mythril-item-sailor-piece.jpg" },
+    { name: "500 Adamantite", price: 1000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/adamantine-item-sailor-piece.jpg" },
+    { name: "500 Diamond", price: 1000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/image-8.webp" },
+    { name: "10K Common Chest", price: 1000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/common-chest-item-sailor-piece.jpg" },
+    { name: "6K Rare Chest", price: 1000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/rare-chest-item-sailor-piece-300x300.jpg" },
+    { name: "3K Epic Chest", price: 1000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/epic-chest-item-sailor-piece-300x300.jpg" },
+    { name: "1K Legendary Chest", price: 1000, tag: "HOT", image: "https://bloxinformer.com/wp-content/uploads/2026/03/legendary-chest-item-sailor-piece-300x300.jpg" },
+    { name: "500 Mythical Chest", price: 1000, tag: "HOT", image: "https://bloxinformer.com/wp-content/uploads/2026/03/mythical-chest-item-sailor-piece-297x300.jpg" },
+    { name: "100 Secret Chest", price: 1000, tag: "HOT", image: "https://bloxinformer.com/wp-content/uploads/2026/03/secret-chest-item-sailor-piece-300x300.jpg" }
+  ]},
+  { id: "sp-reroll", category: "Reroll & Utility", color: "text-tera-purple", icon: "fa-dice", items: [
+    { name: "3K Race Reroll", price: 1000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/race-reroll-item-sailor-piece-297x300.jpg" },
+    { name: "3K Trait Reroll", price: 1000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/trait-reroll-item-sailor-piece-300x300.jpg" },
+    { name: "3K Clan Reroll", price: 1000, tag: "HOT", image: "https://bloxinformer.com/wp-content/uploads/2026/03/clan-reroll-item-sailor-piece.jpg" },
+    { name: "5K Haki Color Reroll", price: 1000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/haki-color-reroll-item-sailor-piece-296x300.jpg" },
+    { name: "10 Aura Crate", price: 500, tag: "HOT", image: "https://bloxinformer.com/wp-content/uploads/2026/03/aura-crate-item-sailor-piece.jpg" },
+    { name: "10 Cosmetic Crate", price: 500, image: "https://bloxinformer.com/wp-content/uploads/2026/03/image-6.webp" },
+    { name: "200 Boss Ticket", price: 1000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/boss-ticket-item-sailor-piece-295x300.jpg" },
+    { name: "400 Boss Key", price: 1000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/boss-key-item-sailor-piece-296x300.jpg" },
+    { name: "400 Dungeon Key", price: 1000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/dungeon-key-item-sailor-piece.jpg" },
+    { name: "400 Tower Key", price: 1000, image: "https://i.etsystatic.com/48790973/r/il/00a0a2/7925047395/il_fullxfull.7925047395_2uze.jpg" },
+    { name: "400 Rush Key", price: 1000, image: "https://imgop.itemku.com/?url=https%3A%2F%2Fd1x91p7vw3vuq8.cloudfront.net%2Fitemku-upload%2F202645%2F7pe0a6kz1tmqbxmkk8r25_thumbnail.jpg&w=1033&q=75" }
+  ]},
+  { id: "sp-crafting", category: "Crafting & Boss Drops", color: "text-tera-gold", icon: "fa-gem", items: [
+    { name: "Energy Core", price: 50, image: "https://bloxinformer.com/wp-content/uploads/2026/03/energy-core-item-sailor-piece.jpg" },
+    { name: "Void Fragment", price: 100, image: "https://bloxinformer.com/wp-content/uploads/2026/03/void-fragment-item-sailor-piece-297x300.jpg" },
+    { name: "Cursed Finger", price: 100, image: "https://bloxinformer.com/wp-content/uploads/2026/03/cursed-finger-item-sailor-piece-300x298.jpg" },
+    { name: "Awakened Cursed Finger", price: 100, image: "https://bloxinformer.com/wp-content/uploads/2026/03/awakened-cursed-finger-item-sailor-piece.jpg" },
+    { name: "Abyss Edge", price: 100, image: "https://bloxinformer.com/wp-content/uploads/2026/03/abyss-edge-item-sailor-piece-296x300.jpg" },
+    { name: "Mirage Pendant", price: 100, image: "https://bloxinformer.com/wp-content/uploads/2026/03/mirage-pendant-item-sailor-piece-300x300.jpg" },
+    { name: "Illusion Prism", price: 100, image: "https://bloxinformer.com/wp-content/uploads/2026/03/illusion-prism-item-sailor-piece.jpg" },
+    { name: "Worthless Fragment", price: 100, image: "https://bloxinformer.com/wp-content/uploads/2026/03/worthless-fragment-item-sailor-piece-300x300.jpg" },
+    { name: "Flash Impact", price: 100, image: "https://bloxinformer.com/wp-content/uploads/2026/03/flash-impact-item-sailor-piece.jpg" },
+    { name: "Umbral Capsule", price: 100, image: "https://bloxinformer.com/wp-content/uploads/2026/03/umbra-capsule-item-sailor-piece.jpg" },
+    { name: "Limitless Key", price: 100, image: "https://bloxinformer.com/wp-content/uploads/2026/03/limitless-key-item-sailor-piece.jpg" },
+    { name: "Limitless Ring", price: 100, image: "https://bloxinformer.com/wp-content/uploads/2026/03/limitless-ring-item-sailor-piece-297x300.jpg" },
+    { name: "Reversal Pulse", price: 100, image: "https://bloxinformer.com/wp-content/uploads/2026/03/reversal-pulse-item-sailor-piece.jpg" },
+    { name: "Vessel Ring", price: 100, image: "https://bloxinformer.com/wp-content/uploads/2026/03/vessel-ring-item-sailor-piece.jpg" },
+    { name: "Void Seed", price: 200, image: "https://bloxinformer.com/wp-content/uploads/2026/03/void-seed-item-sailor-piece.jpg" },
+    { name: "Soul Fragment", price: 100, image: "https://bloxinformer.com/wp-content/uploads/2026/03/soul-fragment-item-sailor-piece.jpg" },
+    { name: "Soul Amulet", price: 200, image: "https://bloxinformer.com/wp-content/uploads/2026/03/soul-amulet-item-sailor-piece.jpg" },
+    { name: "Cursed Talisman", price: 200, image: "https://bloxinformer.com/wp-content/uploads/2026/03/cursed-talisman-item-sailor-piece.jpg" },
+    { name: "Sage Pulse", price: 100, image: "https://bloxinformer.com/wp-content/uploads/2026/03/sage-pulse-item-sailor-piece.jpg" },
+    { name: "Six Eye", price: 200, tag: "RARE", image: "https://bloxinformer.com/wp-content/uploads/2026/03/six-eye-item-sailor-piece.jpg" },
+    { name: "Energy Shard", price: 200, image: "https://bloxinformer.com/wp-content/uploads/2026/03/energy-shard-item-sailor-piece.jpg" },
+    { name: "Malevolent Soul", price: 200, tag: "RARE", image: "https://bloxinformer.com/wp-content/uploads/2026/03/malevolent-soul-item-sailor-piece.jpg" },
+    { name: "Blue Singularity", price: 200, tag: "RARE", image: "https://bloxinformer.com/wp-content/uploads/2026/03/blue-singularity-item-sailor-piece.jpg" },
+    { name: "Tempest Seal", price: 200, image: "https://bloxinformer.com/wp-content/uploads/2026/03/tempest-seal-item-sailor-piece.jpg" },
+    { name: "Slime Remnant", price: 200, image: "https://bloxinformer.com/wp-content/uploads/2026/03/slime-remnant-item-sailor-piece.jpg" },
+    { name: "50 Slime Key", price: 1000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/slime-key-item-sailor-piece.jpg" },
+    { name: "100 Slime Shard", price: 1000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/slime-shard-item-sailor-piece.jpg" },
+    { name: "Slime Core", price: 300, image: "https://bloxinformer.com/wp-content/uploads/2026/03/slime-core-item-sailor-piece.jpg" },
+    { name: "Reiatsu Core", price: 200, image: "https://bloxinformer.com/wp-content/uploads/2026/03/reiatsu-core-item-sailor-piece.jpg" },
+    { name: "Throne Remnant", price: 100, image: "https://bloxinformer.com/wp-content/uploads/2026/03/throne-remnant-item-sailor-piece.jpg" },
+    { name: "Power Remnant", price: 200, image: "https://bloxinformer.com/wp-content/uploads/2026/03/powa.png" },
+    { name: "Battle Shard", price: 100, image: "https://bloxinformer.com/wp-content/uploads/2026/03/bat.png" },
+    { name: "Monarch Core", price: 200, image: "https://bloxinformer.com/wp-content/uploads/2026/03/monarch-core-item-sailor-piece.jpg" },
+    { name: "Dismantle Fang", price: 200, image: "https://bloxinformer.com/wp-content/uploads/2026/03/dismantle-fang-item-sailor-piece.jpg" },
+    { name: "Dark Ring", price: 300, image: "https://bloxinformer.com/wp-content/uploads/2026/03/dark-ring-item-sailor-piece.jpg" },
+    { name: "Infinity Core", price: 300, image: "https://bloxinformer.com/wp-content/uploads/2026/03/infinity-core-item-sailor-piece-300x300.jpg" },
+    { name: "200 Bloodline Stone", price: 1000, tag: "HOT", image: "https://bloxinformer.com/wp-content/uploads/2026/03/Bloodine-Stone.png" },
+    { name: "500 Power Shard", price: 1000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/Power-Shard.png" },
+    { name: "1K Passive Shards", price: 1000, image: "https://imgop.itemku.com/?url=https%3A%2F%2Fd1x91p7vw3vuq8.cloudfront.net%2Fitemku-upload%2F2026317%2Fav6b71n61nn178ikoghir4_thumbnail.jpg&w=1033&q=75" },
+    { name: "Jade Tablet", price: 200, image: "https://bloxinformer.com/wp-content/uploads/2026/03/jade-tablet-item-sailor-piece.jpg" },
+    { name: "Divergent Pulse", price: 200, image: "https://bloxinformer.com/wp-content/uploads/2026/03/divergent-pulse-item-sailor-piece.jpg" },
+    { name: "Shadow Essence", price: 200, image: "https://bloxinformer.com/wp-content/uploads/2026/03/shadow-essence-item-sailor-piece.jpg" },
+    { name: "Golden Essence", price: 300, image: "https://bloxinformer.com/wp-content/uploads/2026/03/golden-essence-item-sailor-piece.jpg" },
+    { name: "Lunar Essence", price: 200, image: "https://bloxinformer.com/wp-content/uploads/2026/03/Lunar-Essence.png" },
+    { name: "Ancient Shard", price: 200, image: "https://bloxinformer.com/wp-content/uploads/2026/03/ancient-shard-item-sailor-piece.jpg" },
+    { name: "Demonic Shard", price: 200, image: "https://bloxinformer.com/wp-content/uploads/2026/03/demonic-shard-item-sailor-piece.jpg" },
+    { name: "Monarch Essence", price: 300, image: "https://bloxinformer.com/wp-content/uploads/2026/03/monarch-essence-item-sailor-piece.jpg" },
+    { name: "500 Abyss Sigil", price: 1000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/Abyss-Sigil-Sailor-Piece-Item-for.webp" },
+    { name: "10 Battle Sigil", price: 1000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/sigil.png" },
+    { name: "500 Upper Seal", price: 1000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/image-1.webp" },
+    { name: "500 Frost Relic", price: 1000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/image-2.webp" },
+    { name: "Glacier Remnant", price: 300, image: "https://bloxinformer.com/wp-content/uploads/2026/03/glacier_rem.png" },
+    { name: "400 Chrysalis Sigil", price: 1000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/image-3.webp" },
+    { name: "500 Tempest Relic", price: 1000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/image-4.webp" },
+    { name: "100 Dominion Brand", price: 1000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/Dominion-Brand.webp" },
+    { name: "Transmutation Shard", price: 500, image: "https://bloxinformer.com/wp-content/uploads/2026/03/image-5.webp" },
+    { name: "Ice Core", price: 500, image: "https://bloxinformer.com/wp-content/uploads/2026/03/ICE-1.png" },
+    { name: "Frozen Brand", price: 300, image: "https://bloxinformer.com/wp-content/uploads/2026/03/froze.png" },
+    { name: "Crimson Heart", price: 300, image: "https://bloxinformer.com/wp-content/uploads/2026/03/crimson-heart-item-sailor-piece.jpg" },
+    { name: "Shadow Heart", price: 300, image: "https://bloxinformer.com/wp-content/uploads/2026/03/shadow-heart-item-sailor-piece.jpg" },
+    { name: "Blood Ring", price: 500, image: "https://bloxinformer.com/wp-content/uploads/2026/03/blood-ring-item-sailor-piece.jpg" },
+    { name: "Casull", price: 500, image: "https://bloxinformer.com/wp-content/uploads/2026/03/casull-item-sailor-piece.jpg" },
+    { name: "Cursed Flesh", price: 300, image: "https://bloxinformer.com/wp-content/uploads/2026/03/cursed-flesh-item-sailor-piece.jpg" },
+    { name: "Soul Flame", price: 300, image: "https://bloxinformer.com/wp-content/uploads/2026/03/soul-flame-item-sailor-piece.jpg" },
+    { name: "Phantasm Core", price: 500, image: "https://bloxinformer.com/wp-content/uploads/2026/03/phanttasm-core-item-sailor-piece.jpg" },
+    { name: "Shadow Crystal", price: 300, image: "https://bloxinformer.com/wp-content/uploads/2026/03/shadow-crystal-item-sailor-piece.jpg" },
+    { name: "Path Fragment", price: 500, image: "https://bloxinformer.com/wp-content/uploads/2026/03/path_frag.png" },
+    { name: "Crescent Shard", price: 200, image: "https://bloxinformer.com/wp-content/uploads/2026/03/Screscent-Shard-Item-in-Sailor-Piece.png" },
+    { name: "Moon Crest", price: 500, image: "https://bloxinformer.com/wp-content/uploads/2026/03/Moon-Crest-Item-for-Moon-Slayer-Melee.png" }
+  ]},
+  { id: "sp-rare", category: "Rare & Legendary Materials", color: "text-red-400", icon: "fa-khanda", items: [
+    { name: "500 Broken Sword", price: 1000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/broken-sword-item-sailor-piece.jpg" },
+    { name: "Babylon Key", price: 1000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/babylon-key-item-sailor-piece.jpg" },
+    { name: "300 Divine Grail", price: 1000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/divine-grail-item-sailor-piece.jpg" },
+    { name: "400 Calamity Seal", price: 1000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/calamity-seal-item-sailor-piece.jpg" },
+    { name: "World Core", price: 1000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/world-core.png" },
+    { name: "Hogyoku Fragment", price: 500, image: "https://bloxinformer.com/wp-content/uploads/2026/03/hogyoku-fragment-item-sailor-piece.jpg" },
+    { name: "Imperial Seal", price: 200, image: "https://bloxinformer.com/wp-content/uploads/2026/03/imperial-seal-item-sailor-piece.jpg" },
+    { name: "Eminence Essence", price: 300, image: "https://bloxinformer.com/wp-content/uploads/2026/03/1000409969_0x0_670x519.png" },
+    { name: "Atomic Core", price: 500, image: "https://bloxinformer.com/wp-content/uploads/2026/03/atomic-core-item-sailor-piece.jpg" },
+    { name: "Infinity Essence", price: 500, image: "https://bloxinformer.com/wp-content/uploads/2026/03/inifinity-essence-item-sailor-piece.jpg" },
+    { name: "Conqueror Fragment", price: 200, image: "https://bloxinformer.com/wp-content/uploads/2026/03/conqueror-fragment-item-sailor-piece.jpg" },
+    { name: "Destruction Eye", price: 300, image: "https://bloxinformer.com/wp-content/uploads/2026/03/destruction-eye-item-sailor-piece.jpg" },
+    { name: "Imperial Mark", price: 500, image: "https://bloxinformer.com/wp-content/uploads/2026/03/imperial-mark-item-sailor-piece.jpg" },
+    { name: "Corruption Core", price: 500, image: "https://bloxinformer.com/wp-content/uploads/2026/03/Corruption-Core.png" },
+    { name: "Vampire Omen", price: 2000, image: "https://bloxinformer.com/wp-content/uploads/2026/03/Vampire-Omen.png" },
+    { name: "Atomic Omen", price: 200, image: "https://bloxinformer.com/wp-content/uploads/2026/03/Atomic-Omen-item-in-Sailor-Piece-300x300.png" },
+    { name: "Kamish Dagger", price: 200, image: "https://bloxinformer.com/wp-content/uploads/2026/03/kamish-dagger-item-sailor-piece.jpg" },
+    { name: "Corrupt Crown", price: 400, image: "https://bloxinformer.com/wp-content/uploads/2026/03/Darkgrail_20260316_060344_0000.png" },
+    { name: "Eternal Core", price: 500, image: "https://bloxinformer.com/wp-content/uploads/2026/03/Ete_core.png" }
+  ]}
+];
+
+// =======================
+// DATA: GROW A GARDEN 1
+// =======================
+const gag1Data = [
+  { id: "gag-currency", category: "Sheckles & Mata Uang", color: "text-tera-gold", icon: "fa-coins", items: [
+    { name: "1 Juta Sheckles", price: 2000, emoji: "💰" },
+    { name: "5 Juta Sheckles", price: 8000, emoji: "💰" },
+    { name: "10 Juta Sheckles", price: 15000, tag: "HOT", emoji: "💰" },
+    { name: "50 Juta Sheckles", price: 65000, emoji: "💰" },
+    { name: "100 Juta Sheckles", price: 120000, tag: "HOT", emoji: "💰" },
+    { name: "500 Juta Sheckles", price: 550000, emoji: "🏦" },
+    { name: "1 Miliar Sheckles", price: 1000000, tag: "LIMITED", emoji: "🏦" }
+  ]},
+  { id: "gag-seeds-common", category: "Seeds - Common & Uncommon", color: "text-slate-300", icon: "fa-seedling", items: [
+    { name: "Carrot Seed", price: 1000, rarity: "Common", emoji: "🥕" },
+    { name: "Strawberry Seed", price: 1000, rarity: "Common", emoji: "🍓" },
+    { name: "Blueberry Seed", price: 1500, rarity: "Uncommon", emoji: "🫐" },
+    { name: "Tomato Seed", price: 1500, rarity: "Uncommon", emoji: "🍅" },
+    { name: "Bamboo Seed", price: 1500, rarity: "Uncommon", emoji: "🎋" },
+    { name: "Watermelon Seed", price: 2000, rarity: "Uncommon", emoji: "🍉" },
+    { name: "Pineapple Seed", price: 2000, rarity: "Uncommon", emoji: "🍍" },
+    { name: "Orange Tulip Seed", price: 1500, rarity: "Common", emoji: "🌷" }
+  ]},
+  { id: "gag-seeds-rare", category: "Seeds - Rare & Epic", color: "text-indigo-400", icon: "fa-leaf", items: [
+    { name: "Dragon Fruit Seed", price: 4000, rarity: "Rare", emoji: "🐉" },
+    { name: "Coconut Seed", price: 3500, rarity: "Rare", emoji: "🥥" },
+    { name: "Bell Pepper Seed", price: 3500, rarity: "Rare", emoji: "🫑" },
+    { name: "Mango Seed", price: 5000, rarity: "Epic", emoji: "🥭" },
+    { name: "Eclipse Fruit Seed", price: 6000, rarity: "Epic", emoji: "🌑" },
+    { name: "Flame Fruit Seed", price: 5500, rarity: "Epic", emoji: "🔥" },
+    { name: "Cacao Seed", price: 5500, rarity: "Epic", emoji: "🍫" }
+  ]},
+  { id: "gag-seeds-legendary", category: "Seeds - Legendary, Mythical & Divine", color: "text-tera-purple", icon: "fa-star", items: [
+    { name: "Cocovine Seed", price: 9000, rarity: "Legendary", emoji: "🌴" },
+    { name: "Bendboo Seed", price: 9500, rarity: "Legendary", emoji: "🎍" },
+    { name: "Lilac Seed", price: 10000, rarity: "Legendary", emoji: "🌸" },
+    { name: "Sugar Apple Seed", price: 14000, tag: "RARE", rarity: "Prismatic", emoji: "🍏" },
+    { name: "Honey Hollow Seed", price: 17000, tag: "HOT", rarity: "Mythical", emoji: "🍯" },
+    { name: "Honey Pepper Seed", price: 16000, rarity: "Mythical", emoji: "🌶️" },
+    { name: "Titanlotus Seed", price: 18000, rarity: "Mythical", emoji: "🪷" },
+    { name: "Infinityblossom Seed", price: 22000, tag: "LIMITED", rarity: "Mythical", emoji: "✨" },
+    { name: "Moon Bloom Seed", price: 25000, tag: "LIMITED", rarity: "Divine", emoji: "🌙" },
+    { name: "Dragon's Breath Seed", price: 60000, tag: "LIMITED", rarity: "Divine", emoji: "🐲" }
+  ]},
+  { id: "gag-eggs", category: "Pet Eggs", color: "text-tera-green", icon: "fa-egg", items: [
+    { name: "Common Egg", price: 2000, rarity: "Common", emoji: "🥚" },
+    { name: "Uncommon Egg", price: 3500, rarity: "Uncommon", emoji: "🥚" },
+    { name: "Rare Egg", price: 6000, rarity: "Rare", emoji: "🥚" },
+    { name: "Legendary Egg", price: 12000, rarity: "Legendary", emoji: "🪺" },
+    { name: "Mythical Egg", price: 20000, tag: "HOT", rarity: "Mythical", emoji: "🪺" },
+    { name: "Bug Egg", price: 9000, rarity: "Rare", emoji: "🪲" },
+    { name: "Night Egg", price: 15000, rarity: "Legendary", emoji: "🌃" },
+    { name: "Paradise Egg", price: 30000, tag: "LIMITED", rarity: "Divine", emoji: "🏝️" }
+  ]},
+  { id: "gag-pets", category: "Pets", color: "text-pink-400", icon: "fa-paw", items: [
+    { name: "German Shepherd", price: 4000, rarity: "Common", emoji: "🐕" },
+    { name: "Golden Retriever", price: 5000, rarity: "Uncommon", emoji: "🐶" },
+    { name: "Bunny", price: 4500, rarity: "Uncommon", emoji: "🐰" },
+    { name: "Black Bunny", price: 7000, rarity: "Rare", emoji: "🐇" },
+    { name: "Deer", price: 8000, rarity: "Rare", emoji: "🦌" },
+    { name: "Cow", price: 9000, rarity: "Rare", emoji: "🐄" },
+    { name: "Grizzly Bear", price: 16000, tag: "HOT", rarity: "Legendary", emoji: "🐻" },
+    { name: "Red Fox", price: 18000, rarity: "Legendary", emoji: "🦊" },
+    { name: "Dragonfly", price: 35000, tag: "HOT", rarity: "Mythical", emoji: "🐉" },
+    { name: "Raccoon", price: 32000, rarity: "Mythical", emoji: "🦝" },
+    { name: "Mimic Octopus", price: 38000, rarity: "Mythical", emoji: "🐙" },
+    { name: "Kitsune", price: 90000, tag: "LIMITED", rarity: "Divine", emoji: "🦊" },
+    { name: "Corrupted Kitsune", price: 150000, tag: "LIMITED", rarity: "Prismatic", emoji: "🔥" },
+    { name: "Unicorn", price: 70000, tag: "HOT", rarity: "Divine", emoji: "🦄" },
+    { name: "Golden Dragonfly", price: 55000, rarity: "Divine", emoji: "🌟" }
+  ]},
+  { id: "gag-gear", category: "Gear & Tools", color: "text-orange-400", icon: "fa-wrench", items: [
+    { name: "Watering Can", price: 1500, rarity: "Common", emoji: "🚿" },
+    { name: "Trowel", price: 1500, rarity: "Common", emoji: "🛠️" },
+    { name: "Recall Wrench", price: 3000, rarity: "Uncommon", emoji: "🔧" },
+    { name: "Favorite Tool", price: 3500, rarity: "Uncommon", emoji: "⭐" },
+    { name: "Basic Sprinkler", price: 4000, rarity: "Rare", emoji: "💦" },
+    { name: "Advanced Sprinkler", price: 7000, rarity: "Epic", emoji: "💧" },
+    { name: "Godly Sprinkler", price: 14000, tag: "HOT", rarity: "Legendary", emoji: "⚡" },
+    { name: "Master Sprinkler", price: 25000, rarity: "Mythical", emoji: "🌧️" },
+    { name: "Lightning Rod", price: 9000, rarity: "Rare", emoji: "🌩️" },
+    { name: "Tanning Mirror", price: 11000, rarity: "Epic", emoji: "🪞" },
+    { name: "Friendship Pot", price: 6000, rarity: "Rare", emoji: "🪴" },
+    { name: "Divine Watering Can", price: 45000, tag: "LIMITED", rarity: "Divine", emoji: "✨" }
+  ]},
+  { id: "gag-packs", category: "Seed Packs & Chests", color: "text-yellow-400", icon: "fa-box-open", items: [
+    { name: "Basic Seed Pack", price: 3000, emoji: "📦" },
+    { name: "Premium Seed Pack", price: 7000, emoji: "📦" },
+    { name: "Rainbow Sack", price: 16000, tag: "RARE", emoji: "🎁" },
+    { name: "Kitsune Chest", price: 40000, tag: "LIMITED", emoji: "🗝️" },
+    { name: "Super Seed", price: 9000, tag: "HOT", emoji: "🌱" },
+    { name: "Friendship Shop Bundle", price: 12000, emoji: "🎀" }
+  ]}
+];
+
+// =======================
+// DATA: GROW A GARDEN 2
+// Tambahkan item GAG 2 di sini
+// =======================
+const gag2Data = [
+  { id: "gag2-currency", category: "Sheckles & Mata Uang", color: "text-yellow-400", icon: "fa-coins", items: [
+    { name: "1 Juta Sheckles GAG2", price: 2500, emoji: "💰" },
+    { name: "5 Juta Sheckles GAG2", price: 10000, emoji: "💰" },
+    { name: "10 Juta Sheckles GAG2", price: 18000, tag: "HOT", emoji: "💰" },
+    { name: "50 Juta Sheckles GAG2", price: 80000, emoji: "💰" },
+    { name: "100 Juta Sheckles GAG2", price: 150000, tag: "HOT", emoji: "🏦" }
+  ]},
+  { id: "gag2-seeds", category: "Seeds GAG 2", color: "text-yellow-300", icon: "fa-seedling", items: [
+    { name: "Seed Pack GAG2 (Coming Soon)", price: 0, emoji: "🌱" }
+  ]},
+  { id: "gag2-pets", category: "Pets GAG 2", color: "text-orange-400", icon: "fa-paw", items: [
+    { name: "Pet GAG2 (Coming Soon)", price: 0, emoji: "🐾" }
+  ]},
+  { id: "gag2-gear", category: "Gear & Tools GAG 2", color: "text-amber-400", icon: "fa-wrench", items: [
+    { name: "Gear GAG2 (Coming Soon)", price: 0, emoji: "🔧" }
+  ]}
+];
+
+// =======================
+// GABUNGAN DATA & RENDER KATALOG
+// =======================
+const storeData = {
+    sailorpiece: sailorPieceData,
+    gag1: gag1Data,
+    gag2: gag2Data
+};
+
+const gameMeta = {
+    sailorpiece: { activeClasses: ['bg-tera-purple','text-white','border-tera-purple','shadow-[0_0_20px_rgba(139,92,246,0.4)]'] , pillActive: 'bg-tera-purple/20 border-tera-purple text-white' },
+    gag1: { activeClasses: ['bg-tera-green','text-white','border-tera-green','shadow-[0_0_20px_rgba(16,185,129,0.4)]'], pillActive: 'bg-tera-green/20 border-tera-green text-white' },
+    gag2: { activeClasses: ['bg-yellow-500','text-white','border-yellow-500','shadow-[0_0_20px_rgba(234,179,8,0.4)]'], pillActive: 'bg-yellow-500/20 border-yellow-500 text-white' }
+};
+
+// section yang sedang difilter per game ("all" = tampil semua section sebagai grup collapsible)
+let activeSectionFilter = { sailorpiece: 'all', gag1: 'all', gag2: 'all' };
+
+function setActiveGame(game) {
+    activeGame = game;
+    document.querySelectorAll('.game-pane').forEach(p => p.classList.remove('active-game'));
+    document.getElementById(`game-pane-${game}`).classList.add('active-game');
+
+    ['sailorpiece', 'gag1', 'gag2'].forEach(g => {
+        const btn = document.getElementById(`game-btn-${g}`);
+        if (!btn) return;
+        if (g === game) {
+            btn.classList.add('active-game-btn', ...gameMeta[g].activeClasses);
+        } else {
+            btn.classList.remove('active-game-btn', ...gameMeta[g].activeClasses);
+        }
+    });
+
+    const searchInput = document.getElementById('searchInput');
+    if (searchInput) searchInput.value = '';
+
+    renderSectionPills(game);
+    renderCatalog(game, '');
+}
+
+function renderSectionPills(game) {
+    const wrap = document.getElementById(`${game}-section-pills`);
+    if (!wrap) return;
+    const sections = storeData[game];
+    const meta = gameMeta[game];
+
+    let html = `<button onclick="filterSection('${game}','all')" data-pill="all" class="section-pill px-4 py-2 rounded-full text-xs font-bold uppercase tracking-wide border transition-all ${activeSectionFilter[game] === 'all' ? meta.pillActive : 'border-purple-900/40 text-slate-400 hover:text-slate-100 hover:border-slate-400'}">
+        <i class="fas fa-layer-group mr-1.5"></i>Semua Section
+    </button>`;
+
+    sections.forEach(sec => {
+        const isActive = activeSectionFilter[game] === sec.id;
+        html += `<button onclick="filterSection('${game}','${sec.id}')" data-pill="${sec.id}" class="section-pill px-4 py-2 rounded-full text-xs font-bold uppercase tracking-wide border transition-all ${isActive ? meta.pillActive : 'border-purple-900/40 text-slate-400 hover:text-slate-100 hover:border-slate-400'}">
+            <i class="fas ${sec.icon} mr-1.5"></i>${sec.category}
+        </button>`;
+    });
+
+    wrap.innerHTML = html;
+}
+
+function filterSection(game, sectionId) {
+    activeSectionFilter[game] = sectionId;
+    renderSectionPills(game);
+    const searchInput = document.getElementById('searchInput');
+    renderCatalog(game, searchInput ? searchInput.value : '');
+}
+
+function toggleSectionGroup(groupId) {
+    const el = document.getElementById(groupId);
+    if (el) el.classList.toggle('open');
+}
+
+function renderCatalog(game, searchQuery = "") {
+    const container = document.getElementById(`katalog-container-${game}`);
+    if (!container) return;
+    container.innerHTML = "";
+
+    const lowerQuery = (searchQuery || "").toLowerCase();
+    const sectionFilter = activeSectionFilter[game];
+    let foundItems = false;
+
+    storeData[game].forEach((section, sIndex) => {
+        if (sectionFilter !== 'all' && section.id !== sectionFilter) return;
+
+        const filteredItems = section.items.filter(item => item.name.toLowerCase().includes(lowerQuery));
+        if (filteredItems.length === 0) return;
+        foundItems = true;
+
+        // Saat lagi search atau hanya 1 section dipilih, langsung buka grupnya
+        const forceOpen = (sectionFilter !== 'all') || lowerQuery.length > 0;
+        const groupId = `group-${game}-${section.id}`;
+
+        let cardsHtml = '';
+        filteredItems.forEach((item) => {
+            const iIndex = section.items.indexOf(item);
+            cardsHtml += renderItemCard(game, section, sIndex, iIndex, item);
+        });
+
+        container.innerHTML += `
+            <div class="section-group glass rounded-3xl border border-purple-900/40 shadow-xl relative overflow-hidden ${forceOpen ? 'open' : ''}" id="${groupId}">
+                <div class="absolute top-0 right-0 w-32 h-32 bg-tera-purple/5 blur-3xl rounded-full pointer-events-none"></div>
+                <button onclick="toggleSectionGroup('${groupId}')" class="w-full flex items-center justify-between gap-4 p-6 md:p-7 relative z-10 text-left">
+                    <div class="flex items-center gap-4">
+                        <div class="w-12 h-12 rounded-xl bg-[#1a1b2e] flex items-center justify-center border border-purple-900/40 shadow-inner shrink-0">
+                            <i class="fas ${section.icon} text-2xl ${section.color}"></i>
+                        </div>
+                        <div>
+                            <h4 class="text-xl md:text-2xl font-bold italic ${section.color}">${section.category}</h4>
+                            <p class="text-[11px] text-purple-300 uppercase tracking-wider font-bold mt-0.5">${filteredItems.length} Item</p>
+                        </div>
+                    </div>
+                    <i class="fas fa-chevron-down section-chevron text-purple-400 text-lg shrink-0"></i>
+                </button>
+                <div class="section-body relative z-10">
+                    <div>
+                        <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-6 px-6 md:px-7 pb-7">
+                            ${cardsHtml}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `;
+    });
+
+    if (!foundItems) {
+        container.innerHTML = `
+            <div class="glass p-10 rounded-3xl text-center border border-purple-900/40">
+                <i class="fas fa-search text-4xl text-purple-400 mb-4"></i>
+                <h4 class="text-xl font-bold text-purple-300 italic">Item tidak ditemukan</h4>
+                <p class="text-sm text-slate-400 mt-2">Coba gunakan kata kunci atau section yang lain.</p>
+            </div>
+        `;
+    }
+}
+
+function rarityClass(rarity) {
+    if (!rarity) return '';
+    const key = rarity.toLowerCase();
+    const map = {
+        common: 'rarity-common', uncommon: 'rarity-uncommon', rare: 'rarity-rare',
+        epic: 'rarity-epic', legendary: 'rarity-legendary', mythical: 'rarity-mythical',
+        divine: 'rarity-divine', prismatic: 'rarity-prismatic'
+    };
+    return map[key] || '';
+}
+
+function renderItemCard(game, section, sIndex, iIndex, item) {
+    const itemId = `item-${game}-${sIndex}-${iIndex}`;
+    const badge = item.tag ? `<div class="absolute -top-3 -right-3 bg-gradient-to-br from-red-500 to-pink-600 text-white text-[10px] font-black px-3 py-1 rounded-full shadow-[0_0_15px_rgba(220,38,38,0.6)] italic z-20">${item.tag}</div>` : '';
+
+    let mediaHtml = '';
+    if (item.image && item.image !== "") {
+        mediaHtml = `<img src="${item.image}" alt="${item.name}" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" onerror="this.onerror=null; this.replaceWith(Object.assign(document.createElement('div'), {className:'w-full h-full flex items-center justify-center bg-[#1a1b2e] text-4xl', textContent: '${item.emoji || '🎁'}'}));">`;
+    } else {
+        mediaHtml = `<div class="w-full h-full flex items-center justify-center bg-[#1a1b2e] group-hover:scale-110 transition-transform duration-500 text-4xl">${item.emoji || '🎁'}</div>`;
+    }
+
+    const rarityPill = item.rarity ? `<span class="text-[9px] font-bold uppercase px-2 py-0.5 rounded-full mb-2 ${rarityClass(item.rarity)}">${item.rarity}</span>` : '';
+
+    return `
+        <div class="glow-card-wrapper flex flex-col">
+            <div class="item-card rounded-2xl p-4 flex flex-col items-center text-center relative group flex-grow">
+                ${badge}
+                <div class="w-full aspect-square mb-4 rounded-xl overflow-hidden border border-purple-900/40 bg-[#1a1b2e] relative shadow-inner">
+                    ${mediaHtml}
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                </div>
+                ${rarityPill}
+                <h5 class="text-sm font-bold text-white mb-2 h-10 flex items-center justify-center leading-tight w-full drop-shadow-md">${item.name}</h5>
+                <span class="text-[10px] text-purple-300 mb-2 tracking-wider">Harga: ${formatRupiah(item.price)}</span>
+                <p id="total-${itemId}" class="text-tera-gold text-sm font-black mb-4 bg-gradient-to-r from-tera-gold/5 via-tera-gold/10 to-tera-gold/5 px-2 py-1.5 rounded-lg w-full border border-tera-gold/30 shadow-inner" data-baseprice="${item.price}">
+                    ${formatRupiah(item.price)}
+                </p>
+                <div class="flex items-center justify-between w-full bg-[#0f1020] rounded-xl p-1.5 border border-purple-900/40 mb-4 shadow-inner mt-auto">
+                    <button onclick="updateQty('${itemId}', -1)" class="w-7 h-7 rounded-lg flex items-center justify-center text-slate-400 hover:text-slate-100 hover:bg-purple-900/40 transition-colors">
+                        <i class="fas fa-minus text-xs"></i>
+                    </button>
+                    <span id="qty-${itemId}" class="text-sm font-bold w-8 text-center text-white">1</span>
+                    <button onclick="updateQty('${itemId}', 1)" class="w-7 h-7 rounded-lg flex items-center justify-center text-slate-400 hover:text-slate-100 hover:bg-purple-900/40 transition-colors">
+                        <i class="fas fa-plus text-xs"></i>
+                    </button>
+                </div>
+
+                <button onclick="addToCart('${game}', ${sIndex}, ${iIndex}, '${itemId}')" class="w-full bg-tera-purple text-white hover:bg-emerald-600 border border-tera-purple/50 text-xs font-bold py-2.5 rounded-xl transition-all uppercase tracking-wider flex items-center justify-center gap-2 shadow-[0_0_15px_rgba(5,150,105,0.4)]">
+                    <i class="fas fa-cart-plus"></i> Add to Cart
+                </button>
+            </div>
+        </div>
+    `;
+}
+
+// Init: tampilkan Sailor Piece sebagai default saat halaman dimuat
+document.addEventListener('DOMContentLoaded', () => {
+    setActiveGame('sailorpiece');
+    initLoginState();
+});
+
+// ===== LOGIN SYSTEM =====
+const TERA_SESSION_KEY = 'tera_session';
+
+function initLoginState() {
+    const session = getSession();
+    if (session) {
+        setLoggedInUI(session.username);
+    }
+}
+
+function getSession() {
+    try {
+        const raw = sessionStorage.getItem(TERA_SESSION_KEY) || localStorage.getItem(TERA_SESSION_KEY);
+        return raw ? JSON.parse(raw) : null;
+    } catch { return null; }
+}
+
+function openLoginModal() {
+    const modal = document.getElementById('login-modal');
+    modal.classList.remove('hidden');
+    setTimeout(() => modal.classList.add('show'), 10);
+    document.body.style.overflow = 'hidden';
+    setTimeout(() => document.getElementById('modal-username').focus(), 300);
+}
+
+function closeLoginModal() {
+    const modal = document.getElementById('login-modal');
+    modal.classList.remove('show');
+    modal.classList.add('hidden');
+    document.body.style.overflow = '';
+    document.getElementById('modal-alert-error').classList.add('hidden');
+    document.getElementById('modal-username').value = '';
+    document.getElementById('modal-password').value = '';
+}
+
+function toggleModalPassword() {
+    const pwd = document.getElementById('modal-password');
+    const icon = document.getElementById('modal-eye-icon');
+    if (pwd.type === 'password') {
+        pwd.type = 'text';
+        icon.className = 'fas fa-eye-slash';
+    } else {
+        pwd.type = 'password';
+        icon.className = 'fas fa-eye';
+    }
+}
+
+function handleModalLogin() {
+    const username = document.getElementById('modal-username').value.trim();
+    const password = document.getElementById('modal-password').value.trim();
+    const remember = document.getElementById('modal-remember').checked;
+    const btnText = document.getElementById('modal-btn-text');
+    const btnLoading = document.getElementById('modal-btn-loading');
+    const alertEl = document.getElementById('modal-alert-error');
+    const alertMsg = document.getElementById('modal-alert-msg');
+
+    alertEl.classList.add('hidden');
+
+    if (!username || !password) {
+        alertMsg.textContent = 'Username dan password tidak boleh kosong.';
+        alertEl.classList.remove('hidden');
+        return;
+    }
+
+    btnText.classList.add('hidden');
+    btnLoading.classList.remove('hidden');
+
+    setTimeout(() => {
+        btnText.classList.remove('hidden');
+        btnLoading.classList.add('hidden');
+
+        // Demo: hanya "admin" / "tera123" yang diterima
+        if (username === 'admin' && password === 'tera123') {
+            const session = { username: username, loggedAt: Date.now() };
+            if (remember) {
+                localStorage.setItem(TERA_SESSION_KEY, JSON.stringify(session));
+            } else {
+                sessionStorage.setItem(TERA_SESSION_KEY, JSON.stringify(session));
+            }
+            setLoggedInUI(username);
+            closeLoginModal();
+        } else {
+            alertMsg.textContent = 'Username atau password salah. Coba lagi.';
+            alertEl.classList.remove('hidden');
+        }
+    }, 1500);
+}
+
+function setLoggedInUI(username) {
+    // Desktop
+    document.getElementById('nav-login-btn').classList.add('hidden');
+    const userInfo = document.getElementById('nav-user-info');
+    userInfo.classList.remove('hidden');
+    userInfo.classList.add('flex');
+    document.getElementById('nav-username').textContent = username;
+    // Mobile
+    document.getElementById('mobile-login-btn').classList.add('hidden');
+    const mobileUserInfo = document.getElementById('mobile-user-info');
+    mobileUserInfo.classList.remove('hidden');
+    mobileUserInfo.classList.add('flex');
+    document.getElementById('mobile-username').textContent = username;
+}
+
+function handleLogout() {
+    localStorage.removeItem(TERA_SESSION_KEY);
+    sessionStorage.removeItem(TERA_SESSION_KEY);
+    // Desktop
+    document.getElementById('nav-login-btn').classList.remove('hidden');
+    const userInfo = document.getElementById('nav-user-info');
+    userInfo.classList.add('hidden');
+    userInfo.classList.remove('flex');
+    // Mobile
+    document.getElementById('mobile-login-btn').classList.remove('hidden');
+    const mobileUserInfo = document.getElementById('mobile-user-info');
+    mobileUserInfo.classList.add('hidden');
+    mobileUserInfo.classList.remove('flex');
+}
+
+// ESC key to close modal
+document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') closeLoginModal();
+    if (e.key === 'Enter' && !document.getElementById('login-modal').classList.contains('hidden')) {
+        handleModalLogin();
+    }
+});
 
     </script>
 </body>
