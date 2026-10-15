@@ -50,11 +50,24 @@
             btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Memproses...';
             btn.disabled = true;
 
+            if (firebaseConfig.apiKey === "GANTI_DENGAN_API_KEY_MU") {
+                btn.innerHTML = originalHTML;
+                btn.disabled = false;
+                if (typeof showOAuthInfo === 'function') showOAuthInfo('google');
+                return;
+            }
+
             try {
                 await signInWithPopup(auth, googleProvider);
             } catch (err) {
                 btn.innerHTML = originalHTML;
                 btn.disabled = false;
+                const alertEl = document.getElementById('modal-alert-error');
+                const alertMsg = document.getElementById('modal-alert-msg');
+                if (alertEl && alertMsg) {
+                    alertMsg.textContent = 'Login Google gagal: ' + (err.message || 'Coba lagi.');
+                    alertEl.classList.remove('hidden');
+                }
             }
         };
 
@@ -77,10 +90,27 @@
                         'tera-blue': '#6366f1',
                         'tera-gold': '#f59e0b',
                         'tera-green': '#10b981',
+                        'tiktok-pink': '#ff0050',
+                        'tiktok-cyan': '#00f2fe',
                     },
                     fontFamily: {
                         sans: ['Inter', 'sans-serif'],
                         heading: ['Rajdhani', 'sans-serif'],
+                    },
+                    animation: {
+                        'gradient-x': 'gradient-x 3s ease infinite',
+                        'float': 'float 6s ease-in-out infinite',
+                        'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                    },
+                    keyframes: {
+                        'gradient-x': {
+                            '0%, 100%': { 'background-size': '200% 200%', 'background-position': 'left center' },
+                            '50%': { 'background-size': '200% 200%', 'background-position': 'right center' },
+                        },
+                        'float': {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-10px)' },
+                        }
                     }
                 }
             }
@@ -88,183 +118,924 @@
     </script>
 
     <style>
-        body { background-color: #000000 !important; color: #ffffff !important; overflow-x: hidden; position: relative; }
-        .glass { background: rgba(0, 0, 0, 0.85) !important; border: 1px solid rgba(255,255,255,0.12) !important; backdrop-filter: blur(14px); }
-        .nav-scrolled { background: rgba(0, 0, 0, 0.97) !important; border-bottom: 1px solid rgba(255,255,255,0.12) !important; }
-        .item-card { background: #0a0a0a !important; border: 1px solid rgba(255,255,255,0.12) !important; color: #ffffff !important; }
-        .input-field { background: rgba(0,0,0,0.9) !important; border: 1px solid rgba(255,255,255,0.15) !important; color: #ffffff !important; }
-        .btn-primary { background: linear-gradient(135deg, #8b5cf6, #6366f1); transition: all 0.3s ease; }
-        .btn-primary:hover { box-shadow: 0 0 25px rgba(139,92,246,0.5); }
+        body { background-color: #0d0e1a; color: #e2e8f0; overflow-x: hidden; position: relative; }
+        .bg-grid { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background-image: linear-gradient(to right, rgba(139,92,246,0.04) 1px, transparent 1px), linear-gradient(to bottom, rgba(139,92,246,0.04) 1px, transparent 1px); background-size: 40px 40px; z-index: -2; pointer-events: none; }
+        .bg-orb-1, .bg-orb-2 { position: fixed; border-radius: 50%; filter: blur(110px); z-index: -1; opacity: 0.6; pointer-events: none; }
+        .bg-orb-1 { width: 40vw; height: 40vw; background: rgba(139, 92, 246, 0.18); top: -10%; left: -10%; animation: float 10s ease-in-out infinite alternate; }
+        .bg-orb-2 { width: 50vw; height: 50vw; background: rgba(245, 158, 11, 0.1); bottom: -20%; right: -10%; animation: float 12s ease-in-out infinite alternate-reverse; }
+        .glass { background: rgba(15, 16, 30, 0.75); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); border: 1px solid rgba(139, 92, 246, 0.15); }
+        .nav-scrolled { background: rgba(10, 11, 20, 0.95); box-shadow: 0 10px 30px -12px rgba(139,92,246,0.25); border-bottom: 1px solid rgba(139,92,246,0.15); }
+
+        .glow-card-wrapper { position: relative; border-radius: 1rem; z-index: 1; }
+        .glow-card-wrapper::before { content: ""; position: absolute; inset: -2px; border-radius: 1.1rem; background: linear-gradient(45deg, #8b5cf6, #6366f1, #f59e0b, #8b5cf6); background-size: 300%; z-index: -1; opacity: 0; transition: opacity 0.4s ease; filter: blur(8px); animation: gradient-x 4s linear infinite; }
+        .glow-card-wrapper:hover::before { opacity: 0.65; }
+        .item-card { background: #12131f; border: 1px solid rgba(139, 92, 246, 0.15); box-shadow: 0 1px 3px rgba(0,0,0,0.3); transition: all 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275); height: 100%; }
+        .glow-card-wrapper:hover .item-card { transform: translateY(-5px); border-color: rgba(139,92,246,0.35); box-shadow: 0 12px 28px -10px rgba(139,92,246,0.3); }
+
+        .text-gradient-animated { background: linear-gradient(to right, #a78bfa, #818cf8, #fbbf24, #a78bfa); background-size: 300% auto; -webkit-background-clip: text; -webkit-text-fill-color: transparent; animation: gradient-x 4s linear infinite; }
+        .text-gradient-green { background: linear-gradient(to right, #34d399, #fbbf24, #34d399); background-size: 300% auto; -webkit-background-clip: text; -webkit-text-fill-color: transparent; animation: gradient-x 4s linear infinite; }
+
+        /* Navigation Page System */
         .page-section { display: none; }
-        .page-section.active-page { display: block; }
+        .page-section.active-page { display: block; animation: slideUpFade 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+        .active-nav { color: #a78bfa !important; }
+        @keyframes slideUpFade { from { opacity: 0; transform: translateY(30px) scale(0.98); } to { opacity: 1; transform: translateY(0) scale(1); } }
+
+        /* Catalog game switch */
         .game-pane { display: none; }
-        .game-pane.active-game { display: block; }
-        .section-group .section-body { display: grid; grid-template-rows: 0fr; overflow: hidden; transition: grid-template-rows 0.45s ease; }
+        .game-pane.active-game { display: block; animation: slideUpFade 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+        .game-tab-btn.active-game-btn { color: #fff; }
+
+        /* Section group collapse (Katalog) */
+        .section-group .section-body { display: grid; grid-template-rows: 0fr; overflow: hidden; transition: grid-template-rows 0.45s cubic-bezier(0.16, 1, 0.3, 1); }
         .section-group .section-body > div { overflow: hidden; min-height: 0; }
         .section-group.open .section-body { grid-template-rows: 1fr; }
         .section-chevron { transition: transform 0.35s ease; }
         .section-group.open .section-chevron { transform: rotate(180deg); }
-        .active-nav { color: #a78bfa !important; }
-        .active-game-btn { color: #fff !important; }
+
+        /* Scrollbars */
+        ::-webkit-scrollbar { width: 8px; height: 8px; }
+        ::-webkit-scrollbar-track { background: #0d0e1a; }
+        ::-webkit-scrollbar-thumb { background: linear-gradient(to bottom, #8b5cf6, #6366f1); border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: linear-gradient(to bottom, #7c3aed, #4f46e5); }
         .wiki-scroll::-webkit-scrollbar { width: 4px; }
+        .wiki-scroll::-webkit-scrollbar-track { background: rgba(139,92,246,0.05); border-radius: 10px; }
         .wiki-scroll::-webkit-scrollbar-thumb { background: rgba(139,92,246,0.4); border-radius: 10px; }
         .hide-scrollbar::-webkit-scrollbar { display: none; }
+        .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+        input[type=number]::-webkit-inner-spin-button, input[type=number]::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
+
+        /* Social Buttons */
+        .btn-tiktok { position: relative; z-index: 1; overflow: hidden; }
+        .btn-tiktok::before { content: ''; position: absolute; inset: 0; z-index: -1; background: linear-gradient(45deg, #00c2cc, #ff0050); opacity: 0; transition: opacity 0.3s ease; }
+        .btn-tiktok:hover::before { opacity: 1; }
+        .btn-tiktok:hover { box-shadow: 0 4px 18px rgba(255, 0, 80, 0.35); border-color: transparent; }
+
+        .btn-ig { position: relative; z-index: 1; overflow: hidden; }
+        .btn-ig::before { content: ''; position: absolute; inset: 0; z-index: -1; background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888); opacity: 0; transition: opacity 0.3s ease; }
+        .btn-ig:hover::before { opacity: 1; }
+        .btn-ig:hover { box-shadow: 0 4px 18px rgba(220, 39, 67, 0.35); border-color: transparent; }
+
+        /* ===== LOGIN MODAL STYLES ===== */
+        .input-field { background: rgba(10,11,25,0.8); border: 1px solid rgba(139,92,246,0.2); color: #e2e8f0; transition: all 0.3s ease; outline: none; }
+        .input-field:focus { border-color: rgba(139,92,246,0.6); box-shadow: 0 0 0 3px rgba(139,92,246,0.12), 0 0 20px rgba(139,92,246,0.1); }
+        .input-field::placeholder { color: rgba(148,163,184,0.5); }
+        .login-card-wrapper-modal { position: relative; border-radius: 1.5rem; }
+        .login-card-wrapper-modal::before { content: ""; position: absolute; inset: -1.5px; border-radius: 1.6rem; background: linear-gradient(45deg, #8b5cf6, #6366f1, #f59e0b, #8b5cf6); background-size: 300%; z-index: -1; opacity: 0.5; filter: blur(4px); animation: gradient-x 4s linear infinite; }
+        .btn-primary { background: linear-gradient(135deg, #8b5cf6, #6366f1); transition: all 0.3s ease; position: relative; overflow: hidden; }
+        .btn-primary::before { content: ''; position: absolute; inset: 0; background: linear-gradient(135deg, #7c3aed, #4f46e5); opacity: 0; transition: opacity 0.3s ease; }
+        .btn-primary:hover::before { opacity: 1; }
+        .btn-primary:hover { box-shadow: 0 0 25px rgba(139,92,246,0.5); transform: translateY(-1px); }
+        .btn-primary:active { transform: translateY(0); }
+        .btn-social { background: rgba(10,11,25,0.8); border: 1px solid rgba(139,92,246,0.2); transition: all 0.3s ease; }
+        .btn-social:hover { border-color: rgba(139,92,246,0.5); background: rgba(139,92,246,0.08); box-shadow: 0 0 15px rgba(139,92,246,0.15); }
+        .toggle-pass { cursor: pointer; color: rgba(148,163,184,0.6); transition: color 0.2s; }
+        .toggle-pass:hover { color: #a78bfa; }
+        input[type="checkbox"]:checked { accent-color: #8b5cf6; }
+        #login-modal { transition: opacity 0.3s ease; }
+        #login-modal.show { opacity: 1; }
+        @keyframes slideUp { from { opacity: 0; transform: translateY(30px) scale(0.97); } to { opacity: 1; transform: translateY(0) scale(1); } }
+        .animate-slide-up { animation: slideUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+
+        .rarity-common { background: rgba(148,163,184,0.12); color: #94a3b8; border: 1px solid rgba(148,163,184,0.25); }
+        .rarity-uncommon { background: rgba(52,211,153,0.12); color: #34d399; border: 1px solid rgba(52,211,153,0.25); }
+        .rarity-rare { background: rgba(99,102,241,0.12); color: #818cf8; border: 1px solid rgba(99,102,241,0.25); }
+        .rarity-epic { background: rgba(139,92,246,0.15); color: #a78bfa; border: 1px solid rgba(139,92,246,0.3); }
+        .rarity-legendary { background: rgba(245,158,11,0.15); color: #fbbf24; border: 1px solid rgba(245,158,11,0.3); }
+        .rarity-mythical { background: rgba(244,114,182,0.15); color: #f472b6; border: 1px solid rgba(244,114,182,0.3); }
+        .rarity-divine { background: rgba(239,68,68,0.15); color: #f87171; border: 1px solid rgba(239,68,68,0.3); }
+        .rarity-prismatic { background: linear-gradient(45deg, rgba(139,92,246,0.15), rgba(99,102,241,0.15), rgba(245,158,11,0.15)); color: #e2e8f0; border: 1px solid rgba(139,92,246,0.3); }
+
+        /* ===== OVERRIDE: BLACK BACKGROUND & DOMINANT WHITE TEXT ===== */
+        body { background-color: #000000 !important; color: #ffffff !important; }
+        .bg-grid { background-image: linear-gradient(to right, rgba(255,255,255,0.04) 1px, transparent 1px), linear-gradient(to bottom, rgba(255,255,255,0.04) 1px, transparent 1px) !important; }
+        .bg-orb-1 { background: rgba(139, 92, 246, 0.12) !important; }
+        .bg-orb-2 { background: rgba(245, 158, 11, 0.08) !important; }
+        .glass { background: rgba(0, 0, 0, 0.85) !important; border-color: rgba(255,255,255,0.12) !important; }
+        .nav-scrolled { background: rgba(0, 0, 0, 0.97) !important; border-bottom: 1px solid rgba(255,255,255,0.12) !important; }
+        .item-card { background: #0a0a0a !important; border-color: rgba(255,255,255,0.12) !important; color: #ffffff !important; }
+        .input-field { background: rgba(0,0,0,0.9) !important; border-color: rgba(255,255,255,0.15) !important; color: #ffffff !important; }
+        .btn-social { background: rgba(0,0,0,0.9) !important; border-color: rgba(255,255,255,0.15) !important; }
+        ::-webkit-scrollbar-track { background: #000000 !important; }
+        .wiki-scroll::-webkit-scrollbar-track { background: rgba(255,255,255,0.05) !important; }
+
+        body, p, span, div, li, td, th, label, a, h1, h2, h3, h4, h5, h6 {
+            color: #ffffff;
+        }
+        .text-gradient-animated, .text-gradient-green,
+        [class*="text-tera-"], [class*="text-tiktok-"],
+        .text-gray-400, .text-gray-500, .text-slate-400, .text-slate-500 {
+            color: revert;
+            -webkit-text-fill-color: revert;
+        }
+        .text-gradient-animated, .text-gradient-green {
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
     </style>
 </head>
-<body class="antialiased flex flex-col min-h-screen">
+<body class="antialiased selection:bg-tera-purple selection:text-slate-100 flex flex-col min-h-screen">
+
+    <!-- ADVANCED BACKGROUND ELEMENTS -->
+    <div class="bg-grid"></div>
+    <div class="bg-orb-1"></div>
+    <div class="bg-orb-2"></div>
 
     <!-- NAVBAR -->
-    <nav class="fixed w-full z-50 glass border-b border-purple-950 transition-all duration-500" id="navbar">
+    <nav class="fixed w-full z-50 glass border-b border-purple-900/40 transition-all duration-500" id="navbar">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 h-20 flex items-center justify-between">
-            <div class="flex items-center gap-3 cursor-pointer" onclick="switchPage('home')">
-                <h1 class="font-heading font-bold text-xl md:text-2xl italic tracking-tighter">TERA <span class="text-tera-purple uppercase">STORE</span></h1>
+            <div class="flex items-center gap-3 cursor-pointer animate-float" onclick="switchPage('home')">
+               <video src="https://a.top4top.io/m_3830vjpd61.mp4" autoplay loop muted playsinline class="w-10 h-10 md:w-12 md:h-12 object-contain rounded-lg" style="border:none;box-shadow:none;outline:none;"></video>
+                <div>
+                    <h1 class="font-heading font-bold text-xl md:text-2xl italic tracking-tighter">TERA <span class="text-tera-purple uppercase">STORE</span></h1>
+                </div>
             </div>
+
             <div class="flex items-center">
                 <div class="hidden md:flex gap-8 items-center text-sm font-semibold uppercase tracking-widest italic">
-                    <a href="javascript:void(0)" onclick="switchPage('home')" class="nav-link active-nav text-slate-300 hover:text-white">Home</a>
-                    <a href="javascript:void(0)" onclick="switchPage('joki')" class="nav-link text-slate-300 hover:text-white">Jasa Joki</a>
-                    <a href="javascript:void(0)" onclick="switchPage('katalog')" class="nav-link text-slate-300 hover:text-white">Katalog Item</a>
+                    <a href="javascript:void(0)" onclick="switchPage('home')" class="nav-link active-nav text-slate-300 hover:text-slate-100 transition-all">Home</a>
+                    <a href="javascript:void(0)" onclick="switchPage('joki')" class="nav-link text-slate-300 hover:text-slate-100 transition-all">Jasa Joki</a>
+                    <a href="javascript:void(0)" onclick="switchPage('katalog')" class="nav-link text-slate-300 hover:text-slate-100 transition-all">Katalog Item</a>
+                    <a href="#contact" class="bg-black border border-white/10 btn-ig px-6 py-2.5 rounded-full text-white transition-all flex items-center gap-2">
+                        <i class="fab fa-instagram"></i> DM Admin
+                    </a>
+                    <!-- LOGIN BUTTON (Desktop) -->
+                    <button id="nav-login-btn" onclick="openLoginModal()" class="glass border border-tera-purple/40 hover:border-tera-purple/70 px-5 py-2 rounded-full text-sm font-bold uppercase italic tracking-widest text-tera-purple hover:text-white hover:bg-tera-purple/20 transition-all flex items-center gap-2">
+                        <i class="fas fa-right-to-bracket"></i> Login
+                    </button>
+                    <div id="nav-user-info" class="hidden items-center gap-3">
+                        <div class="flex items-center gap-2 glass border border-tera-purple/30 px-4 py-2 rounded-full">
+                            <div class="w-6 h-6 rounded-full bg-tera-purple/30 border border-tera-purple/50 flex items-center justify-center">
+                                <i class="fas fa-user text-[10px] text-tera-purple"></i>
+                            </div>
+                            <span id="nav-username" class="text-sm font-bold text-slate-200 italic"></span>
+                        </div>
+                        <button onclick="handleLogout()" class="text-xs text-slate-400 hover:text-red-400 transition-colors font-semibold uppercase tracking-wider">
+                            <i class="fas fa-right-from-bracket"></i>
+                        </button>
+                    </div>
                 </div>
-                <button onclick="toggleCart()" class="relative text-slate-100 hover:text-tera-purple text-2xl ml-6 mr-4">
+
+                <!-- CART BUTTON (Desktop & Mobile) -->
+                <button onclick="toggleCart()" class="relative text-slate-100 hover:text-tera-purple transition-colors text-2xl ml-6 mr-4 md:mr-0">
                     <i class="fas fa-shopping-cart"></i>
-                    <span id="cart-count" class="absolute -top-2 -right-2 bg-red-500 text-white text-[10px] font-bold w-5 h-5 rounded-full flex items-center justify-center">0</span>
+                    <span id="cart-count" class="absolute -top-2 -right-2 bg-red-500 text-white text-[10px] font-bold w-5 h-5 rounded-full flex items-center justify-center shadow-lg border border-purple-800/40">0</span>
                 </button>
+
+                <!-- Mobile Menu Button -->
+                <button class="md:hidden text-slate-100 text-2xl hover:text-tera-purple transition-colors" id="mobile-btn"><i class="fas fa-bars"></i></button>
+            </div>
+        </div>
+
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="hidden md:hidden glass border-t border-purple-900/40 px-4 py-6 flex flex-col gap-6 text-center shadow-2xl">
+            <a href="javascript:void(0)" onclick="switchPage('home')" class="nav-link active-nav text-slate-100 font-bold uppercase italic tracking-widest text-lg">Home</a>
+            <a href="javascript:void(0)" onclick="switchPage('joki')" class="nav-link text-slate-100 font-bold uppercase italic tracking-widest text-lg">Jasa Joki</a>
+            <a href="javascript:void(0)" onclick="switchPage('katalog')" class="nav-link text-slate-100 font-bold uppercase italic tracking-widest text-lg">Katalog Item</a>
+            <a href="#contact" onclick="document.getElementById('mobile-menu').classList.add('hidden')" class="btn-ig text-white bg-black border border-white/10 py-3 rounded-xl font-bold uppercase italic tracking-widest mt-4 mx-4 flex justify-center items-center gap-2"><i class="fab fa-instagram"></i> DM Admin</a>
+            <button id="mobile-login-btn" onclick="openLoginModal(); document.getElementById('mobile-menu').classList.add('hidden')" class="glass border border-tera-purple/40 text-tera-purple py-3 rounded-xl font-bold uppercase italic tracking-widest mx-4 flex justify-center items-center gap-2"><i class="fas fa-right-to-bracket"></i> Login</button>
+            <div id="mobile-user-info" class="hidden items-center justify-center gap-3 mx-4 glass border border-tera-purple/30 py-3 px-4 rounded-xl">
+                <i class="fas fa-user text-tera-purple text-sm"></i>
+                <span id="mobile-username" class="text-sm font-bold text-slate-200 italic"></span>
+                <button onclick="handleLogout()" class="text-xs text-red-400 font-bold ml-auto"><i class="fas fa-right-from-bracket"></i> Logout</button>
             </div>
         </div>
     </nav>
 
+    <!-- ======= LOGIN MODAL ======= -->
+    <div id="login-modal" class="fixed inset-0 z-[999] flex items-center justify-center px-4 py-8 hidden">
+        <!-- Backdrop -->
+        <div class="absolute inset-0 bg-tera-darker/80 backdrop-blur-sm" onclick="closeLoginModal()"></div>
+
+        <!-- Modal Card -->
+        <div class="relative w-full max-w-md animate-slide-up z-10">
+
+            <!-- Close Button -->
+            <button onclick="closeLoginModal()" class="absolute -top-4 -right-4 w-9 h-9 rounded-full glass border border-purple-900/40 text-slate-400 hover:text-white hover:border-red-500/50 transition-all flex items-center justify-center text-sm z-20">
+                <i class="fas fa-times"></i>
+            </button>
+
+            <!-- Logo & Title -->
+            <div class="text-center mb-6">
+                <div class="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-tera-purple/15 border border-tera-purple/30 shadow-[0_0_30px_rgba(139,92,246,0.25)] mb-4 mx-auto">
+                    <i class="fas fa-shield-halved text-2xl text-tera-purple"></i>
+                </div>
+                <h2 class="font-heading font-black text-3xl italic uppercase">
+                    Masuk ke <span class="text-gradient-animated">Akun</span>
+                </h2>
+                <p class="text-slate-400 text-sm mt-1">Selamat datang kembali di TERA STORE!</p>
+            </div>
+
+            <!-- Card -->
+            <div class="login-card-wrapper-modal">
+                <div class="glass rounded-3xl p-7 border border-tera-purple/20">
+
+                    <!-- Alert Error -->
+                    <div id="modal-alert-error" class="hidden rounded-xl px-4 py-3 mb-5 text-sm flex items-center gap-2" style="background:rgba(239,68,68,0.1);border:1px solid rgba(239,68,68,0.3);color:#f87171;">
+                        <i class="fas fa-circle-exclamation shrink-0"></i>
+                        <span id="modal-alert-msg">Username atau password salah.</span>
+                    </div>
+
+                    <!-- Form -->
+                    <div class="flex flex-col gap-5">
+                        <!-- Username -->
+                        <div class="flex flex-col gap-1.5">
+                            <label class="text-xs font-bold uppercase tracking-widest text-slate-400">Username / Email</label>
+                            <div class="relative">
+                                <span class="absolute left-4 top-1/2 -translate-y-1/2 text-purple-400 text-sm"><i class="fas fa-user"></i></span>
+                                <input type="text" id="modal-username" class="input-field w-full pl-10 pr-4 py-3.5 rounded-xl text-sm font-medium" placeholder="Masukkan username atau email" autocomplete="username">
+                            </div>
+                        </div>
+
+                        <!-- Password -->
+                        <div class="flex flex-col gap-1.5">
+                            <div class="flex justify-between items-center">
+                                <label class="text-xs font-bold uppercase tracking-widest text-slate-400">Password</label>
+                                <a href="#" class="text-xs text-tera-purple hover:text-purple-300 transition-colors font-medium">Lupa Password?</a>
+                            </div>
+                            <div class="relative">
+                                <span class="absolute left-4 top-1/2 -translate-y-1/2 text-purple-400 text-sm"><i class="fas fa-lock"></i></span>
+                                <input type="password" id="modal-password" class="input-field w-full pl-10 pr-12 py-3.5 rounded-xl text-sm font-medium" placeholder="Masukkan password" autocomplete="current-password">
+                                <button type="button" class="toggle-pass absolute right-4 top-1/2 -translate-y-1/2 text-sm" onclick="toggleModalPassword()">
+                                    <i class="fas fa-eye" id="modal-eye-icon"></i>
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Remember me -->
+                        <label class="flex items-center gap-3 cursor-pointer select-none">
+                            <input type="checkbox" id="modal-remember" class="w-4 h-4 rounded accent-purple-500">
+                            <span class="text-sm text-slate-400">Ingat saya di perangkat ini</span>
+                        </label>
+
+                        <!-- Submit -->
+                        <button onclick="handleModalLogin()" class="btn-primary w-full text-white font-bold py-4 rounded-xl uppercase tracking-widest italic text-sm flex items-center justify-center gap-2 shadow-[0_0_20px_rgba(139,92,246,0.3)] mt-1 relative z-10">
+                            <span id="modal-btn-text"><i class="fas fa-right-to-bracket mr-1"></i> Masuk Sekarang</span>
+                            <span id="modal-btn-loading" class="hidden"><i class="fas fa-spinner fa-spin mr-1"></i> Memproses...</span>
+                        </button>
+                    </div>
+
+                    <!-- Divider -->
+                    <div class="flex items-center gap-4 my-5">
+                        <div class="flex-1 h-px" style="background:linear-gradient(to right, transparent, rgba(139,92,246,0.3), transparent)"></div>
+                        <span class="text-xs text-slate-500 font-semibold uppercase tracking-wider">atau masuk dengan</span>
+                        <div class="flex-1 h-px" style="background:linear-gradient(to right, transparent, rgba(139,92,246,0.3), transparent)"></div>
+                    </div>
+
+                    <!-- Social Login -->
+                    <div class="grid grid-cols-2 gap-3">
+                        <button id="btn-google-login" onclick="handleGoogleLogin()" class="btn-social rounded-xl py-3 text-sm font-bold text-slate-300 flex items-center justify-center gap-2 transition-all hover:border-[#4285F4]/50 hover:bg-[#4285F4]/10">
+                            <svg class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg>
+                            Google
+                        </button>
+                        <button id="btn-discord-login" onclick="handleDiscordLogin()" class="btn-social rounded-xl py-3 text-sm font-bold text-slate-300 flex items-center justify-center gap-2 transition-all hover:border-[#5865F2]/50 hover:bg-[#5865F2]/10">
+                            <i class="fab fa-discord text-[#5865F2]"></i>
+                            Discord
+                        </button>
+                    </div>
+
+                    <!-- Register link -->
+                    <p class="text-center text-sm text-slate-500 mt-5">
+                        Belum punya akun?
+                        <a href="#" class="text-tera-purple hover:text-purple-300 font-bold transition-colors ml-1">Daftar Sekarang</a>
+                    </p>
+                </div>
+            </div>
+
+            <!-- Trust badges -->
+            <div class="flex items-center justify-center gap-5 mt-5">
+                <div class="flex items-center gap-1.5 text-xs text-slate-500"><i class="fas fa-lock text-tera-green text-[10px]"></i> SSL Terenkripsi</div>
+                <div class="w-px h-4 bg-purple-900/40"></div>
+                <div class="flex items-center gap-1.5 text-xs text-slate-500"><i class="fas fa-shield-check text-tera-purple text-[10px]"></i> Data Aman</div>
+                <div class="w-px h-4 bg-purple-900/40"></div>
+                <div class="flex items-center gap-1.5 text-xs text-slate-500"><i class="fas fa-crown text-tera-gold text-[10px]"></i> Verified Seller</div>
+            </div>
+        </div>
+    </div>
+    <!-- ======= END LOGIN MODAL ======= -->
+
     <!-- KONTEN UTAMA -->
     <main class="flex-grow">
         <!-- 1. SECTION HOME -->
-        <section id="home" class="page-section active-page pt-36 pb-20 px-4 max-w-7xl mx-auto text-center">
-            <h2 class="text-5xl md:text-7xl font-heading font-black italic leading-tight mb-6">
+        <section id="home" class="page-section active-page pt-36 pb-20 px-4 max-w-7xl mx-auto text-center relative">
+            <div class="inline-flex items-center gap-2 px-5 py-2 rounded-full bg-tera-gold/10 border border-tera-gold/30 text-tera-gold text-xs font-bold mb-8 italic uppercase tracking-wider animate-pulse-slow shadow-[0_0_20px_rgba(217,119,6,0.2)]">
+                <i class="fas fa-crown"></i> Verified Seller Roblox Indonesia
+            </div>
+            <h2 class="text-5xl md:text-7xl lg:text-8xl font-heading font-black italic leading-tight mb-6 drop-shadow-2xl">
                 Pusat Item & Jasa <br>
-                <span class="text-tera-purple uppercase">Roblox Terpercaya</span>
+                <span class="text-gradient-animated uppercase drop-shadow-[0_0_30px_rgba(5,150,105,0.5)]">Roblox Terpercaya</span>
             </h2>
-            <button onclick="switchPage('katalog')" class="bg-tera-purple text-white px-8 py-4 rounded-xl font-bold uppercase tracking-widest italic">Buka Katalog</button>
+            <p class="text-slate-300 text-sm md:text-lg mb-12 max-w-2xl mx-auto font-medium leading-relaxed">
+                Borong semua kebutuhan item game Roblox favoritmu atau gunakan layanan Joki terbaik kami lewat Katalog TERA STORE!
+            </p>
+            <div class="flex flex-col sm:flex-row justify-center gap-4">
+                <button onclick="switchPage('katalog')" class="relative group overflow-hidden bg-tera-purple text-white px-8 py-4 rounded-xl font-bold uppercase tracking-widest italic transition shadow-[0_0_20px_rgba(5,150,105,0.4)] hover:shadow-[0_0_30px_rgba(5,150,105,0.6)]">
+                    <span class="relative z-10">Buka Katalog</span>
+                    <div class="absolute inset-0 h-full w-full bg-white/20 scale-x-0 group-hover:scale-x-100 transform origin-left transition-transform duration-300 ease-out z-0"></div>
+                </button>
+                <button onclick="switchPage('joki')" class="glass hover:bg-[#1a1b2e] border border-purple-800/40 text-slate-100 px-8 py-4 rounded-xl font-bold uppercase tracking-widest italic transition">Lihat Jasa Joki</button>
+            </div>
+
+            <!-- Game shortcuts (Dirender Dinamis dari Admin Panel) -->
+            <div id="home-game-shortcuts" class="grid grid-cols-1 sm:grid-cols-3 gap-6 max-w-4xl mx-auto mt-16"></div>
         </section>
 
-        <!-- 2. SECTION JOKI -->
+        <!-- 2. SECTION JOKI (100% Dinamis dari Admin Panel) -->
         <section id="joki" class="page-section pt-32 pb-16 px-4 max-w-7xl mx-auto">
-            <h3 class="text-4xl font-heading font-black italic uppercase mb-6">Layanan <span class="text-tera-purple">Joki</span></h3>
-            <p class="text-slate-400 text-sm">Pilih layanan joki terpercaya tanpa cheat.</p>
+            <div class="flex items-center gap-4 mb-10 border-b border-purple-900/40 pb-4">
+                <div class="w-12 h-12 rounded-xl bg-tera-purple/20 flex items-center justify-center border border-tera-purple/30 shadow-[0_0_15px_rgba(5,150,105,0.3)]">
+                    <i class="fas fa-bolt text-2xl text-tera-purple animate-pulse"></i>
+                </div>
+                <h3 class="text-4xl font-heading font-black italic uppercase">Layanan <span class="text-gradient-animated">Joki</span></h3>
+            </div>
+
+            <div id="joki-cards-container" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+                <div class="col-span-full glass p-10 rounded-3xl text-center border border-purple-900/40">
+                    <i class="fas fa-spinner fa-spin text-3xl text-tera-purple mb-3"></i>
+                    <p class="text-sm text-slate-400 italic">Memuat layanan joki dari server...</p>
+                </div>
+            </div>
         </section>
 
-        <!-- 3. SECTION KATALOG -->
+        <!-- 3. SECTION KATALOG (100% Dinamis dari Admin Panel) -->
         <section id="katalog" class="page-section pt-32 pb-16 px-4 max-w-7xl mx-auto">
-            <div class="flex flex-col lg:flex-row justify-between lg:items-end gap-6 mb-8 border-b border-purple-950 pb-6">
-                <div>
-                    <h3 class="text-4xl font-heading font-black italic uppercase">Katalog <span class="text-tera-purple">Item</span></h3>
-                    <p class="text-sm text-slate-400 mt-1">Data ditarik otomatis dari Google Sheets Admin Panel.</p>
+            <div class="flex flex-col lg:flex-row justify-between lg:items-end gap-6 mb-8 border-b border-purple-900/40 pb-6">
+                <div class="flex items-center gap-4">
+                    <div class="w-14 h-14 rounded-2xl bg-tera-blue/20 flex items-center justify-center border border-tera-blue/30 shadow-[0_0_20px_rgba(59,130,246,0.3)]">
+                        <i class="fas fa-boxes text-3xl text-indigo-400"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-4xl font-heading font-black italic uppercase">Katalog <span class="text-gradient-animated">Item</span></h3>
+                        <p class="text-sm text-slate-400 mt-1 tracking-wide">Pilih game, buka section, atur jumlah, lalu masukkan ke keranjang.</p>
+                    </div>
                 </div>
-                <div class="relative w-full sm:w-80">
-                    <input type="text" id="searchInput" placeholder="Cari nama item..." class="w-full input-field rounded-xl py-3 pl-11 pr-4 text-sm focus:outline-none">
-                    <i class="fas fa-search absolute left-4 top-1/2 -translate-y-1/2 text-slate-400"></i>
+
+                <div class="flex flex-col sm:flex-row gap-4 w-full lg:w-auto items-center">
+                    <div class="relative w-full sm:w-64 md:w-80">
+                        <input type="text" id="searchInput" placeholder="Cari nama item..." class="w-full bg-[#1a1b2e] border border-purple-800/40 rounded-xl py-3 pl-11 pr-4 text-sm text-slate-100 focus:outline-none focus:border-tera-blue transition-colors shadow-inner backdrop-blur-md">
+                        <i class="fas fa-search absolute left-4 top-1/2 -translate-y-1/2 text-slate-400"></i>
+                    </div>
+                    <div class="bg-[#1a1b2e] border border-tera-gold/30 px-4 py-3 rounded-xl text-xs font-bold text-tera-gold animate-pulse-slow shadow-lg flex items-center gap-2 backdrop-blur-md w-full sm:w-auto justify-center whitespace-nowrap">
+                        <i class="fas fa-paste text-lg"></i> Auto-Copy Format
+                    </div>
                 </div>
             </div>
 
-            <!-- GAME TOGGLE (Dibuat Dinamis) -->
-            <div class="flex flex-wrap gap-3 mb-10" id="game-toggle-container"></div>
+            <!-- GAME TOGGLE (100% Dinamis dari Admin Panel) -->
+            <div id="game-toggle-container" class="flex flex-wrap gap-3 mb-10"></div>
 
-            <!-- GAME PANES CONTAINER -->
-            <div id="game-panes-wrapper"></div>
+            <!-- GAME PANES WRAPPER (100% Dinamis dari Admin Panel) -->
+            <div id="game-panes-wrapper">
+                <div id="katalog-empty-state" class="glass p-10 rounded-3xl text-center border border-purple-900/40">
+                    <i class="fas fa-spinner fa-spin text-3xl text-tera-purple mb-3"></i>
+                    <p class="text-sm text-slate-400 italic">Memuat katalog game dari server...</p>
+                </div>
+            </div>
         </section>
     </main>
 
-    <!-- CART MODAL -->
-    <div id="cartModal" class="fixed inset-0 z-[100] hidden">
-        <div class="absolute inset-0 bg-black/70 backdrop-blur-sm" onclick="toggleCart()"></div>
-        <div class="absolute right-0 top-0 bottom-0 w-full sm:w-[400px] glass border-l border-purple-950 flex flex-col">
-            <div class="p-5 border-b border-purple-950 flex justify-between items-center">
-                <h3 class="text-xl font-heading font-black italic">Keranjang Anda</h3>
-                <button onclick="toggleCart()"><i class="fas fa-times text-xl"></i></button>
+    <!-- FOOTER -->
+    <footer id="contact" class="mt-auto pt-20 pb-10 px-4 border-t border-purple-900/30 bg-[#07080f] backdrop-blur-xl relative overflow-hidden">
+        <div class="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[400px] bg-tera-purple/5 blur-[100px] rounded-full pointer-events-none"></div>
+        <div class="max-w-4xl mx-auto text-center relative z-10">
+            <h2 class="text-3xl md:text-5xl font-heading font-black italic mb-4 uppercase drop-shadow-lg text-white">Siap Mendominasi Server?</h2>
+            <p class="text-slate-400 text-base mb-10 max-w-lg mx-auto">Pilih itemmu dan DM admin sekarang. TERA STORE siap memproses pesananmu dengan secepat kilat.</p>
+
+            <div class="flex flex-wrap justify-center gap-5 mb-16">
+                <a href="javascript:void(0)" onclick="window.open(TIKTOK_URL, '_blank')" class="btn-tiktok flex items-center gap-3 bg-black border border-white/10 px-8 py-4 rounded-2xl font-bold text-white transition-all shadow-xl hover:-translate-y-1">
+                    <i class="fab fa-tiktok text-2xl"></i> DM via TikTok
+                </a>
+                <a href="javascript:void(0)" onclick="window.open(INSTAGRAM_URL, '_blank')" class="btn-ig flex items-center gap-3 bg-black border border-white/10 px-8 py-4 rounded-2xl font-bold text-white transition-all shadow-xl hover:-translate-y-1">
+                    <i class="fab fa-instagram text-2xl"></i> DM via Instagram
+                </a>
             </div>
-            <div id="cart-items" class="flex-grow overflow-y-auto p-5 space-y-3"></div>
-            <div class="p-5 border-t border-purple-950 bg-black space-y-3">
+
+            <div class="text-xs text-slate-400 font-bold tracking-widest uppercase italic border-t border-white/10 pt-10 flex flex-col items-center gap-3">
+                <img src="https://i.top4top.io/p_3830gr6t71.png" class="w-8 h-8 rounded opacity-50 mb-2 grayscale" alt="Logo">
+                <div class="flex items-center gap-2 text-slate-400">
+                    <i class="fa-solid fa-anchor"></i> © 2026 TERA STORE. All Rights Reserved.
+                </div>
+                <span class="text-tera-purple hover:text-white transition-colors cursor-pointer text-sm">@tera.rblx</span>
+            </div>
+        </div>
+    </footer>
+
+    <!-- CART MODAL (Slide Sidebar) -->
+    <div id="cartModal" class="fixed inset-0 z-[100] hidden">
+        <!-- Backdrop -->
+        <div class="absolute inset-0 bg-black/70 backdrop-blur-sm transition-opacity" onclick="toggleCart()"></div>
+        <!-- Modal Content -->
+        <div class="absolute right-0 top-0 bottom-0 w-full sm:w-[400px] glass border-l border-purple-900/40 shadow-2xl flex flex-col transform transition-transform duration-300">
+            <!-- Header Modal -->
+            <div class="p-5 border-b border-purple-900/40 flex justify-between items-center bg-[#1a1b2e]">
+                <h3 class="text-xl font-heading font-black italic text-slate-100 flex items-center gap-2">
+                    <i class="fas fa-shopping-cart text-tera-purple"></i> Keranjang Anda
+                </h3>
+                <button onclick="toggleCart()" class="text-slate-400 hover:text-slate-100 transition-colors p-2 rounded-lg hover:bg-purple-900/40">
+                    <i class="fas fa-times text-xl"></i>
+                </button>
+            </div>
+
+            <!-- Items Container -->
+            <div id="cart-items" class="flex-grow overflow-y-auto p-5 wiki-scroll space-y-3"></div>
+
+            <!-- Footer Modal (Checkout) -->
+            <div class="p-5 border-t border-purple-900/40 bg-[#0f1020] space-y-3">
                 <div>
-                    <label class="text-[10px] text-slate-400 font-bold uppercase block mb-1">USERNAME (Roblox) *</label>
-                    <input type="text" id="checkout-roblox" placeholder="Cth: LordAlpha_Rblx" class="input-field w-full px-3.5 py-2.5 rounded-xl text-xs">
+                    <label class="text-[10px] text-slate-400 font-bold uppercase tracking-widest block mb-1">Username Roblox <span class="text-red-400">*</span></label>
+                    <input type="text" id="checkout-roblox" placeholder="Cth: LordAlpha_Rblx (Wajib diisi)" class="input-field w-full px-3.5 py-2.5 rounded-xl text-xs font-medium">
                 </div>
                 <div>
-                    <label class="text-[10px] text-slate-400 font-bold uppercase block mb-1">Catatan</label>
-                    <input type="text" id="checkout-note" placeholder="Catatan opsional" class="input-field w-full px-3.5 py-2.5 rounded-xl text-xs">
+                    <label class="text-[10px] text-slate-400 font-bold uppercase tracking-widest block mb-1">Catatan Pesanan (Opsional)</label>
+                    <input type="text" id="checkout-note" placeholder="Cth: Ketemuan di Sea 1 / NO WA aktif" class="input-field w-full px-3.5 py-2.5 rounded-xl text-xs font-medium">
                 </div>
-                <div class="flex justify-between items-center p-3 rounded-xl border border-purple-950">
-                    <span class="text-xs text-slate-400 font-bold">Total</span>
+
+                <div class="flex justify-between items-center bg-[#1a1b2e] p-3 rounded-xl border border-purple-900/40 shadow-inner">
+                    <span class="text-xs text-slate-400 font-bold uppercase tracking-widest">Total Harga</span>
                     <span id="cart-total" class="text-lg font-black text-tera-gold">Rp 0</span>
                 </div>
-                <button id="btn-checkout-qris" onclick="openPaymentModal()" class="btn-primary w-full py-3.5 rounded-xl font-bold uppercase tracking-widest text-xs text-white">Bayar dengan QRIS</button>
+                <button id="btn-checkout-qris" onclick="openPaymentModal()" class="w-full bg-gradient-to-r from-tera-purple to-tera-blue text-white py-3.5 rounded-xl font-bold transition-all border border-white/10 uppercase italic text-[12px] tracking-widest flex items-center justify-center gap-2 shadow-[0_0_20px_rgba(139,92,246,0.4)] hover:shadow-[0_0_28px_rgba(139,92,246,0.6)] hover:-translate-y-0.5">
+                    <i class="fas fa-qrcode text-lg"></i> Bayar dengan QRIS Otomatis
+                </button>
             </div>
         </div>
     </div>
 
-    <!-- PAYMENT MODAL -->
+    <!-- ======================= -->
+    <!-- MODAL PEMBAYARAN QRIS   -->
+    <!-- ======================= -->
     <div id="paymentModal" class="fixed inset-0 z-[110] hidden">
-        <div class="absolute inset-0 bg-black/80 backdrop-blur-sm" onclick="closePaymentModal()"></div>
-        <div class="relative w-full h-full flex items-center justify-center p-4">
-            <div class="glass rounded-3xl shadow-2xl w-full max-w-sm p-5 relative overflow-hidden space-y-4">
-                <div id="qris-waiting-view" class="space-y-4">
-                    <h3 class="text-lg font-heading font-black text-center text-tera-gold">Pembayaran QRIS Otomatis</h3>
-                    <div class="rounded-xl p-3 border border-purple-950 space-y-2 text-xs">
-                        <div class="flex justify-between"><span>No. Pesanan:</span><span id="payment-order-id" class="font-bold text-purple-300">-</span></div>
-                        <div class="flex justify-between"><span>Kode Unik:</span><span id="payment-unique-code" class="font-bold text-emerald-400">+Rp 0</span></div>
-                        <div class="flex justify-between pt-1 border-t border-white/10 font-black text-sm"><span>Total Transfer:</span><span id="payment-total" class="text-tera-gold">Rp 0</span></div>
-                    </div>
-                    <div class="bg-white p-2 rounded-xl"><img src="assets/qris.jpg" alt="QRIS" class="w-full rounded-lg"></div>
-                    <div class="text-center text-xs text-slate-300 animate-pulse"><i class="fas fa-spinner fa-spin mr-1"></i> Menunggu pembayaran masuk...</div>
+        <div class="absolute inset-0 bg-black/80 backdrop-blur-sm transition-opacity" onclick="closePaymentModal()"></div>
+        <div class="relative w-full h-full flex items-center justify-center p-4 overflow-y-auto">
+            <div class="glass border border-purple-900/40 rounded-3xl shadow-2xl w-full max-w-sm my-auto relative overflow-hidden">
+                <div class="absolute top-0 right-0 w-40 h-40 bg-tera-gold/10 blur-3xl rounded-full pointer-events-none"></div>
+
+                <!-- Header -->
+                <div class="p-5 border-b border-purple-900/40 flex justify-between items-center bg-[#1a1b2e] relative z-10">
+                    <h3 class="text-lg font-heading font-black italic text-slate-100 flex items-center gap-2">
+                        <i class="fas fa-qrcode text-tera-gold"></i> Pembayaran QRIS Otomatis
+                    </h3>
+                    <button onclick="closePaymentModal()" class="text-slate-400 hover:text-slate-100 transition-colors p-2 rounded-lg hover:bg-purple-900/40">
+                        <i class="fas fa-times text-xl"></i>
+                    </button>
                 </div>
-                <div id="qris-success-view" class="text-center space-y-4 hidden">
-                    <div class="w-16 h-16 rounded-full bg-emerald-500/20 border border-emerald-400 flex items-center justify-center mx-auto text-3xl text-emerald-400"><i class="fas fa-check"></i></div>
-                    <h4 class="text-2xl font-heading font-black text-emerald-400 uppercase">Pembayaran Lunas!</h4>
-                    <a id="btn-wa-chat" href="#" target="_blank" class="btn-primary w-full py-3.5 rounded-xl font-bold uppercase text-xs text-white block text-center"><i class="fab fa-whatsapp"></i> Chat Admin untuk Ketemuan</a>
-                    <button onclick="closePaymentModal()" class="w-full py-2.5 rounded-xl text-slate-400 text-xs">Tutup</button>
+
+                <!-- Body: Menunggu Pembayaran -->
+                <div id="qris-waiting-view" class="p-5 relative z-10 space-y-4">
+                    <div class="bg-[#1a1b2e] rounded-xl p-3 border border-purple-900/40 space-y-2">
+                        <div class="flex items-center justify-between border-b border-white/10 pb-2">
+                            <span class="text-[10px] text-slate-400 uppercase tracking-wider font-bold">No. Pesanan</span>
+                            <span id="payment-order-id" class="text-xs font-black text-purple-300">-</span>
+                        </div>
+                        <div class="flex items-center justify-between border-b border-white/10 pb-2">
+                            <span class="text-[10px] text-slate-400 uppercase tracking-wider font-bold">Kode Unik Otomatis</span>
+                            <span id="payment-unique-code" class="text-xs font-bold text-emerald-400">+Rp 0</span>
+                        </div>
+                        <div class="flex items-center justify-between pt-1">
+                            <span class="text-[11px] text-white uppercase tracking-wider font-bold">Wajib Transfer Persis</span>
+                            <span id="payment-total" class="text-xl font-black text-tera-gold animate-pulse">Rp 0</span>
+                        </div>
+                    </div>
+
+                    <!-- QRIS Image -->
+                    <div class="rounded-2xl overflow-hidden border border-purple-900/40 shadow-inner bg-white p-2">
+                        <img src="assets/qris.jpg" alt="QRIS TERA STORE" class="w-full rounded-xl">
+                    </div>
+
+                    <!-- Status Pengecekan Real-Time -->
+                    <div class="bg-tera-purple/15 border border-tera-purple/40 rounded-xl p-3 flex items-center justify-center gap-3">
+                        <i class="fas fa-spinner fa-spin text-tera-purple text-lg"></i>
+                        <span class="text-xs font-bold text-slate-200">Menunggu pembayaran masuk... (Dicek otomatis)</span>
+                    </div>
+
+                    <div class="bg-amber-500/10 border border-amber-500/30 rounded-xl p-3 flex gap-2.5">
+                        <i class="fas fa-triangle-exclamation text-amber-400 mt-0.5 shrink-0"></i>
+                        <p class="text-[11px] text-amber-200 leading-relaxed">
+                            PENTING: Masukkan nominal transfer <span class="font-bold underline text-white">persis hingga 3 digit terakhir</span> sesuai angka <span class="font-bold text-tera-gold">Wajib Transfer Persis</span> di atas agar terverifikasi otomatis oleh sistem dalam 5 detik!
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Body: Pembayaran Sukses Lunas Otomatis -->
+                <div id="qris-success-view" class="p-6 relative z-10 text-center space-y-4 hidden">
+                    <div class="w-20 h-20 rounded-full bg-emerald-500/20 border-2 border-emerald-400 flex items-center justify-center mx-auto text-4xl text-emerald-400 shadow-[0_0_30px_rgba(16,185,129,0.4)]">
+                        <i class="fas fa-check"></i>
+                    </div>
+                    <h4 class="text-2xl font-heading font-black italic uppercase text-emerald-400">Pembayaran Lunas!</h4>
+                    <p class="text-xs text-slate-300 leading-relaxed">
+                        Terima kasih! Pembayaranmu telah terverifikasi otomatis. Silakan klik tombol di bawah untuk langsung diskusi lokasi ketemuan dengan <strong class="text-white">Admin Tera</strong> di game!
+                    </p>
+                    
+                    <!-- Tombol Pintasan Chat WhatsApp -->
+                    <a id="btn-wa-chat" href="#" target="_blank" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white py-3.5 rounded-xl font-bold uppercase tracking-widest text-xs transition-all flex items-center justify-center gap-2 shadow-[0_0_20px_rgba(16,185,129,0.4)]">
+                        <i class="fab fa-whatsapp text-lg"></i> Chat Admin untuk Ketemuan
+                    </a>
+
+                    <button onclick="closePaymentModal()" class="w-full bg-[#1a1b2e] hover:bg-purple-900/40 text-slate-400 hover:text-white py-2.5 rounded-xl font-bold uppercase tracking-wider text-[11px] transition-all border border-purple-900/40">
+                        Tutup Halaman
+                    </button>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- JAVASCRIPT UTAMA -->
     <script>
+        const TIKTOK_URL = "https://www.tiktok.com/@tera.rblx";
+        const INSTAGRAM_URL = "https://www.instagram.com/tera.rblx";
         const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyx33ntFyF_QFbH15j8kbJJiEiI1wNwzk_eR4_EpPj4HeHZMR5NAGKkbUPtC5G4QGDv/exec";
-        
+
         let cart = [];
         let activeGame = "";
-        let storeData = {}; // Wadah dinamis murni dari Google Sheets[cite: 9]
-        let activeSectionFilter = {};
+
+        // WADAH MURNI DINAMIS DARI GOOGLE SHEETS (Tanpa Default Lokal)
+        let storeData = {};
         let gameMeta = {};
+        let activeSectionFilter = {};
+
+        window.addEventListener('scroll', () => {
+            const nav = document.getElementById('navbar');
+            if(window.scrollY > 50) {
+                nav.classList.add('nav-scrolled');
+                nav.classList.remove('glass');
+            } else {
+                nav.classList.remove('nav-scrolled');
+                nav.classList.add('glass');
+            }
+        });
 
         function switchPage(pageId) {
-            document.querySelectorAll('.page-section').forEach(p => p.classList.remove('active-page'));
-            document.getElementById(pageId).classList.add('active-page');
+            document.querySelectorAll('.page-section').forEach(page => page.classList.remove('active-page'));
+            const target = document.getElementById(pageId);
+            if (target) target.classList.add('active-page');
+            document.querySelectorAll('.nav-link').forEach(link => { link.classList.remove('active-nav', 'text-slate-100'); link.classList.add('text-slate-300'); });
+            document.querySelectorAll(`[onclick="switchPage('${pageId}')"]`).forEach(link => { link.classList.remove('text-slate-300'); link.classList.add('active-nav', 'text-slate-100'); });
+            document.getElementById('mobile-menu').classList.add('hidden');
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
-        // SINKRONISASI PINTAR FULL DARI GOOGLE SHEETS
+        // =======================
+        // SISTEM KERANJANG (CART)
+        // =======================
+        function toggleCart() {
+            const modal = document.getElementById('cartModal');
+            modal.classList.toggle('hidden');
+        }
+
+        function addToCart(game, sIndex, iIndex, itemId) {
+            const item = storeData[game][sIndex].items[iIndex];
+            const qtyElement = document.getElementById(`qty-${itemId}`);
+            const qty = parseInt(qtyElement.innerText);
+
+            const existingItem = cart.find(c => c.name === item.name && c.game === game);
+            if (existingItem) {
+                existingItem.qty += qty;
+            } else {
+                cart.push({
+                    name: item.name,
+                    price: item.price,
+                    qty: qty,
+                    image: item.image,
+                    game: game,
+                    gameName: gameMeta[game]?.name || game.toUpperCase()
+                });
+            }
+
+            updateCartUI();
+
+            const cartIcon = document.getElementById('cart-count');
+            cartIcon.classList.add('animate-ping');
+            setTimeout(() => cartIcon.classList.remove('animate-ping'), 300);
+
+            qtyElement.innerText = 1;
+            const totalElement = document.getElementById(`total-${itemId}`);
+            totalElement.innerText = formatRupiah(item.price);
+        }
+
+        function removeFromCart(index) {
+            cart.splice(index, 1);
+            updateCartUI();
+        }
+
+        function updateCartUI() {
+            const cartCount = document.getElementById('cart-count');
+            const cartItemsContainer = document.getElementById('cart-items');
+            const cartTotal = document.getElementById('cart-total');
+
+            let totalItems = 0;
+            let totalPrice = 0;
+
+            cartItemsContainer.innerHTML = '';
+
+            if(cart.length === 0) {
+                cartItemsContainer.innerHTML = `
+                    <div class="h-full flex flex-col items-center justify-center text-slate-400 py-10 opacity-60">
+                        <i class="fas fa-box-open text-4xl mb-3"></i>
+                        <p class="text-sm italic">Keranjang masih kosong.</p>
+                    </div>`;
+            } else {
+                cart.forEach((c, index) => {
+                    totalItems += c.qty;
+                    totalPrice += (c.price * c.qty);
+
+                    let imgSrc = (c.image && c.image !== "") ? c.image : '';
+                    let mediaHtml = imgSrc
+                        ? `<img src="${imgSrc}" class="w-14 h-14 object-cover rounded-lg border border-purple-900/40" onerror="this.onerror=null; this.replaceWith(Object.assign(document.createElement('div'), {className:'w-14 h-14 rounded-lg border border-purple-900/40 bg-[#1a1b2e] flex items-center justify-center text-lg', textContent:'🎁'}));">`
+                        : `<div class="w-14 h-14 rounded-lg border border-purple-900/40 bg-[#1a1b2e] flex items-center justify-center text-lg">🎁</div>`;
+
+                    cartItemsContainer.innerHTML += `
+                        <div class="flex items-center gap-3 bg-[#1a1b2e] p-3 rounded-xl border border-purple-900/40 hover:border-purple-900/40 transition-colors">
+                            ${mediaHtml}
+                            <div class="flex-grow">
+                                <span class="text-[9px] text-purple-300 uppercase font-bold">[${c.gameName || c.game}]</span>
+                                <h6 class="text-slate-100 text-xs font-bold leading-tight mb-1">${c.name}</h6>
+                                <p class="text-tera-gold text-[11px] font-semibold">${formatRupiah(c.price)} <span class="text-slate-400 font-normal">x ${c.qty}</span></p>
+                            </div>
+                            <div class="text-right flex flex-col items-end gap-1">
+                                <span class="text-slate-100 text-xs font-bold">${formatRupiah(c.price * c.qty)}</span>
+                                <button onclick="removeFromCart(${index})" class="text-red-500 hover:text-red-400 bg-red-500/10 hover:bg-red-500/20 w-6 h-6 rounded flex items-center justify-center transition-colors">
+                                    <i class="fas fa-trash text-[10px]"></i>
+                                </button>
+                            </div>
+                        </div>
+                    `;
+                });
+            }
+
+            if (cartCount) cartCount.innerText = totalItems;
+            if (cartTotal) cartTotal.innerText = formatRupiah(totalPrice);
+        }
+
+        let currentOrderId = null;
+        let paymentCheckInterval = null;
+
+        function generateOrderId() {
+            const now = new Date();
+            const datePart = now.getFullYear().toString().slice(2) +
+                String(now.getMonth() + 1).padStart(2, '0') +
+                String(now.getDate()).padStart(2, '0');
+            const randPart = Math.floor(1000 + Math.random() * 9000);
+            return `TERA-${datePart}-${randPart}`;
+        }
+
+        async function openPaymentModal() {
+            if (cart.length === 0) {
+                alert("Keranjang masih kosong! Silakan tambahkan item terlebih dahulu.");
+                return;
+            }
+
+            const robloxUser = document.getElementById('checkout-roblox').value.trim();
+            const buyerNote = document.getElementById('checkout-note').value.trim();
+
+            if (!robloxUser) {
+                alert("⚠️ Wajib mengisi Username Roblox kamu terlebih dahulu sebelum membayar!");
+                document.getElementById('checkout-roblox').focus();
+                return;
+            }
+
+            const btn = document.getElementById('btn-checkout-qris');
+            const originalBtnHtml = btn.innerHTML;
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Membuat Kode Unik...';
+            btn.disabled = true;
+
+            let baseTotal = 0;
+            let itemsList = "";
+            cart.forEach((c, i) => {
+                const gameLabel = `[${c.gameName || c.game.toUpperCase()}]`;
+                itemsList += `${i+1}. ${gameLabel} ${c.name} (${c.qty}x)\n`;
+                baseTotal += (c.price * c.qty);
+            });
+
+            currentOrderId = generateOrderId();
+
+            try {
+                const response = await fetch(GOOGLE_SCRIPT_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+                    body: JSON.stringify({
+                        action: "create_order",
+                        orderId: currentOrderId,
+                        robloxUser: robloxUser,
+                        buyerNote: buyerNote || "-",
+                        items: itemsList.trim(),
+                        baseTotal: baseTotal
+                    })
+                });
+
+                const result = await response.json();
+
+                if (result.status === "success") {
+                    document.getElementById('payment-order-id').innerText = currentOrderId;
+                    document.getElementById('payment-unique-code').innerText = `+Rp ${result.uniqueCode}`;
+                    document.getElementById('payment-total').innerText = formatRupiah(result.finalAmount);
+
+                    document.getElementById('qris-waiting-view').classList.remove('hidden');
+                    document.getElementById('qris-success-view').classList.add('hidden');
+
+                    document.getElementById('cartModal').classList.add('hidden');
+                    document.getElementById('paymentModal').classList.remove('hidden');
+
+                    startCheckingPayment(currentOrderId);
+                } else {
+                    alert("Gagal membuat pesanan: " + (result.message || "Coba lagi."));
+                }
+            } catch (err) {
+                alert("Terjadi kesalahan koneksi ke server pesanan. Pastikan internet stabil.");
+            } finally {
+                btn.innerHTML = originalBtnHtml;
+                btn.disabled = false;
+            }
+        }
+
+        function startCheckingPayment(orderId) {
+            if (paymentCheckInterval) clearInterval(paymentCheckInterval);
+            paymentCheckInterval = setInterval(async () => {
+                try {
+                    const res = await fetch(`${GOOGLE_SCRIPT_URL}?orderId=${orderId}`);
+                    const data = await res.json();
+                    if (data.status === "LUNAS") {
+                        clearInterval(paymentCheckInterval);
+                        
+                        const robloxUser = document.getElementById('checkout-roblox').value.trim();
+                        const buyerNote = document.getElementById('checkout-note').value.trim();
+                        const totalBayar = document.getElementById('payment-total').innerText;
+
+                        const pesanWA = `Halo Min Tera, saya sudah lunas bayar pesanan dengan rincian:\n\n` +
+                                        `🧾 *No. Pesanan:* ${orderId}\n` +
+                                        `🎮 *Roblox User:* ${robloxUser}\n` +
+                                        `📝 *Catatan:* ${buyerNote}\n` +
+                                        `💰 *Total:* ${totalBayar}\n\n` +
+                                        `Boleh info ketemuan di mana min?`;
+
+                        const nomorAdminWA = "6288210882462"; 
+                        const encodedMsg = encodeURIComponent(pesanWA);
+                        document.getElementById('btn-wa-chat').href = `https://wa.me/${nomorAdminWA}?text=${encodedMsg}`;
+
+                        document.getElementById('qris-waiting-view').classList.add('hidden');
+                        document.getElementById('qris-success-view').classList.remove('hidden');
+                        cart = [];
+                        updateCartUI();
+                    }
+                } catch (e) {}
+            }, 4000);
+        }
+
+        function closePaymentModal() {
+            if (paymentCheckInterval) clearInterval(paymentCheckInterval);
+            document.getElementById('paymentModal').classList.add('hidden');
+        }
+
+        function formatRupiah(angka) {
+            return new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(angka);
+        }
+
+        function updateQty(itemId, change) {
+            const qtyElement = document.getElementById(`qty-${itemId}`);
+            const totalElement = document.getElementById(`total-${itemId}`);
+            const basePrice = parseInt(totalElement.getAttribute('data-baseprice'));
+            let currentQty = parseInt(qtyElement.innerText);
+            let newQty = currentQty + change;
+            if (newQty < 1) newQty = 1;
+            qtyElement.innerText = newQty;
+            totalElement.innerText = formatRupiah(basePrice * newQty);
+        }
+
+        function copyToClipboardAndRedirect(textMsg, platform) {
+            let targetUrl = platform === 'instagram' ? INSTAGRAM_URL : TIKTOK_URL;
+            let platformName = platform === 'instagram' ? 'Instagram' : 'TikTok';
+
+            const proceed = (copied) => {
+                showCopyToast(copied, platformName);
+                setTimeout(() => { window.location.href = targetUrl; }, 900);
+            };
+
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard.writeText(textMsg).then(() => {
+                    proceed(true);
+                }).catch(() => {
+                    proceed(fallbackCopyText(textMsg));
+                });
+            } else {
+                proceed(fallbackCopyText(textMsg));
+            }
+        }
+
+        function fallbackCopyText(text) {
+            try {
+                const ta = document.createElement('textarea');
+                ta.value = text;
+                ta.style.position = 'fixed';
+                ta.style.top = '0';
+                ta.style.left = '0';
+                ta.style.width = '1px';
+                ta.style.height = '1px';
+                ta.style.padding = '0';
+                ta.style.opacity = '0';
+                document.body.appendChild(ta);
+                ta.focus();
+                ta.select();
+                ta.setSelectionRange(0, text.length);
+                const success = document.execCommand('copy');
+                document.body.removeChild(ta);
+                return success;
+            } catch (err) {
+                return false;
+            }
+        }
+
+        function showCopyToast(success, platformName) {
+            const existing = document.getElementById('copy-toast');
+            if (existing) existing.remove();
+
+            const toast = document.createElement('div');
+            toast.id = 'copy-toast';
+            toast.style.position = 'fixed';
+            toast.style.bottom = '24px';
+            toast.style.left = '50%';
+            toast.style.transform = 'translateX(-50%)';
+            toast.style.zIndex = '9999';
+            toast.style.maxWidth = '90vw';
+            toast.style.padding = '14px 18px';
+            toast.style.borderRadius = '14px';
+            toast.style.fontSize = '13px';
+            toast.style.fontWeight = '600';
+            toast.style.textAlign = 'center';
+            toast.style.boxShadow = '0 8px 24px rgba(0,0,0,0.4)';
+            toast.style.color = '#fff';
+            toast.style.background = success ? 'linear-gradient(135deg, #8b5cf6, #6366f1)' : '#dc2626';
+            toast.innerText = success
+                ? `Pesan tersalin! Tempel (paste) di kolom chat DM ${platformName}.`
+                : `Gagal menyalin otomatis. Silakan ketik manual pesan pesananmu di DM ${platformName}.`;
+            document.body.appendChild(toast);
+            setTimeout(() => toast.remove(), 4500);
+        }
+
+        function orderJoki(jokiName, platform) {
+            const textMsg = `Halo min,\n\nSaya tertarik dengan layanan Joki:\n⚡ ${jokiName}\n\nBoleh tanya detail prosedur dan estimasi harganya?`;
+            copyToClipboardAndRedirect(textMsg, platform);
+        }
+
+        document.getElementById('mobile-btn').addEventListener('click', () => {
+            document.getElementById('mobile-menu').classList.toggle('hidden');
+        });
+
+        const searchInput = document.getElementById('searchInput');
+        if (searchInput) {
+            searchInput.addEventListener('input', function(e) {
+                if (activeGame) renderCatalog(activeGame, e.target.value);
+            });
+        }
+
+        // ========================================================
+        // SINKRONISASI 100% MURNI DARI ADMIN PANEL (GOOGLE SHEETS)
+        // ========================================================
         async function fetchStoreDataFromSheets() {
             try {
                 const res = await fetch(GOOGLE_SCRIPT_URL);
                 const data = await res.json();
                 
                 if (data.status === "success") {
-                    storeData = {}; // Reset data
-                    
+                    storeData = {};
+                    gameMeta = {};
+                    activeSectionFilter = {};
+
+                    // 1. Render Daftar Game dari Sheets
+                    const gamesList = data.games || [];
+                    renderDynamicGameNav(gamesList);
+                    renderHomeGameShortcuts(gamesList);
+
+                    // 2. Masukkan Produk & Kategori dari Sheets
                     if (data.products && data.products.length > 0) {
                         data.products.forEach(p => {
-                            if (!storeData[p.gameId]) {
-                                storeData[p.gameId] = [];
+                            const gId = String(p.gameId || '').trim().toLowerCase();
+                            if (!gId) return;
+
+                            // Jika ada produk dengan gameId yang belum terdaftar di tab Games, tetap buatkan tab-nya
+                            if (!storeData[gId]) {
+                                storeData[gId] = [];
+                                gameMeta[gId] = {
+                                    name: gId.toUpperCase(),
+                                    activeClasses: ['bg-tera-purple','text-white','border-tera-purple','shadow-[0_0_20px_rgba(139,92,246,0.4)]'],
+                                    pillActive: 'bg-tera-purple/20 border-tera-purple text-white'
+                                };
+                                activeSectionFilter[gId] = 'all';
+                                ensureGameTabExists(gId, gId.toUpperCase(), 'fa-gamepad');
                             }
-                            let cat = storeData[p.gameId].find(c => c.category.toLowerCase() === p.category.toLowerCase());
+                            
+                            const catName = String(p.category || 'Umum').trim();
+                            let cat = storeData[gId].find(c => c.category.toLowerCase() === catName.toLowerCase());
                             if (!cat) {
                                 cat = {
-                                    id: p.category.toLowerCase().replace(/\s+/g, '-'),
-                                    category: p.category,
+                                    id: catName.toLowerCase().replace(/\s+/g, '-'),
+                                    category: catName,
                                     color: "text-purple-400",
                                     icon: "fa-box",
                                     items: []
                                 };
-                                storeData[p.gameId].push(cat);
+                                storeData[gId].push(cat);
                             }
-                            const itemExist = cat.items.some(i => i.name.toLowerCase() === p.name.toLowerCase());
+                            
+                            const itemExist = cat.items.some(i => i.name.toLowerCase() === String(p.name).toLowerCase());
                             if (!itemExist) {
                                 cat.items.push({
                                     name: p.name,
@@ -276,13 +1047,113 @@
                         });
                     }
 
-                    if (data.games && data.games.length > 0) {
-                        renderDynamicGameNav(data.games);
-                        setActiveGame(data.games[0].gameId);
+                    // 3. Render Layanan Joki dari Sheets
+                    renderDynamicJoki(data.joki || []);
+
+                    // 4. Aktifkan Game Pertama
+                    const allGameIds = Object.keys(storeData);
+                    if (allGameIds.length > 0) {
+                        const emptyEl = document.getElementById('katalog-empty-state');
+                        if (emptyEl) emptyEl.remove();
+                        setActiveGame(allGameIds[0]);
+                    } else {
+                        const wrapper = document.getElementById('game-panes-wrapper');
+                        if (wrapper) {
+                            wrapper.innerHTML = `
+                                <div class="glass p-10 rounded-3xl text-center border border-purple-900/40">
+                                    <i class="fas fa-gamepad text-4xl text-purple-400 mb-4"></i>
+                                    <h4 class="text-xl font-bold text-purple-300 italic">Belum ada Game & Produk</h4>
+                                    <p class="text-sm text-slate-400 mt-2">Silakan tambahkan Game dan Produk baru melalui Admin Panel.</p>
+                                </div>`;
+                        }
                     }
                 }
             } catch (err) {
-                console.log("Gagal sinkronisasi data dari Google Sheets.");
+                console.log("Gagal memuat data dari Google Sheets:", err);
+            }
+        }
+
+        function renderHomeGameShortcuts(games) {
+            const container = document.getElementById('home-game-shortcuts');
+            if (!container) return;
+            if (!games || games.length === 0) {
+                container.innerHTML = "";
+                return;
+            }
+            container.innerHTML = games.map(g => {
+                const gId = String(g.gameId || '').trim().toLowerCase();
+                return `
+                    <button onclick="switchPage('katalog'); setActiveGame('${gId}')" class="glow-card-wrapper text-left">
+                        <div class="item-card rounded-2xl p-6 flex items-center gap-4 border-tera-purple/20">
+                            <div class="w-14 h-14 rounded-xl bg-tera-purple/15 border border-tera-purple/30 flex items-center justify-center text-2xl text-tera-purple shrink-0">
+                                <i class="fas ${g.gameIcon || 'fa-gamepad'}"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-heading font-bold text-lg italic text-slate-100">${g.gameName}</h4>
+                                <p class="text-xs text-slate-400 mt-1">Klik untuk membuka katalog item</p>
+                            </div>
+                        </div>
+                    </button>
+                `;
+            }).join('');
+        }
+
+        function renderDynamicJoki(jokiList) {
+            const container = document.getElementById('joki-cards-container');
+            if (!container) return;
+
+            if (!jokiList || jokiList.length === 0) {
+                container.innerHTML = `
+                    <div class="col-span-full glass p-10 rounded-3xl text-center border border-purple-900/40">
+                        <i class="fas fa-bolt text-4xl text-purple-400 mb-4"></i>
+                        <h4 class="text-xl font-bold text-purple-300 italic">Belum ada Layanan Joki</h4>
+                        <p class="text-sm text-slate-400 mt-2">Silakan tambahkan paket layanan joki melalui Admin Panel.</p>
+                    </div>
+                `;
+                return;
+            }
+
+            container.innerHTML = "";
+            jokiList.forEach(j => {
+                container.innerHTML += `
+                    <div class="glow-card-wrapper flex flex-col">
+                        <div class="item-card rounded-2xl p-6 relative overflow-hidden flex flex-col flex-grow">
+                            <div class="absolute -top-4 -right-4 p-6 opacity-5 transition-opacity"><i class="fas fa-bolt text-8xl"></i></div>
+                            <h4 class="text-xl font-bold text-white mb-2 italic">${j.name}</h4>
+                            <p class="text-xs text-slate-400 mb-6 leading-relaxed flex-grow">${j.description || '-'}</p>
+                            <div class="flex justify-between items-center bg-[#0f1020] p-3 rounded-xl border border-purple-900/40 mb-4 backdrop-blur-sm">
+                                <span class="text-[10px] text-slate-400 uppercase font-bold tracking-widest">Start Price</span>
+                                <span class="text-tera-gold font-bold">${formatRupiah(Number(j.price) || 0)}</span>
+                            </div>
+                            <div class="grid grid-cols-2 gap-2 mt-auto">
+                                <button onclick="orderJoki('${j.name}', 'tiktok')" class="btn-tiktok w-full bg-black text-white py-2.5 rounded-xl font-bold transition-all border border-white/10 uppercase italic text-[11px] tracking-widest flex items-center justify-center gap-1.5"><i class="fab fa-tiktok"></i> TikTok</button>
+                                <button onclick="orderJoki('${j.name}', 'instagram')" class="btn-ig w-full bg-black text-white py-2.5 rounded-xl font-bold transition-all border border-white/10 uppercase italic text-[11px] tracking-widest flex items-center justify-center gap-1.5"><i class="fab fa-instagram"></i> IG</button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+        }
+
+        function ensureGameTabExists(gId, gName, gIcon) {
+            const container = document.getElementById('game-toggle-container');
+            const panesWrapper = document.getElementById('game-panes-wrapper');
+            if (!container || !panesWrapper) return;
+
+            if (!document.getElementById(`game-btn-${gId}`)) {
+                container.innerHTML += `
+                    <button id="game-btn-${gId}" onclick="setActiveGame('${gId}')" class="game-tab-btn relative overflow-hidden border border-purple-500/30 rounded-2xl py-4 px-6 flex items-center justify-center gap-3 font-bold uppercase italic text-sm tracking-wide text-slate-400 transition-all">
+                        <i class="fas ${gIcon || 'fa-gamepad'} text-lg"></i> ${gName}
+                    </button>
+                `;
+            }
+
+            if (!document.getElementById(`game-pane-${gId}`)) {
+                const pane = document.createElement('div');
+                pane.id = `game-pane-${gId}`;
+                pane.className = 'game-pane';
+                pane.innerHTML = `<div class="flex flex-wrap gap-2 mb-8" id="${gId}-section-pills"></div><div id="katalog-container-${gId}" class="space-y-6"></div>`;
+                panesWrapper.appendChild(pane);
             }
         }
 
@@ -294,213 +1165,463 @@
             container.innerHTML = "";
             panesWrapper.innerHTML = "";
 
-            games.forEach((g) => {
-                container.innerHTML += `
-                    <button id="game-btn-${g.gameId}" onclick="setActiveGame('${g.gameId}')" class="game-tab-btn border border-purple-500/30 rounded-2xl py-4 px-6 flex items-center justify-center gap-3 font-bold uppercase italic text-sm text-slate-400 transition-all">
-                        <i class="fas ${g.gameIcon || 'fa-gamepad'} text-lg"></i> ${g.gameName}
-                    </button>`;
+            games.forEach(g => {
+                const gId = String(g.gameId || '').trim().toLowerCase();
+                if (!gId) return;
 
-                panesWrapper.innerHTML += `
-                    <div id="game-pane-${g.gameId}" class="game-pane">
-                        <div class="flex flex-wrap gap-2 mb-8" id="${g.gameId}-section-pills"></div>
-                        <div id="katalog-container-${g.gameId}" class="space-y-6"></div>
-                    </div>`;
+                storeData[gId] = storeData[gId] || [];
+                gameMeta[gId] = {
+                    name: g.gameName || gId.toUpperCase(),
+                    activeClasses: ['bg-tera-purple','text-white','border-tera-purple','shadow-[0_0_20px_rgba(139,92,246,0.4)]'],
+                    pillActive: 'bg-tera-purple/20 border-tera-purple text-white'
+                };
+                activeSectionFilter[gId] = 'all';
 
-                gameMeta[g.gameId] = { activeClasses: ['bg-tera-purple','text-white','border-tera-purple'], pillActive: 'bg-tera-purple/20 border-tera-purple text-white' };
-                activeSectionFilter[g.gameId] = 'all';
+                ensureGameTabExists(gId, g.gameName, g.gameIcon);
             });
         }
 
         function setActiveGame(game) {
+            if (!game || !storeData[game]) return;
+
             activeGame = game;
             document.querySelectorAll('.game-pane').forEach(p => p.classList.remove('active-game'));
-            document.getElementById(`game-pane-${game}`)?.classList.add('active-game');
+            const activePane = document.getElementById(`game-pane-${game}`);
+            if (activePane) activePane.classList.add('active-game');
 
-            Object.keys(storeData).forEach(g => {
+            Object.keys(gameMeta).forEach(g => {
                 const btn = document.getElementById(`game-btn-${g}`);
-                if (btn) {
-                    if (g === game) {
-                        btn.classList.add('active-game-btn', 'bg-tera-purple', 'text-white');
-                    } else {
-                        btn.classList.remove('active-game-btn', 'bg-tera-purple', 'text-white');
-                    }
+                if (!btn) return;
+                if (g === game) {
+                    btn.classList.add('active-game-btn', ...gameMeta[g].activeClasses);
+                } else {
+                    btn.classList.remove('active-game-btn', ...gameMeta[g].activeClasses);
                 }
             });
 
+            const searchInput = document.getElementById('searchInput');
+            if (searchInput) searchInput.value = '';
+
             renderSectionPills(game);
-            renderCatalog(game, document.getElementById('searchInput')?.value || '');
+            renderCatalog(game, '');
         }
 
         function renderSectionPills(game) {
             const wrap = document.getElementById(`${game}-section-pills`);
             if (!wrap) return;
             const sections = storeData[game] || [];
-            let html = `<button onclick="filterSection('${game}','all')" class="px-4 py-2 rounded-full text-xs font-bold uppercase border transition-all ${activeSectionFilter[game] === 'all' ? 'bg-tera-purple text-white border-tera-purple' : 'border-white/10 text-slate-400'}"><i class="fas fa-layer-group mr-1.5"></i>Semua</button>`;
+            const meta = gameMeta[game] || { pillActive: 'bg-tera-purple/20 border-tera-purple text-white' };
+
+            let html = `<button onclick="filterSection('${game}','all')" data-pill="all" class="section-pill px-4 py-2 rounded-full text-xs font-bold uppercase tracking-wide border transition-all ${activeSectionFilter[game] === 'all' ? meta.pillActive : 'border-purple-900/40 text-slate-400 hover:text-slate-100 hover:border-slate-400'}">
+                <i class="fas fa-layer-group mr-1.5"></i>Semua Section
+            </button>`;
+
             sections.forEach(sec => {
                 const isActive = activeSectionFilter[game] === sec.id;
-                html += `<button onclick="filterSection('${game}','${sec.id}')" class="px-4 py-2 rounded-full text-xs font-bold uppercase border transition-all ${isActive ? 'bg-tera-purple text-white border-tera-purple' : 'border-white/10 text-slate-400'}"><i class="fas ${sec.icon || 'fa-box'} mr-1.5"></i>${sec.category}</button>`;
+                html += `<button onclick="filterSection('${game}','${sec.id}')" data-pill="${sec.id}" class="section-pill px-4 py-2 rounded-full text-xs font-bold uppercase tracking-wide border transition-all ${isActive ? meta.pillActive : 'border-purple-900/40 text-slate-400 hover:text-slate-100 hover:border-slate-400'}">
+                    <i class="fas ${sec.icon} mr-1.5"></i>${sec.category}
+                </button>`;
             });
+
             wrap.innerHTML = html;
         }
 
         function filterSection(game, sectionId) {
             activeSectionFilter[game] = sectionId;
             renderSectionPills(game);
-            renderCatalog(game, document.getElementById('searchInput')?.value || '');
+            const searchInput = document.getElementById('searchInput');
+            renderCatalog(game, searchInput ? searchInput.value : '');
         }
 
         function toggleSectionGroup(groupId) {
-            document.getElementById(groupId)?.classList.toggle('open');
+            const el = document.getElementById(groupId);
+            if (el) el.classList.toggle('open');
         }
 
         function renderCatalog(game, searchQuery = "") {
             const container = document.getElementById(`katalog-container-${game}`);
             if (!container) return;
             container.innerHTML = "";
+
             const lowerQuery = (searchQuery || "").toLowerCase();
             const sectionFilter = activeSectionFilter[game] || 'all';
             const sections = storeData[game] || [];
+            let foundItems = false;
 
             sections.forEach((section, sIndex) => {
                 if (sectionFilter !== 'all' && section.id !== sectionFilter) return;
+
                 const filteredItems = section.items.filter(item => item.name.toLowerCase().includes(lowerQuery));
                 if (filteredItems.length === 0) return;
+                foundItems = true;
 
-                const groupId = `group-${game}-${section.id || sIndex}`;
+                const forceOpen = (sectionFilter !== 'all') || lowerQuery.length > 0;
+                const groupId = `group-${game}-${section.id}`;
+
                 let cardsHtml = '';
                 filteredItems.forEach((item) => {
                     const iIndex = section.items.indexOf(item);
-                    cardsHtml += renderItemCard(game, sIndex, iIndex, item);
+                    cardsHtml += renderItemCard(game, section, sIndex, iIndex, item);
                 });
 
                 container.innerHTML += `
-                    <div class="section-group glass rounded-3xl border border-white/10 shadow-xl overflow-hidden open" id="${groupId}">
-                        <button onclick="toggleSectionGroup('${groupId}')" class="w-full flex items-center justify-between p-6 text-left">
+                    <div class="section-group glass rounded-3xl border border-purple-900/40 shadow-xl relative overflow-hidden ${forceOpen ? 'open' : ''}" id="${groupId}">
+                        <div class="absolute top-0 right-0 w-32 h-32 bg-tera-purple/5 blur-3xl rounded-full pointer-events-none"></div>
+                        <button onclick="toggleSectionGroup('${groupId}')" class="w-full flex items-center justify-between gap-4 p-6 md:p-7 relative z-10 text-left">
                             <div class="flex items-center gap-4">
-                                <div class="w-12 h-12 rounded-xl bg-black flex items-center justify-center border border-white/10 text-purple-400 text-xl"><i class="fas ${section.icon || 'fa-box'}"></i></div>
-                                <div><h4 class="text-xl font-bold italic text-white">${section.category}</h4><p class="text-[11px] text-purple-300 font-bold">${filteredItems.length} Item</p></div>
+                                <div class="w-12 h-12 rounded-xl bg-[#1a1b2e] flex items-center justify-center border border-purple-900/40 shadow-inner shrink-0">
+                                    <i class="fas ${section.icon} text-2xl ${section.color}"></i>
+                                </div>
+                                <div>
+                                    <h4 class="text-xl md:text-2xl font-bold italic ${section.color}">${section.category}</h4>
+                                    <p class="text-[11px] text-purple-300 uppercase tracking-wider font-bold mt-0.5">${filteredItems.length} Item</p>
+                                </div>
                             </div>
-                            <i class="fas fa-chevron-down section-chevron text-purple-400"></i>
+                            <i class="fas fa-chevron-down section-chevron text-purple-400 text-lg shrink-0"></i>
                         </button>
-                        <div class="section-body"><div>
-                            <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6 p-6">${cardsHtml}</div>
-                        </div></div>
-                    </div>`;
-            });
-        }
-
-        function renderItemCard(game, sIndex, iIndex, item) {
-            const itemId = `item-${game}-${sIndex}-${iIndex}`;
-            let mediaHtml = item.image ? `<img src="${item.image}" class="w-full h-full object-cover">` : `<div class="w-full h-full flex items-center justify-center text-4xl">${item.emoji || '🎁'}</div>`;
-            return `
-                <div class="item-card rounded-2xl p-4 flex flex-col items-center text-center relative">
-                    <div class="w-full aspect-square mb-4 rounded-xl overflow-hidden bg-black border border-white/10">${mediaHtml}</div>
-                    <h5 class="text-sm font-bold text-white mb-2 h-10 flex items-center justify-center">${item.name}</h5>
-                    <p id="total-${itemId}" class="text-tera-gold text-sm font-black mb-4" data-baseprice="${item.price}">${formatRupiah(item.price)}</p>
-                    <div class="flex items-center justify-between w-full bg-black rounded-xl p-1.5 border border-white/10 mb-4">
-                        <button onclick="updateQty('${itemId}', -1)" class="w-7 h-7 rounded bg-white/5 text-slate-300">-</button>
-                        <span id="qty-${itemId}" class="text-sm font-bold w-8 text-center">1</span>
-                        <button onclick="updateQty('${itemId}', 1)" class="w-7 h-7 rounded bg-white/5 text-slate-300">+</button>
+                        <div class="section-body relative z-10">
+                            <div>
+                                <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-6 px-6 md:px-7 pb-7">
+                                    ${cardsHtml}
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                    <button onclick="addToCart('${game}', ${sIndex}, ${iIndex}, '${itemId}')" class="btn-primary w-full text-white text-xs font-bold py-2.5 rounded-xl uppercase tracking-wider"><i class="fas fa-cart-plus"></i> Add to Cart</button>
-                </div>`;
-        }
-
-        function updateQty(itemId, change) {
-            const qtyEl = document.getElementById(`qty-${itemId}`);
-            let qty = parseInt(qtyEl.innerText) + change;
-            if (qty < 1) qty = 1;
-            qtyEl.innerText = qty;
-        }
-
-        function addToCart(game, sIndex, iIndex, itemId) {
-            const item = storeData[game][sIndex].items[iIndex];
-            const qty = parseInt(document.getElementById(`qty-${itemId}`).innerText);
-            const existing = cart.find(c => c.name === item.name && c.game === game);
-            if (existing) { existing.qty += qty; } else { cart.push({ name: item.name, price: item.price, qty: qty, image: item.image, game: game }); }
-            updateCartUI();
-            toggleCart();
-        }
-
-        function updateCartUI() {
-            const countEl = document.getElementById('cart-count');
-            const container = document.getElementById('cart-items');
-            const totalEl = document.getElementById('cart-total');
-            let totalItems = 0, totalPrice = 0;
-            container.innerHTML = "";
-            cart.forEach((c, idx) => {
-                totalItems += c.qty;
-                totalPrice += (c.price * c.qty);
-                container.innerHTML += `<div class="flex justify-between items-center bg-black p-3 rounded-xl border border-white/10 text-xs"><div><b>${c.name}</b><br>${formatRupiah(c.price)} x ${c.qty}</div><button onclick="cart.splice(${idx},1);updateCartUI()" class="text-red-400"><i class="fas fa-trash"></i></button></div>`;
+                `;
             });
-            countEl.innerText = totalItems;
-            totalEl.innerText = formatRupiah(totalPrice);
+
+            if (!foundItems) {
+                container.innerHTML = `
+                    <div class="glass p-10 rounded-3xl text-center border border-purple-900/40">
+                        <i class="fas fa-box-open text-4xl text-purple-400 mb-4"></i>
+                        <h4 class="text-xl font-bold text-purple-300 italic">Belum ada item di game ini</h4>
+                        <p class="text-sm text-slate-400 mt-2">Silakan tambahkan produk dan kategori baru melalui Admin Panel.</p>
+                    </div>
+                `;
+            }
         }
 
-        function toggleCart() { document.getElementById('cartModal').classList.toggle('hidden'); }
-        function closePaymentModal() { document.getElementById('paymentModal').classList.add('hidden'); }
-
-        function formatRupiah(angka) {
-            return new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(angka);
+        function rarityClass(rarity) {
+            if (!rarity) return '';
+            const key = rarity.toLowerCase();
+            const map = {
+                common: 'rarity-common', uncommon: 'rarity-uncommon', rare: 'rarity-rare',
+                epic: 'rarity-epic', legendary: 'rarity-legendary', mythical: 'rarity-mythical',
+                divine: 'rarity-divine', prismatic: 'rarity-prismatic'
+            };
+            return map[key] || '';
         }
 
-        // CHECKOUT & QRIS
-        let currentOrderId = null;
-        let paymentInterval = null;
+        function renderItemCard(game, section, sIndex, iIndex, item) {
+            const itemId = `item-${game}-${sIndex}-${iIndex}`;
+            const badge = item.tag ? `<div class="absolute -top-3 -right-3 bg-gradient-to-br from-red-500 to-pink-600 text-white text-[10px] font-black px-3 py-1 rounded-full shadow-[0_0_15px_rgba(220,38,38,0.6)] italic z-20">${item.tag}</div>` : '';
 
-        async function openPaymentModal() {
-            if (cart.length === 0) { alert("Keranjang kosong!"); return; }
-            const robloxUser = document.getElementById('checkout-roblox').value.trim();
-            if (!robloxUser) { alert("Wajib isi USERNAME Roblox!"); return; }
+            let mediaHtml = '';
+            if (item.image && item.image !== "") {
+                mediaHtml = `<img src="${item.image}" alt="${item.name}" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" onerror="this.onerror=null; this.replaceWith(Object.assign(document.createElement('div'), {className:'w-full h-full flex items-center justify-center bg-[#1a1b2e] text-4xl', textContent: '${item.emoji || '🎁'}'}));">`;
+            } else {
+                mediaHtml = `<div class="w-full h-full flex items-center justify-center bg-[#1a1b2e] group-hover:scale-110 transition-transform duration-500 text-4xl">${item.emoji || '🎁'}</div>`;
+            }
 
-            let baseTotal = 0, itemsList = "";
-            cart.forEach((c, i) => { itemsList += `${i+1}. [${c.game}] ${c.name} (${c.qty}x)\n`; baseTotal += (c.price * c.qty); });
-            currentOrderId = 'TERA-' + Math.floor(100000 + Math.random() * 900000);
+            const rarityPill = item.rarity ? `<span class="text-[9px] font-bold uppercase px-2 py-0.5 rounded-full mb-2 ${rarityClass(item.rarity)}">${item.rarity}</span>` : '';
+
+            return `
+                <div class="glow-card-wrapper flex flex-col">
+                    <div class="item-card rounded-2xl p-4 flex flex-col items-center text-center relative group flex-grow">
+                        ${badge}
+                        <div class="w-full aspect-square mb-4 rounded-xl overflow-hidden border border-purple-900/40 bg-[#1a1b2e] relative shadow-inner">
+                            ${mediaHtml}
+                            <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                        </div>
+                        ${rarityPill}
+                        <h5 class="text-sm font-bold text-white mb-2 h-10 flex items-center justify-center leading-tight w-full drop-shadow-md">${item.name}</h5>
+                        <span class="text-[10px] text-purple-300 mb-2 tracking-wider">Harga: ${formatRupiah(item.price)}</span>
+                        <p id="total-${itemId}" class="text-tera-gold text-sm font-black mb-4 bg-gradient-to-r from-tera-gold/5 via-tera-gold/10 to-tera-gold/5 px-2 py-1.5 rounded-lg w-full border border-tera-gold/30 shadow-inner" data-baseprice="${item.price}">
+                            ${formatRupiah(item.price)}
+                        </p>
+                        <div class="flex items-center justify-between w-full bg-[#0f1020] rounded-xl p-1.5 border border-purple-900/40 mb-4 shadow-inner mt-auto">
+                            <button onclick="updateQty('${itemId}', -1)" class="w-7 h-7 rounded-lg flex items-center justify-center text-slate-400 hover:text-slate-100 hover:bg-purple-900/40 transition-colors">
+                                <i class="fas fa-minus text-xs"></i>
+                            </button>
+                            <span id="qty-${itemId}" class="text-sm font-bold w-8 text-center text-white">1</span>
+                            <button onclick="updateQty('${itemId}', 1)" class="w-7 h-7 rounded-lg flex items-center justify-center text-slate-400 hover:text-slate-100 hover:bg-purple-900/40 transition-colors">
+                                <i class="fas fa-plus text-xs"></i>
+                            </button>
+                        </div>
+
+                        <button onclick="addToCart('${game}', ${sIndex}, ${iIndex}, '${itemId}')" class="w-full bg-tera-purple text-white hover:bg-emerald-600 border border-tera-purple/50 text-xs font-bold py-2.5 rounded-xl transition-all uppercase tracking-wider flex items-center justify-center gap-2 shadow-[0_0_15px_rgba(5,150,105,0.4)]">
+                            <i class="fas fa-cart-plus"></i> Add to Cart
+                        </button>
+                    </div>
+                </div>
+            `;
+        }
+
+        // Init: Ambil data live dari Google Sheets & jalankan sistem Login
+        document.addEventListener('DOMContentLoaded', () => {
+            fetchStoreDataFromSheets(); 
+            initLoginState();
+        });
+
+        // ===== LOGIN SYSTEM =====
+        const TERA_SESSION_KEY = 'tera_session';
+        const DISCORD_CLIENT_ID = '1520336034678706336';
+        const DISCORD_REDIRECT_URL = window.location.href.split('?')[0].split('#')[0];
+        const DISCORD_SCOPE = 'identify email';
+        const DISCORD_WORKER_URL = 'https://odd-math-ff8b.lazulias00.workers.dev/';
+
+        function initLoginState() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const discordCode = urlParams.get('code');
+            if (discordCode) {
+                handleDiscordCallback(discordCode);
+                return;
+            }
+            const session = getSession();
+            if (session) {
+                setLoggedInUI(session.username, session.avatar || null, session.provider || 'manual');
+            }
+        }
+
+        function getSession() {
+            try {
+                const raw = sessionStorage.getItem(TERA_SESSION_KEY) || localStorage.getItem(TERA_SESSION_KEY);
+                return raw ? JSON.parse(raw) : null;
+            } catch { return null; }
+        }
+
+        function openLoginModal() {
+            const modal = document.getElementById('login-modal');
+            modal.classList.remove('hidden');
+            setTimeout(() => modal.classList.add('show'), 10);
+            document.body.style.overflow = 'hidden';
+            setTimeout(() => document.getElementById('modal-username').focus(), 300);
+        }
+
+        function closeLoginModal() {
+            const modal = document.getElementById('login-modal');
+            modal.classList.remove('show');
+            modal.classList.add('hidden');
+            document.body.style.overflow = '';
+            document.getElementById('modal-alert-error').classList.add('hidden');
+            document.getElementById('modal-username').value = '';
+            document.getElementById('modal-password').value = '';
+        }
+
+        function toggleModalPassword() {
+            const pwd = document.getElementById('modal-password');
+            const icon = document.getElementById('modal-eye-icon');
+            if (pwd.type === 'password') {
+                pwd.type = 'text';
+                icon.className = 'fas fa-eye-slash';
+            } else {
+                pwd.type = 'password';
+                icon.className = 'fas fa-eye';
+            }
+        }
+
+        function handleModalLogin() {
+            const username = document.getElementById('modal-username').value.trim();
+            const password = document.getElementById('modal-password').value.trim();
+            const remember = document.getElementById('modal-remember').checked;
+            const btnText = document.getElementById('modal-btn-text');
+            const btnLoading = document.getElementById('modal-btn-loading');
+            const alertEl = document.getElementById('modal-alert-error');
+            const alertMsg = document.getElementById('modal-alert-msg');
+
+            alertEl.classList.add('hidden');
+
+            if (!username || !password) {
+                alertMsg.textContent = 'Username dan password tidak boleh kosong.';
+                alertEl.classList.remove('hidden');
+                return;
+            }
+
+            btnText.classList.add('hidden');
+            btnLoading.classList.remove('hidden');
+
+            setTimeout(() => {
+                btnText.classList.remove('hidden');
+                btnLoading.classList.add('hidden');
+
+                if (username === 'admin' && password === 'tera123') {
+                    const session = { username: username, avatar: null, provider: 'manual', loggedAt: Date.now() };
+                    if (remember) {
+                        localStorage.setItem(TERA_SESSION_KEY, JSON.stringify(session));
+                    } else {
+                        sessionStorage.setItem(TERA_SESSION_KEY, JSON.stringify(session));
+                    }
+                    setLoggedInUI(username, null, 'manual');
+                    closeLoginModal();
+                } else {
+                    alertMsg.textContent = 'Username atau password salah. Coba lagi.';
+                    alertEl.classList.remove('hidden');
+                }
+            }, 1500);
+        }
+
+        function handleDiscordLogin() {
+            if (DISCORD_CLIENT_ID === 'GANTI_DENGAN_CLIENT_ID_DISCORD_MU') {
+                showOAuthInfo('discord');
+                return;
+            }
+            const state = Math.random().toString(36).substring(2);
+            sessionStorage.setItem('discord_oauth_state', state);
+            const params = new URLSearchParams({
+                client_id: DISCORD_CLIENT_ID,
+                redirect_url: DISCORD_REDIRECT_URL,
+                response_type: 'code',
+                scope: DISCORD_SCOPE,
+                state: state
+            });
+            window.location.href = `https://discord.com/api/oauth2/authorize?${params.toString()}`;
+        }
+
+        async function handleDiscordCallback(code) {
+            const cleanUrl = window.location.pathname;
+            window.history.replaceState({}, document.title, cleanUrl);
+
+            if (DISCORD_WORKER_URL === 'GANTI_DENGAN_URL_WORKER_MU') {
+                const session = {
+                    username: 'Discord User',
+                    avatar: null,
+                    provider: 'discord',
+                    loggedAt: Date.now()
+                };
+                sessionStorage.setItem(TERA_SESSION_KEY, JSON.stringify(session));
+                setLoggedInUI('Discord User', null, 'discord');
+                return;
+            }
 
             try {
-                const res = await fetch(GOOGLE_SCRIPT_URL, {
+                const res = await fetch(DISCORD_WORKER_URL, {
                     method: 'POST',
-                    headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-                    body: JSON.stringify({ action: "create_order", orderId: currentOrderId, robloxUser: robloxUser, buyerNote: document.getElementById('checkout-note').value || "-", items: itemsList.trim(), baseTotal: baseTotal })
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ code: code })
                 });
-                const result = await res.json();
-                if (result.status === "success") {
-                    document.getElementById('payment-order-id').innerText = currentOrderId;
-                    document.getElementById('payment-unique-code').innerText = `+Rp ${result.uniqueCode}`;
-                    document.getElementById('payment-total').innerText = formatRupiah(result.finalAmount);
-                    document.getElementById('qris-waiting-view').classList.remove('hidden');
-                    document.getElementById('qris-success-view').classList.add('hidden');
-                    document.getElementById('cartModal').classList.add('hidden');
-                    document.getElementById('paymentModal').classList.remove('hidden');
-                    startCheckingPayment(currentOrderId);
+                const data = await res.json();
+
+                if (!res.ok) {
+                    throw new Error(data.error || 'Gagal login Discord');
                 }
-            } catch (err) { alert("Gagal membuat pesanan."); }
+
+                const session = {
+                    username: data.username,
+                    avatar: data.avatar,
+                    email: data.email,
+                    provider: 'discord',
+                    loggedAt: Date.now()
+                };
+                sessionStorage.setItem(TERA_SESSION_KEY, JSON.stringify(session));
+                setLoggedInUI(data.username, data.avatar, 'discord');
+            } catch (err) {
+                const alertEl = document.getElementById('modal-alert-error');
+                const alertMsg = document.getElementById('modal-alert-msg');
+                if (alertEl && alertMsg) {
+                    alertMsg.textContent = 'Login Discord gagal: ' + err.message;
+                    alertEl.classList.remove('hidden');
+                    openLoginModal();
+                }
+            }
         }
 
-        function startCheckingPayment(orderId) {
-            if (paymentInterval) clearInterval(paymentInterval);
-            paymentInterval = setInterval(async () => {
-                try {
-                    const res = await fetch(`${GOOGLE_SCRIPT_URL}?orderId=${orderId}`);
-                    const data = await res.json();
-                    if (data.status === "LUNAS") {
-                        clearInterval(paymentInterval);
-                        const robloxUser = document.getElementById('checkout-roblox').value.trim();
-                        const totalBayar = document.getElementById('payment-total').innerText;
-                        const pesanWA = `Halo Min Tera, saya sudah lunas bayar pesanan:\n🧾 Order: ${orderId}\n👤 USERNAME: ${robloxUser}\n💰 Total: ${totalBayar}\nBoleh info ketemuan di mana min?`;
-                        document.getElementById('btn-wa-chat').href = `https://wa.me/6288210882462?text=${encodeURIComponent(pesanWA)}`;
-                        document.getElementById('qris-waiting-view').classList.add('hidden');
-                        document.getElementById('qris-success-view').classList.remove('hidden');
-                        cart = []; updateCartUI();
-                    }
-                } catch(e){}
-            }, 4000);
+        function showOAuthInfo(provider) {
+            const isGoogle = provider === 'google';
+            const title = isGoogle ? 'Setup Login Google' : 'Setup Login Discord';
+            const icon = isGoogle 
+                ? '<svg class="w-6 h-6 inline mr-2" viewBox="0 0 24 24"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg>'
+                : '<i class="fab fa-discord mr-2" style="color:#5865F2;font-size:1.4rem;vertical-align:middle;"></i>';
+            
+            const steps = isGoogle ? `
+                <li>Buka <a href="https://console.firebase.google.com" target="_blank" style="color:#a78bfa;text-decoration:underline;">console.firebase.google.com</a></li>
+                <li>Buat proyek baru → pilih <b>Authentication</b> → <b>Sign-in method</b></li>
+                <li>Aktifkan <b>Google</b> sebagai provider</li>
+                <li>Di Project Settings → salin <b>firebaseConfig</b></li>
+                <li>Tempel konfigurasi ke bagian <code style="background:rgba(255,255,255,0.1);padding:2px 6px;border-radius:4px;">firebaseConfig</code> di kode HTML</li>
+                <li>Tambahkan domain situsmu ke <b>Authorized domains</b></li>
+            ` : `
+                <li>Buka <a href="https://discord.com/developers/applications" target="_blank" style="color:#a78bfa;text-decoration:underline;">discord.com/developers/applications</a></li>
+                <li>Buat aplikasi baru → buka tab <b>OAuth2</b></li>
+                <li>Salin <b>CLIENT ID</b> dan tempel ke variabel <code style="background:rgba(255,255,255,0.1);padding:2px 6px;border-radius:4px;">DISCORD_CLIENT_ID</code></li>
+                <li>Di bagian <b>Redirects</b>, tambahkan URL halaman ini:<br><code style="background:rgba(255,255,255,0.1);padding:2px 6px;border-radius:4px;font-size:11px;word-break:break-all;">${DISCORD_REDIRECT_URL}</code></li>
+            `;
+
+            const overlay = document.createElement('div');
+            overlay.id = 'oauth-info-overlay';
+            overlay.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,0.85);z-index:9999;display:flex;align-items:center;justify-content:center;padding:1rem;backdrop-filter:blur(4px);';
+            overlay.innerHTML = `
+                <div style="background:#0f1020;border:1px solid rgba(139,92,246,0.3);border-radius:1.25rem;padding:2rem;max-width:480px;width:100%;box-shadow:0 0 60px rgba(139,92,246,0.2);animation:slideUp 0.4s ease forwards;">
+                    <div style="text-align:center;margin-bottom:1.5rem;">
+                        <div style="font-size:1.4rem;font-weight:900;font-style:italic;text-transform:uppercase;font-family:'Rajdhani',sans-serif;">${icon}${title}</div>
+                        <p style="color:#94a3b8;font-size:0.8rem;margin-top:0.5rem;">Ikuti langkah berikut untuk mengaktifkan login ini</p>
+                    </div>
+                    <ol style="color:#e2e8f0;font-size:0.85rem;line-height:1.8;padding-left:1.25rem;display:flex;flex-direction:column;gap:0.4rem;">
+                        ${steps}
+                    </ol>
+                    <button onclick="document.getElementById('oauth-info-overlay').remove()" style="margin-top:1.5rem;width:100%;padding:0.85rem;background:linear-gradient(135deg,#8b5cf6,#6366f1);color:white;font-weight:700;border:none;border-radius:0.75rem;cursor:pointer;text-transform:uppercase;letter-spacing:0.1em;font-size:0.8rem;">
+                        Mengerti, Tutup
+                    </button>
+                </div>
+            `;
+            document.body.appendChild(overlay);
+            overlay.addEventListener('click', (e) => { if (e.target === overlay) overlay.remove(); });
         }
 
-        // INIT SAAT HALAMAN DIMUAT
-        document.addEventListener('DOMContentLoaded', () => {
-            fetchStoreDataFromSheets();
-            document.getElementById('searchInput')?.addEventListener('input', (e) => renderCatalog(activeGame, e.target.value));
+        function setLoggedInUI(username, avatarUrl, provider) {
+            let avatarHTML = '';
+            if (avatarUrl) {
+                avatarHTML = `<img src="${avatarUrl}" class="w-6 h-6 rounded-full object-cover border border-tera-purple/50" alt="avatar">`;
+            } else if (provider === 'discord') {
+                avatarHTML = `<div class="w-6 h-6 rounded-full bg-[#5865F2]/30 border border-[#5865F2]/50 flex items-center justify-center"><i class="fab fa-discord text-[10px] text-[#5865F2]"></i></div>`;
+            } else if (provider === 'google') {
+                avatarHTML = `<div class="w-6 h-6 rounded-full bg-[#4285F4]/30 border border-[#4285F4]/50 flex items-center justify-center"><svg class="w-3 h-3" viewBox="0 0 24 24"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg></div>`;
+            } else {
+                avatarHTML = `<div class="w-6 h-6 rounded-full bg-tera-purple/30 border border-tera-purple/50 flex items-center justify-center"><i class="fas fa-user text-[10px] text-tera-purple"></i></div>`;
+            }
+
+            document.getElementById('nav-login-btn').classList.add('hidden');
+            const userInfo = document.getElementById('nav-user-info');
+            userInfo.classList.remove('hidden');
+            userInfo.classList.add('flex');
+            const navAvatarEl = userInfo.querySelector('.w-6.h-6.rounded-full');
+            if (navAvatarEl) navAvatarEl.outerHTML = avatarHTML;
+            document.getElementById('nav-username').textContent = username;
+
+            document.getElementById('mobile-login-btn').classList.add('hidden');
+            const mobileUserInfo = document.getElementById('mobile-user-info');
+            mobileUserInfo.classList.remove('hidden');
+            mobileUserInfo.classList.add('flex');
+            document.getElementById('mobile-username').textContent = username;
+        }
+
+        function handleLogout() {
+            if (window.handleGoogleSignOut && window._currentFirebaseUser) {
+                window._currentFirebaseUser = null;
+                window.handleGoogleSignOut();
+            }
+            localStorage.removeItem(TERA_SESSION_KEY);
+            sessionStorage.removeItem(TERA_SESSION_KEY);
+
+            document.getElementById('nav-login-btn').classList.remove('hidden');
+            const userInfo = document.getElementById('nav-user-info');
+            userInfo.classList.add('hidden');
+            userInfo.classList.remove('flex');
+
+            document.getElementById('mobile-login-btn').classList.remove('hidden');
+            const mobileUserInfo = document.getElementById('mobile-user-info');
+            mobileUserInfo.classList.add('hidden');
+            mobileUserInfo.classList.remove('flex');
+        }
+
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closeLoginModal();
+                const oauthOverlay = document.getElementById('oauth-info-overlay');
+                if (oauthOverlay) oauthOverlay.remove();
+            }
+            if (e.key === 'Enter' && !document.getElementById('login-modal').classList.contains('hidden')) {
+                handleModalLogin();
+            }
         });
     </script>
 </body>
