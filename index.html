@@ -7,8 +7,9 @@
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Rajdhani:ital,wght@0,600;0,700;1,700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Rajdhani:ital,wght@0,600;0,700;1,700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
     <!-- Firebase SDK -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
@@ -50,13 +51,6 @@
             btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Memproses...';
             btn.disabled = true;
 
-            if (firebaseConfig.apiKey === "GANTI_DENGAN_API_KEY_MU") {
-                btn.innerHTML = originalHTML;
-                btn.disabled = false;
-                if (typeof showOAuthInfo === 'function') showOAuthInfo('google');
-                return;
-            }
-
             try {
                 await signInWithPopup(auth, googleProvider);
             } catch (err) {
@@ -84,21 +78,22 @@
             theme: {
                 extend: {
                     colors: {
-                        'tera-dark': '#0d0e1a',
-                        'tera-darker': '#07080f',
-                        'tera-purple': '#8b5cf6',
-                        'tera-blue': '#6366f1',
+                        'tera-dark': '#070506',
+                        'tera-darker': '#040304',
+                        'tera-card': '#110c0e',
+                        'tera-purple': '#dc2626', /* Crimson Soft Red */
+                        'tera-crimson': '#991b1b', /* Deep Maroon */
+                        'tera-rose': '#f43f5e',
+                        'tera-blue': '#e11d48',
                         'tera-gold': '#f59e0b',
                         'tera-green': '#10b981',
-                        'tiktok-pink': '#ff0050',
-                        'tiktok-cyan': '#00f2fe',
                     },
                     fontFamily: {
-                        sans: ['Inter', 'sans-serif'],
+                        sans: ['Plus Jakarta Sans', 'sans-serif'],
                         heading: ['Rajdhani', 'sans-serif'],
                     },
                     animation: {
-                        'gradient-x': 'gradient-x 3s ease infinite',
+                        'gradient-x': 'gradient-x 4s ease infinite',
                         'float': 'float 6s ease-in-out infinite',
                         'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
                     },
@@ -109,7 +104,7 @@
                         },
                         'float': {
                             '0%, 100%': { transform: 'translateY(0)' },
-                            '50%': { transform: 'translateY(-10px)' },
+                            '50%': { transform: 'translateY(-8px)' },
                         }
                     }
                 }
@@ -118,522 +113,696 @@
     </script>
 
     <style>
-        body { background-color: #0d0e1a; color: #e2e8f0; overflow-x: hidden; position: relative; }
-        .bg-grid { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background-image: linear-gradient(to right, rgba(139,92,246,0.04) 1px, transparent 1px), linear-gradient(to bottom, rgba(139,92,246,0.04) 1px, transparent 1px); background-size: 40px 40px; z-index: -2; pointer-events: none; }
-        .bg-orb-1, .bg-orb-2 { position: fixed; border-radius: 50%; filter: blur(110px); z-index: -1; opacity: 0.6; pointer-events: none; }
-        .bg-orb-1 { width: 40vw; height: 40vw; background: rgba(139, 92, 246, 0.18); top: -10%; left: -10%; animation: float 10s ease-in-out infinite alternate; }
-        .bg-orb-2 { width: 50vw; height: 50vw; background: rgba(245, 158, 11, 0.1); bottom: -20%; right: -10%; animation: float 12s ease-in-out infinite alternate-reverse; }
-        .glass { background: rgba(15, 16, 30, 0.75); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); border: 1px solid rgba(139, 92, 246, 0.15); }
-        .nav-scrolled { background: rgba(10, 11, 20, 0.95); box-shadow: 0 10px 30px -12px rgba(139,92,246,0.25); border-bottom: 1px solid rgba(139,92,246,0.15); }
+        body {
+            background-color: #070506 !important;
+            color: #f4f4f5 !important;
+            overflow-x: hidden;
+            position: relative;
+        }
 
-        .glow-card-wrapper { position: relative; border-radius: 1rem; z-index: 1; }
-        .glow-card-wrapper::before { content: ""; position: absolute; inset: -2px; border-radius: 1.1rem; background: linear-gradient(45deg, #8b5cf6, #6366f1, #f59e0b, #8b5cf6); background-size: 300%; z-index: -1; opacity: 0; transition: opacity 0.4s ease; filter: blur(8px); animation: gradient-x 4s linear infinite; }
-        .glow-card-wrapper:hover::before { opacity: 0.65; }
-        .item-card { background: #12131f; border: 1px solid rgba(139, 92, 246, 0.15); box-shadow: 0 1px 3px rgba(0,0,0,0.3); transition: all 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275); height: 100%; }
-        .glow-card-wrapper:hover .item-card { transform: translateY(-5px); border-color: rgba(139,92,246,0.35); box-shadow: 0 12px 28px -10px rgba(139,92,246,0.3); }
+        /* Subtle Crimson Grid & Ambient Orbs */
+        .bg-grid {
+            position: fixed;
+            inset: 0;
+            background-image: 
+                linear-gradient(to right, rgba(220, 38, 38, 0.035) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(220, 38, 38, 0.035) 1px, transparent 1px);
+            background-size: 44px 44px;
+            z-index: -2;
+            pointer-events: none;
+        }
+        .bg-orb-1, .bg-orb-2 {
+            position: fixed;
+            border-radius: 50%;
+            filter: blur(130px);
+            z-index: -1;
+            pointer-events: none;
+        }
+        .bg-orb-1 {
+            width: 45vw;
+            height: 45vw;
+            background: rgba(153, 27, 27, 0.16);
+            top: -15%;
+            left: -10%;
+        }
+        .bg-orb-2 {
+            width: 40vw;
+            height: 40vw;
+            background: rgba(180, 83, 9, 0.08);
+            bottom: -15%;
+            right: -10%;
+        }
 
-        .text-gradient-animated { background: linear-gradient(to right, #a78bfa, #818cf8, #fbbf24, #a78bfa); background-size: 300% auto; -webkit-background-clip: text; -webkit-text-fill-color: transparent; animation: gradient-x 4s linear infinite; }
-        .text-gradient-green { background: linear-gradient(to right, #34d399, #fbbf24, #34d399); background-size: 300% auto; -webkit-background-clip: text; -webkit-text-fill-color: transparent; animation: gradient-x 4s linear infinite; }
+        /* Soft Crimson Glassmorphism */
+        .glass {
+            background: rgba(14, 10, 12, 0.82) !important;
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(244, 63, 94, 0.12) !important;
+        }
+        .nav-scrolled {
+            background: rgba(7, 5, 6, 0.96) !important;
+            box-shadow: 0 10px 30px -10px rgba(153, 27, 27, 0.25);
+            border-bottom: 1px solid rgba(220, 38, 38, 0.2) !important;
+        }
 
-        /* Navigation Page System */
+        /* Card Hover Effects */
+        .glow-card-wrapper { position: relative; border-radius: 1.15rem; z-index: 1; }
+        .glow-card-wrapper::before {
+            content: "";
+            position: absolute;
+            inset: -1.5px;
+            border-radius: 1.25rem;
+            background: linear-gradient(135deg, #dc2626, #991b1b, #f59e0b, #dc2626);
+            background-size: 300%;
+            z-index: -1;
+            opacity: 0;
+            transition: opacity 0.35s ease;
+            filter: blur(6px);
+        }
+        .glow-card-wrapper:hover::before { opacity: 0.45; }
+        .item-card {
+            background: #110c0e !important;
+            border: 1px solid rgba(255, 255, 255, 0.07) !important;
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            height: 100%;
+        }
+        .glow-card-wrapper:hover .item-card {
+            transform: translateY(-4px);
+            border-color: rgba(220, 38, 38, 0.4) !important;
+            background: #160f12 !important;
+        }
+
+        .text-gradient-crimson {
+            background: linear-gradient(to right, #f87171, #dc2626, #fbbf24, #f87171);
+            background-size: 250% auto;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: gradient-x 5s ease infinite;
+        }
+
+        /* Page & Pane Transitions */
         .page-section { display: none; }
-        .page-section.active-page { display: block; animation: slideUpFade 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
-        .active-nav { color: #a78bfa !important; }
-        @keyframes slideUpFade { from { opacity: 0; transform: translateY(30px) scale(0.98); } to { opacity: 1; transform: translateY(0) scale(1); } }
+        .page-section.active-page { display: block; animation: slideUpFade 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+        .active-nav { color: #f87171 !important; position: relative; }
+        .active-nav::after {
+            content: '';
+            position: absolute;
+            bottom: -6px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, #dc2626, transparent);
+            border-radius: 2px;
+        }
+        @keyframes slideUpFade {
+            from { opacity: 0; transform: translateY(18px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
 
-        /* Catalog game switch */
         .game-pane { display: none; }
-        .game-pane.active-game { display: block; animation: slideUpFade 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
-        .game-tab-btn.active-game-btn { color: #fff; }
+        .game-pane.active-game { display: block; animation: slideUpFade 0.35s ease forwards; }
 
-        /* Section group collapse (Katalog) */
-        .section-group .section-body { display: grid; grid-template-rows: 0fr; overflow: hidden; transition: grid-template-rows 0.45s cubic-bezier(0.16, 1, 0.3, 1); }
+        /* Section Collapse */
+        .section-group .section-body {
+            display: grid;
+            grid-template-rows: 0fr;
+            overflow: hidden;
+            transition: grid-template-rows 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
         .section-group .section-body > div { overflow: hidden; min-height: 0; }
         .section-group.open .section-body { grid-template-rows: 1fr; }
         .section-chevron { transition: transform 0.35s ease; }
         .section-group.open .section-chevron { transform: rotate(180deg); }
 
-        /* Scrollbars */
-        ::-webkit-scrollbar { width: 8px; height: 8px; }
-        ::-webkit-scrollbar-track { background: #0d0e1a; }
-        ::-webkit-scrollbar-thumb { background: linear-gradient(to bottom, #8b5cf6, #6366f1); border-radius: 10px; }
-        ::-webkit-scrollbar-thumb:hover { background: linear-gradient(to bottom, #7c3aed, #4f46e5); }
-        .wiki-scroll::-webkit-scrollbar { width: 4px; }
-        .wiki-scroll::-webkit-scrollbar-track { background: rgba(139,92,246,0.05); border-radius: 10px; }
-        .wiki-scroll::-webkit-scrollbar-thumb { background: rgba(139,92,246,0.4); border-radius: 10px; }
-        .hide-scrollbar::-webkit-scrollbar { display: none; }
-        .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+        /* Custom Scrollbars */
+        ::-webkit-scrollbar { width: 7px; height: 7px; }
+        ::-webkit-scrollbar-track { background: #070506; }
+        ::-webkit-scrollbar-thumb { background: linear-gradient(to bottom, #991b1b, #dc2626); border-radius: 8px; }
+        ::-webkit-scrollbar-thumb:hover { background: #ef4444; }
 
-        input[type=number]::-webkit-inner-spin-button, input[type=number]::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
+        /* Inputs & Buttons */
+        .input-field {
+            background: rgba(10, 7, 8, 0.9) !important;
+            border: 1px solid rgba(255, 255, 255, 0.1) !important;
+            color: #f4f4f5 !important;
+            transition: all 0.25s ease;
+            outline: none;
+        }
+        .input-field:focus {
+            border-color: rgba(220, 38, 38, 0.65) !important;
+            box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.15);
+        }
+        .input-field::placeholder { color: rgba(161, 161, 170, 0.5); }
 
-        /* Social Buttons */
-        .btn-tiktok { position: relative; z-index: 1; overflow: hidden; }
-        .btn-tiktok::before { content: ''; position: absolute; inset: 0; z-index: -1; background: linear-gradient(45deg, #00c2cc, #ff0050); opacity: 0; transition: opacity 0.3s ease; }
-        .btn-tiktok:hover::before { opacity: 1; }
-        .btn-tiktok:hover { box-shadow: 0 4px 18px rgba(255, 0, 80, 0.35); border-color: transparent; }
+        .btn-crimson {
+            background: linear-gradient(135deg, #dc2626, #991b1b);
+            transition: all 0.3s ease;
+        }
+        .btn-crimson:hover {
+            background: linear-gradient(135deg, #ef4444, #b91c1c);
+            box-shadow: 0 8px 25px -5px rgba(220, 38, 38, 0.45);
+            transform: translateY(-1px);
+        }
 
-        .btn-ig { position: relative; z-index: 1; overflow: hidden; }
-        .btn-ig::before { content: ''; position: absolute; inset: 0; z-index: -1; background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888); opacity: 0; transition: opacity 0.3s ease; }
-        .btn-ig:hover::before { opacity: 1; }
-        .btn-ig:hover { box-shadow: 0 4px 18px rgba(220, 39, 67, 0.35); border-color: transparent; }
+        .btn-tiktok:hover { box-shadow: 0 4px 18px rgba(255, 0, 80, 0.3); border-color: #ff0050 !important; }
+        .btn-ig:hover { box-shadow: 0 4px 18px rgba(225, 29, 72, 0.35); border-color: #e11d48 !important; }
 
-        /* ===== LOGIN MODAL STYLES ===== */
-        .input-field { background: rgba(10,11,25,0.8); border: 1px solid rgba(139,92,246,0.2); color: #e2e8f0; transition: all 0.3s ease; outline: none; }
-        .input-field:focus { border-color: rgba(139,92,246,0.6); box-shadow: 0 0 0 3px rgba(139,92,246,0.12), 0 0 20px rgba(139,92,246,0.1); }
-        .input-field::placeholder { color: rgba(148,163,184,0.5); }
-        .login-card-wrapper-modal { position: relative; border-radius: 1.5rem; }
-        .login-card-wrapper-modal::before { content: ""; position: absolute; inset: -1.5px; border-radius: 1.6rem; background: linear-gradient(45deg, #8b5cf6, #6366f1, #f59e0b, #8b5cf6); background-size: 300%; z-index: -1; opacity: 0.5; filter: blur(4px); animation: gradient-x 4s linear infinite; }
-        .btn-primary { background: linear-gradient(135deg, #8b5cf6, #6366f1); transition: all 0.3s ease; position: relative; overflow: hidden; }
-        .btn-primary::before { content: ''; position: absolute; inset: 0; background: linear-gradient(135deg, #7c3aed, #4f46e5); opacity: 0; transition: opacity 0.3s ease; }
-        .btn-primary:hover::before { opacity: 1; }
-        .btn-primary:hover { box-shadow: 0 0 25px rgba(139,92,246,0.5); transform: translateY(-1px); }
-        .btn-primary:active { transform: translateY(0); }
-        .btn-social { background: rgba(10,11,25,0.8); border: 1px solid rgba(139,92,246,0.2); transition: all 0.3s ease; }
-        .btn-social:hover { border-color: rgba(139,92,246,0.5); background: rgba(139,92,246,0.08); box-shadow: 0 0 15px rgba(139,92,246,0.15); }
-        .toggle-pass { cursor: pointer; color: rgba(148,163,184,0.6); transition: color 0.2s; }
-        .toggle-pass:hover { color: #a78bfa; }
-        input[type="checkbox"]:checked { accent-color: #8b5cf6; }
         #login-modal { transition: opacity 0.3s ease; }
         #login-modal.show { opacity: 1; }
-        @keyframes slideUp { from { opacity: 0; transform: translateY(30px) scale(0.97); } to { opacity: 1; transform: translateY(0) scale(1); } }
-        .animate-slide-up { animation: slideUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
-
-        .rarity-common { background: rgba(148,163,184,0.12); color: #94a3b8; border: 1px solid rgba(148,163,184,0.25); }
-        .rarity-uncommon { background: rgba(52,211,153,0.12); color: #34d399; border: 1px solid rgba(52,211,153,0.25); }
-        .rarity-rare { background: rgba(99,102,241,0.12); color: #818cf8; border: 1px solid rgba(99,102,241,0.25); }
-        .rarity-epic { background: rgba(139,92,246,0.15); color: #a78bfa; border: 1px solid rgba(139,92,246,0.3); }
-        .rarity-legendary { background: rgba(245,158,11,0.15); color: #fbbf24; border: 1px solid rgba(245,158,11,0.3); }
-        .rarity-mythical { background: rgba(244,114,182,0.15); color: #f472b6; border: 1px solid rgba(244,114,182,0.3); }
-        .rarity-divine { background: rgba(239,68,68,0.15); color: #f87171; border: 1px solid rgba(239,68,68,0.3); }
-        .rarity-prismatic { background: linear-gradient(45deg, rgba(139,92,246,0.15), rgba(99,102,241,0.15), rgba(245,158,11,0.15)); color: #e2e8f0; border: 1px solid rgba(139,92,246,0.3); }
-
-        /* ===== OVERRIDE: BLACK BACKGROUND & DOMINANT WHITE TEXT ===== */
-        body { background-color: #000000 !important; color: #ffffff !important; }
-        .bg-grid { background-image: linear-gradient(to right, rgba(255,255,255,0.04) 1px, transparent 1px), linear-gradient(to bottom, rgba(255,255,255,0.04) 1px, transparent 1px) !important; }
-        .bg-orb-1 { background: rgba(139, 92, 246, 0.12) !important; }
-        .bg-orb-2 { background: rgba(245, 158, 11, 0.08) !important; }
-        .glass { background: rgba(0, 0, 0, 0.85) !important; border-color: rgba(255,255,255,0.12) !important; }
-        .nav-scrolled { background: rgba(0, 0, 0, 0.97) !important; border-bottom: 1px solid rgba(255,255,255,0.12) !important; }
-        .item-card { background: #0a0a0a !important; border-color: rgba(255,255,255,0.12) !important; color: #ffffff !important; }
-        .input-field { background: rgba(0,0,0,0.9) !important; border-color: rgba(255,255,255,0.15) !important; color: #ffffff !important; }
-        .btn-social { background: rgba(0,0,0,0.9) !important; border-color: rgba(255,255,255,0.15) !important; }
-        ::-webkit-scrollbar-track { background: #000000 !important; }
-        .wiki-scroll::-webkit-scrollbar-track { background: rgba(255,255,255,0.05) !important; }
-
-        body, p, span, div, li, td, th, label, a, h1, h2, h3, h4, h5, h6 {
-            color: #ffffff;
-        }
-        .text-gradient-animated, .text-gradient-green,
-        [class*="text-tera-"], [class*="text-tiktok-"],
-        .text-gray-400, .text-gray-500, .text-slate-400, .text-slate-500 {
-            color: revert;
-            -webkit-text-fill-color: revert;
-        }
-        .text-gradient-animated, .text-gradient-green {
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
     </style>
 </head>
-<body class="antialiased selection:bg-tera-purple selection:text-slate-100 flex flex-col min-h-screen">
+<body class="antialiased selection:bg-red-800 selection:text-white flex flex-col min-h-screen">
 
-    <!-- ADVANCED BACKGROUND ELEMENTS -->
     <div class="bg-grid"></div>
     <div class="bg-orb-1"></div>
     <div class="bg-orb-2"></div>
 
+    <!-- ANNOUNCEMENT TOP BAR -->
+    <div class="bg-gradient-to-r from-red-950/80 via-red-900/40 to-red-950/80 border-b border-red-500/15 text-[11px] py-2 px-4 text-center font-medium text-red-200/90 z-50">
+        <span class="inline-flex items-center gap-2">
+            <span class="w-2 h-2 rounded-full bg-red-500 animate-ping"></span>
+            <strong>SISTEM OTOMATIS 24/7:</strong> Pembayaran QRIS terverifikasi otomatis dalam 5 detik!
+        </span>
+    </div>
+
     <!-- NAVBAR -->
-    <nav class="fixed w-full z-50 glass border-b border-purple-900/40 transition-all duration-500" id="navbar">
+    <nav class="sticky top-0 w-full z-50 glass transition-all duration-300" id="navbar">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 h-20 flex items-center justify-between">
-            <div class="flex items-center gap-3 cursor-pointer animate-float" onclick="switchPage('home')">
-               <video src="https://a.top4top.io/m_3830vjpd61.mp4" autoplay loop muted playsinline class="w-10 h-10 md:w-12 md:h-12 object-contain rounded-lg" style="border:none;box-shadow:none;outline:none;"></video>
+            <div class="flex items-center gap-3.5 cursor-pointer group" onclick="switchPage('home')">
+                <div class="relative">
+                    <video src="https://a.top4top.io/m_3830vjpd61.mp4" autoplay loop muted playsinline class="w-11 h-11 md:w-12 md:h-12 object-contain rounded-xl border border-red-500/20 group-hover:border-red-500/50 transition-all"></video>
+                </div>
                 <div>
-                    <h1 class="font-heading font-bold text-xl md:text-2xl italic tracking-tighter">TERA <span class="text-tera-purple uppercase">STORE</span></h1>
+                    <h1 class="font-heading font-bold text-2xl md:text-3xl italic tracking-tight text-white">
+                        TERA <span class="text-red-500">STORE</span>
+                    </h1>
+                    <p class="text-[10px] text-zinc-400 uppercase tracking-widest -mt-1 font-semibold">The Honor One</p>
                 </div>
             </div>
 
-            <div class="flex items-center">
-                <div class="hidden md:flex gap-8 items-center text-sm font-semibold uppercase tracking-widest italic">
-                    <a href="javascript:void(0)" onclick="switchPage('home')" class="nav-link active-nav text-slate-300 hover:text-slate-100 transition-all">Home</a>
-                    <a href="javascript:void(0)" onclick="switchPage('joki')" class="nav-link text-slate-300 hover:text-slate-100 transition-all">Jasa Joki</a>
-                    <a href="javascript:void(0)" onclick="switchPage('katalog')" class="nav-link text-slate-300 hover:text-slate-100 transition-all">Katalog Item</a>
-                    <a href="#contact" class="bg-black border border-white/10 btn-ig px-6 py-2.5 rounded-full text-white transition-all flex items-center gap-2">
-                        <i class="fab fa-instagram"></i> DM Admin
+            <div class="flex items-center gap-3">
+                <div class="hidden md:flex gap-7 items-center text-xs font-bold uppercase tracking-widest">
+                    <a href="javascript:void(0)" onclick="switchPage('home')" class="nav-link active-nav text-zinc-300 hover:text-white transition-all">Home</a>
+                    <a href="javascript:void(0)" onclick="switchPage('katalog')" class="nav-link text-zinc-300 hover:text-white transition-all">Katalog Item</a>
+                    <a href="javascript:void(0)" onclick="switchPage('joki')" class="nav-link text-zinc-300 hover:text-white transition-all">Jasa Joki</a>
+                    <a href="javascript:void(0)" onclick="switchPage('lacak')" class="nav-link text-zinc-300 hover:text-white transition-all flex items-center gap-1.5">
+                        <i class="fas fa-radar text-red-400"></i> Cek Pesanan
                     </a>
+                </div>
+
+                <div class="hidden md:flex items-center gap-3 ml-4 pl-4 border-l border-white/10">
                     <!-- LOGIN BUTTON (Desktop) -->
-                    <button id="nav-login-btn" onclick="openLoginModal()" class="glass border border-tera-purple/40 hover:border-tera-purple/70 px-5 py-2 rounded-full text-sm font-bold uppercase italic tracking-widest text-tera-purple hover:text-white hover:bg-tera-purple/20 transition-all flex items-center gap-2">
+                    <button id="nav-login-btn" onclick="openLoginModal()" class="bg-red-950/40 border border-red-500/30 hover:border-red-500/70 px-4 py-2 rounded-xl text-xs font-bold uppercase tracking-wider text-red-300 hover:text-white hover:bg-red-900/40 transition-all flex items-center gap-2">
                         <i class="fas fa-right-to-bracket"></i> Login
                     </button>
-                    <div id="nav-user-info" class="hidden items-center gap-3">
-                        <div class="flex items-center gap-2 glass border border-tera-purple/30 px-4 py-2 rounded-full">
-                            <div class="w-6 h-6 rounded-full bg-tera-purple/30 border border-tera-purple/50 flex items-center justify-center">
-                                <i class="fas fa-user text-[10px] text-tera-purple"></i>
+                    <div id="nav-user-info" class="hidden items-center gap-2.5">
+                        <div class="flex items-center gap-2 glass px-3.5 py-1.5 rounded-xl border border-red-500/30">
+                            <div class="w-6 h-6 rounded-full bg-red-500/20 border border-red-500/50 flex items-center justify-center">
+                                <i class="fas fa-user text-[10px] text-red-400"></i>
                             </div>
-                            <span id="nav-username" class="text-sm font-bold text-slate-200 italic"></span>
+                            <span id="nav-username" class="text-xs font-bold text-zinc-200"></span>
                         </div>
-                        <button onclick="handleLogout()" class="text-xs text-slate-400 hover:text-red-400 transition-colors font-semibold uppercase tracking-wider">
-                            <i class="fas fa-right-from-bracket"></i>
+                        <button onclick="handleLogout()" title="Logout" class="w-8 h-8 rounded-xl bg-white/5 hover:bg-red-500/20 text-zinc-400 hover:text-red-400 transition-colors flex items-center justify-center">
+                            <i class="fas fa-right-from-bracket text-xs"></i>
                         </button>
                     </div>
                 </div>
 
-                <!-- CART BUTTON (Desktop & Mobile) -->
-                <button onclick="toggleCart()" class="relative text-slate-100 hover:text-tera-purple transition-colors text-2xl ml-6 mr-4 md:mr-0">
-                    <i class="fas fa-shopping-cart"></i>
-                    <span id="cart-count" class="absolute -top-2 -right-2 bg-red-500 text-white text-[10px] font-bold w-5 h-5 rounded-full flex items-center justify-center shadow-lg border border-purple-800/40">0</span>
+                <!-- CART BUTTON -->
+                <button onclick="toggleCart()" class="relative bg-zinc-900/90 hover:bg-red-950/60 border border-white/10 hover:border-red-500/40 text-zinc-100 w-11 h-11 rounded-xl flex items-center justify-center transition-all ml-2">
+                    <i class="fas fa-bag-shopping text-lg text-red-400"></i>
+                    <span id="cart-count" class="absolute -top-1.5 -right-1.5 bg-red-600 text-white text-[10px] font-extrabold w-5 h-5 rounded-full flex items-center justify-center shadow-lg border border-black">0</span>
                 </button>
 
                 <!-- Mobile Menu Button -->
-                <button class="md:hidden text-slate-100 text-2xl hover:text-tera-purple transition-colors" id="mobile-btn"><i class="fas fa-bars"></i></button>
+                <button class="md:hidden bg-zinc-900/90 border border-white/10 text-zinc-100 w-11 h-11 rounded-xl flex items-center justify-center hover:border-red-500/40 transition-colors" id="mobile-btn">
+                    <i class="fas fa-bars text-lg"></i>
+                </button>
             </div>
         </div>
 
         <!-- Mobile Menu -->
-        <div id="mobile-menu" class="hidden md:hidden glass border-t border-purple-900/40 px-4 py-6 flex flex-col gap-6 text-center shadow-2xl">
-            <a href="javascript:void(0)" onclick="switchPage('home')" class="nav-link active-nav text-slate-100 font-bold uppercase italic tracking-widest text-lg">Home</a>
-            <a href="javascript:void(0)" onclick="switchPage('joki')" class="nav-link text-slate-100 font-bold uppercase italic tracking-widest text-lg">Jasa Joki</a>
-            <a href="javascript:void(0)" onclick="switchPage('katalog')" class="nav-link text-slate-100 font-bold uppercase italic tracking-widest text-lg">Katalog Item</a>
-            <a href="#contact" onclick="document.getElementById('mobile-menu').classList.add('hidden')" class="btn-ig text-white bg-black border border-white/10 py-3 rounded-xl font-bold uppercase italic tracking-widest mt-4 mx-4 flex justify-center items-center gap-2"><i class="fab fa-instagram"></i> DM Admin</a>
-            <button id="mobile-login-btn" onclick="openLoginModal(); document.getElementById('mobile-menu').classList.add('hidden')" class="glass border border-tera-purple/40 text-tera-purple py-3 rounded-xl font-bold uppercase italic tracking-widest mx-4 flex justify-center items-center gap-2"><i class="fas fa-right-to-bracket"></i> Login</button>
-            <div id="mobile-user-info" class="hidden items-center justify-center gap-3 mx-4 glass border border-tera-purple/30 py-3 px-4 rounded-xl">
-                <i class="fas fa-user text-tera-purple text-sm"></i>
-                <span id="mobile-username" class="text-sm font-bold text-slate-200 italic"></span>
-                <button onclick="handleLogout()" class="text-xs text-red-400 font-bold ml-auto"><i class="fas fa-right-from-bracket"></i> Logout</button>
+        <div id="mobile-menu" class="hidden md:hidden glass border-t border-red-900/30 px-4 py-6 flex flex-col gap-4 text-center shadow-2xl">
+            <a href="javascript:void(0)" onclick="switchPage('home')" class="nav-link active-nav py-2 text-zinc-100 font-bold uppercase tracking-widest text-sm">Home</a>
+            <a href="javascript:void(0)" onclick="switchPage('katalog')" class="nav-link py-2 text-zinc-100 font-bold uppercase tracking-widest text-sm">Katalog Item</a>
+            <a href="javascript:void(0)" onclick="switchPage('joki')" class="nav-link py-2 text-zinc-100 font-bold uppercase tracking-widest text-sm">Jasa Joki</a>
+            <a href="javascript:void(0)" onclick="switchPage('lacak')" class="nav-link py-2 text-zinc-100 font-bold uppercase tracking-widest text-sm"><i class="fas fa-search-location text-red-400 mr-1"></i> Cek Pesanan</a>
+            
+            <div class="border-t border-white/10 pt-4 mt-2 flex flex-col gap-3 px-4">
+                <button id="mobile-login-btn" onclick="openLoginModal(); document.getElementById('mobile-menu').classList.add('hidden')" class="btn-crimson text-white py-3 rounded-xl font-bold uppercase tracking-widest text-xs flex justify-center items-center gap-2">
+                    <i class="fas fa-right-to-bracket"></i> Login Akun
+                </button>
+                <div id="mobile-user-info" class="hidden items-center justify-between glass border border-red-500/30 py-3 px-4 rounded-xl">
+                    <div class="flex items-center gap-2">
+                        <i class="fas fa-user text-red-400 text-sm"></i>
+                        <span id="mobile-username" class="text-xs font-bold text-zinc-200"></span>
+                    </div>
+                    <button onclick="handleLogout()" class="text-xs text-red-400 font-bold"><i class="fas fa-right-from-bracket"></i> Logout</button>
+                </div>
             </div>
         </div>
     </nav>
 
     <!-- ======= LOGIN MODAL ======= -->
     <div id="login-modal" class="fixed inset-0 z-[999] flex items-center justify-center px-4 py-8 hidden">
-        <!-- Backdrop -->
-        <div class="absolute inset-0 bg-tera-darker/80 backdrop-blur-sm" onclick="closeLoginModal()"></div>
+        <div class="absolute inset-0 bg-black/85 backdrop-blur-md" onclick="closeLoginModal()"></div>
 
-        <!-- Modal Card -->
-        <div class="relative w-full max-w-md animate-slide-up z-10">
-
-            <!-- Close Button -->
-            <button onclick="closeLoginModal()" class="absolute -top-4 -right-4 w-9 h-9 rounded-full glass border border-purple-900/40 text-slate-400 hover:text-white hover:border-red-500/50 transition-all flex items-center justify-center text-sm z-20">
+        <div class="relative w-full max-w-md z-10">
+            <button onclick="closeLoginModal()" class="absolute -top-3 -right-3 w-9 h-9 rounded-full glass border border-red-500/30 text-zinc-400 hover:text-white hover:bg-red-600/30 transition-all flex items-center justify-center text-sm z-20">
                 <i class="fas fa-times"></i>
             </button>
 
-            <!-- Logo & Title -->
-            <div class="text-center mb-6">
-                <div class="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-tera-purple/15 border border-tera-purple/30 shadow-[0_0_30px_rgba(139,92,246,0.25)] mb-4 mx-auto">
-                    <i class="fas fa-shield-halved text-2xl text-tera-purple"></i>
+            <div class="glass rounded-3xl p-7 border border-red-500/25 shadow-[0_0_50px_rgba(153,27,27,0.25)]">
+                <div class="text-center mb-6">
+                    <div class="inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-red-500/10 border border-red-500/30 mb-3 mx-auto">
+                        <i class="fas fa-shield-halved text-2xl text-red-500"></i>
+                    </div>
+                    <h2 class="font-heading font-bold text-3xl italic uppercase text-white">
+                        Masuk ke <span class="text-red-500">Akun</span>
+                    </h2>
+                    <p class="text-zinc-400 text-xs mt-1">Akses cepat transaksi & riwayat belanja di TERA STORE</p>
                 </div>
-                <h2 class="font-heading font-black text-3xl italic uppercase">
-                    Masuk ke <span class="text-gradient-animated">Akun</span>
-                </h2>
-                <p class="text-slate-400 text-sm mt-1">Selamat datang kembali di TERA STORE!</p>
-            </div>
 
-            <!-- Card -->
-            <div class="login-card-wrapper-modal">
-                <div class="glass rounded-3xl p-7 border border-tera-purple/20">
-
-                    <!-- Alert Error -->
-                    <div id="modal-alert-error" class="hidden rounded-xl px-4 py-3 mb-5 text-sm flex items-center gap-2" style="background:rgba(239,68,68,0.1);border:1px solid rgba(239,68,68,0.3);color:#f87171;">
-                        <i class="fas fa-circle-exclamation shrink-0"></i>
-                        <span id="modal-alert-msg">Username atau password salah.</span>
-                    </div>
-
-                    <!-- Form -->
-                    <div class="flex flex-col gap-5">
-                        <!-- Username -->
-                        <div class="flex flex-col gap-1.5">
-                            <label class="text-xs font-bold uppercase tracking-widest text-slate-400">Username / Email</label>
-                            <div class="relative">
-                                <span class="absolute left-4 top-1/2 -translate-y-1/2 text-purple-400 text-sm"><i class="fas fa-user"></i></span>
-                                <input type="text" id="modal-username" class="input-field w-full pl-10 pr-4 py-3.5 rounded-xl text-sm font-medium" placeholder="Masukkan username atau email" autocomplete="username">
-                            </div>
-                        </div>
-
-                        <!-- Password -->
-                        <div class="flex flex-col gap-1.5">
-                            <div class="flex justify-between items-center">
-                                <label class="text-xs font-bold uppercase tracking-widest text-slate-400">Password</label>
-                                <a href="#" class="text-xs text-tera-purple hover:text-purple-300 transition-colors font-medium">Lupa Password?</a>
-                            </div>
-                            <div class="relative">
-                                <span class="absolute left-4 top-1/2 -translate-y-1/2 text-purple-400 text-sm"><i class="fas fa-lock"></i></span>
-                                <input type="password" id="modal-password" class="input-field w-full pl-10 pr-12 py-3.5 rounded-xl text-sm font-medium" placeholder="Masukkan password" autocomplete="current-password">
-                                <button type="button" class="toggle-pass absolute right-4 top-1/2 -translate-y-1/2 text-sm" onclick="toggleModalPassword()">
-                                    <i class="fas fa-eye" id="modal-eye-icon"></i>
-                                </button>
-                            </div>
-                        </div>
-
-                        <!-- Remember me -->
-                        <label class="flex items-center gap-3 cursor-pointer select-none">
-                            <input type="checkbox" id="modal-remember" class="w-4 h-4 rounded accent-purple-500">
-                            <span class="text-sm text-slate-400">Ingat saya di perangkat ini</span>
-                        </label>
-
-                        <!-- Submit -->
-                        <button onclick="handleModalLogin()" class="btn-primary w-full text-white font-bold py-4 rounded-xl uppercase tracking-widest italic text-sm flex items-center justify-center gap-2 shadow-[0_0_20px_rgba(139,92,246,0.3)] mt-1 relative z-10">
-                            <span id="modal-btn-text"><i class="fas fa-right-to-bracket mr-1"></i> Masuk Sekarang</span>
-                            <span id="modal-btn-loading" class="hidden"><i class="fas fa-spinner fa-spin mr-1"></i> Memproses...</span>
-                        </button>
-                    </div>
-
-                    <!-- Divider -->
-                    <div class="flex items-center gap-4 my-5">
-                        <div class="flex-1 h-px" style="background:linear-gradient(to right, transparent, rgba(139,92,246,0.3), transparent)"></div>
-                        <span class="text-xs text-slate-500 font-semibold uppercase tracking-wider">atau masuk dengan</span>
-                        <div class="flex-1 h-px" style="background:linear-gradient(to right, transparent, rgba(139,92,246,0.3), transparent)"></div>
-                    </div>
-
-                    <!-- Social Login -->
-                    <div class="grid grid-cols-2 gap-3">
-                        <button id="btn-google-login" onclick="handleGoogleLogin()" class="btn-social rounded-xl py-3 text-sm font-bold text-slate-300 flex items-center justify-center gap-2 transition-all hover:border-[#4285F4]/50 hover:bg-[#4285F4]/10">
-                            <svg class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg>
-                            Google
-                        </button>
-                        <button id="btn-discord-login" onclick="handleDiscordLogin()" class="btn-social rounded-xl py-3 text-sm font-bold text-slate-300 flex items-center justify-center gap-2 transition-all hover:border-[#5865F2]/50 hover:bg-[#5865F2]/10">
-                            <i class="fab fa-discord text-[#5865F2]"></i>
-                            Discord
-                        </button>
-                    </div>
-
-                    <!-- Register link -->
-                    <p class="text-center text-sm text-slate-500 mt-5">
-                        Belum punya akun?
-                        <a href="#" class="text-tera-purple hover:text-purple-300 font-bold transition-colors ml-1">Daftar Sekarang</a>
-                    </p>
+                <!-- Alert Error -->
+                <div id="modal-alert-error" class="hidden rounded-xl px-4 py-3 mb-5 text-xs flex items-center gap-2 bg-red-500/10 border border-red-500/30 text-red-300">
+                    <i class="fas fa-circle-exclamation shrink-0 text-red-400"></i>
+                    <span id="modal-alert-msg">Username atau password salah.</span>
                 </div>
-            </div>
 
-            <!-- Trust badges -->
-            <div class="flex items-center justify-center gap-5 mt-5">
-                <div class="flex items-center gap-1.5 text-xs text-slate-500"><i class="fas fa-lock text-tera-green text-[10px]"></i> SSL Terenkripsi</div>
-                <div class="w-px h-4 bg-purple-900/40"></div>
-                <div class="flex items-center gap-1.5 text-xs text-slate-500"><i class="fas fa-shield-check text-tera-purple text-[10px]"></i> Data Aman</div>
-                <div class="w-px h-4 bg-purple-900/40"></div>
-                <div class="flex items-center gap-1.5 text-xs text-slate-500"><i class="fas fa-crown text-tera-gold text-[10px]"></i> Verified Seller</div>
+                <div class="flex flex-col gap-4">
+                    <div>
+                        <label class="text-[11px] font-bold uppercase tracking-wider text-zinc-400 block mb-1.5">Username / Email</label>
+                        <div class="relative">
+                            <span class="absolute left-4 top-1/2 -translate-y-1/2 text-red-400/80 text-xs"><i class="fas fa-user"></i></span>
+                            <input type="text" id="modal-username" class="input-field w-full pl-10 pr-4 py-3 rounded-xl text-xs font-medium" placeholder="Masukkan username atau email" autocomplete="username">
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="text-[11px] font-bold uppercase tracking-wider text-zinc-400 block mb-1.5">Password</label>
+                        <div class="relative">
+                            <span class="absolute left-4 top-1/2 -translate-y-1/2 text-red-400/80 text-xs"><i class="fas fa-lock"></i></span>
+                            <input type="password" id="modal-password" class="input-field w-full pl-10 pr-11 py-3 rounded-xl text-xs font-medium" placeholder="Masukkan password" autocomplete="current-password">
+                            <button type="button" class=" absolute right-4 top-1/2 -translate-y-1/2 text-xs text-zinc-400 hover:text-red-400" onclick="toggleModalPassword()">
+                                <i class="fas fa-eye" id="modal-eye-icon"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <label class="flex items-center gap-2.5 cursor-pointer select-none">
+                        <input type="checkbox" id="modal-remember" class="w-4 h-4 rounded accent-red-600">
+                        <span class="text-xs text-zinc-400">Ingat saya di perangkat ini</span>
+                    </label>
+
+                    <button onclick="handleModalLogin()" class="btn-crimson w-full text-white font-bold py-3.5 rounded-xl uppercase tracking-widest text-xs flex items-center justify-center gap-2 mt-1">
+                        <span id="modal-btn-text"><i class="fas fa-right-to-bracket mr-1"></i> Masuk Sekarang</span>
+                        <span id="modal-btn-loading" class="hidden"><i class="fas fa-spinner fa-spin mr-1"></i> Memproses...</span>
+                    </button>
+                </div>
+
+                <div class="flex items-center gap-3 my-5">
+                    <div class="flex-1 h-px bg-white/10"></div>
+                    <span class="text-[10px] text-zinc-500 font-bold uppercase tracking-wider">atau masuk dengan</span>
+                    <div class="flex-1 h-px bg-white/10"></div>
+                </div>
+
+                <div class="grid grid-cols-2 gap-3">
+                    <button id="btn-google-login" onclick="handleGoogleLogin()" class="bg-zinc-900/90 hover:bg-zinc-800 border border-white/10 rounded-xl py-2.5 text-xs font-bold text-zinc-200 flex items-center justify-center gap-2 transition-all">
+                        <svg class="w-4 h-4" viewBox="0 0 24 24"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg>
+                        Google
+                    </button>
+                    <button id="btn-discord-login" onclick="handleDiscordLogin()" class="bg-zinc-900/90 hover:bg-zinc-800 border border-white/10 rounded-xl py-2.5 text-xs font-bold text-zinc-200 flex items-center justify-center gap-2 transition-all">
+                        <i class="fab fa-discord text-[#5865F2]"></i>
+                        Discord
+                    </button>
+                </div>
             </div>
         </div>
     </div>
-    <!-- ======= END LOGIN MODAL ======= -->
 
     <!-- KONTEN UTAMA -->
     <main class="flex-grow">
         <!-- 1. SECTION HOME -->
-        <section id="home" class="page-section active-page pt-36 pb-20 px-4 max-w-7xl mx-auto text-center relative">
-            <div class="inline-flex items-center gap-2 px-5 py-2 rounded-full bg-tera-gold/10 border border-tera-gold/30 text-tera-gold text-xs font-bold mb-8 italic uppercase tracking-wider animate-pulse-slow shadow-[0_0_20px_rgba(217,119,6,0.2)]">
-                <i class="fas fa-crown"></i> Verified Seller Roblox Indonesia
-            </div>
-            <h2 class="text-5xl md:text-7xl lg:text-8xl font-heading font-black italic leading-tight mb-6 drop-shadow-2xl">
-                Pusat Item & Jasa <br>
-                <span class="text-gradient-animated uppercase drop-shadow-[0_0_30px_rgba(5,150,105,0.5)]">Roblox Terpercaya</span>
-            </h2>
-            <p class="text-slate-300 text-sm md:text-lg mb-12 max-w-2xl mx-auto font-medium leading-relaxed">
-                Borong semua kebutuhan item game Roblox favoritmu atau gunakan layanan Joki terbaik kami lewat Katalog TERA STORE!
-            </p>
-            <div class="flex flex-col sm:flex-row justify-center gap-4">
-                <button onclick="switchPage('katalog')" class="relative group overflow-hidden bg-tera-purple text-white px-8 py-4 rounded-xl font-bold uppercase tracking-widest italic transition shadow-[0_0_20px_rgba(5,150,105,0.4)] hover:shadow-[0_0_30px_rgba(5,150,105,0.6)]">
-                    <span class="relative z-10">Buka Katalog</span>
-                    <div class="absolute inset-0 h-full w-full bg-white/20 scale-x-0 group-hover:scale-x-100 transform origin-left transition-transform duration-300 ease-out z-0"></div>
-                </button>
-                <button onclick="switchPage('joki')" class="glass hover:bg-[#1a1b2e] border border-purple-800/40 text-slate-100 px-8 py-4 rounded-xl font-bold uppercase tracking-widest italic transition">Lihat Jasa Joki</button>
-            </div>
-
-            <!-- Game shortcuts (Dirender Dinamis dari Admin Panel) -->
-            <div id="home-game-shortcuts" class="grid grid-cols-1 sm:grid-cols-3 gap-6 max-w-4xl mx-auto mt-16"></div>
-        </section>
-
-        <!-- 2. SECTION JOKI (100% Dinamis dari Admin Panel) -->
-        <section id="joki" class="page-section pt-32 pb-16 px-4 max-w-7xl mx-auto">
-            <div class="flex items-center gap-4 mb-10 border-b border-purple-900/40 pb-4">
-                <div class="w-12 h-12 rounded-xl bg-tera-purple/20 flex items-center justify-center border border-tera-purple/30 shadow-[0_0_15px_rgba(5,150,105,0.3)]">
-                    <i class="fas fa-bolt text-2xl text-tera-purple animate-pulse"></i>
+        <section id="home" class="page-section active-page pt-16 pb-20 px-4 max-w-7xl mx-auto">
+            <!-- Hero Banner -->
+            <div class="text-center max-w-3xl mx-auto">
+                <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-red-950/60 border border-red-500/30 text-red-300 text-xs font-semibold mb-6">
+                    <i class="fas fa-fire-flame-curved text-red-500"></i> Trusted Roblox Store & Boosting Service
                 </div>
-                <h3 class="text-4xl font-heading font-black italic uppercase">Layanan <span class="text-gradient-animated">Joki</span></h3>
-            </div>
-
-            <div id="joki-cards-container" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
-                <div class="col-span-full glass p-10 rounded-3xl text-center border border-purple-900/40">
-                    <i class="fas fa-spinner fa-spin text-3xl text-tera-purple mb-3"></i>
-                    <p class="text-sm text-slate-400 italic">Memuat layanan joki dari server...</p>
+                <h2 class="text-5xl md:text-7xl font-heading font-bold italic leading-none mb-6 text-white tracking-tight">
+                    DOMINASI SERVER <br>
+                    <span class="text-gradient-crimson uppercase">TANPA BATAS</span>
+                </h2>
+                <p class="text-zinc-400 text-sm md:text-base mb-10 max-w-2xl mx-auto leading-relaxed">
+                    Top-up item game Roblox favoritmu dan nikmati layanan Joki profesional dengan sistem pembayaran QRIS otomatis 24 jam yang aman, cepat, dan bergaransi penuh.
+                </p>
+                <div class="flex flex-wrap justify-center gap-4">
+                    <button onclick="switchPage('katalog')" class="btn-crimson text-white px-8 py-4 rounded-2xl font-bold uppercase tracking-wider text-xs flex items-center gap-2.5 shadow-lg">
+                        <i class="fas fa-bag-shopping"></i> Jelajahi Katalog
+                    </button>
+                    <button onclick="switchPage('joki')" class="glass hover:bg-white/5 border border-white/15 text-zinc-200 px-7 py-4 rounded-2xl font-bold uppercase tracking-wider text-xs transition flex items-center gap-2">
+                        <i class="fas fa-bolt text-amber-400"></i> Order Jasa Joki
+                    </button>
+                    <button onclick="switchPage('lacak')" class="bg-zinc-900/80 hover:bg-zinc-800 border border-white/10 text-zinc-300 px-6 py-4 rounded-2xl font-bold uppercase tracking-wider text-xs transition flex items-center gap-2">
+                        <i class="fas fa-magnifying-glass text-red-400"></i> Lacak Pesanan
+                    </button>
                 </div>
             </div>
+
+            <!-- Keunggulan Toko (Trust Indicators) -->
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-5xl mx-auto mt-16">
+                <div class="glass p-5 rounded-2xl border border-white/5 flex flex-col items-center text-center">
+                    <div class="w-11 h-11 rounded-xl bg-red-500/10 border border-red-500/25 flex items-center justify-center text-red-400 text-lg mb-3">
+                        <i class="fas fa-qrcode"></i>
+                    </div>
+                    <h4 class="font-bold text-xs uppercase tracking-wider text-white">QRIS Otomatis</h4>
+                    <p class="text-[11px] text-zinc-400 mt-1">Verifikasi pembayaran instan dalam hitungan detik</p>
+                </div>
+                <div class="glass p-5 rounded-2xl border border-white/5 flex flex-col items-center text-center">
+                    <div class="w-11 h-11 rounded-xl bg-amber-500/10 border border-amber-500/25 flex items-center justify-center text-amber-400 text-lg mb-3">
+                        <i class="fas fa-shield-cat"></i>
+                    </div>
+                    <h4 class="font-bold text-xs uppercase tracking-wider text-white">100% Aman & Legal</h4>
+                    <p class="text-[11px] text-zinc-400 mt-1">Joki manual murni tanpa script atau cheat berbahaya</p>
+                </div>
+                <div class="glass p-5 rounded-2xl border border-white/5 flex flex-col items-center text-center">
+                    <div class="w-11 h-11 rounded-xl bg-emerald-500/10 border border-emerald-500/25 flex items-center justify-center text-emerald-400 text-lg mb-3">
+                        <i class="fab fa-whatsapp"></i>
+                    </div>
+                    <h4 class="font-bold text-xs uppercase tracking-wider text-white">Fast Respon WA</h4>
+                    <p class="text-[11px] text-zinc-400 mt-1">Langsung terhubung ke WhatsApp Admin setelah lunas</p>
+                </div>
+                <div class="glass p-5 rounded-2xl border border-white/5 flex flex-col items-center text-center">
+                    <div class="w-11 h-11 rounded-xl bg-rose-500/10 border border-rose-500/25 flex items-center justify-center text-rose-400 text-lg mb-3">
+                        <i class="fas fa-tags"></i>
+                    </div>
+                    <h4 class="font-bold text-xs uppercase tracking-wider text-white">Harga Terbaik</h4>
+                    <p class="text-[11px] text-zinc-400 mt-1">Harga bersahabat untuk seluruh pelajar & gamer</p>
+                </div>
+            </div>
+
+            <!-- Game Shortcuts (Dinamis dari Admin Panel) -->
+            <div class="mt-16 max-w-5xl mx-auto">
+                <div class="flex items-center justify-between mb-6">
+                    <h3 class="font-heading font-bold text-2xl italic uppercase text-white flex items-center gap-2.5">
+                        <span class="w-2 h-6 bg-red-600 rounded-full inline-block"></span> Pilih Kategori Game
+                    </h3>
+                    <button onclick="switchPage('katalog')" class="text-xs text-red-400 hover:text-red-300 font-semibold flex items-center gap-1">
+                        Lihat Semua <i class="fas fa-arrow-right text-[10px]"></i>
+                    </button>
+                </div>
+                <div id="home-game-shortcuts" class="grid grid-cols-1 sm:grid-cols-3 gap-5">
+                    <div class="col-span-full glass p-8 rounded-2xl text-center text-xs text-zinc-400 italic">
+                        <i class="fas fa-circle-notch fa-spin text-red-500 mr-2"></i> Memuat daftar game dari server...
+                    </div>
+                </div>
+            </div>
+
+            <!-- FAQ Accordion -->
+            <div class="mt-20 max-w-3xl mx-auto">
+                <div class="text-center mb-8">
+                    <h3 class="font-heading font-bold text-3xl italic uppercase text-white">Pertanyaan <span class="text-red-500">Umum (FAQ)</span></h3>
+                    <p class="text-xs text-zinc-400 mt-1">Cara berbelanja mudah dan aman di TERA STORE</p>
+                </div>
+                <div class="space-y-3">
+                    <div class="glass rounded-2xl border border-white/10 overflow-hidden">
+                        <button onclick="toggleFaq(1)" class="w-full p-4 text-left flex justify-between items-center font-bold text-xs text-zinc-100 hover:text-red-400 transition-colors">
+                            <span>1. Bagaimana cara membeli item di TERA STORE?</span>
+                            <i id="faq-icon-1" class="fas fa-chevron-down text-red-400 transition-transform"></i>
+                        </button>
+                        <div id="faq-body-1" class="hidden px-4 pb-4 text-xs text-zinc-400 leading-relaxed border-t border-white/5 pt-3">
+                            Pilih item di menu <b>Katalog Item</b>, masukkan ke keranjang (atau klik tombol petir untuk Beli Instan), isi <b>Username Roblox</b> kamu, lalu scan QRIS sesuai nominal hingga 3 digit terakhir. Setelah lunas, tombol chat WhatsApp Admin akan langsung terbuka otomatis!
+                        </div>
+                    </div>
+                    <div class="glass rounded-2xl border border-white/10 overflow-hidden">
+                        <button onclick="toggleFaq(2)" class="w-full p-4 text-left flex justify-between items-center font-bold text-xs text-zinc-100 hover:text-red-400 transition-colors">
+                            <span>2. Mengapa harus transfer persis sesuai kode unik 3 digit terakhir?</span>
+                            <i id="faq-icon-2" class="fas fa-chevron-down text-red-400 transition-transform"></i>
+                        </button>
+                        <div id="faq-body-2" class="hidden px-4 pb-4 text-xs text-zinc-400 leading-relaxed border-t border-white/5 pt-3">
+                            Kode unik (contoh: +Rp 12) digunakan oleh robot sistem kami untuk mengenali pembayaranmu secara otomatis dalam 5 detik tanpa perlu kirim bukti transfer manual.
+                        </div>
+                    </div>
+                    <div class="glass rounded-2xl border border-white/10 overflow-hidden">
+                        <button onclick="toggleFaq(3)" class="w-full p-4 text-left flex justify-between items-center font-bold text-xs text-zinc-100 hover:text-red-400 transition-colors">
+                            <span>3. Bagaimana jika saya lupa menyimpan nomor pesanan?</span>
+                            <i id="faq-icon-3" class="fas fa-chevron-down text-red-400 transition-transform"></i>
+                        </button>
+                        <div id="faq-body-3" class="hidden px-4 pb-4 text-xs text-zinc-400 leading-relaxed border-t border-white/5 pt-3">
+                            Tenang! Kamu bisa membuka menu <b>Cek Pesanan</b> di atas, lalu ketik <b>Username Roblox</b> kamu untuk melihat status pembayaran dan riwayat item yang kamu beli.
+                        </div>
+                    </div>
+                </div>
+            </div>
         </section>
 
-        <!-- 3. SECTION KATALOG (100% Dinamis dari Admin Panel) -->
-        <section id="katalog" class="page-section pt-32 pb-16 px-4 max-w-7xl mx-auto">
-            <div class="flex flex-col lg:flex-row justify-between lg:items-end gap-6 mb-8 border-b border-purple-900/40 pb-6">
+        <!-- 2. SECTION KATALOG -->
+        <section id="katalog" class="page-section pt-12 pb-20 px-4 max-w-7xl mx-auto">
+            <div class="flex flex-col lg:flex-row justify-between lg:items-end gap-5 mb-8 border-b border-white/10 pb-6">
                 <div class="flex items-center gap-4">
-                    <div class="w-14 h-14 rounded-2xl bg-tera-blue/20 flex items-center justify-center border border-tera-blue/30 shadow-[0_0_20px_rgba(59,130,246,0.3)]">
-                        <i class="fas fa-boxes text-3xl text-indigo-400"></i>
+                    <div class="w-13 h-13 p-3.5 rounded-2xl bg-red-500/15 flex items-center justify-center border border-red-500/30">
+                        <i class="fas fa-boxes-stacked text-2xl text-red-400"></i>
                     </div>
                     <div>
-                        <h3 class="text-4xl font-heading font-black italic uppercase">Katalog <span class="text-gradient-animated">Item</span></h3>
-                        <p class="text-sm text-slate-400 mt-1 tracking-wide">Pilih game, buka section, atur jumlah, lalu masukkan ke keranjang.</p>
+                        <h3 class="text-3xl md:text-4xl font-heading font-bold italic uppercase text-white">Katalog <span class="text-red-500">Item</span></h3>
+                        <p class="text-xs text-zinc-400 mt-0.5">Pilih game di bawah, filter kategori, atau urutkan berdasarkan harga.</p>
                     </div>
                 </div>
 
-                <div class="flex flex-col sm:flex-row gap-4 w-full lg:w-auto items-center">
-                    <div class="relative w-full sm:w-64 md:w-80">
-                        <input type="text" id="searchInput" placeholder="Cari nama item..." class="w-full bg-[#1a1b2e] border border-purple-800/40 rounded-xl py-3 pl-11 pr-4 text-sm text-slate-100 focus:outline-none focus:border-tera-blue transition-colors shadow-inner backdrop-blur-md">
-                        <i class="fas fa-search absolute left-4 top-1/2 -translate-y-1/2 text-slate-400"></i>
+                <!-- Search & Price Sort Filter -->
+                <div class="flex flex-col sm:flex-row gap-3 w-full lg:w-auto items-center">
+                    <div class="relative w-full sm:w-64">
+                        <input type="text" id="searchInput" placeholder="Cari nama item..." class="input-field w-full rounded-xl py-2.5 pl-10 pr-4 text-xs">
+                        <i class="fas fa-search absolute left-3.5 top-1/2 -translate-y-1/2 text-zinc-400 text-xs"></i>
                     </div>
-                    <div class="bg-[#1a1b2e] border border-tera-gold/30 px-4 py-3 rounded-xl text-xs font-bold text-tera-gold animate-pulse-slow shadow-lg flex items-center gap-2 backdrop-blur-md w-full sm:w-auto justify-center whitespace-nowrap">
-                        <i class="fas fa-paste text-lg"></i> Auto-Copy Format
+                    <select id="sortSelect" onchange="handleSortChange()" class="input-field w-full sm:w-44 rounded-xl py-2.5 px-3.5 text-xs font-semibold cursor-pointer">
+                        <option value="default">Urutan Default</option>
+                        <option value="asc">Harga: Termurah</option>
+                        <option value="desc">Harga: Termahal</option>
+                        <option value="az">Nama: A - Z</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- GAME TOGGLE -->
+            <div id="game-toggle-container" class="flex flex-wrap gap-2.5 mb-8"></div>
+
+            <!-- GAME PANES WRAPPER -->
+            <div id="game-panes-wrapper">
+                <div id="katalog-empty-state" class="glass p-12 rounded-3xl text-center border border-white/10">
+                    <i class="fas fa-circle-notch fa-spin text-3xl text-red-500 mb-3"></i>
+                    <p class="text-xs text-zinc-400 italic">Menarik katalog produk terbaru dari server...</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- 3. SECTION JOKI -->
+        <section id="joki" class="page-section pt-12 pb-20 px-4 max-w-7xl mx-auto">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-10 border-b border-white/10 pb-6">
+                <div class="flex items-center gap-4">
+                    <div class="w-13 h-13 p-3.5 rounded-2xl bg-red-500/15 flex items-center justify-center border border-red-500/30">
+                        <i class="fas fa-bolt text-2xl text-red-400"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-3xl md:text-4xl font-heading font-bold italic uppercase text-white">Layanan <span class="text-red-500">Joki</span></h3>
+                        <p class="text-xs text-zinc-400 mt-0.5">Joki aman 100% dikerjakan manual oleh tim profesional TERA STORE.</p>
                     </div>
                 </div>
             </div>
 
-            <!-- GAME TOGGLE (100% Dinamis dari Admin Panel) -->
-            <div id="game-toggle-container" class="flex flex-wrap gap-3 mb-10"></div>
-
-            <!-- GAME PANES WRAPPER (100% Dinamis dari Admin Panel) -->
-            <div id="game-panes-wrapper">
-                <div id="katalog-empty-state" class="glass p-10 rounded-3xl text-center border border-purple-900/40">
-                    <i class="fas fa-spinner fa-spin text-3xl text-tera-purple mb-3"></i>
-                    <p class="text-sm text-slate-400 italic">Memuat katalog game dari server...</p>
+            <div id="joki-cards-container" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                <div class="col-span-full glass p-12 rounded-3xl text-center border border-white/10">
+                    <i class="fas fa-circle-notch fa-spin text-3xl text-red-500 mb-3"></i>
+                    <p class="text-xs text-zinc-400 italic">Memuat paket layanan joki...</p>
                 </div>
+            </div>
+        </section>
+
+        <!-- 4. SECTION LACAK PESANAN (FITUR BARU) -->
+        <section id="lacak" class="page-section pt-12 pb-20 px-4 max-w-3xl mx-auto">
+            <div class="glass p-6 md:p-8 rounded-3xl border border-red-500/20 space-y-6">
+                <div class="flex items-center gap-4 border-b border-white/10 pb-5">
+                    <div class="w-12 h-12 rounded-2xl bg-red-500/15 border border-red-500/30 flex items-center justify-center text-red-400 text-xl">
+                        <i class="fas fa-magnifying-glass-chart"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-2xl md:text-3xl font-heading font-bold italic uppercase text-white">Cek Status <span class="text-red-500">Pesanan</span></h3>
+                        <p class="text-xs text-zinc-400">Cari berdasarkan Nomor Pesanan (TERA-xxx) atau Username Roblox kamu.</p>
+                    </div>
+                </div>
+
+                <div class="flex flex-col sm:flex-row gap-3">
+                    <input type="text" id="track-input" placeholder="Masukkan No. Order (Cth: TERA-26...) atau Username Roblox" class="input-field flex-grow px-4 py-3.5 rounded-xl text-xs font-medium">
+                    <button onclick="handleTrackOrder()" class="btn-crimson px-6 py-3.5 rounded-xl font-bold uppercase tracking-wider text-xs text-white shrink-0 flex items-center justify-center gap-2">
+                        <i class="fas fa-search"></i> Cek Sekarang
+                    </button>
+                </div>
+
+                <!-- Pesanan Terakhir di Perangkat Ini -->
+                <div id="recent-local-order" class="hidden bg-red-950/20 border border-red-500/20 rounded-xl p-3.5 flex items-center justify-between text-xs">
+                    <span class="text-zinc-300"><i class="fas fa-history text-red-400 mr-1.5"></i> Pesanan terakhir kamu: <strong id="recent-order-id" class="text-white"></strong></span>
+                    <button onclick="useRecentOrder()" class="text-red-400 hover:text-red-300 font-bold underline">Cek Status</button>
+                </div>
+
+                <!-- Hasil Pencarian Pesanan -->
+                <div id="track-results" class="space-y-3"></div>
             </div>
         </section>
     </main>
 
-    <!-- FOOTER -->
-    <footer id="contact" class="mt-auto pt-20 pb-10 px-4 border-t border-purple-900/30 bg-[#07080f] backdrop-blur-xl relative overflow-hidden">
-        <div class="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[400px] bg-tera-purple/5 blur-[100px] rounded-full pointer-events-none"></div>
-        <div class="max-w-4xl mx-auto text-center relative z-10">
-            <h2 class="text-3xl md:text-5xl font-heading font-black italic mb-4 uppercase drop-shadow-lg text-white">Siap Mendominasi Server?</h2>
-            <p class="text-slate-400 text-base mb-10 max-w-lg mx-auto">Pilih itemmu dan DM admin sekarang. TERA STORE siap memproses pesananmu dengan secepat kilat.</p>
+    <!-- FLOATING QUICK ACTION BAR -->
+    <div class="fixed bottom-5 right-5 z-40 flex flex-col gap-2.5">
+        <button onclick="toggleCart()" title="Buka Keranjang" class="w-12 h-12 rounded-2xl btn-crimson text-white shadow-2xl flex items-center justify-center relative border border-red-400/30">
+            <i class="fas fa-bag-shopping"></i>
+            <span id="floating-cart-count" class="absolute -top-1.5 -right-1.5 bg-amber-500 text-black text-[10px] font-black w-5 h-5 rounded-full flex items-center justify-center">0</span>
+        </button>
+        <button onclick="window.scrollTo({top: 0, behavior: 'smooth'})" title="Kembali ke Atas" class="w-12 h-12 rounded-2xl glass hover:bg-white/10 text-zinc-300 shadow-xl flex items-center justify-center border border-white/10">
+            <i class="fas fa-arrow-up text-xs"></i>
+        </button>
+    </div>
 
-            <div class="flex flex-wrap justify-center gap-5 mb-16">
-                <a href="javascript:void(0)" onclick="window.open(TIKTOK_URL, '_blank')" class="btn-tiktok flex items-center gap-3 bg-black border border-white/10 px-8 py-4 rounded-2xl font-bold text-white transition-all shadow-xl hover:-translate-y-1">
-                    <i class="fab fa-tiktok text-2xl"></i> DM via TikTok
+    <!-- FOOTER -->
+    <footer id="contact" class="mt-auto pt-16 pb-10 px-4 border-t border-red-900/20 bg-[#040304] relative overflow-hidden">
+        <div class="max-w-4xl mx-auto text-center relative z-10">
+            <h2 class="text-3xl md:text-4xl font-heading font-bold italic mb-3 uppercase text-white">Butuh Bantuan atau Konsultasi Joki?</h2>
+            <p class="text-zinc-400 text-xs md:text-sm mb-8 max-w-lg mx-auto">Hubungi Admin TERA STORE melalui sosial media resmi kami di bawah ini.</p>
+
+            <div class="flex flex-wrap justify-center gap-4 mb-12">
+                <a href="javascript:void(0)" onclick="window.open(TIKTOK_URL, '_blank')" class="btn-tiktok flex items-center gap-2.5 bg-zinc-900/90 border border-white/10 px-7 py-3.5 rounded-2xl font-bold text-xs text-white transition-all hover:-translate-y-0.5">
+                    <i class="fab fa-tiktok text-lg text-pink-500"></i> DM via TikTok
                 </a>
-                <a href="javascript:void(0)" onclick="window.open(INSTAGRAM_URL, '_blank')" class="btn-ig flex items-center gap-3 bg-black border border-white/10 px-8 py-4 rounded-2xl font-bold text-white transition-all shadow-xl hover:-translate-y-1">
-                    <i class="fab fa-instagram text-2xl"></i> DM via Instagram
+                <a href="javascript:void(0)" onclick="window.open(INSTAGRAM_URL, '_blank')" class="btn-ig flex items-center gap-2.5 bg-zinc-900/90 border border-white/10 px-7 py-3.5 rounded-2xl font-bold text-xs text-white transition-all hover:-translate-y-0.5">
+                    <i class="fab fa-instagram text-lg text-rose-500"></i> DM via Instagram
                 </a>
             </div>
 
-            <div class="text-xs text-slate-400 font-bold tracking-widest uppercase italic border-t border-white/10 pt-10 flex flex-col items-center gap-3">
-                <img src="https://i.top4top.io/p_3830gr6t71.png" class="w-8 h-8 rounded opacity-50 mb-2 grayscale" alt="Logo">
-                <div class="flex items-center gap-2 text-slate-400">
-                    <i class="fa-solid fa-anchor"></i> © 2026 TERA STORE. All Rights Reserved.
+            <div class="text-[11px] text-zinc-500 font-semibold tracking-wider uppercase border-t border-white/5 pt-8 flex flex-col sm:flex-row items-center justify-between gap-3">
+                <div class="flex items-center gap-2">
+                    <span class="w-2 h-2 rounded-full bg-red-600"></span>
+                    <span>© 2026 TERA STORE. All Rights Reserved.</span>
                 </div>
-                <span class="text-tera-purple hover:text-white transition-colors cursor-pointer text-sm">@tera.rblx</span>
+                <span class="text-red-400/80 hover:text-red-400 transition-colors cursor-pointer">@tera.rblx</span>
             </div>
         </div>
     </footer>
 
     <!-- CART MODAL (Slide Sidebar) -->
     <div id="cartModal" class="fixed inset-0 z-[100] hidden">
-        <!-- Backdrop -->
-        <div class="absolute inset-0 bg-black/70 backdrop-blur-sm transition-opacity" onclick="toggleCart()"></div>
-        <!-- Modal Content -->
-        <div class="absolute right-0 top-0 bottom-0 w-full sm:w-[400px] glass border-l border-purple-900/40 shadow-2xl flex flex-col transform transition-transform duration-300">
+        <div class="absolute inset-0 bg-black/75 backdrop-blur-sm transition-opacity" onclick="toggleCart()"></div>
+        <div class="absolute right-0 top-0 bottom-0 w-full sm:w-[410px] glass border-l border-red-500/20 shadow-2xl flex flex-col">
             <!-- Header Modal -->
-            <div class="p-5 border-b border-purple-900/40 flex justify-between items-center bg-[#1a1b2e]">
-                <h3 class="text-xl font-heading font-black italic text-slate-100 flex items-center gap-2">
-                    <i class="fas fa-shopping-cart text-tera-purple"></i> Keranjang Anda
+            <div class="p-5 border-b border-white/10 flex justify-between items-center bg-[#0d080a]">
+                <h3 class="text-lg font-heading font-bold italic uppercase text-white flex items-center gap-2.5">
+                    <i class="fas fa-bag-shopping text-red-500"></i> Keranjang Belanja
                 </h3>
-                <button onclick="toggleCart()" class="text-slate-400 hover:text-slate-100 transition-colors p-2 rounded-lg hover:bg-purple-900/40">
-                    <i class="fas fa-times text-xl"></i>
-                </button>
+                <div class="flex items-center gap-2">
+                    <button onclick="clearCart()" title="Kosongkan Keranjang" class="text-[10px] text-zinc-400 hover:text-red-400 uppercase font-bold px-2.5 py-1 rounded-lg bg-white/5">
+                        Reset
+                    </button>
+                    <button onclick="toggleCart()" class="text-zinc-400 hover:text-white transition-colors p-1.5 rounded-lg hover:bg-white/5">
+                        <i class="fas fa-times text-lg"></i>
+                    </button>
+                </div>
             </div>
 
             <!-- Items Container -->
-            <div id="cart-items" class="flex-grow overflow-y-auto p-5 wiki-scroll space-y-3"></div>
+            <div id="cart-items" class="flex-grow overflow-y-auto p-5 space-y-3"></div>
 
             <!-- Footer Modal (Checkout) -->
-            <div class="p-5 border-t border-purple-900/40 bg-[#0f1020] space-y-3">
+            <div class="p-5 border-t border-white/10 bg-[#090607] space-y-3">
                 <div>
-                    <label class="text-[10px] text-slate-400 font-bold uppercase tracking-widest block mb-1">Username Roblox <span class="text-red-400">*</span></label>
+                    <label class="text-[10px] text-zinc-400 font-bold uppercase tracking-wider block mb-1">Username Roblox <span class="text-red-500">*</span></label>
                     <input type="text" id="checkout-roblox" placeholder="Cth: LordAlpha_Rblx (Wajib diisi)" class="input-field w-full px-3.5 py-2.5 rounded-xl text-xs font-medium">
                 </div>
                 <div>
-                    <label class="text-[10px] text-slate-400 font-bold uppercase tracking-widest block mb-1">Catatan Pesanan (Opsional)</label>
-                    <input type="text" id="checkout-note" placeholder="Cth: Ketemuan di Sea 1 / NO WA aktif" class="input-field w-full px-3.5 py-2.5 rounded-xl text-xs font-medium">
+                    <label class="text-[10px] text-zinc-400 font-bold uppercase tracking-wider block mb-1">Catatan / Nomor WA Aktif (Opsional)</label>
+                    <input type="text" id="checkout-note" placeholder="Cth: Ketemuan di Sea 1 / 0812xxx" class="input-field w-full px-3.5 py-2.5 rounded-xl text-xs font-medium">
                 </div>
 
-                <div class="flex justify-between items-center bg-[#1a1b2e] p-3 rounded-xl border border-purple-900/40 shadow-inner">
-                    <span class="text-xs text-slate-400 font-bold uppercase tracking-widest">Total Harga</span>
-                    <span id="cart-total" class="text-lg font-black text-tera-gold">Rp 0</span>
+                <div class="flex justify-between items-center bg-[#120c0e] p-3.5 rounded-xl border border-white/10">
+                    <span class="text-xs text-zinc-400 font-bold uppercase tracking-wider">Total Estimasi</span>
+                    <span id="cart-total" class="text-lg font-black text-amber-400">Rp 0</span>
                 </div>
-                <button id="btn-checkout-qris" onclick="openPaymentModal()" class="w-full bg-gradient-to-r from-tera-purple to-tera-blue text-white py-3.5 rounded-xl font-bold transition-all border border-white/10 uppercase italic text-[12px] tracking-widest flex items-center justify-center gap-2 shadow-[0_0_20px_rgba(139,92,246,0.4)] hover:shadow-[0_0_28px_rgba(139,92,246,0.6)] hover:-translate-y-0.5">
-                    <i class="fas fa-qrcode text-lg"></i> Bayar dengan QRIS Otomatis
+                <button id="btn-checkout-qris" onclick="openPaymentModal()" class="btn-crimson w-full text-white py-3.5 rounded-xl font-bold uppercase tracking-widest text-xs flex items-center justify-center gap-2 shadow-lg">
+                    <i class="fas fa-qrcode text-base"></i> Bayar dengan QRIS Otomatis
                 </button>
             </div>
         </div>
     </div>
 
-    <!-- ======================= -->
-    <!-- MODAL PEMBAYARAN QRIS   -->
-    <!-- ======================= -->
+    <!-- MODAL PEMBAYARAN QRIS -->
     <div id="paymentModal" class="fixed inset-0 z-[110] hidden">
-        <div class="absolute inset-0 bg-black/80 backdrop-blur-sm transition-opacity" onclick="closePaymentModal()"></div>
+        <div class="absolute inset-0 bg-black/85 backdrop-blur-md transition-opacity" onclick="closePaymentModal()"></div>
         <div class="relative w-full h-full flex items-center justify-center p-4 overflow-y-auto">
-            <div class="glass border border-purple-900/40 rounded-3xl shadow-2xl w-full max-w-sm my-auto relative overflow-hidden">
-                <div class="absolute top-0 right-0 w-40 h-40 bg-tera-gold/10 blur-3xl rounded-full pointer-events-none"></div>
-
+            <div class="glass border border-red-500/30 rounded-3xl shadow-2xl w-full max-w-sm my-auto relative overflow-hidden">
                 <!-- Header -->
-                <div class="p-5 border-b border-purple-900/40 flex justify-between items-center bg-[#1a1b2e] relative z-10">
-                    <h3 class="text-lg font-heading font-black italic text-slate-100 flex items-center gap-2">
-                        <i class="fas fa-qrcode text-tera-gold"></i> Pembayaran QRIS Otomatis
+                <div class="p-4 border-b border-white/10 flex justify-between items-center bg-[#120c0e]">
+                    <h3 class="text-base font-heading font-bold italic uppercase text-white flex items-center gap-2">
+                        <i class="fas fa-qrcode text-amber-400"></i> Pembayaran QRIS Otomatis
                     </h3>
-                    <button onclick="closePaymentModal()" class="text-slate-400 hover:text-slate-100 transition-colors p-2 rounded-lg hover:bg-purple-900/40">
-                        <i class="fas fa-times text-xl"></i>
+                    <button onclick="closePaymentModal()" class="text-zinc-400 hover:text-white p-1.5 rounded-lg">
+                        <i class="fas fa-times"></i>
                     </button>
                 </div>
 
                 <!-- Body: Menunggu Pembayaran -->
-                <div id="qris-waiting-view" class="p-5 relative z-10 space-y-4">
-                    <div class="bg-[#1a1b2e] rounded-xl p-3 border border-purple-900/40 space-y-2">
-                        <div class="flex items-center justify-between border-b border-white/10 pb-2">
-                            <span class="text-[10px] text-slate-400 uppercase tracking-wider font-bold">No. Pesanan</span>
-                            <span id="payment-order-id" class="text-xs font-black text-purple-300">-</span>
+                <div id="qris-waiting-view" class="p-5 space-y-4">
+                    <div class="bg-[#120c0e] rounded-2xl p-3.5 border border-white/10 space-y-2">
+                        <div class="flex items-center justify-between border-b border-white/5 pb-2">
+                            <span class="text-[10px] text-zinc-400 uppercase font-bold">No. Pesanan</span>
+                            <span id="payment-order-id" class="text-xs font-extrabold text-red-400">-</span>
                         </div>
-                        <div class="flex items-center justify-between border-b border-white/10 pb-2">
-                            <span class="text-[10px] text-slate-400 uppercase tracking-wider font-bold">Kode Unik Otomatis</span>
+                        <div class="flex items-center justify-between border-b border-white/5 pb-2">
+                            <span class="text-[10px] text-zinc-400 uppercase font-bold">Kode Unik Verifikasi</span>
                             <span id="payment-unique-code" class="text-xs font-bold text-emerald-400">+Rp 0</span>
                         </div>
                         <div class="flex items-center justify-between pt-1">
-                            <span class="text-[11px] text-white uppercase tracking-wider font-bold">Wajib Transfer Persis</span>
-                            <span id="payment-total" class="text-xl font-black text-tera-gold animate-pulse">Rp 0</span>
+                            <span class="text-[11px] text-white uppercase font-bold">Wajib Transfer Persis</span>
+                            <div class="flex items-center gap-2">
+                                <span id="payment-total" class="text-xl font-black text-amber-400">Rp 0</span>
+                                <button onclick="copyNominal()" title="Salin Nominal" class="text-xs bg-white/10 hover:bg-white/20 px-2 py-1 rounded text-zinc-200">
+                                    <i class="fas fa-copy"></i>
+                                </button>
+                            </div>
                         </div>
                     </div>
 
                     <!-- QRIS Image -->
-                    <div class="rounded-2xl overflow-hidden border border-purple-900/40 shadow-inner bg-white p-2">
+                    <div class="rounded-2xl overflow-hidden border border-white/15 bg-white p-2.5">
                         <img src="assets/qris.jpg" alt="QRIS TERA STORE" class="w-full rounded-xl">
                     </div>
 
                     <!-- Status Pengecekan Real-Time -->
-                    <div class="bg-tera-purple/15 border border-tera-purple/40 rounded-xl p-3 flex items-center justify-center gap-3">
-                        <i class="fas fa-spinner fa-spin text-tera-purple text-lg"></i>
-                        <span class="text-xs font-bold text-slate-200">Menunggu pembayaran masuk... (Dicek otomatis)</span>
+                    <div class="bg-red-950/40 border border-red-500/30 rounded-xl p-3 flex items-center justify-center gap-2.5">
+                        <i class="fas fa-circle-notch fa-spin text-red-400"></i>
+                        <span class="text-xs font-semibold text-zinc-200">Menunggu pembayaran masuk... (Otomatis)</span>
                     </div>
 
-                    <div class="bg-amber-500/10 border border-amber-500/30 rounded-xl p-3 flex gap-2.5">
-                        <i class="fas fa-triangle-exclamation text-amber-400 mt-0.5 shrink-0"></i>
-                        <p class="text-[11px] text-amber-200 leading-relaxed">
-                            PENTING: Masukkan nominal transfer <span class="font-bold underline text-white">persis hingga 3 digit terakhir</span> sesuai angka <span class="font-bold text-tera-gold">Wajib Transfer Persis</span> di atas agar terverifikasi otomatis oleh sistem dalam 5 detik!
+                    <div class="bg-amber-500/10 border border-amber-500/25 rounded-xl p-3 flex gap-2.5">
+                        <i class="fas fa-triangle-exclamation text-amber-400 mt-0.5 shrink-0 text-xs"></i>
+                        <p class="text-[11px] text-amber-200/90 leading-relaxed">
+                            Masukkan nominal transfer <strong class="underline text-white">persis hingga 3 digit terakhir</strong> agar sistem langsung melunaskan pesananmu dalam 5 detik.
                         </p>
                     </div>
                 </div>
 
                 <!-- Body: Pembayaran Sukses Lunas Otomatis -->
-                <div id="qris-success-view" class="p-6 relative z-10 text-center space-y-4 hidden">
-                    <div class="w-20 h-20 rounded-full bg-emerald-500/20 border-2 border-emerald-400 flex items-center justify-center mx-auto text-4xl text-emerald-400 shadow-[0_0_30px_rgba(16,185,129,0.4)]">
+                <div id="qris-success-view" class="p-6 text-center space-y-4 hidden">
+                    <div class="w-16 h-16 rounded-full bg-emerald-500/20 border-2 border-emerald-400 flex items-center justify-center mx-auto text-3xl text-emerald-400">
                         <i class="fas fa-check"></i>
                     </div>
-                    <h4 class="text-2xl font-heading font-black italic uppercase text-emerald-400">Pembayaran Lunas!</h4>
-                    <p class="text-xs text-slate-300 leading-relaxed">
-                        Terima kasih! Pembayaranmu telah terverifikasi otomatis. Silakan klik tombol di bawah untuk langsung diskusi lokasi ketemuan dengan <strong class="text-white">Admin Tera</strong> di game!
+                    <h4 class="text-2xl font-heading font-bold italic uppercase text-emerald-400">Pembayaran Lunas!</h4>
+                    <p class="text-xs text-zinc-300 leading-relaxed">
+                        Terima kasih! Pembayaranmu telah terverifikasi otomatis. Klik tombol di bawah untuk langsung janjian ketemuan di dalam game bersama <strong>Admin Tera</strong>.
                     </p>
                     
-                    <!-- Tombol Pintasan Chat WhatsApp -->
-                    <a id="btn-wa-chat" href="#" target="_blank" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white py-3.5 rounded-xl font-bold uppercase tracking-widest text-xs transition-all flex items-center justify-center gap-2 shadow-[0_0_20px_rgba(16,185,129,0.4)]">
+                    <a id="btn-wa-chat" href="#" target="_blank" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white py-3.5 rounded-xl font-bold uppercase tracking-widest text-xs transition-all flex items-center justify-center gap-2 shadow-lg">
                         <i class="fab fa-whatsapp text-lg"></i> Chat Admin untuk Ketemuan
                     </a>
 
-                    <button onclick="closePaymentModal()" class="w-full bg-[#1a1b2e] hover:bg-purple-900/40 text-slate-400 hover:text-white py-2.5 rounded-xl font-bold uppercase tracking-wider text-[11px] transition-all border border-purple-900/40">
-                        Tutup Halaman
+                    <button onclick="closePaymentModal()" class="w-full bg-white/5 hover:bg-white/10 text-zinc-400 hover:text-white py-2.5 rounded-xl font-bold uppercase tracking-wider text-[11px] transition-all">
+                        Tutup Jendela
                     </button>
                 </div>
             </div>
@@ -645,22 +814,26 @@
         const INSTAGRAM_URL = "https://www.instagram.com/tera.rblx";
         const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyx33ntFyF_QFbH15j8kbJJiEiI1wNwzk_eR4_EpPj4HeHZMR5NAGKkbUPtC5G4QGDv/exec";
 
+        const CART_STORAGE_KEY = "tera_saved_cart";
+        const LAST_ORDER_KEY = "tera_last_order";
+
         let cart = [];
         let activeGame = "";
+        let currentSort = "default";
+        let currentFinalNominal = 0;
 
-        // WADAH MURNI DINAMIS DARI GOOGLE SHEETS (Tanpa Default Lokal)
+        // WADAH MURNI DINAMIS DARI GOOGLE SHEETS
         let storeData = {};
         let gameMeta = {};
         let activeSectionFilter = {};
+        let allOrdersCache = [];
 
         window.addEventListener('scroll', () => {
             const nav = document.getElementById('navbar');
-            if(window.scrollY > 50) {
+            if(window.scrollY > 40) {
                 nav.classList.add('nav-scrolled');
-                nav.classList.remove('glass');
             } else {
                 nav.classList.remove('nav-scrolled');
-                nav.classList.add('glass');
             }
         });
 
@@ -668,24 +841,59 @@
             document.querySelectorAll('.page-section').forEach(page => page.classList.remove('active-page'));
             const target = document.getElementById(pageId);
             if (target) target.classList.add('active-page');
-            document.querySelectorAll('.nav-link').forEach(link => { link.classList.remove('active-nav', 'text-slate-100'); link.classList.add('text-slate-300'); });
-            document.querySelectorAll(`[onclick="switchPage('${pageId}')"]`).forEach(link => { link.classList.remove('text-slate-300'); link.classList.add('active-nav', 'text-slate-100'); });
+            document.querySelectorAll('.nav-link').forEach(link => { link.classList.remove('active-nav', 'text-white'); link.classList.add('text-zinc-300'); });
+            document.querySelectorAll(`[onclick="switchPage('${pageId}')"]`).forEach(link => { link.classList.remove('text-zinc-300'); link.classList.add('active-nav', 'text-white'); });
             document.getElementById('mobile-menu').classList.add('hidden');
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
-        // =======================
-        // SISTEM KERANJANG (CART)
-        // =======================
-        function toggleCart() {
-            const modal = document.getElementById('cartModal');
-            modal.classList.toggle('hidden');
+        function toggleFaq(num) {
+            const body = document.getElementById(`faq-body-${num}`);
+            const icon = document.getElementById(`faq-icon-${num}`);
+            if (body) body.classList.toggle('hidden');
+            if (icon) icon.classList.toggle('rotate-180');
         }
 
-        function addToCart(game, sIndex, iIndex, itemId) {
+        // =======================
+        // SISTEM KERANJANG (DENGAN LOCALSTORAGE)
+        // =======================
+        function loadSavedCart() {
+            try {
+                const raw = localStorage.getItem(CART_STORAGE_KEY);
+                if (raw) cart = JSON.parse(raw);
+            } catch(e) { cart = []; }
+            updateCartUI();
+
+            const lastOrder = localStorage.getItem(LAST_ORDER_KEY);
+            if (lastOrder) {
+                const box = document.getElementById('recent-local-order');
+                const label = document.getElementById('recent-order-id');
+                if (box && label) {
+                    label.innerText = lastOrder;
+                    box.classList.remove('hidden');
+                }
+            }
+        }
+
+        function saveCart() {
+            try { localStorage.setItem(CART_STORAGE_KEY, JSON.stringify(cart)); } catch(e) {}
+        }
+
+        function toggleCart() {
+            document.getElementById('cartModal').classList.toggle('hidden');
+        }
+
+        function clearCart() {
+            if (cart.length === 0) return;
+            cart = [];
+            saveCart();
+            updateCartUI();
+        }
+
+        function addToCart(game, sIndex, iIndex, itemId, directBuy = false) {
             const item = storeData[game][sIndex].items[iIndex];
             const qtyElement = document.getElementById(`qty-${itemId}`);
-            const qty = parseInt(qtyElement.innerText);
+            const qty = qtyElement ? parseInt(qtyElement.innerText) : 1;
 
             const existingItem = cart.find(c => c.name === item.name && c.game === game);
             if (existingItem) {
@@ -701,24 +909,42 @@
                 });
             }
 
+            saveCart();
             updateCartUI();
 
-            const cartIcon = document.getElementById('cart-count');
-            cartIcon.classList.add('animate-ping');
-            setTimeout(() => cartIcon.classList.remove('animate-ping'), 300);
+            if (qtyElement) {
+                qtyElement.innerText = 1;
+                const totalElement = document.getElementById(`total-${itemId}`);
+                if (totalElement) totalElement.innerText = formatRupiah(item.price);
+            }
 
-            qtyElement.innerText = 1;
-            const totalElement = document.getElementById(`total-${itemId}`);
-            totalElement.innerText = formatRupiah(item.price);
+            if (directBuy) {
+                document.getElementById('cartModal').classList.remove('hidden');
+                setTimeout(() => document.getElementById('checkout-roblox')?.focus(), 200);
+            } else {
+                showToastMsg(`"${item.name}" ditambahkan ke keranjang!`);
+            }
         }
 
         function removeFromCart(index) {
             cart.splice(index, 1);
+            saveCart();
+            updateCartUI();
+        }
+
+        function changeCartItemQty(index, delta) {
+            if (!cart[index]) return;
+            cart[index].qty += delta;
+            if (cart[index].qty <= 0) {
+                cart.splice(index, 1);
+            }
+            saveCart();
             updateCartUI();
         }
 
         function updateCartUI() {
             const cartCount = document.getElementById('cart-count');
+            const floatCount = document.getElementById('floating-cart-count');
             const cartItemsContainer = document.getElementById('cart-items');
             const cartTotal = document.getElementById('cart-total');
 
@@ -729,9 +955,9 @@
 
             if(cart.length === 0) {
                 cartItemsContainer.innerHTML = `
-                    <div class="h-full flex flex-col items-center justify-center text-slate-400 py-10 opacity-60">
-                        <i class="fas fa-box-open text-4xl mb-3"></i>
-                        <p class="text-sm italic">Keranjang masih kosong.</p>
+                    <div class="h-full flex flex-col items-center justify-center text-zinc-500 py-12">
+                        <i class="fas fa-bag-shopping text-4xl mb-3 text-red-900/50"></i>
+                        <p class="text-xs italic">Keranjang belanjamu masih kosong.</p>
                     </div>`;
             } else {
                 cart.forEach((c, index) => {
@@ -740,32 +966,38 @@
 
                     let imgSrc = (c.image && c.image !== "") ? c.image : '';
                     let mediaHtml = imgSrc
-                        ? `<img src="${imgSrc}" class="w-14 h-14 object-cover rounded-lg border border-purple-900/40" onerror="this.onerror=null; this.replaceWith(Object.assign(document.createElement('div'), {className:'w-14 h-14 rounded-lg border border-purple-900/40 bg-[#1a1b2e] flex items-center justify-center text-lg', textContent:'🎁'}));">`
-                        : `<div class="w-14 h-14 rounded-lg border border-purple-900/40 bg-[#1a1b2e] flex items-center justify-center text-lg">🎁</div>`;
+                        ? `<img src="${imgSrc}" class="w-13 h-13 object-cover rounded-xl border border-white/10 shrink-0" onerror="this.outerHTML='<div class=\\'w-12 h-12 rounded-xl border border-white/10 bg-zinc-900 flex items-center justify-center text-lg shrink-0\\'>🎁</div>'">`
+                        : `<div class="w-12 h-12 rounded-xl border border-white/10 bg-zinc-900 flex items-center justify-center text-lg shrink-0">🎁</div>`;
 
                     cartItemsContainer.innerHTML += `
-                        <div class="flex items-center gap-3 bg-[#1a1b2e] p-3 rounded-xl border border-purple-900/40 hover:border-purple-900/40 transition-colors">
+                        <div class="flex items-center gap-3 bg-[#140d10] p-3 rounded-2xl border border-white/10">
                             ${mediaHtml}
-                            <div class="flex-grow">
-                                <span class="text-[9px] text-purple-300 uppercase font-bold">[${c.gameName || c.game}]</span>
-                                <h6 class="text-slate-100 text-xs font-bold leading-tight mb-1">${c.name}</h6>
-                                <p class="text-tera-gold text-[11px] font-semibold">${formatRupiah(c.price)} <span class="text-slate-400 font-normal">x ${c.qty}</span></p>
+                            <div class="flex-grow min-w-0">
+                                <span class="text-[9px] text-red-400 uppercase font-bold">[${c.gameName || c.game}]</span>
+                                <h6 class="text-zinc-100 text-xs font-bold truncate">${c.name}</h6>
+                                <p class="text-amber-400 text-[11px] font-bold mt-0.5">${formatRupiah(c.price * c.qty)}</p>
                             </div>
-                            <div class="text-right flex flex-col items-end gap-1">
-                                <span class="text-slate-100 text-xs font-bold">${formatRupiah(c.price * c.qty)}</span>
-                                <button onclick="removeFromCart(${index})" class="text-red-500 hover:text-red-400 bg-red-500/10 hover:bg-red-500/20 w-6 h-6 rounded flex items-center justify-center transition-colors">
-                                    <i class="fas fa-trash text-[10px]"></i>
-                                </button>
+                            <div class="flex items-center gap-1.5 bg-black/60 px-2 py-1 rounded-xl border border-white/10">
+                                <button onclick="changeCartItemQty(${index}, -1)" class="text-zinc-400 hover:text-white text-[10px] w-5 h-5">-</button>
+                                <span class="text-xs font-bold text-white px-1">${c.qty}</span>
+                                <button onclick="changeCartItemQty(${index}, 1)" class="text-zinc-400 hover:text-white text-[10px] w-5 h-5">+</button>
                             </div>
+                            <button onclick="removeFromCart(${index})" class="text-zinc-500 hover:text-red-400 p-1.5">
+                                <i class="fas fa-trash-can text-xs"></i>
+                            </button>
                         </div>
                     `;
                 });
             }
 
             if (cartCount) cartCount.innerText = totalItems;
+            if (floatCount) floatCount.innerText = totalItems;
             if (cartTotal) cartTotal.innerText = formatRupiah(totalPrice);
         }
 
+        // =======================
+        // PEMBAYARAN QRIS & CEK PESANAN
+        // =======================
         let currentOrderId = null;
         let paymentCheckInterval = null;
 
@@ -778,9 +1010,15 @@
             return `TERA-${datePart}-${randPart}`;
         }
 
+        function copyNominal() {
+            if (!currentFinalNominal) return;
+            navigator.clipboard?.writeText(String(currentFinalNominal));
+            showToastMsg(`Nominal Rp ${currentFinalNominal} disalin!`);
+        }
+
         async function openPaymentModal() {
             if (cart.length === 0) {
-                alert("Keranjang masih kosong! Silakan tambahkan item terlebih dahulu.");
+                showToastMsg("Keranjang masih kosong!", true);
                 return;
             }
 
@@ -788,7 +1026,7 @@
             const buyerNote = document.getElementById('checkout-note').value.trim();
 
             if (!robloxUser) {
-                alert("⚠️ Wajib mengisi Username Roblox kamu terlebih dahulu sebelum membayar!");
+                showToastMsg("Wajib mengisi Username Roblox kamu!", true);
                 document.getElementById('checkout-roblox').focus();
                 return;
             }
@@ -825,6 +1063,9 @@
                 const result = await response.json();
 
                 if (result.status === "success") {
+                    currentFinalNominal = result.finalAmount;
+                    localStorage.setItem(LAST_ORDER_KEY, currentOrderId);
+
                     document.getElementById('payment-order-id').innerText = currentOrderId;
                     document.getElementById('payment-unique-code').innerText = `+Rp ${result.uniqueCode}`;
                     document.getElementById('payment-total').innerText = formatRupiah(result.finalAmount);
@@ -837,10 +1078,10 @@
 
                     startCheckingPayment(currentOrderId);
                 } else {
-                    alert("Gagal membuat pesanan: " + (result.message || "Coba lagi."));
+                    showToastMsg("Gagal membuat pesanan. Coba lagi.", true);
                 }
             } catch (err) {
-                alert("Terjadi kesalahan koneksi ke server pesanan. Pastikan internet stabil.");
+                showToastMsg("Kesalahan koneksi ke server pesanan.", true);
             } finally {
                 btn.innerHTML = originalBtnHtml;
                 btn.disabled = false;
@@ -868,12 +1109,12 @@
                                         `Boleh info ketemuan di mana min?`;
 
                         const nomorAdminWA = "6288210882462"; 
-                        const encodedMsg = encodeURIComponent(pesanWA);
-                        document.getElementById('btn-wa-chat').href = `https://wa.me/${nomorAdminWA}?text=${encodedMsg}`;
+                        document.getElementById('btn-wa-chat').href = `https://wa.me/${nomorAdminWA}?text=${encodeURIComponent(pesanWA)}`;
 
                         document.getElementById('qris-waiting-view').classList.add('hidden');
                         document.getElementById('qris-success-view').classList.remove('hidden');
                         cart = [];
+                        saveCart();
                         updateCartUI();
                     }
                 } catch (e) {}
@@ -885,8 +1126,72 @@
             document.getElementById('paymentModal').classList.add('hidden');
         }
 
+        function useRecentOrder() {
+            const last = localStorage.getItem(LAST_ORDER_KEY);
+            if (!last) return;
+            document.getElementById('track-input').value = last;
+            handleTrackOrder();
+        }
+
+        async function handleTrackOrder() {
+            const q = (document.getElementById('track-input').value || '').trim().toLowerCase();
+            const container = document.getElementById('track-results');
+            if (!q) {
+                showToastMsg("Masukkan Nomor Order atau Username Roblox!", true);
+                return;
+            }
+
+            container.innerHTML = `<div class="p-8 text-center text-xs text-zinc-400"><i class="fas fa-circle-notch fa-spin text-red-500 mr-2"></i> Mencari data pesanan di server...</div>`;
+
+            try {
+                const res = await fetch(GOOGLE_SCRIPT_URL);
+                const data = await res.json();
+                if (data.status === "success") {
+                    allOrdersCache = data.orders || [];
+                    const matched = allOrdersCache.filter(o => 
+                        String(o.orderId || '').toLowerCase().includes(q) ||
+                        String(o.robloxUser || '').toLowerCase().includes(q)
+                    );
+
+                    if (matched.length === 0) {
+                        container.innerHTML = `<div class="p-8 rounded-2xl bg-black/40 border border-white/5 text-center text-xs text-zinc-400">Pesanan tidak ditemukan. Pastikan penulisan Order ID atau Username Roblox sudah benar.</div>`;
+                        return;
+                    }
+
+                    container.innerHTML = matched.slice(0, 8).map(o => {
+                        const isPaid = o.status === "LUNAS";
+                        const badge = isPaid
+                            ? `<span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-emerald-500/20 text-emerald-400 border border-emerald-500/30">LUNAS</span>`
+                            : `<span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-amber-500/20 text-amber-400 border border-amber-500/30">MENUNGGU PEMBAYARAN</span>`;
+
+                        const waMsg = encodeURIComponent(`Halo Min Tera, saya ingin konfirmasi pesanan:\n🧾 Order ID: ${o.orderId}\n🎮 Roblox: ${o.robloxUser}\n💰 Total: Rp ${o.total}\nStatus: ${o.status}`);
+
+                        return `
+                            <div class="p-4 rounded-2xl bg-[#120c0e] border border-white/10 flex flex-col sm:flex-row justify-between gap-4">
+                                <div class="space-y-1">
+                                    <div class="flex items-center gap-2">
+                                        <span class="font-heading font-bold text-base text-red-400">${o.orderId}</span>
+                                        ${badge}
+                                    </div>
+                                    <p class="text-xs text-zinc-300"><b>Roblox:</b> ${o.robloxUser} | <b>Total:</b> <span class="text-amber-400 font-bold">${formatRupiah(o.total)}</span></p>
+                                    <p class="text-[11px] text-zinc-400 whitespace-pre-line font-mono pt-1">${o.items}</p>
+                                </div>
+                                ${isPaid ? `
+                                    <a href="https://wa.me/6288210882462?text=${waMsg}" target="_blank" class="bg-emerald-600 hover:bg-emerald-500 text-white px-4 py-2.5 rounded-xl text-xs font-bold uppercase tracking-wider self-start sm:self-center shrink-0 flex items-center gap-1.5">
+                                        <i class="fab fa-whatsapp"></i> Chat Admin
+                                    </a>
+                                ` : ''}
+                            </div>
+                        `;
+                    }).join('');
+                }
+            } catch (err) {
+                container.innerHTML = `<div class="p-6 text-center text-xs text-red-400">Gagal mengambil data dari server.</div>`;
+            }
+        }
+
         function formatRupiah(angka) {
-            return new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(angka);
+            return new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(Number(angka) || 0);
         }
 
         function updateQty(itemId, change) {
@@ -900,79 +1205,30 @@
             totalElement.innerText = formatRupiah(basePrice * newQty);
         }
 
-        function copyToClipboardAndRedirect(textMsg, platform) {
-            let targetUrl = platform === 'instagram' ? INSTAGRAM_URL : TIKTOK_URL;
-            let platformName = platform === 'instagram' ? 'Instagram' : 'TikTok';
-
-            const proceed = (copied) => {
-                showCopyToast(copied, platformName);
-                setTimeout(() => { window.location.href = targetUrl; }, 900);
-            };
-
-            if (navigator.clipboard && navigator.clipboard.writeText) {
-                navigator.clipboard.writeText(textMsg).then(() => {
-                    proceed(true);
-                }).catch(() => {
-                    proceed(fallbackCopyText(textMsg));
-                });
-            } else {
-                proceed(fallbackCopyText(textMsg));
-            }
-        }
-
-        function fallbackCopyText(text) {
-            try {
-                const ta = document.createElement('textarea');
-                ta.value = text;
-                ta.style.position = 'fixed';
-                ta.style.top = '0';
-                ta.style.left = '0';
-                ta.style.width = '1px';
-                ta.style.height = '1px';
-                ta.style.padding = '0';
-                ta.style.opacity = '0';
-                document.body.appendChild(ta);
-                ta.focus();
-                ta.select();
-                ta.setSelectionRange(0, text.length);
-                const success = document.execCommand('copy');
-                document.body.removeChild(ta);
-                return success;
-            } catch (err) {
-                return false;
-            }
-        }
-
-        function showCopyToast(success, platformName) {
+        function showToastMsg(msg, isError = false) {
             const existing = document.getElementById('copy-toast');
             if (existing) existing.remove();
 
             const toast = document.createElement('div');
             toast.id = 'copy-toast';
-            toast.style.position = 'fixed';
-            toast.style.bottom = '24px';
-            toast.style.left = '50%';
-            toast.style.transform = 'translateX(-50%)';
-            toast.style.zIndex = '9999';
-            toast.style.maxWidth = '90vw';
-            toast.style.padding = '14px 18px';
-            toast.style.borderRadius = '14px';
-            toast.style.fontSize = '13px';
-            toast.style.fontWeight = '600';
-            toast.style.textAlign = 'center';
-            toast.style.boxShadow = '0 8px 24px rgba(0,0,0,0.4)';
-            toast.style.color = '#fff';
-            toast.style.background = success ? 'linear-gradient(135deg, #8b5cf6, #6366f1)' : '#dc2626';
-            toast.innerText = success
-                ? `Pesan tersalin! Tempel (paste) di kolom chat DM ${platformName}.`
-                : `Gagal menyalin otomatis. Silakan ketik manual pesan pesananmu di DM ${platformName}.`;
+            toast.style.cssText = 'position:fixed;bottom:24px;left:50%;transform:translateX(-50%);z-index:9999;max-width:90vw;padding:12px 20px;border-radius:14px;font-size:12px;font-weight:700;text-align:center;box-shadow:0 10px 30px rgba(0,0,0,0.6);color:#fff;';
+            toast.style.background = isError ? '#991b1b' : 'linear-gradient(135deg, #dc2626, #991b1b)';
+            toast.style.border = '1px solid rgba(255,255,255,0.15)';
+            toast.innerText = msg;
             document.body.appendChild(toast);
-            setTimeout(() => toast.remove(), 4500);
+            setTimeout(() => toast.remove(), 3200);
         }
 
         function orderJoki(jokiName, platform) {
             const textMsg = `Halo min,\n\nSaya tertarik dengan layanan Joki:\n⚡ ${jokiName}\n\nBoleh tanya detail prosedur dan estimasi harganya?`;
-            copyToClipboardAndRedirect(textMsg, platform);
+            let targetUrl = platform === 'instagram' ? INSTAGRAM_URL : TIKTOK_URL;
+            let platformName = platform === 'instagram' ? 'Instagram' : 'TikTok';
+
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard.writeText(textMsg).catch(() => {});
+            }
+            showToastMsg(`Format order disalin! Mengarahkan ke ${platformName}...`);
+            setTimeout(() => { window.open(targetUrl, '_blank'); }, 800);
         }
 
         document.getElementById('mobile-btn').addEventListener('click', () => {
@@ -984,6 +1240,14 @@
             searchInput.addEventListener('input', function(e) {
                 if (activeGame) renderCatalog(activeGame, e.target.value);
             });
+        }
+
+        function handleSortChange() {
+            currentSort = document.getElementById('sortSelect').value;
+            if (activeGame) {
+                const q = document.getElementById('searchInput')?.value || '';
+                renderCatalog(activeGame, q);
+            }
         }
 
         // ========================================================
@@ -998,25 +1262,23 @@
                     storeData = {};
                     gameMeta = {};
                     activeSectionFilter = {};
+                    allOrdersCache = data.orders || [];
 
-                    // 1. Render Daftar Game dari Sheets
                     const gamesList = data.games || [];
                     renderDynamicGameNav(gamesList);
                     renderHomeGameShortcuts(gamesList);
 
-                    // 2. Masukkan Produk & Kategori dari Sheets
                     if (data.products && data.products.length > 0) {
                         data.products.forEach(p => {
                             const gId = String(p.gameId || '').trim().toLowerCase();
                             if (!gId) return;
 
-                            // Jika ada produk dengan gameId yang belum terdaftar di tab Games, tetap buatkan tab-nya
                             if (!storeData[gId]) {
                                 storeData[gId] = [];
                                 gameMeta[gId] = {
                                     name: gId.toUpperCase(),
-                                    activeClasses: ['bg-tera-purple','text-white','border-tera-purple','shadow-[0_0_20px_rgba(139,92,246,0.4)]'],
-                                    pillActive: 'bg-tera-purple/20 border-tera-purple text-white'
+                                    activeClasses: ['bg-red-600','text-white','border-red-500','shadow-[0_0_20px_rgba(220,38,38,0.35)]'],
+                                    pillActive: 'bg-red-600/25 border-red-500 text-white'
                                 };
                                 activeSectionFilter[gId] = 'all';
                                 ensureGameTabExists(gId, gId.toUpperCase(), 'fa-gamepad');
@@ -1028,8 +1290,8 @@
                                 cat = {
                                     id: catName.toLowerCase().replace(/\s+/g, '-'),
                                     category: catName,
-                                    color: "text-purple-400",
-                                    icon: "fa-box",
+                                    color: "text-red-400",
+                                    icon: "fa-box-open",
                                     items: []
                                 };
                                 storeData[gId].push(cat);
@@ -1047,10 +1309,8 @@
                         });
                     }
 
-                    // 3. Render Layanan Joki dari Sheets
                     renderDynamicJoki(data.joki || []);
 
-                    // 4. Aktifkan Game Pertama
                     const allGameIds = Object.keys(storeData);
                     if (allGameIds.length > 0) {
                         const emptyEl = document.getElementById('katalog-empty-state');
@@ -1060,10 +1320,10 @@
                         const wrapper = document.getElementById('game-panes-wrapper');
                         if (wrapper) {
                             wrapper.innerHTML = `
-                                <div class="glass p-10 rounded-3xl text-center border border-purple-900/40">
-                                    <i class="fas fa-gamepad text-4xl text-purple-400 mb-4"></i>
-                                    <h4 class="text-xl font-bold text-purple-300 italic">Belum ada Game & Produk</h4>
-                                    <p class="text-sm text-slate-400 mt-2">Silakan tambahkan Game dan Produk baru melalui Admin Panel.</p>
+                                <div class="glass p-12 rounded-3xl text-center border border-white/10">
+                                    <i class="fas fa-gamepad text-4xl text-red-500/70 mb-3"></i>
+                                    <h4 class="text-lg font-bold text-white italic">Belum Ada Kategori Game</h4>
+                                    <p class="text-xs text-zinc-400 mt-1">Tambahkan Game dan Produk melalui Admin Panel.</p>
                                 </div>`;
                         }
                     }
@@ -1077,21 +1337,24 @@
             const container = document.getElementById('home-game-shortcuts');
             if (!container) return;
             if (!games || games.length === 0) {
-                container.innerHTML = "";
+                container.innerHTML = `<div class="col-span-full glass p-8 rounded-2xl text-center text-xs text-zinc-400 italic">Belum ada game yang ditambahkan di Admin Panel.</div>`;
                 return;
             }
             container.innerHTML = games.map(g => {
                 const gId = String(g.gameId || '').trim().toLowerCase();
                 return `
                     <button onclick="switchPage('katalog'); setActiveGame('${gId}')" class="glow-card-wrapper text-left">
-                        <div class="item-card rounded-2xl p-6 flex items-center gap-4 border-tera-purple/20">
-                            <div class="w-14 h-14 rounded-xl bg-tera-purple/15 border border-tera-purple/30 flex items-center justify-center text-2xl text-tera-purple shrink-0">
-                                <i class="fas ${g.gameIcon || 'fa-gamepad'}"></i>
+                        <div class="item-card rounded-2xl p-5 flex items-center justify-between gap-4">
+                            <div class="flex items-center gap-4">
+                                <div class="w-13 h-13 p-3.5 rounded-xl bg-red-500/10 border border-red-500/25 flex items-center justify-center text-2xl text-red-400 shrink-0">
+                                    <i class="fas ${g.gameIcon || 'fa-gamepad'}"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-heading font-bold text-xl italic text-white">${g.gameName}</h4>
+                                    <p class="text-[11px] text-zinc-400 mt-0.5">Lihat Katalog Item</p>
+                                </div>
                             </div>
-                            <div>
-                                <h4 class="font-heading font-bold text-lg italic text-slate-100">${g.gameName}</h4>
-                                <p class="text-xs text-slate-400 mt-1">Klik untuk membuka katalog item</p>
-                            </div>
+                            <i class="fas fa-chevron-right text-zinc-500 text-xs"></i>
                         </div>
                     </button>
                 `;
@@ -1104,35 +1367,37 @@
 
             if (!jokiList || jokiList.length === 0) {
                 container.innerHTML = `
-                    <div class="col-span-full glass p-10 rounded-3xl text-center border border-purple-900/40">
-                        <i class="fas fa-bolt text-4xl text-purple-400 mb-4"></i>
-                        <h4 class="text-xl font-bold text-purple-300 italic">Belum ada Layanan Joki</h4>
-                        <p class="text-sm text-slate-400 mt-2">Silakan tambahkan paket layanan joki melalui Admin Panel.</p>
+                    <div class="col-span-full glass p-12 rounded-3xl text-center border border-white/10">
+                        <i class="fas fa-bolt text-4xl text-red-500/70 mb-3"></i>
+                        <h4 class="text-lg font-bold text-white italic">Belum Ada Paket Joki</h4>
+                        <p class="text-xs text-zinc-400 mt-1">Silakan tambahkan layanan joki melalui Admin Panel.</p>
                     </div>
                 `;
                 return;
             }
 
-            container.innerHTML = "";
-            jokiList.forEach(j => {
-                container.innerHTML += `
+            container.innerHTML = jokiList.map(j => {
+                const safeName = String(j.name).replace(/'/g, "\\'");
+                return `
                     <div class="glow-card-wrapper flex flex-col">
                         <div class="item-card rounded-2xl p-6 relative overflow-hidden flex flex-col flex-grow">
-                            <div class="absolute -top-4 -right-4 p-6 opacity-5 transition-opacity"><i class="fas fa-bolt text-8xl"></i></div>
-                            <h4 class="text-xl font-bold text-white mb-2 italic">${j.name}</h4>
-                            <p class="text-xs text-slate-400 mb-6 leading-relaxed flex-grow">${j.description || '-'}</p>
-                            <div class="flex justify-between items-center bg-[#0f1020] p-3 rounded-xl border border-purple-900/40 mb-4 backdrop-blur-sm">
-                                <span class="text-[10px] text-slate-400 uppercase font-bold tracking-widest">Start Price</span>
-                                <span class="text-tera-gold font-bold">${formatRupiah(Number(j.price) || 0)}</span>
+                            <div class="w-10 h-10 rounded-xl bg-red-500/10 border border-red-500/25 flex items-center justify-center text-red-400 mb-4">
+                                <i class="fas fa-bolt"></i>
+                            </div>
+                            <h4 class="text-lg font-bold text-white mb-2">${j.name}</h4>
+                            <p class="text-xs text-zinc-400 mb-6 leading-relaxed flex-grow">${j.description || '-'}</p>
+                            <div class="flex justify-between items-center bg-black/50 p-3 rounded-xl border border-white/10 mb-4">
+                                <span class="text-[10px] text-zinc-400 uppercase font-bold tracking-wider">Mulai Dari</span>
+                                <span class="text-amber-400 font-extrabold text-sm">${formatRupiah(Number(j.price) || 0)}</span>
                             </div>
                             <div class="grid grid-cols-2 gap-2 mt-auto">
-                                <button onclick="orderJoki('${j.name}', 'tiktok')" class="btn-tiktok w-full bg-black text-white py-2.5 rounded-xl font-bold transition-all border border-white/10 uppercase italic text-[11px] tracking-widest flex items-center justify-center gap-1.5"><i class="fab fa-tiktok"></i> TikTok</button>
-                                <button onclick="orderJoki('${j.name}', 'instagram')" class="btn-ig w-full bg-black text-white py-2.5 rounded-xl font-bold transition-all border border-white/10 uppercase italic text-[11px] tracking-widest flex items-center justify-center gap-1.5"><i class="fab fa-instagram"></i> IG</button>
+                                <button onclick="orderJoki('${safeName}', 'tiktok')" class="btn-tiktok w-full bg-zinc-900 text-white py-2.5 rounded-xl font-bold transition-all border border-white/10 uppercase text-[11px] flex items-center justify-center gap-1.5"><i class="fab fa-tiktok text-pink-500"></i> TikTok</button>
+                                <button onclick="orderJoki('${safeName}', 'instagram')" class="btn-ig w-full bg-zinc-900 text-white py-2.5 rounded-xl font-bold transition-all border border-white/10 uppercase text-[11px] flex items-center justify-center gap-1.5"><i class="fab fa-instagram text-rose-500"></i> IG</button>
                             </div>
                         </div>
                     </div>
                 `;
-            });
+            }).join('');
         }
 
         function ensureGameTabExists(gId, gName, gIcon) {
@@ -1142,8 +1407,8 @@
 
             if (!document.getElementById(`game-btn-${gId}`)) {
                 container.innerHTML += `
-                    <button id="game-btn-${gId}" onclick="setActiveGame('${gId}')" class="game-tab-btn relative overflow-hidden border border-purple-500/30 rounded-2xl py-4 px-6 flex items-center justify-center gap-3 font-bold uppercase italic text-sm tracking-wide text-slate-400 transition-all">
-                        <i class="fas ${gIcon || 'fa-gamepad'} text-lg"></i> ${gName}
+                    <button id="game-btn-${gId}" onclick="setActiveGame('${gId}')" class="game-tab-btn border border-white/10 bg-zinc-900/60 hover:border-red-500/40 rounded-2xl py-3.5 px-6 flex items-center justify-center gap-2.5 font-bold uppercase italic text-xs tracking-wider text-zinc-400 transition-all">
+                        <i class="fas ${gIcon || 'fa-gamepad'} text-sm"></i> ${gName}
                     </button>
                 `;
             }
@@ -1152,7 +1417,7 @@
                 const pane = document.createElement('div');
                 pane.id = `game-pane-${gId}`;
                 pane.className = 'game-pane';
-                pane.innerHTML = `<div class="flex flex-wrap gap-2 mb-8" id="${gId}-section-pills"></div><div id="katalog-container-${gId}" class="space-y-6"></div>`;
+                pane.innerHTML = `<div class="flex flex-wrap gap-2 mb-7" id="${gId}-section-pills"></div><div id="katalog-container-${gId}" class="space-y-6"></div>`;
                 panesWrapper.appendChild(pane);
             }
         }
@@ -1172,8 +1437,8 @@
                 storeData[gId] = storeData[gId] || [];
                 gameMeta[gId] = {
                     name: g.gameName || gId.toUpperCase(),
-                    activeClasses: ['bg-tera-purple','text-white','border-tera-purple','shadow-[0_0_20px_rgba(139,92,246,0.4)]'],
-                    pillActive: 'bg-tera-purple/20 border-tera-purple text-white'
+                    activeClasses: ['bg-red-600','text-white','border-red-500','shadow-[0_0_20px_rgba(220,38,38,0.35)]'],
+                    pillActive: 'bg-red-600/25 border-red-500 text-white'
                 };
                 activeSectionFilter[gId] = 'all';
 
@@ -1193,32 +1458,32 @@
                 const btn = document.getElementById(`game-btn-${g}`);
                 if (!btn) return;
                 if (g === game) {
-                    btn.classList.add('active-game-btn', ...gameMeta[g].activeClasses);
+                    btn.classList.add(...gameMeta[g].activeClasses);
+                    btn.classList.remove('text-zinc-400', 'bg-zinc-900/60');
                 } else {
-                    btn.classList.remove('active-game-btn', ...gameMeta[g].activeClasses);
+                    btn.classList.remove(...gameMeta[g].activeClasses);
+                    btn.classList.add('text-zinc-400', 'bg-zinc-900/60');
                 }
             });
 
-            const searchInput = document.getElementById('searchInput');
-            if (searchInput) searchInput.value = '';
-
             renderSectionPills(game);
-            renderCatalog(game, '');
+            const searchInput = document.getElementById('searchInput');
+            renderCatalog(game, searchInput ? searchInput.value : '');
         }
 
         function renderSectionPills(game) {
             const wrap = document.getElementById(`${game}-section-pills`);
             if (!wrap) return;
             const sections = storeData[game] || [];
-            const meta = gameMeta[game] || { pillActive: 'bg-tera-purple/20 border-tera-purple text-white' };
+            const meta = gameMeta[game] || { pillActive: 'bg-red-600/25 border-red-500 text-white' };
 
-            let html = `<button onclick="filterSection('${game}','all')" data-pill="all" class="section-pill px-4 py-2 rounded-full text-xs font-bold uppercase tracking-wide border transition-all ${activeSectionFilter[game] === 'all' ? meta.pillActive : 'border-purple-900/40 text-slate-400 hover:text-slate-100 hover:border-slate-400'}">
-                <i class="fas fa-layer-group mr-1.5"></i>Semua Section
+            let html = `<button onclick="filterSection('${game}','all')" class="px-4 py-2 rounded-xl text-xs font-bold uppercase tracking-wider border transition-all ${activeSectionFilter[game] === 'all' ? meta.pillActive : 'border-white/10 bg-zinc-900/50 text-zinc-400 hover:text-white'}">
+                <i class="fas fa-layer-group mr-1.5"></i>Semua Kategori
             </button>`;
 
             sections.forEach(sec => {
                 const isActive = activeSectionFilter[game] === sec.id;
-                html += `<button onclick="filterSection('${game}','${sec.id}')" data-pill="${sec.id}" class="section-pill px-4 py-2 rounded-full text-xs font-bold uppercase tracking-wide border transition-all ${isActive ? meta.pillActive : 'border-purple-900/40 text-slate-400 hover:text-slate-100 hover:border-slate-400'}">
+                html += `<button onclick="filterSection('${game}','${sec.id}')" class="px-4 py-2 rounded-xl text-xs font-bold uppercase tracking-wider border transition-all ${isActive ? meta.pillActive : 'border-white/10 bg-zinc-900/50 text-zinc-400 hover:text-white'}">
                     <i class="fas ${sec.icon} mr-1.5"></i>${sec.category}
                 </button>`;
             });
@@ -1251,37 +1516,41 @@
             sections.forEach((section, sIndex) => {
                 if (sectionFilter !== 'all' && section.id !== sectionFilter) return;
 
-                const filteredItems = section.items.filter(item => item.name.toLowerCase().includes(lowerQuery));
+                let filteredItems = section.items.filter(item => item.name.toLowerCase().includes(lowerQuery));
                 if (filteredItems.length === 0) return;
                 foundItems = true;
 
-                const forceOpen = (sectionFilter !== 'all') || lowerQuery.length > 0;
+                // Terapkan pengurutan (Sort)
+                let sortedItems = [...filteredItems];
+                if (currentSort === 'asc') sortedItems.sort((a, b) => a.price - b.price);
+                else if (currentSort === 'desc') sortedItems.sort((a, b) => b.price - a.price);
+                else if (currentSort === 'az') sortedItems.sort((a, b) => a.name.localeCompare(b.name));
+
                 const groupId = `group-${game}-${section.id}`;
 
                 let cardsHtml = '';
-                filteredItems.forEach((item) => {
-                    const iIndex = section.items.indexOf(item);
-                    cardsHtml += renderItemCard(game, section, sIndex, iIndex, item);
+                sortedItems.forEach((item) => {
+                    const originalIndex = section.items.indexOf(item);
+                    cardsHtml += renderItemCard(game, section, sIndex, originalIndex, item);
                 });
 
                 container.innerHTML += `
-                    <div class="section-group glass rounded-3xl border border-purple-900/40 shadow-xl relative overflow-hidden ${forceOpen ? 'open' : ''}" id="${groupId}">
-                        <div class="absolute top-0 right-0 w-32 h-32 bg-tera-purple/5 blur-3xl rounded-full pointer-events-none"></div>
-                        <button onclick="toggleSectionGroup('${groupId}')" class="w-full flex items-center justify-between gap-4 p-6 md:p-7 relative z-10 text-left">
-                            <div class="flex items-center gap-4">
-                                <div class="w-12 h-12 rounded-xl bg-[#1a1b2e] flex items-center justify-center border border-purple-900/40 shadow-inner shrink-0">
-                                    <i class="fas ${section.icon} text-2xl ${section.color}"></i>
+                    <div class="section-group glass rounded-3xl border border-white/10 overflow-hidden open" id="${groupId}">
+                        <button onclick="toggleSectionGroup('${groupId}')" class="w-full flex items-center justify-between gap-4 p-5 md:p-6 text-left hover:bg-white/[0.02] transition-colors">
+                            <div class="flex items-center gap-3.5">
+                                <div class="w-11 h-11 rounded-xl bg-red-500/10 flex items-center justify-center border border-red-500/25 shrink-0">
+                                    <i class="fas ${section.icon} text-lg text-red-400"></i>
                                 </div>
                                 <div>
-                                    <h4 class="text-xl md:text-2xl font-bold italic ${section.color}">${section.category}</h4>
-                                    <p class="text-[11px] text-purple-300 uppercase tracking-wider font-bold mt-0.5">${filteredItems.length} Item</p>
+                                    <h4 class="text-lg md:text-xl font-heading font-bold italic uppercase text-white">${section.category}</h4>
+                                    <p class="text-[10px] text-zinc-400 uppercase tracking-wider font-semibold">${filteredItems.length} Produk Tersedia</p>
                                 </div>
                             </div>
-                            <i class="fas fa-chevron-down section-chevron text-purple-400 text-lg shrink-0"></i>
+                            <i class="fas fa-chevron-down section-chevron text-red-400 text-sm shrink-0"></i>
                         </button>
-                        <div class="section-body relative z-10">
+                        <div class="section-body">
                             <div>
-                                <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-6 px-6 md:px-7 pb-7">
+                                <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4 px-5 md:px-6 pb-6">
                                     ${cardsHtml}
                                 </div>
                             </div>
@@ -1292,73 +1561,60 @@
 
             if (!foundItems) {
                 container.innerHTML = `
-                    <div class="glass p-10 rounded-3xl text-center border border-purple-900/40">
-                        <i class="fas fa-box-open text-4xl text-purple-400 mb-4"></i>
-                        <h4 class="text-xl font-bold text-purple-300 italic">Belum ada item di game ini</h4>
-                        <p class="text-sm text-slate-400 mt-2">Silakan tambahkan produk dan kategori baru melalui Admin Panel.</p>
+                    <div class="glass p-12 rounded-3xl text-center border border-white/10">
+                        <i class="fas fa-box-open text-3xl text-red-400/70 mb-3"></i>
+                        <h4 class="text-base font-bold text-white italic">Item Tidak Ditemukan</h4>
+                        <p class="text-xs text-zinc-400 mt-1">Coba kata kunci lain atau tambahkan produk di Admin Panel.</p>
                     </div>
                 `;
             }
         }
 
-        function rarityClass(rarity) {
-            if (!rarity) return '';
-            const key = rarity.toLowerCase();
-            const map = {
-                common: 'rarity-common', uncommon: 'rarity-uncommon', rare: 'rarity-rare',
-                epic: 'rarity-epic', legendary: 'rarity-legendary', mythical: 'rarity-mythical',
-                divine: 'rarity-divine', prismatic: 'rarity-prismatic'
-            };
-            return map[key] || '';
-        }
-
         function renderItemCard(game, section, sIndex, iIndex, item) {
             const itemId = `item-${game}-${sIndex}-${iIndex}`;
-            const badge = item.tag ? `<div class="absolute -top-3 -right-3 bg-gradient-to-br from-red-500 to-pink-600 text-white text-[10px] font-black px-3 py-1 rounded-full shadow-[0_0_15px_rgba(220,38,38,0.6)] italic z-20">${item.tag}</div>` : '';
 
             let mediaHtml = '';
             if (item.image && item.image !== "") {
-                mediaHtml = `<img src="${item.image}" alt="${item.name}" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" onerror="this.onerror=null; this.replaceWith(Object.assign(document.createElement('div'), {className:'w-full h-full flex items-center justify-center bg-[#1a1b2e] text-4xl', textContent: '${item.emoji || '🎁'}'}));">`;
+                mediaHtml = `<img src="${item.image}" alt="${item.name}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" onerror="this.outerHTML='<div class=\\'w-full h-full flex items-center justify-center bg-zinc-900 text-3xl\\'>🎁</div>'">`;
             } else {
-                mediaHtml = `<div class="w-full h-full flex items-center justify-center bg-[#1a1b2e] group-hover:scale-110 transition-transform duration-500 text-4xl">${item.emoji || '🎁'}</div>`;
+                mediaHtml = `<div class="w-full h-full flex items-center justify-center bg-zinc-900 group-hover:scale-105 transition-transform duration-500 text-3xl">${item.emoji || '🎁'}</div>`;
             }
-
-            const rarityPill = item.rarity ? `<span class="text-[9px] font-bold uppercase px-2 py-0.5 rounded-full mb-2 ${rarityClass(item.rarity)}">${item.rarity}</span>` : '';
 
             return `
                 <div class="glow-card-wrapper flex flex-col">
-                    <div class="item-card rounded-2xl p-4 flex flex-col items-center text-center relative group flex-grow">
-                        ${badge}
-                        <div class="w-full aspect-square mb-4 rounded-xl overflow-hidden border border-purple-900/40 bg-[#1a1b2e] relative shadow-inner">
+                    <div class="item-card rounded-2xl p-3.5 flex flex-col items-center text-center relative group flex-grow">
+                        <div class="w-full aspect-square mb-3 rounded-xl overflow-hidden border border-white/10 bg-zinc-950 relative">
                             ${mediaHtml}
-                            <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                         </div>
-                        ${rarityPill}
-                        <h5 class="text-sm font-bold text-white mb-2 h-10 flex items-center justify-center leading-tight w-full drop-shadow-md">${item.name}</h5>
-                        <span class="text-[10px] text-purple-300 mb-2 tracking-wider">Harga: ${formatRupiah(item.price)}</span>
-                        <p id="total-${itemId}" class="text-tera-gold text-sm font-black mb-4 bg-gradient-to-r from-tera-gold/5 via-tera-gold/10 to-tera-gold/5 px-2 py-1.5 rounded-lg w-full border border-tera-gold/30 shadow-inner" data-baseprice="${item.price}">
+                        <h5 class="text-xs font-bold text-zinc-100 mb-1.5 h-8 flex items-center justify-center leading-snug w-full line-clamp-2">${item.name}</h5>
+                        <p id="total-${itemId}" class="text-amber-400 text-xs font-extrabold mb-3 bg-amber-500/10 px-2 py-1 rounded-lg w-full border border-amber-500/20" data-baseprice="${item.price}">
                             ${formatRupiah(item.price)}
                         </p>
-                        <div class="flex items-center justify-between w-full bg-[#0f1020] rounded-xl p-1.5 border border-purple-900/40 mb-4 shadow-inner mt-auto">
-                            <button onclick="updateQty('${itemId}', -1)" class="w-7 h-7 rounded-lg flex items-center justify-center text-slate-400 hover:text-slate-100 hover:bg-purple-900/40 transition-colors">
-                                <i class="fas fa-minus text-xs"></i>
+                        <div class="flex items-center justify-between w-full bg-black/60 rounded-xl p-1 border border-white/10 mb-3 mt-auto">
+                            <button onclick="updateQty('${itemId}', -1)" class="w-6 h-6 rounded-lg flex items-center justify-center text-zinc-400 hover:text-white hover:bg-white/10 transition-colors">
+                                <i class="fas fa-minus text-[10px]"></i>
                             </button>
-                            <span id="qty-${itemId}" class="text-sm font-bold w-8 text-center text-white">1</span>
-                            <button onclick="updateQty('${itemId}', 1)" class="w-7 h-7 rounded-lg flex items-center justify-center text-slate-400 hover:text-slate-100 hover:bg-purple-900/40 transition-colors">
-                                <i class="fas fa-plus text-xs"></i>
+                            <span id="qty-${itemId}" class="text-xs font-bold w-6 text-center text-white">1</span>
+                            <button onclick="updateQty('${itemId}', 1)" class="w-6 h-6 rounded-lg flex items-center justify-center text-zinc-400 hover:text-white hover:bg-white/10 transition-colors">
+                                <i class="fas fa-plus text-[10px]"></i>
                             </button>
                         </div>
 
-                        <button onclick="addToCart('${game}', ${sIndex}, ${iIndex}, '${itemId}')" class="w-full bg-tera-purple text-white hover:bg-emerald-600 border border-tera-purple/50 text-xs font-bold py-2.5 rounded-xl transition-all uppercase tracking-wider flex items-center justify-center gap-2 shadow-[0_0_15px_rgba(5,150,105,0.4)]">
-                            <i class="fas fa-cart-plus"></i> Add to Cart
-                        </button>
+                        <div class="flex gap-1.5 w-full">
+                            <button onclick="addToCart('${game}', ${sIndex}, ${iIndex}, '${itemId}', false)" class="btn-crimson flex-grow text-white text-[11px] font-bold py-2.5 rounded-xl transition-all uppercase tracking-wider flex items-center justify-center gap-1.5">
+                                <i class="fas fa-cart-plus"></i> +Keranjang
+                            </button>
+                            <button onclick="addToCart('${game}', ${sIndex}, ${iIndex}, '${itemId}', true)" title="Beli Instan" class="bg-amber-500/15 hover:bg-amber-500 text-amber-400 hover:text-black border border-amber-500/30 w-9 rounded-xl flex items-center justify-center transition-all shrink-0">
+                                <i class="fas fa-bolt text-xs"></i>
+                            </button>
+                        </div>
                     </div>
                 </div>
             `;
         }
 
-        // Init: Ambil data live dari Google Sheets & jalankan sistem Login
         document.addEventListener('DOMContentLoaded', () => {
+            loadSavedCart();
             fetchStoreDataFromSheets(); 
             initLoginState();
         });
@@ -1457,14 +1713,10 @@
                     alertMsg.textContent = 'Username atau password salah. Coba lagi.';
                     alertEl.classList.remove('hidden');
                 }
-            }, 1500);
+            }, 1000);
         }
 
         function handleDiscordLogin() {
-            if (DISCORD_CLIENT_ID === 'GANTI_DENGAN_CLIENT_ID_DISCORD_MU') {
-                showOAuthInfo('discord');
-                return;
-            }
             const state = Math.random().toString(36).substring(2);
             sessionStorage.setItem('discord_oauth_state', state);
             const params = new URLSearchParams({
@@ -1481,18 +1733,6 @@
             const cleanUrl = window.location.pathname;
             window.history.replaceState({}, document.title, cleanUrl);
 
-            if (DISCORD_WORKER_URL === 'GANTI_DENGAN_URL_WORKER_MU') {
-                const session = {
-                    username: 'Discord User',
-                    avatar: null,
-                    provider: 'discord',
-                    loggedAt: Date.now()
-                };
-                sessionStorage.setItem(TERA_SESSION_KEY, JSON.stringify(session));
-                setLoggedInUI('Discord User', null, 'discord');
-                return;
-            }
-
             try {
                 const res = await fetch(DISCORD_WORKER_URL, {
                     method: 'POST',
@@ -1500,10 +1740,7 @@
                     body: JSON.stringify({ code: code })
                 });
                 const data = await res.json();
-
-                if (!res.ok) {
-                    throw new Error(data.error || 'Gagal login Discord');
-                }
+                if (!res.ok) throw new Error(data.error || 'Gagal login Discord');
 
                 const session = {
                     username: data.username,
@@ -1515,76 +1752,15 @@
                 sessionStorage.setItem(TERA_SESSION_KEY, JSON.stringify(session));
                 setLoggedInUI(data.username, data.avatar, 'discord');
             } catch (err) {
-                const alertEl = document.getElementById('modal-alert-error');
-                const alertMsg = document.getElementById('modal-alert-msg');
-                if (alertEl && alertMsg) {
-                    alertMsg.textContent = 'Login Discord gagal: ' + err.message;
-                    alertEl.classList.remove('hidden');
-                    openLoginModal();
-                }
+                openLoginModal();
             }
-        }
-
-        function showOAuthInfo(provider) {
-            const isGoogle = provider === 'google';
-            const title = isGoogle ? 'Setup Login Google' : 'Setup Login Discord';
-            const icon = isGoogle 
-                ? '<svg class="w-6 h-6 inline mr-2" viewBox="0 0 24 24"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg>'
-                : '<i class="fab fa-discord mr-2" style="color:#5865F2;font-size:1.4rem;vertical-align:middle;"></i>';
-            
-            const steps = isGoogle ? `
-                <li>Buka <a href="https://console.firebase.google.com" target="_blank" style="color:#a78bfa;text-decoration:underline;">console.firebase.google.com</a></li>
-                <li>Buat proyek baru → pilih <b>Authentication</b> → <b>Sign-in method</b></li>
-                <li>Aktifkan <b>Google</b> sebagai provider</li>
-                <li>Di Project Settings → salin <b>firebaseConfig</b></li>
-                <li>Tempel konfigurasi ke bagian <code style="background:rgba(255,255,255,0.1);padding:2px 6px;border-radius:4px;">firebaseConfig</code> di kode HTML</li>
-                <li>Tambahkan domain situsmu ke <b>Authorized domains</b></li>
-            ` : `
-                <li>Buka <a href="https://discord.com/developers/applications" target="_blank" style="color:#a78bfa;text-decoration:underline;">discord.com/developers/applications</a></li>
-                <li>Buat aplikasi baru → buka tab <b>OAuth2</b></li>
-                <li>Salin <b>CLIENT ID</b> dan tempel ke variabel <code style="background:rgba(255,255,255,0.1);padding:2px 6px;border-radius:4px;">DISCORD_CLIENT_ID</code></li>
-                <li>Di bagian <b>Redirects</b>, tambahkan URL halaman ini:<br><code style="background:rgba(255,255,255,0.1);padding:2px 6px;border-radius:4px;font-size:11px;word-break:break-all;">${DISCORD_REDIRECT_URL}</code></li>
-            `;
-
-            const overlay = document.createElement('div');
-            overlay.id = 'oauth-info-overlay';
-            overlay.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,0.85);z-index:9999;display:flex;align-items:center;justify-content:center;padding:1rem;backdrop-filter:blur(4px);';
-            overlay.innerHTML = `
-                <div style="background:#0f1020;border:1px solid rgba(139,92,246,0.3);border-radius:1.25rem;padding:2rem;max-width:480px;width:100%;box-shadow:0 0 60px rgba(139,92,246,0.2);animation:slideUp 0.4s ease forwards;">
-                    <div style="text-align:center;margin-bottom:1.5rem;">
-                        <div style="font-size:1.4rem;font-weight:900;font-style:italic;text-transform:uppercase;font-family:'Rajdhani',sans-serif;">${icon}${title}</div>
-                        <p style="color:#94a3b8;font-size:0.8rem;margin-top:0.5rem;">Ikuti langkah berikut untuk mengaktifkan login ini</p>
-                    </div>
-                    <ol style="color:#e2e8f0;font-size:0.85rem;line-height:1.8;padding-left:1.25rem;display:flex;flex-direction:column;gap:0.4rem;">
-                        ${steps}
-                    </ol>
-                    <button onclick="document.getElementById('oauth-info-overlay').remove()" style="margin-top:1.5rem;width:100%;padding:0.85rem;background:linear-gradient(135deg,#8b5cf6,#6366f1);color:white;font-weight:700;border:none;border-radius:0.75rem;cursor:pointer;text-transform:uppercase;letter-spacing:0.1em;font-size:0.8rem;">
-                        Mengerti, Tutup
-                    </button>
-                </div>
-            `;
-            document.body.appendChild(overlay);
-            overlay.addEventListener('click', (e) => { if (e.target === overlay) overlay.remove(); });
         }
 
         function setLoggedInUI(username, avatarUrl, provider) {
-            let avatarHTML = '';
-            if (avatarUrl) {
-                avatarHTML = `<img src="${avatarUrl}" class="w-6 h-6 rounded-full object-cover border border-tera-purple/50" alt="avatar">`;
-            } else if (provider === 'discord') {
-                avatarHTML = `<div class="w-6 h-6 rounded-full bg-[#5865F2]/30 border border-[#5865F2]/50 flex items-center justify-center"><i class="fab fa-discord text-[10px] text-[#5865F2]"></i></div>`;
-            } else if (provider === 'google') {
-                avatarHTML = `<div class="w-6 h-6 rounded-full bg-[#4285F4]/30 border border-[#4285F4]/50 flex items-center justify-center"><svg class="w-3 h-3" viewBox="0 0 24 24"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg></div>`;
-            } else {
-                avatarHTML = `<div class="w-6 h-6 rounded-full bg-tera-purple/30 border border-tera-purple/50 flex items-center justify-center"><i class="fas fa-user text-[10px] text-tera-purple"></i></div>`;
-            }
-
             document.getElementById('nav-login-btn').classList.add('hidden');
             const userInfo = document.getElementById('nav-user-info');
             userInfo.classList.remove('hidden');
             userInfo.classList.add('flex');
-            const navAvatarEl = userInfo.querySelector('.w-6.h-6.rounded-full');
-            if (navAvatarEl) navAvatarEl.outerHTML = avatarHTML;
             document.getElementById('nav-username').textContent = username;
 
             document.getElementById('mobile-login-btn').classList.add('hidden');
@@ -1612,17 +1788,6 @@
             mobileUserInfo.classList.add('hidden');
             mobileUserInfo.classList.remove('flex');
         }
-
-        document.addEventListener('keydown', function(e) {
-            if (e.key === 'Escape') {
-                closeLoginModal();
-                const oauthOverlay = document.getElementById('oauth-info-overlay');
-                if (oauthOverlay) oauthOverlay.remove();
-            }
-            if (e.key === 'Enter' && !document.getElementById('login-modal').classList.contains('hidden')) {
-                handleModalLogin();
-            }
-        });
     </script>
 </body>
 </html>
