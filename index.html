@@ -852,14 +852,24 @@
                 <!-- Cart items dirender via JS -->
             </div>
 
-            <!-- Footer Modal (Checkout) -->
-            <div class="p-5 border-t border-purple-900/40 bg-[#0f1020]">
-                <div class="flex justify-between items-center mb-5 bg-[#1a1b2e] p-3 rounded-xl border border-purple-900/40 shadow-inner">
+ <!-- Footer Modal (Checkout) -->
+            <div class="p-5 border-t border-purple-900/40 bg-[#0f1020] space-y-3">
+                <!-- Input Username Roblox & Catatan -->
+                <div>
+                    <label class="text-[10px] text-slate-400 font-bold uppercase tracking-widest block mb-1">Username Roblox <span class="text-red-400">*</span></label>
+                    <input type="text" id="checkout-roblox" placeholder="Cth: LordAlpha_Rblx (Wajib diisi)" class="input-field w-full px-3.5 py-2.5 rounded-xl text-xs font-medium">
+                </div>
+                <div>
+                    <label class="text-[10px] text-slate-400 font-bold uppercase tracking-widest block mb-1">Catatan Pesanan (Opsional)</label>
+                    <input type="text" id="checkout-note" placeholder="Cth: Ketemuan di Sea 1 / NO WA aktif" class="input-field w-full px-3.5 py-2.5 rounded-xl text-xs font-medium">
+                </div>
+
+                <div class="flex justify-between items-center bg-[#1a1b2e] p-3 rounded-xl border border-purple-900/40 shadow-inner">
                     <span class="text-xs text-slate-400 font-bold uppercase tracking-widest">Total Harga</span>
                     <span id="cart-total" class="text-lg font-black text-tera-gold">Rp 0</span>
                 </div>
-                <button onclick="openPaymentModal()" class="w-full bg-gradient-to-r from-tera-purple to-tera-blue text-white py-3.5 rounded-xl font-bold transition-all border border-white/10 uppercase italic text-[12px] tracking-widest flex items-center justify-center gap-2 shadow-[0_0_20px_rgba(139,92,246,0.4)] hover:shadow-[0_0_28px_rgba(139,92,246,0.6)] hover:-translate-y-0.5">
-                    <i class="fas fa-qrcode text-lg"></i> Bayar dengan QRIS
+                <button id="btn-checkout-qris" onclick="openPaymentModal()" class="w-full bg-gradient-to-r from-tera-purple to-tera-blue text-white py-3.5 rounded-xl font-bold transition-all border border-white/10 uppercase italic text-[12px] tracking-widest flex items-center justify-center gap-2 shadow-[0_0_20px_rgba(139,92,246,0.4)] hover:shadow-[0_0_28px_rgba(139,92,246,0.6)] hover:-translate-y-0.5">
+                    <i class="fas fa-qrcode text-lg"></i> Bayar dengan QRIS Otomatis
                 </button>
             </div>
         </div>
@@ -877,24 +887,27 @@
                 <!-- Header -->
                 <div class="p-5 border-b border-purple-900/40 flex justify-between items-center bg-[#1a1b2e] relative z-10">
                     <h3 class="text-lg font-heading font-black italic text-slate-100 flex items-center gap-2">
-                        <i class="fas fa-qrcode text-tera-gold"></i> Pembayaran QRIS
+                        <i class="fas fa-qrcode text-tera-gold"></i> Pembayaran QRIS Otomatis
                     </h3>
                     <button onclick="closePaymentModal()" class="text-slate-400 hover:text-slate-100 transition-colors p-2 rounded-lg hover:bg-purple-900/40">
                         <i class="fas fa-times text-xl"></i>
                     </button>
                 </div>
 
-                <!-- Body -->
-                <div class="p-5 relative z-10 space-y-4">
-                    <!-- Order info -->
-                    <div class="bg-[#1a1b2e] rounded-xl p-3 border border-purple-900/40 flex items-center justify-between">
-                        <div>
-                            <p class="text-[10px] text-slate-400 uppercase tracking-wider font-bold">No. Pesanan</p>
-                            <p id="payment-order-id" class="text-sm font-black text-purple-300">-</p>
+                <!-- Body: Menunggu Pembayaran -->
+                <div id="qris-waiting-view" class="p-5 relative z-10 space-y-4">
+                    <div class="bg-[#1a1b2e] rounded-xl p-3 border border-purple-900/40 space-y-2">
+                        <div class="flex items-center justify-between border-b border-white/10 pb-2">
+                            <span class="text-[10px] text-slate-400 uppercase tracking-wider font-bold">No. Pesanan</span>
+                            <span id="payment-order-id" class="text-xs font-black text-purple-300">-</span>
                         </div>
-                        <div class="text-right">
-                            <p class="text-[10px] text-slate-400 uppercase tracking-wider font-bold">Total Bayar</p>
-                            <p id="payment-total" class="text-lg font-black text-tera-gold">Rp 0</p>
+                        <div class="flex items-center justify-between border-b border-white/10 pb-2">
+                            <span class="text-[10px] text-slate-400 uppercase tracking-wider font-bold">Kode Unik Otomatis</span>
+                            <span id="payment-unique-code" class="text-xs font-bold text-emerald-400">+Rp 0</span>
+                        </div>
+                        <div class="flex items-center justify-between pt-1">
+                            <span class="text-[11px] text-white uppercase tracking-wider font-bold">Wajib Transfer Persis</span>
+                            <span id="payment-total" class="text-xl font-black text-tera-gold animate-pulse">Rp 0</span>
                         </div>
                     </div>
 
@@ -903,19 +916,32 @@
                         <img src="assets/qris.jpg" alt="QRIS TERA STORE" class="w-full rounded-xl">
                     </div>
 
+                    <!-- Status Pengecekan Real-Time -->
+                    <div class="bg-tera-purple/15 border border-tera-purple/40 rounded-xl p-3 flex items-center justify-center gap-3">
+                        <i class="fas fa-spinner fa-spin text-tera-purple text-lg"></i>
+                        <span class="text-xs font-bold text-slate-200">Menunggu pembayaran masuk... (Dicek otomatis)</span>
+                    </div>
+
                     <div class="bg-amber-500/10 border border-amber-500/30 rounded-xl p-3 flex gap-2.5">
-                        <i class="fas fa-circle-info text-amber-400 mt-0.5 shrink-0"></i>
+                        <i class="fas fa-triangle-exclamation text-amber-400 mt-0.5 shrink-0"></i>
                         <p class="text-[11px] text-amber-200 leading-relaxed">
-                            Scan QRIS di atas menggunakan aplikasi m-banking / e-wallet (DANA, GoPay, OVO, dll) sejumlah <span class="font-bold">total bayar</span> di atas. Setelah transfer berhasil, klik tombol konfirmasi di bawah dan kirimkan <span class="font-bold">screenshot bukti bayar</span> beserta No. Pesanan ke admin.
+                            PENTING: Masukkan nominal transfer <span class="font-bold underline text-white">persis hingga 3 digit terakhir</span> sesuai angka <span class="font-bold text-tera-gold">Wajib Transfer Persis</span> di atas agar terverifikasi otomatis oleh sistem dalam 5 detik!
                         </p>
                     </div>
+                </div>
 
-                    <p class="text-center text-[11px] text-slate-400 italic">Pilih kanal konfirmasi pembayaran:</p>
-
-                    <div class="grid grid-cols-2 gap-3">
-                        <button onclick="confirmPayment('tiktok')" class="btn-tiktok w-full bg-black text-white py-3 rounded-xl font-bold transition-all border border-white/10 uppercase italic text-[11px] tracking-widest flex items-center justify-center gap-1.5 shadow-lg"><i class="fab fa-tiktok text-lg"></i> Konfirmasi</button>
-                        <button onclick="confirmPayment('instagram')" class="btn-ig w-full bg-black text-white py-3 rounded-xl font-bold transition-all border border-white/10 uppercase italic text-[11px] tracking-widest flex items-center justify-center gap-1.5 shadow-lg"><i class="fab fa-instagram text-lg"></i> Konfirmasi</button>
+                <!-- Body: Pembayaran Sukses Lunas Otomatis -->
+                <div id="qris-success-view" class="p-6 relative z-10 text-center space-y-4 hidden">
+                    <div class="w-20 h-20 rounded-full bg-emerald-500/20 border-2 border-emerald-400 flex items-center justify-center mx-auto text-4xl text-emerald-400 shadow-[0_0_30px_rgba(16,185,129,0.4)]">
+                        <i class="fas fa-check"></i>
                     </div>
+                    <h4 class="text-2xl font-heading font-black italic uppercase text-emerald-400">Pembayaran Lunas!</h4>
+                    <p class="text-xs text-slate-300 leading-relaxed">
+                        Terima kasih! Pembayaranmu telah diterima otomatis dan notifikasi pesanan sudah masuk ke WhatsApp <strong class="text-white">Admin Tera</strong>. Pesananmu sedang segera diproses!
+                    </p>
+                    <button onclick="closePaymentModal()" class="w-full bg-emerald-500 hover:bg-emerald-600 text-white py-3 rounded-xl font-bold uppercase tracking-widest text-xs transition-all">
+                        Selesai & Tutup
+                    </button>
                 </div>
             </div>
         </div>
@@ -1048,7 +1074,9 @@
             if (cartTotal) cartTotal.innerText = formatRupiah(totalPrice);
         }
 
+const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyx33ntFyF_QFbH15j8kbJJiEiI1wNwzk_eR4_EpPj4HeHZMR5NAGKkbUPtC5G4QGDv/exec";
         let currentOrderId = null;
+        let paymentCheckInterval = null;
 
         function generateOrderId() {
             const now = new Date();
@@ -1059,46 +1087,96 @@
             return `TERA-${datePart}-${randPart}`;
         }
 
-        function openPaymentModal() {
+        async function openPaymentModal() {
             if (cart.length === 0) {
                 alert("Keranjang masih kosong! Silakan tambahkan item terlebih dahulu.");
                 return;
             }
 
-            let totalAll = 0;
-            cart.forEach(c => { totalAll += (c.price * c.qty); });
+            const robloxUser = document.getElementById('checkout-roblox').value.trim();
+            const buyerNote = document.getElementById('checkout-note').value.trim();
+
+            if (!robloxUser) {
+                alert("⚠️ Wajib mengisi Username Roblox kamu terlebih dahulu sebelum membayar!");
+                document.getElementById('checkout-roblox').focus();
+                return;
+            }
+
+            const btn = document.getElementById('btn-checkout-qris');
+            const originalBtnHtml = btn.innerHTML;
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Membuat Kode Unik...';
+            btn.disabled = true;
+
+            let baseTotal = 0;
+            let itemsList = "";
+            cart.forEach((c, i) => {
+                const gameLabel = c.game === 'sailorpiece' ? '[Sailor Piece]' : (c.game === 'gag1' ? '[GAG 1]' : '[GAG 2]');
+                itemsList += `${i+1}. ${gameLabel} ${c.name} (${c.qty}x)\n`;
+                baseTotal += (c.price * c.qty);
+            });
 
             currentOrderId = generateOrderId();
-            document.getElementById('payment-order-id').innerText = currentOrderId;
-            document.getElementById('payment-total').innerText = formatRupiah(totalAll);
 
-            document.getElementById('cartModal').classList.add('hidden');
-            document.getElementById('paymentModal').classList.remove('hidden');
+            try {
+                const response = await fetch(GOOGLE_SCRIPT_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+                    body: JSON.stringify({
+                        action: "create_order",
+                        orderId: currentOrderId,
+                        robloxUser: robloxUser,
+                        buyerNote: buyerNote || "-",
+                        items: itemsList.trim(),
+                        baseTotal: baseTotal
+                    })
+                });
+
+                const result = await response.json();
+
+                if (result.status === "success") {
+                    document.getElementById('payment-order-id').innerText = currentOrderId;
+                    document.getElementById('payment-unique-code').innerText = `+Rp ${result.uniqueCode}`;
+                    document.getElementById('payment-total').innerText = formatRupiah(result.finalAmount);
+
+                    document.getElementById('qris-waiting-view').classList.remove('hidden');
+                    document.getElementById('qris-success-view').classList.add('hidden');
+
+                    document.getElementById('cartModal').classList.add('hidden');
+                    document.getElementById('paymentModal').classList.remove('hidden');
+
+                    // Mulai cek status otomatis ke Google Sheets setiap 4 detik
+                    startCheckingPayment(currentOrderId);
+                } else {
+                    alert("Gagal membuat pesanan: " + (result.message || "Coba lagi."));
+                }
+            } catch (err) {
+                alert("Terjadi kesalahan koneksi ke server pesanan. Pastikan internet stabil.");
+            } finally {
+                btn.innerHTML = originalBtnHtml;
+                btn.disabled = false;
+            }
+        }
+
+        function startCheckingPayment(orderId) {
+            if (paymentCheckInterval) clearInterval(paymentCheckInterval);
+            paymentCheckInterval = setInterval(async () => {
+                try {
+                    const res = await fetch(`${GOOGLE_SCRIPT_URL}?orderId=${orderId}`);
+                    const data = await res.json();
+                    if (data.status === "LUNAS") {
+                        clearInterval(paymentCheckInterval);
+                        document.getElementById('qris-waiting-view').classList.add('hidden');
+                        document.getElementById('qris-success-view').classList.remove('hidden');
+                        cart = [];
+                        updateCartUI();
+                    }
+                } catch (e) {}
+            }, 4000);
         }
 
         function closePaymentModal() {
+            if (paymentCheckInterval) clearInterval(paymentCheckInterval);
             document.getElementById('paymentModal').classList.add('hidden');
-        }
-
-        function confirmPayment(platform) {
-            if (cart.length === 0) {
-                alert("Keranjang masih kosong! Silakan tambahkan item terlebih dahulu.");
-                return;
-            }
-
-            let textMsg = `Halo min,\n\nSaya sudah melakukan pembayaran QRIS untuk pesanan berikut dari TERA STORE:\n\n`;
-            textMsg += `No. Pesanan: ${currentOrderId}\n\n`;
-            let totalAll = 0;
-
-            cart.forEach((c, i) => {
-                const gameLabel = c.game === 'gag' ? '[Grow a Garden]' : '[Sailor Piece]';
-                textMsg += `${i+1}. ${gameLabel} ${c.name}\n   └ ${c.qty}x = ${formatRupiah(c.price * c.qty)}\n`;
-                totalAll += (c.price * c.qty);
-            });
-
-            textMsg += `\n💰 Total Pembayaran: ${formatRupiah(totalAll)}\n\nBerikut saya lampirkan screenshot bukti transfer QRIS. Mohon segera diproses, terima kasih!`;
-
-            copyToClipboardAndRedirect(textMsg, platform);
         }
 
         function formatRupiah(angka) {
