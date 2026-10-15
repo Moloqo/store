@@ -1318,35 +1318,39 @@ async function fetchStoreDataFromSheets() {
         const res = await fetch(GOOGLE_SCRIPT_URL);
         const data = await res.json();
         
-        if (data.status === "success" && data.products && data.products.length > 0) {
-            data.products.forEach(p => {
-                if (!storeData[p.gameId]) {
-                    storeData[p.gameId] = [];
-                }
-                
-                let cat = storeData[p.gameId].find(c => c.category.toLowerCase() === p.category.toLowerCase());
-                if (!cat) {
-                    cat = {
-                        id: p.category.toLowerCase().replace(/\s+/g, '-'),
-                        category: p.category,
-                        color: "text-purple-400",
-                        icon: "fa-box",
-                        items: []
-                    };
-                    storeData[p.gameId].push(cat);
-                }
-                
-                const itemExist = cat.items.some(i => i.name.toLowerCase() === p.name.toLowerCase());
-                if (!itemExist) {
-                    cat.items.push({
-                        name: p.name,
-                        price: Number(p.price),
-                        image: p.image || "",
-                        emoji: "🎁"
-                    });
-                }
-            });
+        if (data.status === "success") {
+            // 1. Gabungkan Produk Baru
+            if (data.products && data.products.length > 0) {
+                data.products.forEach(p => {
+                    if (!storeData[p.gameId]) {
+                        storeData[p.gameId] = [];
+                    }
+                    
+                    let cat = storeData[p.gameId].find(c => c.category.toLowerCase() === p.category.toLowerCase());
+                    if (!cat) {
+                        cat = {
+                            id: p.category.toLowerCase().replace(/\s+/g, '-'),
+                            category: p.category,
+                            color: "text-purple-400",
+                            icon: "fa-box",
+                            items: []
+                        };
+                        storeData[p.gameId].push(cat);
+                    }
+                    
+                    const itemExist = cat.items.some(i => i.name.toLowerCase() === p.name.toLowerCase());
+                    if (!itemExist) {
+                        cat.items.push({
+                            name: p.name,
+                            price: Number(p.price),
+                            image: p.image || "",
+                            emoji: "🎁"
+                        });
+                    }
+                });
+            }
 
+            // 2. Render Tombol Game Baru dari Sheets secara Otomatis
             if (data.games && data.games.length > 0) {
                 renderDynamicGameNav(data.games);
             }
@@ -1357,17 +1361,39 @@ async function fetchStoreDataFromSheets() {
     setActiveGame(activeGame);
 }
 
+// Fungsi dinamis untuk membuat tombol game baru di menu utama
 function renderDynamicGameNav(games) {
-    const container = document.querySelector('.grid.grid-cols-3.gap-3.mb-10');
+    const container = document.querySelector('.grid.grid-cols-3.gap-3.mb-10') || document.getElementById('game-toggle-container');
     if (!container || !games) return;
 
+    // Ubah jumlah kolom grid menyesuaikan jumlah game (misal jadi 4 kolom jika ada 4 game)
+    container.className = `grid grid-cols-${Math.min(games.length, 3)} gap-3 mb-10 max-w-2xl`;
+
     games.forEach(g => {
+        // Cek apakah tombol game tersebut sudah ada di web, jika belum, tambahkan
         if (!document.getElementById(`game-btn-${g.gameId}`)) {
+            // Buat wadah pane katalog untuk game baru secara otomatis di belakang layar
+            let pane = document.getElementById(`game-pane-${g.gameId}`);
+            if (!pane) {
+                pane = document.createElement('div');
+                pane.id = `game-pane-${g.gameId}`;
+                pane.className = 'game-pane';
+                pane.innerHTML = `<div class="flex flex-wrap gap-2 mb-8" id="${g.gameId}-section-pills"></div><div id="katalog-container-${g.gameId}" class="space-y-6"></div>`;
+                document.getElementById('katalog').appendChild(pane);
+            }
+
+            // Tambahkan tombol navigasi game baru ke sebelah tombol lama
             container.innerHTML += `
                 <button id="game-btn-${g.gameId}" onclick="setActiveGame('${g.gameId}')" class="game-tab-btn relative overflow-hidden border border-purple-500/30 rounded-2xl py-4 px-4 flex items-center justify-center gap-3 font-bold uppercase italic text-sm tracking-wide text-slate-400 transition-all">
                     <i class="fas ${g.gameIcon || 'fa-gamepad'} text-lg"></i> ${g.gameName}
                 </button>
             `;
+
+            // Daftarkan metadata warnanya agar tombol menyala saat diklik
+            if (!gameMeta[g.gameId]) {
+                gameMeta[g.gameId] = { activeClasses: ['bg-tera-purple','text-white','border-tera-purple'], pillActive: 'bg-tera-purple/20 border-tera-purple text-white' };
+                activeSectionFilter[g.gameId] = 'all';
+            }
         }
     });
 }
