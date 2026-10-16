@@ -196,6 +196,18 @@
             background: #160f12 !important;
         }
 
+        /* Flash Sale Card Glow */
+        .flash-card {
+            background: linear-gradient(160deg, #1a0d10 0%, #0f080a 100%) !important;
+            border: 1px solid rgba(245, 158, 11, 0.35) !important;
+            transition: all 0.3s ease;
+        }
+        .flash-card:hover {
+            transform: translateY(-4px);
+            border-color: rgba(245, 158, 11, 0.75) !important;
+            box-shadow: 0 12px 30px -10px rgba(220, 38, 38, 0.45);
+        }
+
         .text-gradient-crimson {
             background: linear-gradient(to right, #f87171, #dc2626, #fbbf24, #f87171);
             background-size: 250% auto;
@@ -281,11 +293,11 @@
     <div class="bg-orb-1"></div>
     <div class="bg-orb-2"></div>
 
-    <!-- ANNOUNCEMENT TOP BAR -->
-    <div class="bg-gradient-to-r from-red-950/80 via-red-900/40 to-red-950/80 border-b border-red-500/15 text-[11px] py-2 px-4 text-center font-medium text-red-200/90 z-50">
-        <span class="inline-flex items-center gap-2">
-            <span class="w-2 h-2 rounded-full bg-red-500 animate-ping"></span>
-            <strong>SISTEM OTOMATIS 24/7:</strong> Pembayaran QRIS terverifikasi otomatis!
+    <!-- ANNOUNCEMENT TOP BAR (Menampilkan Info Voucher / Flash Sale Aktif) -->
+    <div class="bg-gradient-to-r from-red-950/90 via-red-900/50 to-red-950/90 border-b border-red-500/20 text-[11px] py-2 px-4 text-center font-medium text-red-200/90 z-50">
+        <span class="inline-flex flex-wrap items-center justify-center gap-2">
+            <span class="w-2 h-2 rounded-full bg-amber-400 animate-ping"></span>
+            <span id="top-promo-banner"><strong>SISTEM OTOMATIS 24/7:</strong> Pembayaran QRIS terverifikasi otomatis & klaim Kode Voucher di Keranjang!</span>
         </span>
     </div>
 
@@ -407,7 +419,7 @@
                         <div class="relative">
                             <span class="absolute left-4 top-1/2 -translate-y-1/2 text-red-400/80 text-xs"><i class="fas fa-lock"></i></span>
                             <input type="password" id="modal-password" class="input-field w-full pl-10 pr-11 py-3 rounded-xl text-xs font-medium" placeholder="Masukkan password" autocomplete="current-password">
-                            <button type="button" class=" absolute right-4 top-1/2 -translate-y-1/2 text-xs text-zinc-400 hover:text-red-400" onclick="toggleModalPassword()">
+                            <button type="button" class="absolute right-4 top-1/2 -translate-y-1/2 text-xs text-zinc-400 hover:text-red-400" onclick="toggleModalPassword()">
                                 <i class="fas fa-eye" id="modal-eye-icon"></i>
                             </button>
                         </div>
@@ -458,7 +470,7 @@
                     <span class="text-gradient-crimson uppercase">TANPA BATAS</span>
                 </h2>
                 <p class="text-zinc-400 text-sm md:text-base mb-10 max-w-2xl mx-auto leading-relaxed">
-                    Top-up item game Roblox favoritmu dan nikmati layanan Joki profesional dengan sistem pembayaran QRIS otomatis 24 jam yang aman dan cepat.
+                    Top-up item game Roblox favoritmu, nikmati promo Flash Sale & Voucher Diskon, serta pembayaran QRIS otomatis 24 jam dengan Invoice PDF resmi ber-watermark.
                 </p>
                 <div class="flex flex-wrap justify-center gap-4">
                     <button onclick="switchPage('katalog')" class="btn-crimson text-white px-8 py-4 rounded-2xl font-bold uppercase tracking-wider text-xs flex items-center gap-2.5 shadow-lg">
@@ -473,8 +485,58 @@
                 </div>
             </div>
 
+            <!-- ========================================== -->
+            <!-- BANNER FLASH SALE & DAFTAR VOUCHER AKTIF   -->
+            <!-- ========================================== -->
+            <div id="home-flashsale-section" class="hidden mt-16 max-w-6xl mx-auto">
+                <div class="glass rounded-3xl p-6 md:p-8 border border-amber-500/30 relative overflow-hidden shadow-[0_0_45px_rgba(220,38,38,0.2)]">
+                    <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6 border-b border-white/10 pb-5">
+                        <div class="flex items-center gap-3.5">
+                            <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-amber-500 to-red-600 flex items-center justify-center text-black text-2xl shadow-lg animate-pulse">
+                                <i class="fas fa-bolt"></i>
+                            </div>
+                            <div>
+                                <div class="flex items-center gap-2">
+                                    <h3 class="font-heading font-bold text-2xl md:text-3xl italic uppercase text-white">
+                                        FLASH <span class="text-amber-400">SALE</span> SPESIAL
+                                    </h3>
+                                    <span class="px-2.5 py-0.5 rounded-full text-[10px] font-black uppercase bg-red-600 text-white">LIMITED</span>
+                                </div>
+                                <p class="text-xs text-zinc-400">Harga miring terbatas! Langsung checkout sebelum waktu atau stok habis.</p>
+                            </div>
+                        </div>
+
+                        <!-- Live Countdown Timer -->
+                        <div class="flex items-center gap-2 self-start md:self-center bg-black/60 border border-amber-500/30 px-4 py-2.5 rounded-2xl">
+                            <span class="text-[10px] font-bold uppercase tracking-wider text-zinc-400 mr-1"><i class="fas fa-clock text-amber-400 mr-1"></i> Berakhir Dalam:</span>
+                            <span id="fs-hours" class="bg-red-600 text-white font-mono font-bold text-xs px-2 py-1 rounded-lg">00</span>
+                            <span class="text-amber-400 font-bold">:</span>
+                            <span id="fs-minutes" class="bg-red-600 text-white font-mono font-bold text-xs px-2 py-1 rounded-lg">00</span>
+                            <span class="text-amber-400 font-bold">:</span>
+                            <span id="fs-seconds" class="bg-red-600 text-white font-mono font-bold text-xs px-2 py-1 rounded-lg">00</span>
+                        </div>
+                    </div>
+
+                    <!-- Grid Kartu Flash Sale -->
+                    <div id="home-flashsale-grid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4"></div>
+                </div>
+            </div>
+
+            <!-- Bar Daftar Voucher Aktif (Jika Ada Voucher dari Admin Panel) -->
+            <div id="home-vouchers-section" class="hidden mt-8 max-w-6xl mx-auto">
+                <div class="glass rounded-2xl p-4 border border-red-500/25 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+                    <div class="flex items-center gap-2.5 text-xs">
+                        <span class="px-2.5 py-1 rounded-lg bg-red-600/20 border border-red-500/40 text-red-400 font-bold uppercase flex items-center gap-1.5 shrink-0">
+                            <i class="fas fa-ticket"></i> Voucher Tersedia
+                        </span>
+                        <span class="text-zinc-300">Klik kode voucher untuk menyalin & pakai di keranjang:</span>
+                    </div>
+                    <div id="home-vouchers-list" class="flex flex-wrap gap-2"></div>
+                </div>
+            </div>
+
             <!-- Keunggulan Toko (Trust Indicators) -->
-            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-5xl mx-auto mt-16">
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-5xl mx-auto mt-14">
                 <div class="glass p-5 rounded-2xl border border-white/5 flex flex-col items-center text-center">
                     <div class="w-11 h-11 rounded-xl bg-red-500/10 border border-red-500/25 flex items-center justify-center text-red-400 text-lg mb-3">
                         <i class="fas fa-qrcode"></i>
@@ -486,8 +548,8 @@
                     <div class="w-11 h-11 rounded-xl bg-amber-500/10 border border-amber-500/25 flex items-center justify-center text-amber-400 text-lg mb-3">
                         <i class="fas fa-file-pdf"></i>
                     </div>
-                    <h4 class="font-bold text-xs uppercase tracking-wider text-white">Invoice PDF</h4>
-                    <p class="text-[11px] text-zinc-400 mt-1">Dilengkapi dengan hash number</p>
+                    <h4 class="font-bold text-xs uppercase tracking-wider text-white">Invoice PDF Resmi</h4>
+                    <p class="text-[11px] text-zinc-400 mt-1">Dilengkapi watermark & kode hash anti-pemalsuan</p>
                 </div>
                 <div class="glass p-5 rounded-2xl border border-white/5 flex flex-col items-center text-center">
                     <div class="w-11 h-11 rounded-xl bg-emerald-500/10 border border-emerald-500/25 flex items-center justify-center text-emerald-400 text-lg mb-3">
@@ -498,10 +560,10 @@
                 </div>
                 <div class="glass p-5 rounded-2xl border border-white/5 flex flex-col items-center text-center">
                     <div class="w-11 h-11 rounded-xl bg-rose-500/10 border border-rose-500/25 flex items-center justify-center text-rose-400 text-lg mb-3">
-                        <i class="fas fa-tags"></i>
+                        <i class="fas fa-ticket"></i>
                     </div>
-                    <h4 class="font-bold text-xs uppercase tracking-wider text-white">Harga Terbaik</h4>
-                    <p class="text-[11px] text-zinc-400 mt-1">Harga bersahabat untuk seluruh pelajar & gamer</p>
+                    <h4 class="font-bold text-xs uppercase tracking-wider text-white">Voucher & Flash Sale</h4>
+                    <p class="text-[11px] text-zinc-400 mt-1">Gunakan kode voucher untuk potongan harga langsung</p>
                 </div>
             </div>
 
@@ -531,11 +593,11 @@
                 <div class="space-y-3">
                     <div class="glass rounded-2xl border border-white/10 overflow-hidden">
                         <button onclick="toggleFaq(1)" class="w-full p-4 text-left flex justify-between items-center font-bold text-xs text-zinc-100 hover:text-red-400 transition-colors">
-                            <span>1. Bagaimana cara membeli item di TERA STORE?</span>
+                            <span>1. Bagaimana cara menggunakan Kode Voucher & membeli item?</span>
                             <i id="faq-icon-1" class="fas fa-chevron-down text-red-400 transition-transform"></i>
                         </button>
                         <div id="faq-body-1" class="hidden px-4 pb-4 text-xs text-zinc-400 leading-relaxed border-t border-white/5 pt-3">
-                            Pilih item di menu <b>Katalog Item</b>, masukkan ke keranjang (atau klik tombol petir untuk Beli Instan), isi <b>Username Roblox</b> kamu, lalu unduh/scan QRIS sesuai nominal hingga 3 digit terakhir. Setelah lunas, klik tombol <b>Download Invoice</b> dan hubungi WhatsApp Admin!
+                            Pilih item di menu <b>Katalog Item</b> atau <b>Flash Sale</b>, masukkan ke keranjang, ketik <b>Kode Voucher</b> di kolom promo keranjang lalu klik <b>Pakai</b>. Setelah itu isi <b>Username Roblox</b> kamu dan bayar via QRIS. Setelah lunas, klik tombol <b>Download Invoice (.PDF Resmi)</b> dan hubungi WhatsApp Admin!
                         </div>
                     </div>
                     <div class="glass rounded-2xl border border-white/10 overflow-hidden">
@@ -581,6 +643,7 @@
                     </div>
                     <select id="sortSelect" onchange="handleSortChange()" class="input-field w-full sm:w-44 rounded-xl py-2.5 px-3.5 text-xs font-semibold cursor-pointer">
                         <option value="default">Urutan Default</option>
+                        <option value="flash">⚡ Promo Flash Sale</option>
                         <option value="asc">Harga: Termurah</option>
                         <option value="desc">Harga: Termahal</option>
                         <option value="az">Nama: A - Z</option>
@@ -690,10 +753,10 @@
         </div>
     </footer>
 
-    <!-- CART MODAL (Slide Sidebar) -->
+    <!-- CART MODAL (Slide Sidebar dengan Fitur Kode Voucher) -->
     <div id="cartModal" class="fixed inset-0 z-[100] hidden">
         <div class="absolute inset-0 bg-black/75 backdrop-blur-sm transition-opacity" onclick="toggleCart()"></div>
-        <div class="absolute right-0 top-0 bottom-0 w-full sm:w-[410px] glass border-l border-red-500/20 shadow-2xl flex flex-col">
+        <div class="absolute right-0 top-0 bottom-0 w-full sm:w-[420px] glass border-l border-red-500/20 shadow-2xl flex flex-col">
             <!-- Header Modal -->
             <div class="p-5 border-b border-white/10 flex justify-between items-center bg-[#0d080a]">
                 <h3 class="text-lg font-heading font-bold italic uppercase text-white flex items-center gap-2.5">
@@ -712,21 +775,52 @@
             <!-- Items Container -->
             <div id="cart-items" class="flex-grow overflow-y-auto p-5 space-y-3"></div>
 
-            <!-- Footer Modal (Checkout) -->
+            <!-- Footer Modal (Voucher + Checkout) -->
             <div class="p-5 border-t border-white/10 bg-[#090607] space-y-3">
+                <!-- Input Kode Voucher -->
                 <div>
-                    <label class="text-[10px] text-zinc-400 font-bold uppercase tracking-wider block mb-1">Username Roblox <span class="text-red-500">*</span></label>
-                    <input type="text" id="checkout-roblox" placeholder="Cth: LordAlpha_Rblx (Wajib diisi)" class="input-field w-full px-3.5 py-2.5 rounded-xl text-xs font-medium">
-                </div>
-                <div>
-                    <label class="text-[10px] text-zinc-400 font-bold uppercase tracking-wider block mb-1">Catatan / Nomor WA Aktif (Opsional)</label>
-                    <input type="text" id="checkout-note" placeholder="Cth: Ketemuan di Sea 1 / 0812xxx" class="input-field w-full px-3.5 py-2.5 rounded-xl text-xs font-medium">
+                    <label class="text-[10px] text-zinc-400 font-bold uppercase tracking-wider block mb-1">
+                        <i class="fas fa-ticket text-red-400 mr-1"></i> Kode Voucher / Promo
+                    </label>
+                    <div class="flex gap-2">
+                        <input type="text" id="voucher-input" placeholder="Ketik kode promo..." class="input-field flex-grow px-3.5 py-2 rounded-xl text-xs font-mono uppercase">
+                        <button id="btn-apply-voucher" onclick="applyVoucher()" class="bg-red-950/80 hover:bg-red-800 text-red-200 hover:text-white border border-red-500/40 px-4 py-2 rounded-xl text-xs font-bold uppercase tracking-wider transition-all shrink-0">
+                            Pakai
+                        </button>
+                        <button id="btn-remove-voucher" onclick="removeVoucher()" class="hidden bg-zinc-800 hover:bg-red-900 text-zinc-300 hover:text-white px-3 py-2 rounded-xl text-xs font-bold uppercase transition-all shrink-0">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                    <p id="voucher-status-msg" class="hidden text-[11px] font-semibold mt-1"></p>
                 </div>
 
-                <div class="flex justify-between items-center bg-[#120c0e] p-3.5 rounded-xl border border-white/10">
-                    <span class="text-xs text-zinc-400 font-bold uppercase tracking-wider">Total Estimasi</span>
-                    <span id="cart-total" class="text-lg font-black text-amber-400">Rp 0</span>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                    <div>
+                        <label class="text-[10px] text-zinc-400 font-bold uppercase tracking-wider block mb-1">Username Roblox <span class="text-red-500">*</span></label>
+                        <input type="text" id="checkout-roblox" placeholder="Cth: LordAlpha_Rblx" class="input-field w-full px-3 py-2 rounded-xl text-xs font-medium">
+                    </div>
+                    <div>
+                        <label class="text-[10px] text-zinc-400 font-bold uppercase tracking-wider block mb-1">Catatan / No. WA</label>
+                        <input type="text" id="checkout-note" placeholder="Cth: Sea 1 / 0812xxx" class="input-field w-full px-3 py-2 rounded-xl text-xs font-medium">
+                    </div>
                 </div>
+
+                <!-- Ringkasan Subtotal, Diskon & Total -->
+                <div class="bg-[#120c0e] p-3.5 rounded-xl border border-white/10 space-y-1.5">
+                    <div id="cart-subtotal-row" class="hidden justify-between items-center text-xs text-zinc-400">
+                        <span>Subtotal</span>
+                        <span id="cart-subtotal">Rp 0</span>
+                    </div>
+                    <div id="cart-discount-row" class="hidden justify-between items-center text-xs text-emerald-400 font-bold">
+                        <span id="cart-discount-label">Diskon Voucher</span>
+                        <span id="cart-discount-amount">-Rp 0</span>
+                    </div>
+                    <div class="flex justify-between items-center pt-0.5">
+                        <span class="text-xs text-zinc-300 font-bold uppercase tracking-wider">Total Bayar</span>
+                        <span id="cart-total" class="text-lg font-black text-amber-400">Rp 0</span>
+                    </div>
+                </div>
+
                 <button id="btn-checkout-qris" onclick="openPaymentModal()" class="btn-crimson w-full text-white py-3.5 rounded-xl font-bold uppercase tracking-widest text-xs flex items-center justify-center gap-2 shadow-lg">
                     <i class="fas fa-qrcode text-base"></i> Bayar dengan QRIS Otomatis
                 </button>
@@ -755,6 +849,10 @@
                         <div class="flex items-center justify-between border-b border-white/5 pb-2">
                             <span class="text-[10px] text-zinc-400 uppercase font-bold">No. Pesanan</span>
                             <span id="payment-order-id" class="text-xs font-extrabold text-red-400">-</span>
+                        </div>
+                        <div id="payment-voucher-row" class="hidden items-center justify-between border-b border-white/5 pb-2">
+                            <span class="text-[10px] text-zinc-400 uppercase font-bold">Voucher Digunakan</span>
+                            <span id="payment-voucher-info" class="text-xs font-bold text-rose-400">-</span>
                         </div>
                         <div class="flex items-center justify-between border-b border-white/5 pb-2">
                             <span class="text-[10px] text-zinc-400 uppercase font-bold">Kode Unik Verifikasi</span>
@@ -803,7 +901,7 @@
                     <div>
                         <h4 class="text-2xl font-heading font-bold italic uppercase text-emerald-400">Pembayaran Lunas!</h4>
                         <p class="text-xs text-zinc-300 leading-relaxed mt-1">
-                            Terima kasih! Pembayaranmu telah terverifikasi. Silakan tekan tombol di bawah untuk mengunduh Invoice dan hubungi <strong>Admin Tera</strong> di WhatsApp.
+                            Terima kasih! Pembayaranmu telah terverifikasi. Silakan tekan tombol di bawah untuk mengunduh **Invoice PDF Resmi (Ber-Watermark)** dan hubungi <strong>Admin Tera</strong> di WhatsApp.
                         </p>
                     </div>
 
@@ -817,7 +915,7 @@
                     <div class="space-y-2.5 pt-1">
                         <!-- Tombol Download Invoice PDF (Hanya Terunduh Saat Diklik) -->
                         <button onclick="downloadInvoicePDF()" class="btn-crimson w-full text-white py-3.5 rounded-xl font-bold uppercase tracking-widest text-xs transition-all flex items-center justify-center gap-2 shadow-lg">
-                            <i class="fas fa-file-pdf text-base"></i> Download Invoice
+                            <i class="fas fa-file-pdf text-base"></i> Download Invoice (.PDF Resmi)
                         </button>
 
                         <!-- Tombol Langsung Hubungi WA Admin -->
@@ -855,6 +953,13 @@
         let activeSectionFilter = {};
         let allOrdersCache = [];
 
+        // WADAH VOUCHER & FLASH SALE DARI ADMIN PANEL
+        let availableVouchers = [];
+        let appliedVoucher = null;
+        let flashSaleItems = [];
+        let flashSaleEndTime = null;
+        let countdownInterval = null;
+
         window.addEventListener('scroll', () => {
             const nav = document.getElementById('navbar');
             if(window.scrollY > 40) {
@@ -879,6 +984,137 @@
             const icon = document.getElementById(`faq-icon-${num}`);
             if (body) body.classList.toggle('hidden');
             if (icon) icon.classList.toggle('rotate-180');
+        }
+
+        // =======================
+        // SISTEM VOUCHER / PROMO CODE
+        // =======================
+        function calculateCartSubtotal() {
+            return cart.reduce((sum, c) => sum + (c.price * c.qty), 0);
+        }
+
+        function calculateVoucherDiscount(subtotal) {
+            if (!appliedVoucher || subtotal <= 0) return 0;
+            if (appliedVoucher.minSpend && subtotal < appliedVoucher.minSpend) {
+                return 0;
+            }
+            let disc = 0;
+            const type = String(appliedVoucher.type || '').toLowerCase();
+            if (type === 'percent' || type === 'persen' || type === '%') {
+                disc = Math.floor(subtotal * (Number(appliedVoucher.value) / 100));
+                if (appliedVoucher.maxDiscount && disc > Number(appliedVoucher.maxDiscount)) {
+                    disc = Number(appliedVoucher.maxDiscount);
+                }
+            } else {
+                disc = Number(appliedVoucher.value) || 0;
+            }
+            // Pastikan diskon tidak membuat total menjadi 0 atau minus
+            if (disc >= subtotal) {
+                disc = Math.max(0, subtotal - 1000);
+            }
+            return disc;
+        }
+
+        function showVoucherStatus(msg, isError = false) {
+            const el = document.getElementById('voucher-status-msg');
+            if (!el) return;
+            el.innerText = msg;
+            el.className = `text-[11px] font-semibold mt-1 ${isError ? 'text-red-400' : 'text-emerald-400'}`;
+            el.classList.remove('hidden');
+        }
+
+        function applyVoucherCodeDirect(codeStr) {
+            const input = document.getElementById('voucher-input');
+            if (input) input.value = codeStr;
+            if (document.getElementById('cartModal').classList.contains('hidden')) {
+                toggleCart();
+            }
+            applyVoucher();
+        }
+
+        async function applyVoucher() {
+            const input = document.getElementById('voucher-input');
+            const code = (input?.value || '').trim().toUpperCase();
+            if (!code) {
+                showVoucherStatus("Masukkan kode voucher terlebih dahulu!", true);
+                return;
+            }
+
+            const subtotal = calculateCartSubtotal();
+            if (subtotal <= 0) {
+                showVoucherStatus("Tambahkan produk ke keranjang terlebih dahulu!", true);
+                return;
+            }
+
+            // Cari di daftar voucher yang ditarik dari Google Sheets
+            let found = availableVouchers.find(v => String(v.code).toUpperCase() === code);
+
+            // Jika belum ketemu di cache lokal, coba validasi langsung ke Apps Script (jika ada endpoint check_voucher)
+            if (!found) {
+                try {
+                    const res = await fetch(GOOGLE_SCRIPT_URL, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+                        body: JSON.stringify({ action: "check_voucher", code: code, subtotal: subtotal })
+                    });
+                    const resData = await res.json();
+                    if (resData && (resData.status === "success" || resData.valid === true) && resData.voucher) {
+                        found = normalizeVoucherObject(resData.voucher);
+                    }
+                } catch (e) {}
+            }
+
+            if (!found) {
+                showVoucherStatus("Kode voucher tidak ditemukan atau sudah berakhir!", true);
+                return;
+            }
+
+            if (found.quota !== undefined && Number(found.quota) <= 0) {
+                showVoucherStatus("Kuota kode voucher ini sudah habis!", true);
+                return;
+            }
+
+            if (found.minSpend && subtotal < Number(found.minSpend)) {
+                showVoucherStatus(`Minimal belanja untuk voucher ini adalah ${formatRupiah(found.minSpend)}!`, true);
+                return;
+            }
+
+            appliedVoucher = found;
+            document.getElementById('btn-apply-voucher').classList.add('hidden');
+            document.getElementById('btn-remove-voucher').classList.remove('hidden');
+            input.disabled = true;
+
+            const disc = calculateVoucherDiscount(subtotal);
+            showVoucherStatus(`✓ Voucher ${found.code} aktif! Hemat ${formatRupiah(disc)}`, false);
+            updateCartUI();
+        }
+
+        function removeVoucher() {
+            appliedVoucher = null;
+            const input = document.getElementById('voucher-input');
+            if (input) {
+                input.value = '';
+                input.disabled = false;
+            }
+            document.getElementById('btn-apply-voucher').classList.remove('hidden');
+            document.getElementById('btn-remove-voucher').classList.add('hidden');
+            document.getElementById('voucher-status-msg')?.classList.add('hidden');
+            updateCartUI();
+        }
+
+        function normalizeVoucherObject(raw) {
+            if (!raw) return null;
+            const code = String(raw.code || raw.kode || raw.voucherCode || raw.name || '').trim().toUpperCase();
+            if (!code) return null;
+            const rawVal = Number(raw.discount || raw.potongan || raw.value || raw.nominal || raw.amount || 0);
+            let type = String(raw.type || raw.tipe || '').toLowerCase();
+            if (!type) {
+                type = (rawVal > 0 && rawVal <= 100) ? 'percent' : 'nominal';
+            }
+            const minSpend = Number(raw.minSpend || raw.minBelanja || raw.minPurchase || raw.min || 0);
+            const quota = raw.quota !== undefined && raw.quota !== "" ? Number(raw.quota) : (raw.kuota !== undefined && raw.kuota !== "" ? Number(raw.kuota) : 999);
+            const active = raw.active !== undefined ? Boolean(raw.active) : (String(raw.status || 'AKTIF').toUpperCase() !== 'NONAKTIF');
+            return { code, value: rawVal, type, minSpend, quota, active };
         }
 
         // =======================
@@ -913,6 +1149,7 @@
         function clearCart() {
             if (cart.length === 0) return;
             cart = [];
+            removeVoucher();
             saveCart();
             updateCartUI();
         }
@@ -925,10 +1162,13 @@
             const existingItem = cart.find(c => c.name === item.name && c.game === game);
             if (existingItem) {
                 existingItem.qty += qty;
+                existingItem.price = item.price; // Pastikan mengikuti harga terbaru / Flash Sale
             } else {
                 cart.push({
                     name: item.name,
                     price: item.price,
+                    oldPrice: item.oldPrice || 0,
+                    isFlashSale: Boolean(item.isFlashSale),
                     qty: qty,
                     image: item.image,
                     game: game,
@@ -953,6 +1193,39 @@
             }
         }
 
+        function addFlashSaleToCart(fsIdx, directBuy = false) {
+            const fs = flashSaleItems[fsIdx];
+            if (!fs) return;
+
+            const existingItem = cart.find(c => c.name === fs.name && c.game === fs.gameId);
+            if (existingItem) {
+                existingItem.qty += 1;
+                existingItem.price = fs.price;
+                existingItem.isFlashSale = true;
+            } else {
+                cart.push({
+                    name: fs.name,
+                    price: fs.price,
+                    oldPrice: fs.oldPrice || 0,
+                    isFlashSale: true,
+                    qty: 1,
+                    image: fs.image || "",
+                    game: fs.gameId,
+                    gameName: gameMeta[fs.gameId]?.name || fs.gameId.toUpperCase()
+                });
+            }
+
+            saveCart();
+            updateCartUI();
+
+            if (directBuy) {
+                document.getElementById('cartModal').classList.remove('hidden');
+                setTimeout(() => document.getElementById('checkout-roblox')?.focus(), 200);
+            } else {
+                showToastMsg(`⚡ Promo "${fs.name}" ditambahkan ke keranjang!`);
+            }
+        }
+
         function removeFromCart(index) {
             cart.splice(index, 1);
             saveCart();
@@ -974,9 +1247,11 @@
             const floatCount = document.getElementById('floating-cart-count');
             const cartItemsContainer = document.getElementById('cart-items');
             const cartTotal = document.getElementById('cart-total');
+            const subRow = document.getElementById('cart-subtotal-row');
+            const discRow = document.getElementById('cart-discount-row');
 
             let totalItems = 0;
-            let totalPrice = 0;
+            let subtotalPrice = 0;
 
             cartItemsContainer.innerHTML = '';
 
@@ -989,18 +1264,20 @@
             } else {
                 cart.forEach((c, index) => {
                     totalItems += c.qty;
-                    totalPrice += (c.price * c.qty);
+                    subtotalPrice += (c.price * c.qty);
 
                     let imgSrc = (c.image && c.image !== "") ? c.image : '';
                     let mediaHtml = imgSrc
-                        ? `<img src="${imgSrc}" class="w-13 h-13 object-cover rounded-xl border border-white/10 shrink-0" onerror="this.outerHTML='<div class=\\'w-12 h-12 rounded-xl border border-white/10 bg-zinc-900 flex items-center justify-center text-lg shrink-0\\'>🎁</div>'">`
+                        ? `<img src="${imgSrc}" class="w-12 h-12 object-cover rounded-xl border border-white/10 shrink-0" onerror="this.outerHTML='<div class=\\'w-12 h-12 rounded-xl border border-white/10 bg-zinc-900 flex items-center justify-center text-lg shrink-0\\'>🎁</div>'">`
                         : `<div class="w-12 h-12 rounded-xl border border-white/10 bg-zinc-900 flex items-center justify-center text-lg shrink-0">🎁</div>`;
+
+                    const fsBadge = c.isFlashSale ? `<span class="text-[9px] bg-amber-500/20 text-amber-400 border border-amber-500/30 px-1.5 py-0.2 rounded font-bold ml-1">⚡ FLASH</span>` : '';
 
                     cartItemsContainer.innerHTML += `
                         <div class="flex items-center gap-3 bg-[#140d10] p-3 rounded-2xl border border-white/10">
                             ${mediaHtml}
                             <div class="flex-grow min-w-0">
-                                <span class="text-[9px] text-red-400 uppercase font-bold">[${c.gameName || c.game}]</span>
+                                <span class="text-[9px] text-red-400 uppercase font-bold">[${c.gameName || c.game}]</span>${fsBadge}
                                 <h6 class="text-zinc-100 text-xs font-bold truncate">${c.name}</h6>
                                 <p class="text-amber-400 text-[11px] font-bold mt-0.5">${formatRupiah(c.price * c.qty)}</p>
                             </div>
@@ -1017,9 +1294,27 @@
                 });
             }
 
+            const discountAmount = calculateVoucherDiscount(subtotalPrice);
+            const finalPrice = Math.max(0, subtotalPrice - discountAmount);
+
+            if (appliedVoucher && discountAmount > 0) {
+                subRow.classList.remove('hidden');
+                subRow.classList.add('flex');
+                discRow.classList.remove('hidden');
+                discRow.classList.add('flex');
+                document.getElementById('cart-subtotal').innerText = formatRupiah(subtotalPrice);
+                document.getElementById('cart-discount-label').innerText = `Voucher (${appliedVoucher.code})`;
+                document.getElementById('cart-discount-amount').innerText = `-${formatRupiah(discountAmount)}`;
+            } else {
+                subRow.classList.add('hidden');
+                subRow.classList.remove('flex');
+                discRow.classList.add('hidden');
+                discRow.classList.remove('flex');
+            }
+
             if (cartCount) cartCount.innerText = totalItems;
             if (floatCount) floatCount.innerText = totalItems;
-            if (cartTotal) cartTotal.innerText = formatRupiah(totalPrice);
+            if (cartTotal) cartTotal.innerText = formatRupiah(finalPrice);
         }
 
         // =======================
@@ -1063,7 +1358,7 @@
 
             const canvas = document.createElement('canvas');
             canvas.width = 800;
-            canvas.height = 920 + extraHeight;
+            canvas.height = 940 + extraHeight;
             const ctx = canvas.getContext('2d');
 
             // 1. Background Dark Crimson Obsidian
@@ -1167,25 +1462,25 @@
             };
 
             drawMetaRow('No. Pesanan (Order ID)', data.orderId || '-', 195, '#f87171');
-            drawMetaRow('Waktu Verifikasi', data.date || new Date().toLocaleString('id-ID'), 232);
-            drawMetaRow('Username Roblox', data.robloxUser || '-', 269, '#fbbf24');
-            drawMetaRow('Catatan Pembeli', data.buyerNote || '-', 306);
-            drawMetaRow('Metode Pembayaran', 'QRIS Otomatis (Verified System)', 343, '#34d399');
-            drawMetaRow('Security Signature', secHash, 380, '#f43f5e');
+            drawMetaRow('Waktu Verifikasi', data.date || new Date().toLocaleString('id-ID'), 230);
+            drawMetaRow('Username Roblox', data.robloxUser || '-', 265, '#fbbf24');
+            drawMetaRow('Catatan / Promo', data.buyerNote || '-', 300);
+            drawMetaRow('Metode Pembayaran', 'QRIS Otomatis (Verified System)', 335, '#34d399');
+            drawMetaRow('Security Signature', secHash, 370, '#f43f5e');
 
             // Divider 2
             ctx.strokeStyle = 'rgba(255, 255, 255, 0.12)';
             ctx.beginPath();
-            ctx.moveTo(60, 408);
-            ctx.lineTo(canvas.width - 60, 408);
+            ctx.moveTo(60, 400);
+            ctx.lineTo(canvas.width - 60, 400);
             ctx.stroke();
 
             // 7. Items Box
             ctx.fillStyle = '#f87171';
             ctx.font = 'bold 15px sans-serif';
-            ctx.fillText('RINCIAN ITEM PEMBELIAN:', 60, 442);
+            ctx.fillText('RINCIAN ITEM PEMBELIAN:', 60, 434);
 
-            const boxTop = 460;
+            const boxTop = 452;
             const boxHeight = Math.max(155, itemLines.length * 32 + 40);
             ctx.fillStyle = 'rgba(18, 12, 14, 0.9)';
             ctx.fillRect(60, boxTop, canvas.width - 120, boxHeight);
@@ -1302,7 +1597,7 @@
             }
 
             const robloxUser = document.getElementById('checkout-roblox').value.trim();
-            const buyerNote = document.getElementById('checkout-note').value.trim();
+            const rawNote = document.getElementById('checkout-note').value.trim();
 
             if (!robloxUser) {
                 showToastMsg("Wajib mengisi Username Roblox kamu!", true);
@@ -1315,13 +1610,23 @@
             btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Membuat Kode Unik...';
             btn.disabled = true;
 
-            let baseTotal = 0;
+            let subtotal = 0;
             let itemsList = "";
             cart.forEach((c, i) => {
                 const gameLabel = `[${c.gameName || c.game.toUpperCase()}]`;
-                itemsList += `${i+1}. ${gameLabel} ${c.name} (${c.qty}x)\n`;
-                baseTotal += (c.price * c.qty);
+                const fsTag = c.isFlashSale ? ' [FLASH SALE]' : '';
+                itemsList += `${i+1}. ${gameLabel} ${c.name}${fsTag} (${c.qty}x)\n`;
+                subtotal += (c.price * c.qty);
             });
+
+            const discountAmount = calculateVoucherDiscount(subtotal);
+            const baseTotalAfterDiscount = Math.max(1000, subtotal - discountAmount);
+
+            let finalBuyerNote = rawNote || "-";
+            if (appliedVoucher && discountAmount > 0) {
+                itemsList += `• Voucher (${appliedVoucher.code}): -${formatRupiah(discountAmount)}\n`;
+                finalBuyerNote = `${rawNote ? rawNote + ' | ' : ''}Voucher: ${appliedVoucher.code} (-${formatRupiah(discountAmount)})`;
+            }
 
             currentOrderId = generateOrderId();
 
@@ -1333,9 +1638,12 @@
                         action: "create_order",
                         orderId: currentOrderId,
                         robloxUser: robloxUser,
-                        buyerNote: buyerNote || "-",
+                        buyerNote: finalBuyerNote,
                         items: itemsList.trim(),
-                        baseTotal: baseTotal
+                        baseTotal: baseTotalAfterDiscount,
+                        subtotal: subtotal,
+                        voucherCode: appliedVoucher ? appliedVoucher.code : "",
+                        discountAmount: discountAmount
                     })
                 });
 
@@ -1350,7 +1658,7 @@
                         orderId: currentOrderId,
                         date: new Date().toLocaleString('id-ID'),
                         robloxUser: robloxUser,
-                        buyerNote: buyerNote || "-",
+                        buyerNote: finalBuyerNote,
                         items: itemsList.trim(),
                         total: result.finalAmount
                     };
@@ -1358,6 +1666,16 @@
                     document.getElementById('payment-order-id').innerText = currentOrderId;
                     document.getElementById('payment-unique-code').innerText = `+Rp ${result.uniqueCode}`;
                     document.getElementById('payment-total').innerText = formatRupiah(result.finalAmount);
+
+                    const vRow = document.getElementById('payment-voucher-row');
+                    if (appliedVoucher && discountAmount > 0) {
+                        vRow.classList.remove('hidden');
+                        vRow.classList.add('flex');
+                        document.getElementById('payment-voucher-info').innerText = `${appliedVoucher.code} (-${formatRupiah(discountAmount)})`;
+                    } else {
+                        vRow.classList.add('hidden');
+                        vRow.classList.remove('flex');
+                    }
 
                     document.getElementById('qris-waiting-view').classList.remove('hidden');
                     document.getElementById('qris-success-view').classList.add('hidden');
@@ -1367,7 +1685,7 @@
 
                     startCheckingPayment(currentOrderId);
                 } else {
-                    showToastMsg("Gagal membuat pesanan. Coba lagi.", true);
+                    showToastMsg(result.message || "Gagal membuat pesanan. Coba lagi.", true);
                 }
             } catch (err) {
                 showToastMsg("Kesalahan koneksi ke server pesanan.", true);
@@ -1383,7 +1701,6 @@
             isOrderPaid = false;
 
             paymentCheckInterval = setInterval(async () => {
-                // Cegah request bertumpuk atau eksekusi ulang jika sudah lunas
                 if (isCheckingPayment || isOrderPaid) return;
                 isCheckingPayment = true;
 
@@ -1422,6 +1739,7 @@
                         document.getElementById('qris-success-view').classList.remove('hidden');
 
                         cart = [];
+                        removeVoucher();
                         saveCart();
                         updateCartUI();
                     }
@@ -1585,7 +1903,7 @@
         }
 
         // ========================================================
-        // SINKRONISASI 100% MURNI DARI ADMIN PANEL (GOOGLE SHEETS)
+        // SINKRONISASI DARI ADMIN PANEL (PRODUK, VOUCHER, FLASH SALE)
         // ========================================================
         async function fetchStoreDataFromSheets() {
             try {
@@ -1597,11 +1915,45 @@
                     gameMeta = {};
                     activeSectionFilter = {};
                     allOrdersCache = data.orders || [];
+                    flashSaleItems = [];
 
+                    // 1. Ambil Daftar Voucher dari Sheets (Fleksibel membaca berbagai nama properti)
+                    const rawVouchers = data.vouchers || data.voucher || data.promos || [];
+                    availableVouchers = rawVouchers.map(normalizeVoucherObject).filter(v => v && v.active && v.quota > 0);
+                    renderVouchersBar();
+
+                    // 2. Ambil Daftar Game
                     const gamesList = data.games || [];
                     renderDynamicGameNav(gamesList);
                     renderHomeGameShortcuts(gamesList);
 
+                    // 3. Ambil Data Flash Sale Terpisah (Jika Admin Panel menyimpannya di tab FlashSale tersendiri)
+                    const rawFlashSales = data.flashSales || data.flashsale || data.flash_sales || data.flash_sale || [];
+                    const flashSaleMap = {};
+                    rawFlashSales.forEach(fs => {
+                        const isAct = fs.active !== undefined ? Boolean(fs.active) : (String(fs.status || 'AKTIF').toUpperCase() !== 'NONAKTIF');
+                        if (!isAct) return;
+                        const gId = String(fs.gameId || fs.game || 'umum').trim().toLowerCase();
+                        const pName = String(fs.name || fs.productName || fs.item || '').trim();
+                        if (!pName) return;
+                        const fsPrice = Number(fs.flashPrice || fs.discountPrice || fs.salePrice || fs.price || fs.hargaPromo || 0);
+                        const normPrice = Number(fs.normalPrice || fs.oldPrice || fs.originalPrice || fs.hargaNormal || fs.hargaCoret || 0);
+                        if (fs.endTime || fs.berakhir || fs.expired) {
+                            flashSaleEndTime = fs.endTime || fs.berakhir || fs.expired;
+                        }
+                        flashSaleMap[`${gId}|${pName.toLowerCase()}`] = {
+                            gameId: gId,
+                            category: fs.category || 'Flash Sale',
+                            name: pName,
+                            price: fsPrice,
+                            oldPrice: normPrice > fsPrice ? normPrice : 0,
+                            image: fs.image || "",
+                            endTime: fs.endTime || null,
+                            isFlashSale: true
+                        };
+                    });
+
+                    // 4. Masukkan Produk & Kategori dari Sheets
                     if (data.products && data.products.length > 0) {
                         data.products.forEach(p => {
                             const gId = String(p.gameId || '').trim().toLowerCase();
@@ -1630,19 +1982,50 @@
                                 };
                                 storeData[gId].push(cat);
                             }
+
+                            // Cek apakah produk ini sedang Flash Sale (baik dari properti produk langsung maupun dari tab FlashSale)
+                            const fsKey = `${gId}|${String(p.name).trim().toLowerCase()}`;
+                            const matchedFs = flashSaleMap[fsKey];
+
+                            let finalPrice = Number(p.price || 0);
+                            let oldPrice = Number(p.oldPrice || p.normalPrice || p.originalPrice || p.hargaCoret || 0);
+                            let isFlash = Boolean(p.isFlashSale || p.flashSale || (oldPrice > finalPrice));
+
+                            if (p.flashPrice && Number(p.flashPrice) > 0 && Number(p.flashPrice) < finalPrice) {
+                                oldPrice = finalPrice;
+                                finalPrice = Number(p.flashPrice);
+                                isFlash = true;
+                            } else if (matchedFs && matchedFs.price > 0) {
+                                oldPrice = matchedFs.oldPrice > 0 ? matchedFs.oldPrice : finalPrice;
+                                finalPrice = matchedFs.price;
+                                isFlash = true;
+                                delete flashSaleMap[fsKey]; // Tandai sudah tergabung
+                            }
+
+                            const itemObj = {
+                                name: p.name,
+                                price: finalPrice,
+                                oldPrice: oldPrice,
+                                isFlashSale: isFlash,
+                                image: p.image || (matchedFs ? matchedFs.image : ""),
+                                emoji: "🎁",
+                                gameId: gId
+                            };
                             
                             const itemExist = cat.items.some(i => i.name.toLowerCase() === String(p.name).toLowerCase());
                             if (!itemExist) {
-                                cat.items.push({
-                                    name: p.name,
-                                    price: Number(p.price),
-                                    image: p.image || "",
-                                    emoji: "🎁"
-                                });
+                                cat.items.push(itemObj);
+                                if (isFlash) flashSaleItems.push(itemObj);
                             }
                         });
                     }
 
+                    // Jika masih ada item di tab FlashSale yang berdiri sendiri (tidak ada di tab Products), tetap masukkan!
+                    Object.values(flashSaleMap).forEach(fs => {
+                        flashSaleItems.push(fs);
+                    });
+
+                    renderFlashSaleSection();
                     renderDynamicJoki(data.joki || []);
 
                     const allGameIds = Object.keys(storeData);
@@ -1665,6 +2048,124 @@
             } catch (err) {
                 console.log("Gagal memuat data dari Google Sheets:", err);
             }
+        }
+
+        function renderVouchersBar() {
+            const sec = document.getElementById('home-vouchers-section');
+            const list = document.getElementById('home-vouchers-list');
+            const topBanner = document.getElementById('top-promo-banner');
+            if (!sec || !list) return;
+
+            if (!availableVouchers || availableVouchers.length === 0) {
+                sec.classList.add('hidden');
+                return;
+            }
+
+            sec.classList.remove('hidden');
+            list.innerHTML = availableVouchers.map(v => {
+                const label = (v.type === 'percent' || v.type === 'persen' || v.type === '%')
+                    ? `Diskon ${v.value}%`
+                    : `Potongan ${formatRupiah(v.value)}`;
+                return `
+                    <button onclick="applyVoucherCodeDirect('${v.code}')" class="px-3 py-1.5 rounded-xl bg-black/70 hover:bg-red-950 border border-dashed border-amber-500/50 text-xs flex items-center gap-2 transition-all group">
+                        <code class="font-mono font-extrabold text-amber-400 group-hover:text-white">${v.code}</code>
+                        <span class="text-[10px] text-zinc-300">(${label})</span>
+                        <i class="fas fa-copy text-[10px] text-red-400"></i>
+                    </button>
+                `;
+            }).join('');
+
+            if (topBanner && availableVouchers[0]) {
+                const v0 = availableVouchers[0];
+                const lbl = (v0.type === 'percent' || v0.type === 'persen' || v0.type === '%') ? `${v0.value}%` : formatRupiah(v0.value);
+                topBanner.innerHTML = `<strong>PROMO HARI INI:</strong> Pakai Kode Voucher <code class="bg-red-600 text-white px-2 py-0.5 rounded font-bold mx-1 cursor-pointer" onclick="applyVoucherCodeDirect('${v0.code}')">${v0.code}</code> untuk hemat <strong>${lbl}</strong> di Keranjang!`;
+            }
+        }
+
+        function renderFlashSaleSection() {
+            const section = document.getElementById('home-flashsale-section');
+            const grid = document.getElementById('home-flashsale-grid');
+            if (!section || !grid) return;
+
+            if (!flashSaleItems || flashSaleItems.length === 0) {
+                section.classList.add('hidden');
+                return;
+            }
+
+            section.classList.remove('hidden');
+            startFlashSaleCountdown();
+
+            grid.innerHTML = flashSaleItems.map((item, idx) => {
+                const savePercent = (item.oldPrice && item.oldPrice > item.price)
+                    ? Math.round(((item.oldPrice - item.price) / item.oldPrice) * 100)
+                    : 0;
+
+                const mediaHtml = (item.image && item.image !== "")
+                    ? `<img src="${item.image}" alt="${item.name}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" onerror="this.outerHTML='<div class=\\'w-full h-full flex items-center justify-center bg-zinc-900 text-3xl\\'>⚡</div>'">`
+                    : `<div class="w-full h-full flex items-center justify-center bg-zinc-900 text-3xl">⚡</div>`;
+
+                return `
+                    <div class="flash-card rounded-2xl p-3.5 flex flex-col items-center text-center relative group">
+                        <div class="absolute top-2.5 left-2.5 z-10 bg-gradient-to-r from-red-600 to-amber-500 text-white text-[9px] font-black uppercase px-2 py-0.5 rounded-md shadow-md">
+                            ⚡ ${savePercent > 0 ? `HEMAT ${savePercent}%` : 'FLASH SALE'}
+                        </div>
+                        <div class="w-full aspect-square mb-3 rounded-xl overflow-hidden border border-amber-500/20 bg-zinc-950 relative">
+                            ${mediaHtml}
+                        </div>
+                        <span class="text-[9px] text-red-400 uppercase font-bold tracking-wider">[${gameMeta[item.gameId]?.name || item.gameId.toUpperCase()}]</span>
+                        <h5 class="text-xs font-bold text-white mb-1 h-8 flex items-center justify-center leading-snug w-full line-clamp-2">${item.name}</h5>
+                        
+                        <div class="w-full bg-black/60 border border-amber-500/25 rounded-xl py-1.5 px-2 mb-3 mt-auto">
+                            ${item.oldPrice > item.price ? `<span class="text-[10px] text-zinc-500 line-through block">${formatRupiah(item.oldPrice)}</span>` : ''}
+                            <span class="text-amber-400 text-sm font-black">${formatRupiah(item.price)}</span>
+                        </div>
+
+                        <div class="flex gap-1.5 w-full">
+                            <button onclick="addFlashSaleToCart(${idx}, false)" class="btn-crimson flex-grow text-white text-[10px] font-bold py-2.5 rounded-xl uppercase tracking-wider flex items-center justify-center gap-1">
+                                <i class="fas fa-cart-plus"></i> +Keranjang
+                            </button>
+                            <button onclick="addFlashSaleToCart(${idx}, true)" title="Beli Instan" class="bg-amber-500 hover:bg-amber-400 text-black font-bold w-9 rounded-xl flex items-center justify-center transition-all shrink-0">
+                                <i class="fas fa-bolt text-xs"></i>
+                            </button>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function startFlashSaleCountdown() {
+            if (countdownInterval) clearInterval(countdownInterval);
+
+            const getTargetTime = () => {
+                if (flashSaleEndTime) {
+                    const parsed = new Date(flashSaleEndTime).getTime();
+                    if (!isNaN(parsed) && parsed > Date.now()) return parsed;
+                }
+                // Default: berakhir pada tengah malam (23:59:59) hari ini
+                const endOfDay = new Date();
+                endOfDay.setHours(23, 59, 59, 999);
+                return endOfDay.getTime();
+            };
+
+            const target = getTargetTime();
+
+            const updateClock = () => {
+                const now = Date.now();
+                const diff = Math.max(0, target - now);
+                const hrs = Math.floor(diff / (1000 * 60 * 60));
+                const mins = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+                const secs = Math.floor((diff % (1000 * 60)) / 1000);
+
+                const hEl = document.getElementById('fs-hours');
+                const mEl = document.getElementById('fs-minutes');
+                const sEl = document.getElementById('fs-seconds');
+                if (hEl) hEl.innerText = String(hrs).padStart(2, '0');
+                if (mEl) mEl.innerText = String(mins).padStart(2, '0');
+                if (sEl) sEl.innerText = String(secs).padStart(2, '0');
+            };
+
+            updateClock();
+            countdownInterval = setInterval(updateClock, 1000);
         }
 
         function renderHomeGameShortcuts(games) {
@@ -1850,7 +2351,11 @@
             sections.forEach((section, sIndex) => {
                 if (sectionFilter !== 'all' && section.id !== sectionFilter) return;
 
-                let filteredItems = section.items.filter(item => item.name.toLowerCase().includes(lowerQuery));
+                let filteredItems = section.items.filter(item => {
+                    const matchName = item.name.toLowerCase().includes(lowerQuery);
+                    const matchFlash = currentSort === 'flash' ? Boolean(item.isFlashSale) : true;
+                    return matchName && matchFlash;
+                });
                 if (filteredItems.length === 0) return;
                 foundItems = true;
 
@@ -1898,7 +2403,7 @@
                     <div class="glass p-12 rounded-3xl text-center border border-white/10">
                         <i class="fas fa-box-open text-3xl text-red-400/70 mb-3"></i>
                         <h4 class="text-base font-bold text-white italic">Item Tidak Ditemukan</h4>
-                        <p class="text-xs text-zinc-400 mt-1">Coba kata kunci lain atau tambahkan produk di Admin Panel.</p>
+                        <p class="text-xs text-zinc-400 mt-1">Coba kata kunci lain atau ubah filter urutan katalog.</p>
                     </div>
                 `;
             }
@@ -1914,16 +2419,28 @@
                 mediaHtml = `<div class="w-full h-full flex items-center justify-center bg-zinc-900 group-hover:scale-105 transition-transform duration-500 text-3xl">${item.emoji || '🎁'}</div>`;
             }
 
+            const hasStrike = item.oldPrice && item.oldPrice > item.price;
+            const savePercent = hasStrike ? Math.round(((item.oldPrice - item.price) / item.oldPrice) * 100) : 0;
+            const flashBadge = item.isFlashSale
+                ? `<div class="absolute top-2.5 left-2.5 z-10 bg-gradient-to-r from-red-600 to-amber-500 text-white text-[9px] font-black uppercase px-2 py-0.5 rounded-md shadow-md">⚡ ${savePercent > 0 ? `-${savePercent}%` : 'PROMO'}</div>`
+                : '';
+
             return `
                 <div class="glow-card-wrapper flex flex-col">
-                    <div class="item-card rounded-2xl p-3.5 flex flex-col items-center text-center relative group flex-grow">
+                    <div class="${item.isFlashSale ? 'flash-card' : 'item-card'} rounded-2xl p-3.5 flex flex-col items-center text-center relative group flex-grow">
+                        ${flashBadge}
                         <div class="w-full aspect-square mb-3 rounded-xl overflow-hidden border border-white/10 bg-zinc-950 relative">
                             ${mediaHtml}
                         </div>
                         <h5 class="text-xs font-bold text-zinc-100 mb-1.5 h-8 flex items-center justify-center leading-snug w-full line-clamp-2">${item.name}</h5>
-                        <p id="total-${itemId}" class="text-amber-400 text-xs font-extrabold mb-3 bg-amber-500/10 px-2 py-1 rounded-lg w-full border border-amber-500/20" data-baseprice="${item.price}">
-                            ${formatRupiah(item.price)}
-                        </p>
+                        
+                        <div class="w-full bg-amber-500/10 px-2 py-1 rounded-lg border border-amber-500/20 mb-3">
+                            ${hasStrike ? `<span class="text-[10px] text-zinc-500 line-through block">${formatRupiah(item.oldPrice)}</span>` : ''}
+                            <p id="total-${itemId}" class="text-amber-400 text-xs font-extrabold" data-baseprice="${item.price}">
+                                ${formatRupiah(item.price)}
+                            </p>
+                        </div>
+
                         <div class="flex items-center justify-between w-full bg-black/60 rounded-xl p-1 border border-white/10 mb-3 mt-auto">
                             <button onclick="updateQty('${itemId}', -1)" class="w-6 h-6 rounded-lg flex items-center justify-center text-zinc-400 hover:text-white hover:bg-white/10 transition-colors">
                                 <i class="fas fa-minus text-[10px]"></i>
