@@ -669,6 +669,47 @@
         </section>
     </main>
 
+    <!-- TOMBOL MELAYANG GACHA HARIAN (DI POJOK KIRI BAWAH) -->
+<div class="fixed bottom-20 md:bottom-6 left-4 z-[75] flex flex-col gap-2.5">
+    <button onclick="openGachaModal()" title="Spin Harian Gratis!" class="w-12 h-12 rounded-2xl bg-gradient-to-tr from-amber-500 to-red-600 text-black font-black shadow-[0_0_20px_rgba(245,158,11,0.5)] flex items-center justify-center relative border border-amber-300/50 hover:scale-105 transition-transform animate-bounce">
+        <i class="fas fa-gift text-base"></i>
+        <span class="absolute -top-1 -right-1 bg-red-600 text-white text-[8px] font-extrabold px-1.5 py-0.5 rounded-full uppercase border border-black animate-pulse">FREE</span>
+    </button>
+</div>
+
+<!-- MODAL GACHA / SPIN WHEEL -->
+<div id="gachaModal" class="fixed inset-0 z-[130] hidden items-center justify-center p-4">
+    <div class="absolute inset-0 bg-black/85 backdrop-blur-md" onclick="closeGachaModal()"></div>
+    <div class="relative w-full max-w-sm glass rounded-3xl border border-amber-500/30 p-6 shadow-[0_0_50px_rgba(245,158,11,0.3)] z-10 text-center space-y-4">
+        <button onclick="closeGachaModal()" class="absolute top-4 right-4 w-8 h-8 rounded-full bg-white/5 hover:bg-red-600/30 text-zinc-400 hover:text-white flex items-center justify-center">
+            <i class="fas fa-times text-xs"></i>
+        </button>
+
+        <div>
+            <div class="inline-flex items-center justify-center w-12 h-12 rounded-2xl bg-amber-500/15 border border-amber-500/30 text-amber-400 text-xl mb-2">
+                <i class="fas fa-dharmachakra animate-spin-slow"></i>
+            </div>
+            <h3 class="font-heading font-bold text-2xl italic uppercase text-white">Gacha <span class="text-amber-400">Voucher Harian</span></h3>
+            <p id="gacha-subtitle" class="text-xs text-zinc-400 mt-0.5">Putar roda keberuntungan dan menangkan diskon belanja hari ini!</p>
+        </div>
+
+        <!-- Area Roda / Kotak Kotak Hadiah Berputar -->
+        <div class="py-6 bg-black/60 border border-amber-500/25 rounded-2xl relative overflow-hidden flex flex-col items-center justify-center min-h-[140px]">
+            <div id="gacha-wheel-box" class="text-4xl font-black text-amber-400 tracking-wider transition-all duration-300">
+                🎁 ❓ 🎁
+            </div>
+            <p id="gacha-result-text" class="text-xs text-zinc-300 font-semibold mt-2 px-4">Tekan tombol putar di bawah untuk mulai!</p>
+        </div>
+
+        <!-- Tombol Aksi -->
+        <div id="gacha-action-box">
+            <button id="btn-spin-gacha" onclick="executeGachaSpin()" class="w-full bg-gradient-to-r from-amber-500 to-red-600 hover:from-amber-400 hover:to-red-500 text-black font-black py-3.5 rounded-xl uppercase tracking-widest text-xs shadow-lg transition-all flex items-center justify-center gap-2">
+                <i class="fas fa-play text-xs"></i> Putar Sekarang!
+            </button>
+        </div>
+    </div>
+</div>
+
     <!-- FLOATING QUICK ACTION BAR (DESKTOP) -->
     <div class="hidden md:flex fixed bottom-6 right-6 z-40 flex-col gap-2.5">
         <button onclick="toggleCart()" title="Buka Keranjang" class="w-12 h-12 rounded-2xl btn-crimson text-white shadow-2xl flex items-center justify-center relative border border-red-400/30">
@@ -758,10 +799,35 @@
                 </div>
 
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
-                    <div>
-                        <label class="text-[10px] text-zinc-400 font-bold uppercase tracking-wider block mb-1">Username Roblox <span class="text-red-500">*</span></label>
-                        <input type="text" id="checkout-roblox" placeholder="Cth: LordAlpha_Rblx" class="input-field w-full px-3 py-2 rounded-xl text-xs font-medium">
-                    </div>
+                    <div class="bg-gradient-to-br from-red-950/30 to-black border border-red-500/40 rounded-2xl p-3.5 space-y-2 shadow-[0_0_15px_rgba(220,38,38,0.15)]">
+    <div class="flex items-center justify-between">
+        <label class="text-[11px] text-red-300 font-extrabold uppercase tracking-wider flex items-center gap-1.5">
+            <i class="fas fa-gamepad text-red-500"></i> Username Roblox <span class="text-red-500">*</span>
+        </label>
+        <span class="text-[9px] text-amber-400 font-bold bg-amber-500/10 px-2 py-0.5 rounded border border-amber-500/20 uppercase tracking-wide">Wajib Diisi</span>
+    </div>
+    
+    <div class="relative">
+        <input type="text" id="checkout-roblox" oninput="debounceCheckRoblox(this.value)" placeholder="Cth: LordAlpha_Rblx" class="input-field w-full px-3.5 py-2.5 rounded-xl text-xs font-bold border-red-500/50 bg-black/90 focus:border-red-500">
+        <span id="roblox-check-spinner" class="hidden absolute right-3.5 top-1/2 -translate-y-1/2 text-red-400 text-xs">
+            <i class="fas fa-circle-notch fa-spin"></i>
+        </span>
+    </div>
+
+    <!-- Kotak Preview Avatar Roblox -->
+    <div id="roblox-avatar-preview" class="hidden mt-2 p-2 rounded-xl bg-black/80 border border-emerald-500/40 items-center gap-2.5">
+        <img id="roblox-avatar-img" src="" alt="Avatar" class="w-8 h-8 rounded-full border border-emerald-400 bg-zinc-900 object-cover shrink-0">
+        <div class="min-w-0 flex-grow">
+            <p id="roblox-display-name" class="text-[11px] font-bold text-white truncate">-</p>
+            <p id="roblox-user-handle" class="text-[9px] text-emerald-400 font-semibold truncate">@username</p>
+        </div>
+        <i class="fas fa-circle-check text-emerald-400 text-xs mr-1"></i>
+    </div>
+
+    <p id="roblox-error-msg" class="hidden text-[10px] text-red-400 font-semibold mt-1">
+        <i class="fas fa-circle-exclamation mr-1"></i> Username tidak ditemukan di Roblox!
+    </p>
+</div>
                     <div>
                         <label class="text-[10px] text-zinc-400 font-bold uppercase tracking-wider block mb-1">Catatan / No. WA</label>
                         <input type="text" id="checkout-note" placeholder="Cth: Sea 1 / 0812xxx" class="input-field w-full px-3 py-2 rounded-xl text-xs font-medium">
@@ -1749,6 +1815,62 @@
             showToastMsg(`Nominal Rp ${currentFinalNominal} disalin!`);
         }
 
+        let robloxCheckTimeout = null;
+let isRobloxUserValid = false;
+
+function debounceCheckRoblox(username) {
+    clearTimeout(robloxCheckTimeout);
+    const cleanUser = username.trim();
+    const previewBox = document.getElementById('roblox-avatar-preview');
+    const errorMsg = document.getElementById('roblox-error-msg');
+    const spinner = document.getElementById('roblox-check-spinner');
+
+    isRobloxUserValid = false;
+    previewBox.classList.add('hidden');
+    previewBox.classList.remove('flex');
+    errorMsg.classList.add('hidden');
+
+    if (cleanUser.length < 3) {
+        spinner.classList.add('hidden');
+        return;
+    }
+
+    spinner.classList.remove('hidden');
+
+    // Tunggu 600ms setelah pembeli selesai mengetik baru cek ke server
+    robloxCheckTimeout = setTimeout(() => {
+        verifyRobloxUsername(cleanUser);
+    }, 600);
+}
+
+async function verifyRobloxUsername(username) {
+    const previewBox = document.getElementById('roblox-avatar-preview');
+    const errorMsg = document.getElementById('roblox-error-msg');
+    const spinner = document.getElementById('roblox-check-spinner');
+
+    try {
+        const res = await fetch(`${GOOGLE_SCRIPT_URL}?action=check_roblox&username=${encodeURIComponent(username)}`);
+        const data = await res.json();
+
+        spinner.classList.add('hidden');
+
+        if (data.status === "success" && data.found) {
+            isRobloxUserValid = true;
+            document.getElementById('roblox-avatar-img').src = data.avatarUrl;
+            document.getElementById('roblox-display-name').innerText = data.displayName;
+            document.getElementById('roblox-user-handle').innerText = `@${data.username}`;
+            previewBox.classList.remove('hidden');
+            previewBox.classList.add('flex');
+        } else {
+            errorMsg.classList.remove('hidden');
+        }
+    } catch (err) {
+        spinner.classList.add('hidden');
+        // Jika koneksi gagal, tetap izinkan lanjut agar transaksi tidak terhambat
+        isRobloxUserValid = true;
+    }
+}
+
         async function openPaymentModal() {
             if (cart.length === 0) {
                 showToastMsg("Keranjang masih kosong!", true);
@@ -1906,7 +2028,7 @@
                 } finally {
                     isCheckingPayment = false;
                 }
-            }, 1500);
+            }, 2500);
         }
 
         function closePaymentModal() {
@@ -2254,6 +2376,9 @@
             }
         }
 
+        let bannerAutoScrollInterval = null;
+        let isBannerPaused = false;
+
         function renderHomeBanners(bannersList) {
             const container = document.getElementById('home-banners-slider');
             if (!container) return;
@@ -2278,14 +2403,170 @@
                     </div>
                 </div>
             `).join('');
+
+            // Jalankan auto-scroll jika jumlah banner lebih dari 1
+            if (bannersList.length > 1) {
+                startBannerAutoScroll();
+            }
+        }
+
+        function startBannerAutoScroll() {
+            const container = document.getElementById('home-banners-slider');
+            if (!container) return;
+
+            if (bannerAutoScrollInterval) clearInterval(bannerAutoScrollInterval);
+
+            // Berhenti sementara saat kursor di atas banner atau disentuh di HP
+            if (!container.dataset.listenerAttached) {
+                container.addEventListener('mouseenter', () => isBannerPaused = true);
+                container.addEventListener('mouseleave', () => isBannerPaused = false);
+                container.addEventListener('touchstart', () => isBannerPaused = true, { passive: true });
+                container.addEventListener('touchend', () => isBannerPaused = false, { passive: true });
+                container.dataset.listenerAttached = 'true';
+            }
+
+            bannerAutoScrollInterval = setInterval(() => {
+                if (isBannerPaused) return;
+                
+                // Cek apakah posisi banner sudah mentok di paling kanan
+                const maxScrollLeft = container.scrollWidth - container.clientWidth;
+                if (container.scrollLeft >= maxScrollLeft - 15) {
+                    // Kembali mulus ke banner pertama
+                    container.scrollTo({ left: 0, behavior: 'smooth' });
+                } else {
+                    // Geser ke banner berikutnya
+                    container.scrollBy({ left: container.clientWidth, behavior: 'smooth' });
+                }
+            }, 6000); // 4500 ms = 4,5 detik
         }
 
         function scrollBanner(direction) {
             const container = document.getElementById('home-banners-slider');
             if (!container) return;
-            const scrollAmount = container.clientWidth * direction;
-            container.scrollBy({ left: scrollAmount, behavior: 'smooth' });
+
+            const maxScrollLeft = container.scrollWidth - container.clientWidth;
+            if (direction === 1 && container.scrollLeft >= maxScrollLeft - 15) {
+                container.scrollTo({ left: 0, behavior: 'smooth' });
+            } else if (direction === -1 && container.scrollLeft <= 15) {
+                container.scrollTo({ left: maxScrollLeft, behavior: 'smooth' });
+            } else {
+                container.scrollBy({ left: container.clientWidth * direction, behavior: 'smooth' });
+            }
+
+            // Reset timer 4,5 detik setiap kali tombol panah diklik manual
+            startBannerAutoScroll();
         }
+
+        // =======================
+// FITUR GACHA / SPIN WHEEL HARIAN
+// =======================
+const GACHA_COOLDOWN_KEY = "tera_last_gacha_date";
+
+function openGachaModal() {
+    const modal = document.getElementById('gachaModal');
+    modal.classList.remove('hidden');
+    modal.classList.add('flex');
+
+    checkGachaStatus();
+}
+
+function closeGachaModal() {
+    const modal = document.getElementById('gachaModal');
+    modal.classList.add('hidden');
+    modal.classList.remove('flex');
+}
+
+function checkGachaStatus() {
+    const lastSpinDate = localStorage.getItem(GACHA_COOLDOWN_KEY);
+    const today = new Date().toDateString();
+    const btnSpin = document.getElementById('btn-spin-gacha');
+    const resultText = document.getElementById('gacha-result-text');
+    const wheelBox = document.getElementById('gacha-wheel-box');
+
+    if (lastSpinDate === today) {
+        // Sudah pernah spin hari ini
+        if (btnSpin) btnSpin.classList.add('hidden');
+        wheelBox.innerHTML = "✨🎟️✨";
+        resultText.innerHTML = `<span class="text-amber-400 font-bold">Kamu sudah menggunakan jatah gacha hari ini!</span><br>Kembali lagi besok ya bro.`;
+    } else {
+        if (btnSpin) btnSpin.classList.remove('hidden');
+        wheelBox.innerHTML = "🎁 ❓ 🎁";
+        resultText.innerText = "Tekan tombol putar di bawah untuk mulai!";
+    }
+}
+
+function executeGachaSpin() {
+    const lastSpinDate = localStorage.getItem(GACHA_COOLDOWN_KEY);
+    const today = new Date().toDateString();
+    if (lastSpinDate === today) {
+        showToastMsg("Kamu sudah spin hari ini. Coba lagi besok!", true);
+        return;
+    }
+
+    const btnSpin = document.getElementById('btn-spin-gacha');
+    const wheelBox = document.getElementById('gacha-wheel-box');
+    const resultText = document.getElementById('gacha-result-text');
+    if (btnSpin) btnSpin.disabled = true;
+
+    // Daftar hadiah yang bisa didapat (bisa disesuaikan dengan kode voucher aktifmu)
+    const possibleRewards = [
+        { name: "HEMAT5", label: "Diskon 5%", type: "percent", value: 5 },
+        { name: "HEMAT10", label: "Diskon 10%", type: "percent", value: 10 },
+        { name: "TERA2026", label: "Potongan Rp 2.000", type: "nominal", value: 2000 },
+        { name: "SULTAN", label: "Potongan Rp 5.000", type: "nominal", value: 5000 }
+    ];
+
+    // Efek animasi berputar acak
+    let counter = 0;
+    const animInterval = setInterval(() => {
+        const randItem = possibleRewards[Math.floor(Math.random() * possibleRewards.length)];
+        wheelBox.innerHTML = randItem.label;
+        counter++;
+
+        if (counter > 14) {
+            clearInterval(animInterval);
+            
+            // Tentukan hadiah akhir secara acak
+            const winningReward = possibleRewards[Math.floor(Math.random() * possibleRewards.length)];
+            
+            // Simpan status bahwa hari ini sudah spin
+            localStorage.setItem(GACHA_COOLDOWN_KEY, today);
+
+            wheelBox.innerHTML = `🎉`;
+            resultText.innerHTML = `
+                <span class="text-emerald-400 font-extrabold text-sm">SELAMAT! Kamu Mendapat:</span><br>
+                <strong class="text-amber-400 text-base">${winningReward.label}</strong><br>
+                <span class="text-[10px] text-zinc-400">Kode Voucher: <code>${winningReward.name}</code></span>
+            `;
+
+            if (btnSpin) btnSpin.classList.add('hidden');
+
+            // Tambahkan otomatis voucher ke daftar voucher lokal jika belum ada
+            const exists = availableVouchers.find(v => v.code === winningReward.name);
+            if (!exists) {
+                availableVouchers.push({
+                    code: winningReward.name,
+                    value: winningReward.value,
+                    type: winningReward.type,
+                    minSpend: 0,
+                    quota: 999,
+                    active: true
+                });
+                renderVouchersBar();
+            }
+
+            // Tampilkan tombol untuk langsung pakai voucher
+            const actionBox = document.getElementById('gacha-action-box');
+            actionBox.innerHTML = `
+                <button onclick="closeGachaModal(); applyVoucherCodeDirect('${winningReward.name}')" class="w-full btn-crimson text-white font-bold py-3.5 rounded-xl uppercase tracking-widest text-xs shadow-lg flex items-center justify-center gap-2">
+                    <i class="fas fa-ticket text-xs"></i> Pakai Voucher Sekarang!
+                </button>
+            `;
+
+            showToastMsg(`Hoki banget! Kamu dapat voucher ${winningReward.name}`);
+        }
+    }, 100);
+}
 
         function renderFlashSaleSection() {
             const section = document.getElementById('home-flashsale-section');
@@ -2310,7 +2591,7 @@
                     : `<div class="w-full h-full flex items-center justify-center bg-zinc-900 text-3xl">⚡</div>`;
 
                 return `
-                    <div class="flash-card rounded-2xl p-3.5 flex flex-col items-center text-center relative group">
+                    <div class="flash-card rounded-2xl p-2.5 flex flex-col items-center text-center relative group">
                         <div class="absolute top-2.5 left-2.5 z-10 bg-gradient-to-r from-red-600 to-amber-500 text-white text-[9px] font-black uppercase px-2 py-0.5 rounded-md shadow-md">
                             ⚡ ${savePercent > 0 ? `HEMAT ${savePercent}%` : 'FLASH SALE'}
                         </div>
@@ -2639,7 +2920,7 @@
 
             return `
                 <div class="glow-card-wrapper flex flex-col">
-                    <div class="${item.isFlashSale ? 'flash-card' : 'item-card'} rounded-2xl p-3.5 flex flex-col items-center text-center relative group flex-grow">
+                    <div class="${item.isFlashSale ? 'flash-card' : 'item-card'} rounded-2xl p-2.5 flex flex-col items-center text-center relative group flex-grow">
                         ${topBadge}
                         <div onclick="openQuickView('${game}', ${sIndex}, ${iIndex})" title="Klik untuk Detail Produk" class="w-full aspect-square mb-3 rounded-xl overflow-hidden border border-white/10 bg-zinc-950 relative cursor-pointer">
                             ${mediaHtml}
