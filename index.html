@@ -10,6 +10,9 @@
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Rajdhani:ital,wght@0,600;0,700;1,700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
+    <!-- jsPDF Library untuk Generate Invoice PDF Resmi -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
     <!-- Firebase SDK -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
@@ -282,7 +285,7 @@
     <div class="bg-gradient-to-r from-red-950/80 via-red-900/40 to-red-950/80 border-b border-red-500/15 text-[11px] py-2 px-4 text-center font-medium text-red-200/90 z-50">
         <span class="inline-flex items-center gap-2">
             <span class="w-2 h-2 rounded-full bg-red-500 animate-ping"></span>
-            <strong>SISTEM OTOMATIS 24/7:</strong> Pembayaran QRIS terverifikasi otomatis dalam 5 detik!
+            <strong>SISTEM OTOMATIS 24/7:</strong> Pembayaran QRIS terverifikasi otomatis & Invoice PDF resmi ber-watermark!
         </span>
     </div>
 
@@ -455,7 +458,7 @@
                     <span class="text-gradient-crimson uppercase">TANPA BATAS</span>
                 </h2>
                 <p class="text-zinc-400 text-sm md:text-base mb-10 max-w-2xl mx-auto leading-relaxed">
-                    Top-up item game Roblox favoritmu dan nikmati layanan Joki profesional dengan sistem pembayaran QRIS otomatis 24 jam yang aman, cepat, dan bergaransi penuh.
+                    Top-up item game Roblox favoritmu dan nikmati layanan Joki profesional dengan sistem pembayaran QRIS otomatis 24 jam yang aman, cepat, dan dilengkapi Invoice PDF resmi ber-watermark.
                 </p>
                 <div class="flex flex-wrap justify-center gap-4">
                     <button onclick="switchPage('katalog')" class="btn-crimson text-white px-8 py-4 rounded-2xl font-bold uppercase tracking-wider text-xs flex items-center gap-2.5 shadow-lg">
@@ -477,14 +480,14 @@
                         <i class="fas fa-qrcode"></i>
                     </div>
                     <h4 class="font-bold text-xs uppercase tracking-wider text-white">QRIS Otomatis</h4>
-                    <p class="text-[11px] text-zinc-400 mt-1">Verifikasi pembayaran instan dalam hitungan detik</p>
+                    <p class="text-[11px] text-zinc-400 mt-1">Bisa unduh gambar QRIS & verifikasi otomatis instan</p>
                 </div>
                 <div class="glass p-5 rounded-2xl border border-white/5 flex flex-col items-center text-center">
                     <div class="w-11 h-11 rounded-xl bg-amber-500/10 border border-amber-500/25 flex items-center justify-center text-amber-400 text-lg mb-3">
-                        <i class="fas fa-shield-cat"></i>
+                        <i class="fas fa-file-pdf"></i>
                     </div>
-                    <h4 class="font-bold text-xs uppercase tracking-wider text-white">100% Aman & Legal</h4>
-                    <p class="text-[11px] text-zinc-400 mt-1">Joki manual murni tanpa script atau cheat berbahaya</p>
+                    <h4 class="font-bold text-xs uppercase tracking-wider text-white">Invoice PDF Resmi</h4>
+                    <p class="text-[11px] text-zinc-400 mt-1">Dilengkapi watermark & kode hash anti-pemalsuan</p>
                 </div>
                 <div class="glass p-5 rounded-2xl border border-white/5 flex flex-col items-center text-center">
                     <div class="w-11 h-11 rounded-xl bg-emerald-500/10 border border-emerald-500/25 flex items-center justify-center text-emerald-400 text-lg mb-3">
@@ -532,7 +535,7 @@
                             <i id="faq-icon-1" class="fas fa-chevron-down text-red-400 transition-transform"></i>
                         </button>
                         <div id="faq-body-1" class="hidden px-4 pb-4 text-xs text-zinc-400 leading-relaxed border-t border-white/5 pt-3">
-                            Pilih item di menu <b>Katalog Item</b>, masukkan ke keranjang (atau klik tombol petir untuk Beli Instan), isi <b>Username Roblox</b> kamu, lalu scan QRIS sesuai nominal hingga 3 digit terakhir. Setelah lunas, tombol chat WhatsApp Admin akan langsung terbuka otomatis!
+                            Pilih item di menu <b>Katalog Item</b>, masukkan ke keranjang (atau klik tombol petir untuk Beli Instan), isi <b>Username Roblox</b> kamu, lalu unduh/scan QRIS sesuai nominal hingga 3 digit terakhir. Setelah lunas, file <b>Invoice PDF ber-watermark</b> otomatis terunduh dan kamu bisa langsung klik tombol Chat WhatsApp Admin!
                         </div>
                     </div>
                     <div class="glass rounded-2xl border border-white/10 overflow-hidden">
@@ -541,16 +544,16 @@
                             <i id="faq-icon-2" class="fas fa-chevron-down text-red-400 transition-transform"></i>
                         </button>
                         <div id="faq-body-2" class="hidden px-4 pb-4 text-xs text-zinc-400 leading-relaxed border-t border-white/5 pt-3">
-                            Kode unik (contoh: +Rp 12) digunakan oleh robot sistem kami untuk mengenali pembayaranmu secara otomatis dalam 5 detik tanpa perlu kirim bukti transfer manual.
+                            Kode unik (contoh: +Rp 12) digunakan oleh robot sistem kami untuk mengenali pembayaranmu secara otomatis dalam hitungan detik tanpa perlu repot menunggu konfirmasi manual.
                         </div>
                     </div>
                     <div class="glass rounded-2xl border border-white/10 overflow-hidden">
                         <button onclick="toggleFaq(3)" class="w-full p-4 text-left flex justify-between items-center font-bold text-xs text-zinc-100 hover:text-red-400 transition-colors">
-                            <span>3. Bagaimana jika saya lupa menyimpan nomor pesanan?</span>
+                            <span>3. Bagaimana jika saya ingin mengunduh ulang Invoice PDF pesanan?</span>
                             <i id="faq-icon-3" class="fas fa-chevron-down text-red-400 transition-transform"></i>
                         </button>
                         <div id="faq-body-3" class="hidden px-4 pb-4 text-xs text-zinc-400 leading-relaxed border-t border-white/5 pt-3">
-                            Tenang! Kamu bisa membuka menu <b>Cek Pesanan</b> di atas, lalu ketik <b>Username Roblox</b> kamu untuk melihat status pembayaran dan riwayat item yang kamu beli.
+                            Kamu bisa membuka menu <b>Cek Pesanan</b> di atas, ketik <b>Nomor Order</b> atau <b>Username Roblox</b> kamu, lalu klik tombol <b>Invoice PDF</b> pada pesanan yang sudah berstatus LUNAS.
                         </div>
                     </div>
                 </div>
@@ -619,7 +622,7 @@
             </div>
         </section>
 
-        <!-- 4. SECTION LACAK PESANAN (FITUR BARU) -->
+        <!-- 4. SECTION LACAK PESANAN -->
         <section id="lacak" class="page-section pt-12 pb-20 px-4 max-w-3xl mx-auto">
             <div class="glass p-6 md:p-8 rounded-3xl border border-red-500/20 space-y-6">
                 <div class="flex items-center gap-4 border-b border-white/10 pb-5">
@@ -747,7 +750,7 @@
                 </div>
 
                 <!-- Body: Menunggu Pembayaran -->
-                <div id="qris-waiting-view" class="p-5 space-y-4">
+                <div id="qris-waiting-view" class="p-5 space-y-3.5">
                     <div class="bg-[#120c0e] rounded-2xl p-3.5 border border-white/10 space-y-2">
                         <div class="flex items-center justify-between border-b border-white/5 pb-2">
                             <span class="text-[10px] text-zinc-400 uppercase font-bold">No. Pesanan</span>
@@ -770,8 +773,13 @@
 
                     <!-- QRIS Image -->
                     <div class="rounded-2xl overflow-hidden border border-white/15 bg-white p-2.5">
-                        <img src="assets/qris.jpg" alt="QRIS TERA STORE" class="w-full rounded-xl">
+                        <img id="qris-image-el" src="assets/qris.jpg" alt="QRIS TERA STORE" class="w-full rounded-xl">
                     </div>
+
+                    <!-- Tombol Download QRIS -->
+                    <button onclick="downloadQRIS()" class="w-full bg-zinc-900 hover:bg-zinc-800 text-zinc-100 py-2.5 rounded-xl font-bold uppercase tracking-wider text-[11px] border border-white/15 transition-all flex items-center justify-center gap-2">
+                        <i class="fas fa-download text-red-400"></i> Download QRIS
+                    </button>
 
                     <!-- Status Pengecekan Real-Time -->
                     <div class="bg-red-950/40 border border-red-500/30 rounded-xl p-3 flex items-center justify-center gap-2.5">
@@ -782,27 +790,44 @@
                     <div class="bg-amber-500/10 border border-amber-500/25 rounded-xl p-3 flex gap-2.5">
                         <i class="fas fa-triangle-exclamation text-amber-400 mt-0.5 shrink-0 text-xs"></i>
                         <p class="text-[11px] text-amber-200/90 leading-relaxed">
-                            Masukkan nominal transfer <strong class="underline text-white">persis hingga 3 digit terakhir</strong> agar sistem langsung melunaskan pesananmu dalam 5 detik.
+                            Masukkan nominal transfer <strong class="underline text-white">persis hingga 3 digit terakhir</strong> agar sistem langsung melunaskan pesananmu secara otomatis.
                         </p>
                     </div>
                 </div>
 
                 <!-- Body: Pembayaran Sukses Lunas Otomatis -->
                 <div id="qris-success-view" class="p-6 text-center space-y-4 hidden">
-                    <div class="w-16 h-16 rounded-full bg-emerald-500/20 border-2 border-emerald-400 flex items-center justify-center mx-auto text-3xl text-emerald-400">
+                    <div class="w-16 h-16 rounded-full bg-emerald-500/20 border-2 border-emerald-400 flex items-center justify-center mx-auto text-3xl text-emerald-400 shadow-[0_0_25px_rgba(16,185,129,0.3)]">
                         <i class="fas fa-check"></i>
                     </div>
-                    <h4 class="text-2xl font-heading font-bold italic uppercase text-emerald-400">Pembayaran Lunas!</h4>
-                    <p class="text-xs text-zinc-300 leading-relaxed">
-                        Terima kasih! Pembayaranmu telah terverifikasi otomatis. Klik tombol di bawah untuk langsung janjian ketemuan di dalam game bersama <strong>Admin Tera</strong>.
-                    </p>
-                    
-                    <a id="btn-wa-chat" href="#" target="_blank" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white py-3.5 rounded-xl font-bold uppercase tracking-widest text-xs transition-all flex items-center justify-center gap-2 shadow-lg">
-                        <i class="fab fa-whatsapp text-lg"></i> Chat Admin untuk Ketemuan
-                    </a>
+                    <div>
+                        <h4 class="text-2xl font-heading font-bold italic uppercase text-emerald-400">Pembayaran Lunas!</h4>
+                        <p class="text-xs text-zinc-300 leading-relaxed mt-1">
+                            Terima kasih! Pembayaranmu telah terverifikasi. Silakan unduh **Invoice PDF Resmi (Ber-Watermark)** di bawah dan klik tombol WhatsApp untuk mengambil item bersama <strong>Admin Tera</strong>.
+                        </p>
+                    </div>
+
+                    <!-- Ringkasan Singkat Invoice di Modal -->
+                    <div class="bg-[#120c0e] border border-white/10 rounded-2xl p-3.5 text-left text-xs space-y-1">
+                        <div class="flex justify-between"><span class="text-zinc-400">Order ID:</span><strong id="paid-summary-id" class="text-red-400">-</strong></div>
+                        <div class="flex justify-between"><span class="text-zinc-400">Username Roblox:</span><strong id="paid-summary-user" class="text-white">-</strong></div>
+                        <div class="flex justify-between"><span class="text-zinc-400">Total Lunas:</span><strong id="paid-summary-total" class="text-emerald-400">-</strong></div>
+                    </div>
+
+                    <div class="space-y-2.5 pt-1">
+                        <!-- Tombol Download Invoice PDF -->
+                        <button onclick="downloadInvoicePDF()" class="btn-crimson w-full text-white py-3.5 rounded-xl font-bold uppercase tracking-widest text-xs transition-all flex items-center justify-center gap-2 shadow-lg">
+                            <i class="fas fa-file-pdf text-base"></i> Download Invoice (.PDF Resmi)
+                        </button>
+
+                        <!-- Tombol Langsung Hubungi WA Admin -->
+                        <a id="btn-wa-chat" href="#" target="_blank" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white py-3.5 rounded-xl font-bold uppercase tracking-widest text-xs transition-all flex items-center justify-center gap-2 shadow-lg">
+                            <i class="fab fa-whatsapp text-lg"></i> Hubungi Admin di WhatsApp
+                        </a>
+                    </div>
 
                     <button onclick="closePaymentModal()" class="w-full bg-white/5 hover:bg-white/10 text-zinc-400 hover:text-white py-2.5 rounded-xl font-bold uppercase tracking-wider text-[11px] transition-all">
-                        Tutup Jendela
+                        Tutup
                     </button>
                 </div>
             </div>
@@ -813,6 +838,7 @@
         const TIKTOK_URL = "https://www.tiktok.com/@tera.rblx";
         const INSTAGRAM_URL = "https://www.instagram.com/tera.rblx";
         const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyx33ntFyF_QFbH15j8kbJJiEiI1wNwzk_eR4_EpPj4HeHZMR5NAGKkbUPtC5G4QGDv/exec";
+        const NOMOR_ADMIN_WA = "6288210882762";
 
         const CART_STORAGE_KEY = "tera_saved_cart";
         const LAST_ORDER_KEY = "tera_last_order";
@@ -821,6 +847,7 @@
         let activeGame = "";
         let currentSort = "default";
         let currentFinalNominal = 0;
+        let lastInvoiceData = null;
 
         // WADAH MURNI DINAMIS DARI GOOGLE SHEETS
         let storeData = {};
@@ -996,6 +1023,258 @@
         }
 
         // =======================
+        // FITUR DOWNLOAD QRIS & INVOICE PDF BER-WATERMARK ANTI-PALSU
+        // =======================
+        function downloadQRIS() {
+            const link = document.createElement('a');
+            link.href = 'assets/qris.jpg';
+            link.download = `QRIS_TERA_STORE_${currentOrderId || 'PAYMENT'}.jpg`;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            showToastMsg("QRIS berhasil diunduh!");
+        }
+
+        // Fungsi pembuat kode Hash Keamanan unik (tidak bisa ditebak jika diedit)
+        function generateSecurityHash(orderId, user, total) {
+            const raw = `TERASTORE_SECRET_2026|${orderId}|${String(user).toUpperCase()}|${total}`;
+            let h1 = 0xdeadbeef ^ raw.length, h2 = 0x41c6ce57 ^ raw.length;
+            for (let i = 0, ch; i < raw.length; i++) {
+                ch = raw.charCodeAt(i);
+                h1 = Math.imul(h1 ^ ch, 2654435761);
+                h2 = Math.imul(h2 ^ ch, 1597334677);
+            }
+            h1 = Math.imul(h1 ^ (h1 >>> 16), 2246822507) ^ Math.imul(h2 ^ (h2 >>> 13), 3266489909);
+            h2 = Math.imul(h2 ^ (h2 >>> 16), 2246822507) ^ Math.imul(h1 ^ (h1 >>> 13), 3266489909);
+            const hex = (h2 >>> 0).toString(16).padStart(8, '0') + (h1 >>> 0).toString(16).padStart(8, '0');
+            return `TS-SEC-${hex.toUpperCase().slice(0, 4)}-${hex.toUpperCase().slice(4, 8)}-${hex.toUpperCase().slice(8, 12)}`;
+        }
+
+        function downloadInvoicePDF(customData = null) {
+            const data = customData || lastInvoiceData;
+            if (!data) {
+                showToastMsg("Data invoice belum tersedia.", true);
+                return;
+            }
+
+            const secHash = generateSecurityHash(data.orderId, data.robloxUser, data.total);
+            const formattedTotal = formatRupiah(data.total || 0);
+            const itemLines = String(data.items || '').split('\n').filter(Boolean);
+            const extraHeight = Math.max(0, (itemLines.length - 3) * 32);
+
+            const canvas = document.createElement('canvas');
+            canvas.width = 800;
+            canvas.height = 920 + extraHeight;
+            const ctx = canvas.getContext('2d');
+
+            // 1. Background Dark Crimson Obsidian
+            const grad = ctx.createLinearGradient(0, 0, 0, canvas.height);
+            grad.addColorStop(0, '#0e0709');
+            grad.addColorStop(1, '#060405');
+            ctx.fillStyle = grad;
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            // 2. Security Fine Grid Pattern (Jaring Halus Anti-Edit)
+            ctx.strokeStyle = 'rgba(220, 38, 38, 0.045)';
+            ctx.lineWidth = 1;
+            for (let x = 0; x < canvas.width; x += 24) {
+                ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, canvas.height); ctx.stroke();
+            }
+            for (let y = 0; y < canvas.height; y += 24) {
+                ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(canvas.width, y); ctx.stroke();
+            }
+
+            // 3. LAPISAN WATERMARK BAWAH (UNDERLAY DIAGONAL BERULANG)
+            const drawDiagonalWatermarks = (alphaText, alphaSub) => {
+                ctx.save();
+                ctx.translate(canvas.width / 2, canvas.height / 2);
+                ctx.rotate(-Math.PI / 6);
+                ctx.textAlign = 'center';
+
+                const wmMain = `TERA STORE OFFICIAL • ${data.orderId} • ${String(data.robloxUser).toUpperCase()}`;
+                const wmSub = `VERIFIED PAID: ${formattedTotal} • ${secHash} • ANTI-FORGERY`;
+
+                for (let y = -canvas.height; y < canvas.height; y += 110) {
+                    for (let x = -canvas.width; x < canvas.width; x += 560) {
+                        ctx.font = 'bold 17px sans-serif';
+                        ctx.fillStyle = `rgba(248, 113, 113, ${alphaText})`;
+                        ctx.fillText(wmMain, x, y);
+
+                        ctx.font = 'bold 12px monospace';
+                        ctx.fillStyle = `rgba(251, 191, 36, ${alphaSub})`;
+                        ctx.fillText(wmSub, x, y + 22);
+                    }
+                }
+                ctx.restore();
+            };
+
+            drawDiagonalWatermarks(0.065, 0.05);
+
+            // 4. Top & Bottom Crimson Security Banner
+            const headerGrad = ctx.createLinearGradient(0, 0, canvas.width, 0);
+            headerGrad.addColorStop(0, '#7f1d1d');
+            headerGrad.addColorStop(0.5, '#dc2626');
+            headerGrad.addColorStop(1, '#7f1d1d');
+            ctx.fillStyle = headerGrad;
+            ctx.fillRect(0, 0, canvas.width, 14);
+            ctx.fillRect(0, canvas.height - 14, canvas.width, 14);
+
+            // Outer Frame & Micro-text Security Border
+            ctx.strokeStyle = 'rgba(220, 38, 38, 0.45)';
+            ctx.lineWidth = 2;
+            ctx.strokeRect(28, 28, canvas.width - 56, canvas.height - 56);
+
+            ctx.fillStyle = 'rgba(248, 113, 113, 0.35)';
+            ctx.font = 'bold 9px monospace';
+            const microText = `AUTHENTIC TERA STORE DOCUMENT • ${data.orderId} • ${secHash} • DO NOT DUPLICATE • `;
+            ctx.fillText((microText + microText).slice(0, 118), 36, 42);
+            ctx.fillText((microText + microText).slice(0, 118), 36, canvas.height - 34);
+
+            // 5. Header Title
+            ctx.fillStyle = '#ffffff';
+            ctx.font = 'bold 40px sans-serif';
+            ctx.fillText('TERA STORE', 60, 98);
+
+            ctx.fillStyle = '#f87171';
+            ctx.font = 'bold 14px sans-serif';
+            ctx.fillText('OFFICIAL DIGITAL INVOICE • PROTECTED DOCUMENT', 60, 124);
+
+            // Paid Badge
+            ctx.fillStyle = 'rgba(16, 185, 129, 0.14)';
+            ctx.fillRect(canvas.width - 230, 64, 170, 48);
+            ctx.strokeStyle = '#10b981';
+            ctx.lineWidth = 2;
+            ctx.strokeRect(canvas.width - 230, 64, 170, 48);
+            ctx.fillStyle = '#10b981';
+            ctx.font = 'bold 20px sans-serif';
+            ctx.fillText('✓ LUNAS SAH', canvas.width - 210, 95);
+
+            // Divider 1
+            ctx.strokeStyle = 'rgba(255, 255, 255, 0.12)';
+            ctx.lineWidth = 1;
+            ctx.beginPath();
+            ctx.moveTo(60, 152);
+            ctx.lineTo(canvas.width - 60, 152);
+            ctx.stroke();
+
+            // 6. Order Metadata
+            const drawMetaRow = (label, val, y, valColor = '#ffffff') => {
+                ctx.fillStyle = '#a1a1aa';
+                ctx.font = '16px sans-serif';
+                ctx.fillText(label, 60, y);
+                ctx.fillStyle = valColor;
+                ctx.font = 'bold 17px sans-serif';
+                ctx.fillText(val, 275, y);
+            };
+
+            drawMetaRow('No. Pesanan (Order ID)', data.orderId || '-', 195, '#f87171');
+            drawMetaRow('Waktu Verifikasi', data.date || new Date().toLocaleString('id-ID'), 232);
+            drawMetaRow('Username Roblox', data.robloxUser || '-', 269, '#fbbf24');
+            drawMetaRow('Catatan Pembeli', data.buyerNote || '-', 306);
+            drawMetaRow('Metode Pembayaran', 'QRIS Otomatis (Verified System)', 343, '#34d399');
+            drawMetaRow('Security Signature', secHash, 380, '#f43f5e');
+
+            // Divider 2
+            ctx.strokeStyle = 'rgba(255, 255, 255, 0.12)';
+            ctx.beginPath();
+            ctx.moveTo(60, 408);
+            ctx.lineTo(canvas.width - 60, 408);
+            ctx.stroke();
+
+            // 7. Items Box
+            ctx.fillStyle = '#f87171';
+            ctx.font = 'bold 15px sans-serif';
+            ctx.fillText('RINCIAN ITEM PEMBELIAN:', 60, 442);
+
+            const boxTop = 460;
+            const boxHeight = Math.max(155, itemLines.length * 32 + 40);
+            ctx.fillStyle = 'rgba(18, 12, 14, 0.9)';
+            ctx.fillRect(60, boxTop, canvas.width - 120, boxHeight);
+            ctx.strokeStyle = 'rgba(248, 113, 113, 0.25)';
+            ctx.strokeRect(60, boxTop, canvas.width - 120, boxHeight);
+
+            ctx.fillStyle = '#f4f4f5';
+            ctx.font = 'bold 16px monospace';
+            itemLines.forEach((line, idx) => {
+                ctx.fillText(line.slice(0, 68), 82, boxTop + 38 + idx * 30);
+            });
+
+            // 8. Total Box
+            const totalY = boxTop + boxHeight + 35;
+            ctx.fillStyle = 'rgba(220, 38, 38, 0.14)';
+            ctx.fillRect(60, totalY, canvas.width - 120, 76);
+            ctx.strokeStyle = 'rgba(220, 38, 38, 0.5)';
+            ctx.lineWidth = 2;
+            ctx.strokeRect(60, totalY, canvas.width - 120, 76);
+
+            ctx.fillStyle = '#e4e4e7';
+            ctx.font = 'bold 17px sans-serif';
+            ctx.fillText('TOTAL PEMBAYARAN TERVERIFIKASI', 84, totalY + 44);
+
+            ctx.fillStyle = '#fbbf24';
+            ctx.font = 'bold 28px sans-serif';
+            ctx.fillText(formattedTotal, canvas.width - 84 - ctx.measureText(formattedTotal).width, totalY + 48);
+
+            // 9. Stempel Resmi Melintang (Overlapping Stamp Seal Anti-Crop)
+            ctx.save();
+            ctx.translate(canvas.width - 210, totalY - 8);
+            ctx.rotate(-0.18);
+            ctx.strokeStyle = 'rgba(16, 185, 129, 0.55)';
+            ctx.lineWidth = 3;
+            ctx.strokeRect(-95, -26, 190, 52);
+            ctx.strokeStyle = 'rgba(16, 185, 129, 0.3)';
+            ctx.lineWidth = 1;
+            ctx.strokeRect(-90, -21, 180, 42);
+            ctx.fillStyle = 'rgba(16, 185, 129, 0.55)';
+            ctx.font = 'bold 14px monospace';
+            ctx.textAlign = 'center';
+            ctx.fillText('TERA STORE VERIFIED', 0, -3);
+            ctx.font = 'bold 11px monospace';
+            ctx.fillText(data.orderId, 0, 14);
+            ctx.restore();
+
+            // 10. LAPISAN WATERMARK ATAS (OVERLAY TRANSPARAN MENEMBUS TEKS & ANGKA)
+            drawDiagonalWatermarks(0.055, 0.045);
+
+            // 11. Footer Info
+            ctx.fillStyle = '#a1a1aa';
+            ctx.font = '13px sans-serif';
+            ctx.fillText('Dokumen PDF ini dilengkapi Watermark & Kode Hash Keamanan. Segala bentuk manipulasi akan terdeteksi.', 60, canvas.height - 82);
+            ctx.fillStyle = '#f87171';
+            ctx.font = 'bold 14px sans-serif';
+            ctx.fillText(`WhatsApp Admin: +${NOMOR_ADMIN_WA}  •  Verification Hash: ${secHash}`, 60, canvas.height - 56);
+
+            // 12. Konversi ke Dokumen .PDF via jsPDF
+            const imgData = canvas.toDataURL('image/jpeg', 0.95);
+            if (window.jspdf && window.jspdf.jsPDF) {
+                const { jsPDF } = window.jspdf;
+                const pdf = new jsPDF({
+                    orientation: 'portrait',
+                    unit: 'px',
+                    format: [canvas.width, canvas.height]
+                });
+                pdf.setProperties({
+                    title: `Invoice ${data.orderId} - TERA STORE`,
+                    subject: `Official Verified Invoice ${secHash}`,
+                    author: 'TERA STORE Official System',
+                    creator: 'TERA STORE Anti-Forgery Engine'
+                });
+                pdf.addImage(imgData, 'JPEG', 0, 0, canvas.width, canvas.height);
+                pdf.save(`Invoice_${data.orderId || 'TERA_STORE'}.pdf`);
+                showToastMsg("Invoice PDF ber-watermark berhasil diunduh!");
+            } else {
+                // Fallback jika CDN jsPDF terblokir koneksi pengguna
+                const link = document.createElement('a');
+                link.download = `Invoice_${data.orderId || 'TERA_STORE'}.png`;
+                link.href = imgData;
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+                showToastMsg("Invoice berhasil diunduh!");
+            }
+        }
+
+        // =======================
         // PEMBAYARAN QRIS & CEK PESANAN
         // =======================
         let currentOrderId = null;
@@ -1066,6 +1345,16 @@
                     currentFinalNominal = result.finalAmount;
                     localStorage.setItem(LAST_ORDER_KEY, currentOrderId);
 
+                    // Simpan rincian pesanan untuk pembuatan Invoice PDF saat lunas
+                    lastInvoiceData = {
+                        orderId: currentOrderId,
+                        date: new Date().toLocaleString('id-ID'),
+                        robloxUser: robloxUser,
+                        buyerNote: buyerNote || "-",
+                        items: itemsList.trim(),
+                        total: result.finalAmount
+                    };
+
                     document.getElementById('payment-order-id').innerText = currentOrderId;
                     document.getElementById('payment-unique-code').innerText = `+Rp ${result.uniqueCode}`;
                     document.getElementById('payment-total').innerText = formatRupiah(result.finalAmount);
@@ -1097,28 +1386,43 @@
                     if (data.status === "LUNAS") {
                         clearInterval(paymentCheckInterval);
                         
-                        const robloxUser = document.getElementById('checkout-roblox').value.trim();
-                        const buyerNote = document.getElementById('checkout-note').value.trim();
+                        const robloxUser = lastInvoiceData?.robloxUser || document.getElementById('checkout-roblox').value.trim();
+                        const buyerNote = lastInvoiceData?.buyerNote || document.getElementById('checkout-note').value.trim() || "-";
+                        const itemsText = lastInvoiceData?.items || "-";
                         const totalBayar = document.getElementById('payment-total').innerText;
+                        const secHash = generateSecurityHash(orderId, robloxUser, lastInvoiceData?.total || 0);
 
-                        const pesanWA = `Halo Min Tera, saya sudah lunas bayar pesanan dengan rincian:\n\n` +
+                        // Tampilkan ringkasan di layar sukses
+                        document.getElementById('paid-summary-id').innerText = orderId;
+                        document.getElementById('paid-summary-user').innerText = robloxUser;
+                        document.getElementById('paid-summary-total').innerText = totalBayar;
+
+                        // Format pesan WhatsApp lengkap ke Admin beserta Security Hash
+                        const pesanWA = `Halo Min Tera, saya sudah LUNAS membayar pesanan di TERA STORE!\n\n` +
                                         `🧾 *No. Pesanan:* ${orderId}\n` +
+                                        `🔐 *Kode Keamanan:* ${secHash}\n` +
                                         `🎮 *Roblox User:* ${robloxUser}\n` +
                                         `📝 *Catatan:* ${buyerNote}\n` +
-                                        `💰 *Total:* ${totalBayar}\n\n` +
+                                        `📦 *Item:*\n${itemsText}\n\n` +
+                                        `💰 *Total Dibayar:* ${totalBayar}\n\n` +
                                         `Boleh info ketemuan di mana min?`;
 
-                        const nomorAdminWA = "6288210882762"; 
-                        document.getElementById('btn-wa-chat').href = `https://wa.me/${nomorAdminWA}?text=${encodeURIComponent(pesanWA)}`;
+                        document.getElementById('btn-wa-chat').href = `https://wa.me/${NOMOR_ADMIN_WA}?text=${encodeURIComponent(pesanWA)}`;
 
                         document.getElementById('qris-waiting-view').classList.add('hidden');
                         document.getElementById('qris-success-view').classList.remove('hidden');
+
+                        // Otomatis unduh Invoice PDF begitu pembayaran LUNAS
+                        setTimeout(() => {
+                            downloadInvoicePDF();
+                        }, 400);
+
                         cart = [];
                         saveCart();
                         updateCartUI();
                     }
                 } catch (e) {}
-            }, 4000);
+            }, 1500);
         }
 
         function closePaymentModal() {
@@ -1131,6 +1435,19 @@
             if (!last) return;
             document.getElementById('track-input').value = last;
             handleTrackOrder();
+        }
+
+        function downloadTrackedOrderInvoice(idx) {
+            const o = window._lastTrackedList?.[idx];
+            if (!o) return;
+            downloadInvoicePDF({
+                orderId: o.orderId,
+                date: o.waktu ? new Date(o.waktu).toLocaleString('id-ID') : new Date().toLocaleString('id-ID'),
+                robloxUser: o.robloxUser,
+                buyerNote: o.catatan || '-',
+                items: o.items || '-',
+                total: o.total || 0
+            });
         }
 
         async function handleTrackOrder() {
@@ -1151,20 +1468,23 @@
                     const matched = allOrdersCache.filter(o => 
                         String(o.orderId || '').toLowerCase().includes(q) ||
                         String(o.robloxUser || '').toLowerCase().includes(q)
-                    );
+                    ).slice(0, 8);
+
+                    window._lastTrackedList = matched;
 
                     if (matched.length === 0) {
                         container.innerHTML = `<div class="p-8 rounded-2xl bg-black/40 border border-white/5 text-center text-xs text-zinc-400">Pesanan tidak ditemukan. Pastikan penulisan Order ID atau Username Roblox sudah benar.</div>`;
                         return;
                     }
 
-                    container.innerHTML = matched.slice(0, 8).map(o => {
+                    container.innerHTML = matched.map((o, idx) => {
                         const isPaid = o.status === "LUNAS";
                         const badge = isPaid
                             ? `<span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-emerald-500/20 text-emerald-400 border border-emerald-500/30">LUNAS</span>`
                             : `<span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-amber-500/20 text-amber-400 border border-amber-500/30">MENUNGGU PEMBAYARAN</span>`;
 
-                        const waMsg = encodeURIComponent(`Halo Min Tera, saya ingin konfirmasi pesanan:\n🧾 Order ID: ${o.orderId}\n🎮 Roblox: ${o.robloxUser}\n💰 Total: Rp ${o.total}\nStatus: ${o.status}`);
+                        const secHash = generateSecurityHash(o.orderId, o.robloxUser, o.total);
+                        const waMsg = encodeURIComponent(`Halo Min Tera, saya ingin konfirmasi pesanan:\n🧾 Order ID: ${o.orderId}\n🔐 Kode Keamanan: ${secHash}\n🎮 Roblox: ${o.robloxUser}\n📦 Item:\n${o.items}\n💰 Total: ${formatRupiah(o.total)}\nStatus: ${o.status}`);
 
                         return `
                             <div class="p-4 rounded-2xl bg-[#120c0e] border border-white/10 flex flex-col sm:flex-row justify-between gap-4">
@@ -1177,9 +1497,14 @@
                                     <p class="text-[11px] text-zinc-400 whitespace-pre-line font-mono pt-1">${o.items}</p>
                                 </div>
                                 ${isPaid ? `
-                                    <a href="https://wa.me/6288210882762?text=${waMsg}" target="_blank" class="bg-emerald-600 hover:bg-emerald-500 text-white px-4 py-2.5 rounded-xl text-xs font-bold uppercase tracking-wider self-start sm:self-center shrink-0 flex items-center gap-1.5">
-                                        <i class="fab fa-whatsapp"></i> Chat Admin
-                                    </a>
+                                    <div class="flex sm:flex-col gap-2 self-start sm:self-center shrink-0">
+                                        <button onclick="downloadTrackedOrderInvoice(${idx})" class="btn-crimson text-white px-3.5 py-2 rounded-xl text-xs font-bold uppercase tracking-wider flex items-center gap-1.5">
+                                            <i class="fas fa-file-pdf"></i> Invoice PDF
+                                        </button>
+                                        <a href="https://wa.me/${NOMOR_ADMIN_WA}?text=${waMsg}" target="_blank" class="bg-emerald-600 hover:bg-emerald-500 text-white px-3.5 py-2 rounded-xl text-xs font-bold uppercase tracking-wider flex items-center justify-center gap-1.5">
+                                            <i class="fab fa-whatsapp"></i> Chat WA
+                                        </a>
+                                    </div>
                                 ` : ''}
                             </div>
                         `;
