@@ -2,7 +2,7 @@
 <html lang="id" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
     <title>TERA STORE | The Honor One</title>
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -40,6 +40,7 @@
                         'gradient-x': 'gradient-x 4s ease infinite',
                         'float': 'float 6s ease-in-out infinite',
                         'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                        'spin-slow': 'spin 8s linear infinite',
                     },
                     keyframes: {
                         'gradient-x': {
@@ -62,6 +63,17 @@
             color: #f4f4f5 !important;
             overflow-x: hidden;
             position: relative;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        /* Safe Area Support untuk HP layar penuh / iPhone */
+        .pb-safe {
+            padding-bottom: env(safe-area-inset-bottom, 0.5rem);
+        }
+
+        /* Efek tekan ala Native App */
+        button:active, .btn-crimson:active {
+            transform: scale(0.97);
         }
 
         /* Subtle Crimson Grid & Ambient Orbs */
@@ -105,6 +117,7 @@
             bottom: -15%;
             right: -10%;
         }
+
         /* Menyembunyikan scrollbar bawaan tapi tetap bisa di-scroll */
         .no-scrollbar::-webkit-scrollbar {
             display: none;
@@ -114,9 +127,24 @@
             scrollbar-width: none;
         }
 
+        /* Indikator Titik Banner */
+        .banner-dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 9999px;
+            background: rgba(255, 255, 255, 0.25);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        .banner-dot.active {
+            width: 22px;
+            background: #dc2626;
+            box-shadow: 0 0 10px rgba(220, 38, 38, 0.8);
+        }
+
         /* Soft Crimson Glassmorphism */
         .glass {
-            background: rgba(14, 10, 12, 0.84) !important;
+            background: rgba(14, 10, 12, 0.86) !important;
             backdrop-filter: blur(16px);
             -webkit-backdrop-filter: blur(16px);
             border: 1px solid rgba(244, 63, 94, 0.12) !important;
@@ -145,7 +173,22 @@
             transition: opacity 0.35s ease;
             filter: blur(6px);
         }
-        .glow-card-wrapper:hover::before { opacity: 0.5; }
+        @media (hover: hover) {
+            .glow-card-wrapper:hover::before { opacity: 0.5; }
+            .glow-card-wrapper:hover .item-card {
+                transform: translateY(-5px);
+                border-color: rgba(220, 38, 38, 0.45) !important;
+                background: #160f12 !important;
+            }
+            .flash-card:hover {
+                transform: translateY(-5px);
+                border-color: rgba(245, 158, 11, 0.75) !important;
+                box-shadow: 0 12px 30px -10px rgba(220, 38, 38, 0.45);
+            }
+            .item-card:hover::after, .flash-card:hover::after {
+                opacity: 1;
+            }
+        }
 
         .item-card {
             background: #110c0e !important;
@@ -166,17 +209,9 @@
             pointer-events: none;
             z-index: 0;
         }
-        .item-card:hover::after, .flash-card:hover::after {
-            opacity: 1;
-        }
         .item-card > *, .flash-card > * {
             position: relative;
             z-index: 1;
-        }
-        .glow-card-wrapper:hover .item-card {
-            transform: translateY(-5px);
-            border-color: rgba(220, 38, 38, 0.45) !important;
-            background: #160f12 !important;
         }
 
         /* Flash Sale Card Glow */
@@ -186,11 +221,6 @@
             transition: all 0.3s ease;
             position: relative;
             overflow: hidden;
-        }
-        .flash-card:hover {
-            transform: translateY(-5px);
-            border-color: rgba(245, 158, 11, 0.75) !important;
-            box-shadow: 0 12px 30px -10px rgba(220, 38, 38, 0.45);
         }
 
         /* Skeleton Shimmer Animation */
@@ -271,7 +301,7 @@
         .section-group.open .section-chevron { transform: rotate(180deg); }
 
         /* Custom Scrollbars */
-        ::-webkit-scrollbar { width: 7px; height: 7px; }
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
         ::-webkit-scrollbar-track { background: #070506; }
         ::-webkit-scrollbar-thumb { background: linear-gradient(to bottom, #991b1b, #dc2626); border-radius: 8px; }
         ::-webkit-scrollbar-thumb:hover { background: #ef4444; }
@@ -292,19 +322,18 @@
 
         .btn-crimson {
             background: linear-gradient(135deg, #dc2626, #991b1b);
-            transition: all 0.3s ease;
+            transition: all 0.25s ease;
         }
         .btn-crimson:hover {
             background: linear-gradient(135deg, #ef4444, #b91c1c);
             box-shadow: 0 8px 25px -5px rgba(220, 38, 38, 0.45);
-            transform: translateY(-1px);
         }
 
         .btn-tiktok:hover { box-shadow: 0 4px 18px rgba(255, 0, 80, 0.3); border-color: #ff0050 !important; }
         .btn-ig:hover { box-shadow: 0 4px 18px rgba(225, 29, 72, 0.35); border-color: #e11d48 !important; }
     </style>
 </head>
-<body class="antialiased selection:bg-red-800 selection:text-white flex flex-col min-h-screen pb-20 md:pb-0">
+<body class="antialiased selection:bg-red-800 selection:text-white flex flex-col min-h-screen pb-24 md:pb-0">
 
     <!-- BACKGROUND LAYERS (GRID + EMBERS CANVAS + ORBS) -->
     <div class="bg-grid"></div>
@@ -313,29 +342,29 @@
     <div class="bg-orb-2"></div>
 
     <!-- ANNOUNCEMENT TOP BAR -->
-    <div class="bg-gradient-to-r from-red-950/90 via-red-900/50 to-red-950/90 border-b border-red-500/20 text-[11px] py-2 px-4 text-center font-medium text-red-200/90 z-50">
-        <span class="inline-flex flex-wrap items-center justify-center gap-2">
-            <span class="w-2 h-2 rounded-full bg-amber-400 animate-ping"></span>
+    <div class="bg-gradient-to-r from-red-950/90 via-red-900/50 to-red-950/90 border-b border-red-500/20 text-[10px] sm:text-[11px] py-2 px-3 text-center font-medium text-red-200/90 z-50">
+        <span class="inline-flex flex-wrap items-center justify-center gap-1.5 sm:gap-2">
+            <span class="w-2 h-2 rounded-full bg-amber-400 animate-ping shrink-0"></span>
             <span id="top-promo-banner"><strong>SISTEM OTOMATIS 24/7:</strong> Pembayaran QRIS terverifikasi otomatis & klaim Kode Voucher di Keranjang!</span>
         </span>
     </div>
 
     <!-- NAVBAR -->
     <nav class="sticky top-0 w-full z-50 glass transition-all duration-300" id="navbar">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 h-20 flex items-center justify-between">
-            <div class="flex items-center gap-3.5 cursor-pointer group" onclick="switchPage('home')">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 h-16 sm:h-20 flex items-center justify-between">
+            <div class="flex items-center gap-3 cursor-pointer group" onclick="switchPage('home')">
                 <div class="relative">
-                    <video src="https://a.top4top.io/m_3830vjpd61.mp4" autoplay loop muted playsinline class="w-11 h-11 md:w-12 md:h-12 object-contain rounded-xl border border-red-500/20 group-hover:border-red-500/50 transition-all"></video>
+                    <video src="https://a.top4top.io/m_3830vjpd61.mp4" autoplay loop muted playsinline class="w-10 h-10 sm:w-12 sm:h-12 object-contain rounded-xl border border-red-500/20 group-hover:border-red-500/50 transition-all"></video>
                 </div>
                 <div>
-                    <h1 class="font-heading font-bold text-2xl md:text-3xl italic tracking-tight text-white">
+                    <h1 class="font-heading font-bold text-xl sm:text-3xl italic tracking-tight text-white leading-none">
                         TERA <span class="text-red-500">STORE</span>
                     </h1>
-                    <p class="text-[10px] text-zinc-400 uppercase tracking-widest -mt-1 font-semibold">The Honor One</p>
+                    <p class="text-[9px] sm:text-[10px] text-zinc-400 uppercase tracking-widest mt-0.5 font-semibold">The Honor One</p>
                 </div>
             </div>
 
-            <div class="flex items-center gap-3">
+            <div class="flex items-center gap-2 sm:gap-3">
                 <div class="hidden md:flex gap-7 items-center text-xs font-bold uppercase tracking-widest">
                     <a href="javascript:void(0)" onclick="switchPage('home')" class="nav-link active-nav text-zinc-300 hover:text-white transition-all">Home</a>
                     <a href="javascript:void(0)" onclick="switchPage('katalog')" class="nav-link text-zinc-300 hover:text-white transition-all">Katalog Item</a>
@@ -345,9 +374,14 @@
                     </a>
                 </div>
 
+                <!-- TOMBOL GACHA CEPAT DI NAVBAR (KHUSUS MOBILE AGAR MUDAH DIAKSES) -->
+                <button onclick="openGachaModal()" class="md:hidden relative bg-amber-500/15 border border-amber-500/40 text-amber-400 px-2.5 h-10 rounded-xl flex items-center gap-1.5 text-[10px] font-extrabold uppercase tracking-wider">
+                    <i class="fas fa-gift text-xs animate-bounce"></i> Gacha
+                </button>
+
                 <!-- CART BUTTON -->
-                <button onclick="toggleCart()" class="relative bg-zinc-900/90 hover:bg-red-950/60 border border-white/10 hover:border-red-500/40 text-zinc-100 w-11 h-11 rounded-xl flex items-center justify-center transition-all ml-2">
-                    <i class="fas fa-bag-shopping text-lg text-red-400"></i>
+                <button onclick="toggleCart()" class="relative bg-zinc-900/90 hover:bg-red-950/60 border border-white/10 hover:border-red-500/40 text-zinc-100 w-10 h-10 sm:w-11 sm:h-11 rounded-xl flex items-center justify-center transition-all ml-1">
+                    <i class="fas fa-bag-shopping text-base sm:text-lg text-red-400"></i>
                     <span id="cart-count" class="absolute -top-1.5 -right-1.5 bg-red-600 text-white text-[10px] font-extrabold w-5 h-5 rounded-full flex items-center justify-center shadow-lg border border-black">0</span>
                 </button>
             </div>
@@ -355,7 +389,7 @@
     </nav>
 
     <!-- MOBILE BOTTOM NAVIGATION BAR (ALA APLIKASI NATIVE) -->
-    <div class="md:hidden fixed bottom-0 left-0 right-0 z-[80] glass border-t border-red-500/25 px-2 py-1.5 flex items-center justify-around shadow-[0_-10px_30px_rgba(0,0,0,0.8)]">
+    <div class="md:hidden fixed bottom-0 left-0 right-0 z-[80] glass border-t border-red-500/25 px-2 pt-1.5 pb-safe flex items-center justify-around shadow-[0_-10px_30px_rgba(0,0,0,0.85)]">
         <button onclick="switchPage('home')" id="bnav-home" class="mobile-bottom-link active-bottom-nav flex flex-col items-center justify-center py-1 px-3 text-zinc-400 relative">
             <span class="nav-indicator absolute -top-1.5 w-6 h-0.5 bg-red-500 rounded-full opacity-0 transition-all"></span>
             <i class="fas fa-house text-sm mb-0.5"></i>
@@ -385,9 +419,9 @@
         </button>
     </div>
 
-    <!-- FLOATING LIVE SOCIAL PROOF PILL (POJOK KIRI BAWAH) -->
-    <div id="social-proof-pill" class="fixed bottom-20 md:bottom-6 left-4 z-[70] max-w-[290px] glass rounded-2xl p-3 border border-red-500/30 shadow-2xl transform translate-y-24 opacity-0 transition-all duration-500 pointer-events-none flex items-center gap-3">
-        <div class="w-10 h-10 rounded-xl bg-emerald-500/15 border border-emerald-500/40 flex items-center justify-center text-emerald-400 shrink-0 text-sm">
+    <!-- FLOATING LIVE SOCIAL PROOF PILL (POJOK KIRI BAWAH - BEBAS TABRAKAN) -->
+    <div id="social-proof-pill" class="fixed bottom-20 md:bottom-6 left-3 sm:left-5 z-[70] max-w-[260px] sm:max-w-[290px] glass rounded-2xl p-3 border border-red-500/30 shadow-2xl transform translate-y-28 opacity-0 transition-all duration-500 pointer-events-none flex items-center gap-3">
+        <div class="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-emerald-500/15 border border-emerald-500/40 flex items-center justify-center text-emerald-400 shrink-0 text-sm">
             <i class="fas fa-check-double"></i>
         </div>
         <div class="min-w-0 flex-grow">
@@ -400,15 +434,32 @@
         </div>
     </div>
 
+    <!-- FLOATING QUICK ACTION CLUSTER (KANAN BAWAH: GACHA + KERANJANG PC + SCROLL TOP) -->
+    <div class="fixed bottom-20 md:bottom-6 right-3 sm:right-6 z-[75] flex flex-col items-end gap-2.5">
+        <button onclick="openGachaModal()" title="Spin Harian Gratis!" class="w-11 h-11 sm:w-12 sm:h-12 rounded-2xl bg-gradient-to-tr from-amber-500 to-red-600 text-black font-black shadow-[0_0_20px_rgba(245,158,11,0.5)] flex items-center justify-center relative border border-amber-300/60 hover:scale-105 transition-transform animate-bounce">
+            <i class="fas fa-gift text-base sm:text-lg"></i>
+            <span class="absolute -top-1.5 -right-1.5 bg-red-600 text-white text-[8px] font-extrabold px-1.5 py-0.5 rounded-full uppercase border border-black animate-pulse">FREE</span>
+        </button>
+
+        <button onclick="toggleCart()" title="Buka Keranjang" class="hidden md:flex w-12 h-12 rounded-2xl btn-crimson text-white shadow-2xl items-center justify-center relative border border-red-400/30">
+            <i class="fas fa-bag-shopping"></i>
+            <span id="floating-cart-count" class="absolute -top-1.5 -right-1.5 bg-amber-500 text-black text-[10px] font-black w-5 h-5 rounded-full flex items-center justify-center">0</span>
+        </button>
+
+        <button onclick="window.scrollTo({top: 0, behavior: 'smooth'})" title="Kembali ke Atas" class="w-10 h-10 sm:w-12 sm:h-12 rounded-2xl glass hover:bg-white/10 text-zinc-300 shadow-xl flex items-center justify-center border border-white/10">
+            <i class="fas fa-arrow-up text-xs"></i>
+        </button>
+    </div>
+
     <!-- ======= QUICK VIEW PRODUCT MODAL (POP-UP DETAIL PRODUK) ======= -->
     <div id="quickViewModal" class="fixed inset-0 z-[120] hidden items-center justify-center p-4">
         <div class="absolute inset-0 bg-black/80 backdrop-blur-md" onclick="closeQuickView()"></div>
-        <div class="relative w-full max-w-lg glass rounded-3xl border border-red-500/30 p-6 shadow-[0_0_50px_rgba(220,38,38,0.25)] z-10 animate-slideUp">
-            <button onclick="closeQuickView()" class="absolute top-4 right-4 w-8 h-8 rounded-full bg-white/5 hover:bg-red-600/30 text-zinc-400 hover:text-white flex items-center justify-center">
+        <div class="relative w-full max-w-lg glass rounded-3xl border border-red-500/30 p-5 sm:p-6 shadow-[0_0_50px_rgba(220,38,38,0.25)] z-10 max-h-[90vh] overflow-y-auto">
+            <button onclick="closeQuickView()" class="absolute top-4 right-4 w-8 h-8 rounded-full bg-white/10 hover:bg-red-600/30 text-zinc-300 hover:text-white flex items-center justify-center z-20">
                 <i class="fas fa-times text-xs"></i>
             </button>
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-5 items-center">
-                <div id="qv-image-box" class="w-full aspect-square rounded-2xl overflow-hidden bg-zinc-950 border border-white/10 flex items-center justify-center text-5xl">
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-5 items-center">
+                <div id="qv-image-box" class="w-full max-w-[220px] sm:max-w-none mx-auto aspect-square rounded-2xl overflow-hidden bg-zinc-950 border border-white/10 flex items-center justify-center text-5xl">
                     🎁
                 </div>
                 <div class="space-y-3">
@@ -416,12 +467,12 @@
                         <span id="qv-game" class="text-[10px] font-black uppercase px-2.5 py-0.5 rounded-md bg-red-500/20 text-red-300 border border-red-500/30">GAME</span>
                         <span id="qv-rarity" class="text-[10px] font-bold uppercase px-2.5 py-0.5 rounded-md rarity-mythical">EXCLUSIVE</span>
                     </div>
-                    <h3 id="qv-name" class="font-heading font-bold text-2xl italic uppercase text-white leading-tight">-</h3>
+                    <h3 id="qv-name" class="font-heading font-bold text-xl sm:text-2xl italic uppercase text-white leading-tight">-</h3>
                     <div class="bg-black/60 border border-amber-500/25 rounded-xl p-3">
                         <span id="qv-old-price" class="text-xs text-zinc-500 line-through hidden">Rp 0</span>
                         <div class="flex items-center justify-between">
                             <span class="text-[10px] text-zinc-400 uppercase font-bold">Harga Resmi</span>
-                            <span id="qv-price" class="text-xl font-black text-amber-400">Rp 0</span>
+                            <span id="qv-price" class="text-lg sm:text-xl font-black text-amber-400">Rp 0</span>
                         </div>
                     </div>
                     <div class="bg-red-950/30 border border-red-500/20 rounded-xl p-3 text-[11px] text-zinc-300 space-y-1">
@@ -441,27 +492,104 @@
         </div>
     </div>
 
+    <!-- MODAL GACHA / SPIN WHEEL -->
+    <div id="gachaModal" class="fixed inset-0 z-[130] hidden items-center justify-center p-4">
+        <div class="absolute inset-0 bg-black/85 backdrop-blur-md" onclick="closeGachaModal()"></div>
+        <div class="relative w-full max-w-sm glass rounded-3xl border border-amber-500/30 p-6 shadow-[0_0_50px_rgba(245,158,11,0.3)] z-10 text-center space-y-4">
+            <button onclick="closeGachaModal()" class="absolute top-4 right-4 w-8 h-8 rounded-full bg-white/5 hover:bg-red-600/30 text-zinc-400 hover:text-white flex items-center justify-center">
+                <i class="fas fa-times text-xs"></i>
+            </button>
+
+            <div>
+                <div class="inline-flex items-center justify-center w-12 h-12 rounded-2xl bg-amber-500/15 border border-amber-500/30 text-amber-400 text-xl mb-2">
+                    <i class="fas fa-dharmachakra animate-spin-slow"></i>
+                </div>
+                <h3 class="font-heading font-bold text-2xl italic uppercase text-white">Gacha <span class="text-amber-400">Voucher Harian</span></h3>
+                <p id="gacha-subtitle" class="text-xs text-zinc-400 mt-0.5">Putar roda keberuntungan dan menangkan diskon belanja hari ini!</p>
+            </div>
+
+            <!-- Area Roda / Kotak Hadiah Berputar -->
+            <div class="py-6 bg-black/60 border border-amber-500/25 rounded-2xl relative overflow-hidden flex flex-col items-center justify-center min-h-[140px]">
+                <div id="gacha-wheel-box" class="text-3xl sm:text-4xl font-black text-amber-400 tracking-wider transition-all duration-300 px-2">
+                    🎁 ❓ 🎁
+                </div>
+                <p id="gacha-result-text" class="text-xs text-zinc-300 font-semibold mt-2 px-4">Tekan tombol putar di bawah untuk mulai!</p>
+            </div>
+
+            <!-- Tombol Aksi -->
+            <div id="gacha-action-box">
+                <button id="btn-spin-gacha" onclick="executeGachaSpin()" class="w-full bg-gradient-to-r from-amber-500 to-red-600 hover:from-amber-400 hover:to-red-500 text-black font-black py-3.5 rounded-xl uppercase tracking-widest text-xs shadow-lg transition-all flex items-center justify-center gap-2">
+                    <i class="fas fa-play text-xs"></i> Putar Sekarang!
+                </button>
+            </div>
+        </div>
+    </div>
+
     <!-- KONTEN UTAMA -->
     <main class="flex-grow">
         <!-- 1. SECTION HOME -->
-        <section id="home" class="page-section active-page pt-10 md:pt-16 pb-20 px-4 max-w-7xl mx-auto">
-            <!-- BANNER SLIDER INTERAKTIF (DINAMIS DARI ADMIN PANEL) -->
+        <section id="home" class="page-section active-page pt-5 sm:pt-10 pb-16 px-4 max-w-7xl mx-auto">
+            <!-- BANNER SLIDER INTERAKTIF (RESPONSIF PC & MOBILE) -->
             <div class="max-w-6xl mx-auto relative group">
                 <!-- Tombol Geser Kiri -->
-                <button onclick="scrollBanner(-1)" class="absolute -left-4 top-1/2 -translate-y-1/2 z-20 w-10 h-10 rounded-full glass border border-red-500/40 text-white flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity bg-black/80 hover:bg-red-600">
+                <button onclick="scrollBanner(-1)" class="hidden sm:flex absolute left-3 top-1/2 -translate-y-1/2 z-20 w-10 h-10 rounded-full glass border border-red-500/40 text-white items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity bg-black/80 hover:bg-red-600">
                     <i class="fas fa-chevron-left text-xs"></i>
                 </button>
                 <!-- Tombol Geser Kanan -->
-                <button onclick="scrollBanner(1)" class="absolute -right-4 top-1/2 -translate-y-1/2 z-20 w-10 h-10 rounded-full glass border border-red-500/40 text-white flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity bg-black/80 hover:bg-red-600">
+                <button onclick="scrollBanner(1)" class="hidden sm:flex absolute right-3 top-1/2 -translate-y-1/2 z-20 w-10 h-10 rounded-full glass border border-red-500/40 text-white items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity bg-black/80 hover:bg-red-600">
                     <i class="fas fa-chevron-right text-xs"></i>
                 </button>
 
-                <!-- Tempat di mana banner dari Admin Panel akan otomatis muncul -->
-                <div id="home-banners-slider" class="flex gap-4 overflow-x-auto snap-x snap-mandatory scroll-smooth no-scrollbar pb-4 pt-2">
-                    <div class="min-w-full snap-start shrink-0">
-                        <div class="glass rounded-3xl p-3 border border-red-500/35 relative overflow-hidden aspect-[21/9] sm:aspect-[24/9] flex items-center justify-center text-zinc-400 text-xs">
-                            Memuat Banner...
-                        </div>
+                <!-- Slider Container (Rasio 21:9 di HP & 24:9 di PC - Ramping & Proporsional) -->
+<div id="home-banners-slider" class="flex gap-4 overflow-x-auto snap-x snap-mandatory scroll-smooth no-scrollbar pb-2 pt-1">
+    <div class="min-w-full snap-start shrink-0">
+        <div class="glass rounded-2xl sm:rounded-3xl p-2 sm:p-3 border border-red-500/35 relative overflow-hidden aspect-[21/9] sm:aspect-[24/9] flex items-center justify-center text-zinc-400 text-xs skeleton-shimmer">
+            Memuat Banner...
+        </div>
+    </div>
+</div>
+
+
+                <!-- Pagination Dots Banner -->
+                <div id="banner-dots" class="flex justify-center items-center gap-1.5 mt-2"></div>
+            </div>
+
+            <!-- TRUST & LIVE STATS BAR (KOMPATIBEL MOBILE 2 KOLOM & PC 4 KOLOM) -->
+            <div class="max-w-6xl mx-auto mt-6 grid grid-cols-2 lg:grid-cols-4 gap-2.5 sm:gap-4">
+                <div class="glass rounded-2xl p-3 sm:p-4 border border-white/10 flex items-center gap-3">
+                    <div class="w-9 h-9 sm:w-11 sm:h-11 rounded-xl bg-red-500/15 border border-red-500/30 flex items-center justify-center text-red-400 shrink-0 text-sm sm:text-base">
+                        <i class="fas fa-bolt"></i>
+                    </div>
+                    <div class="min-w-0">
+                        <h4 class="text-xs sm:text-base font-heading font-bold text-white uppercase leading-none truncate">Otomatis 24/7</h4>
+                        <p class="text-[10px] text-zinc-400 mt-0.5 truncate">Verifikasi QRIS Detikan</p>
+                    </div>
+                </div>
+                <div class="glass rounded-2xl p-3 sm:p-4 border border-white/10 flex items-center gap-3 cursor-pointer hover:border-amber-500/40 transition-colors" onclick="switchPage('katalog')">
+                    <div class="w-9 h-9 sm:w-11 sm:h-11 rounded-xl bg-amber-500/15 border border-amber-500/30 flex items-center justify-center text-amber-400 shrink-0 text-sm sm:text-base">
+                        <i class="fas fa-boxes-stacked"></i>
+                    </div>
+                    <div class="min-w-0">
+                        <h4 id="hero-stat-items" class="text-xs sm:text-base font-heading font-bold text-amber-400 uppercase leading-none truncate">Ready</h4>
+                        <p class="text-[10px] text-zinc-400 mt-0.5 truncate">Katalog Item Lengkap</p>
+                    </div>
+                </div>
+                <div class="glass rounded-2xl p-3 sm:p-4 border border-white/10 flex items-center gap-3">
+                    <div class="w-9 h-9 sm:w-11 sm:h-11 rounded-xl bg-emerald-500/15 border border-emerald-500/30 flex items-center justify-center text-emerald-400 shrink-0 text-sm sm:text-base">
+                        <i class="fas fa-shield-halved"></i>
+                    </div>
+                    <div class="min-w-0">
+                        <h4 class="text-xs sm:text-base font-heading font-bold text-emerald-400 uppercase leading-none truncate">100% Aman</h4>
+                        <p class="text-[10px] text-zinc-400 mt-0.5 truncate">Invoice PDF Anti-Palsu</p>
+                    </div>
+                </div>
+                <div class="glass rounded-2xl p-3 sm:p-4 border border-white/10 flex items-center gap-3 cursor-pointer hover:border-rose-500/40 transition-colors" onclick="openGachaModal()">
+                    <div class="w-9 h-9 sm:w-11 sm:h-11 rounded-xl bg-rose-500/15 border border-rose-500/30 flex items-center justify-center text-rose-400 shrink-0 text-sm sm:text-base">
+                        <i class="fas fa-gift"></i>
+                    </div>
+                    <div class="min-w-0">
+                        <h4 class="text-xs sm:text-base font-heading font-bold text-rose-400 uppercase leading-none truncate">Gacha Harian</h4>
+                        <p class="text-[10px] text-zinc-400 mt-0.5 truncate">Klaim Diskon Gratis!</p>
                     </div>
                 </div>
             </div>
@@ -469,27 +597,27 @@
             <!-- ========================================== -->
             <!-- BANNER FLASH SALE & DAFTAR VOUCHER AKTIF   -->
             <!-- ========================================== -->
-            <div id="home-flashsale-section" class="hidden mt-16 max-w-6xl mx-auto">
-                <div class="glass rounded-3xl p-6 md:p-8 border border-amber-500/30 relative overflow-hidden shadow-[0_0_45px_rgba(220,38,38,0.2)]">
-                    <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6 border-b border-white/10 pb-5">
-                        <div class="flex items-center gap-3.5">
-                            <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-amber-500 to-red-600 flex items-center justify-center text-black text-2xl shadow-lg animate-pulse">
+            <div id="home-flashsale-section" class="hidden mt-10 sm:mt-14 max-w-6xl mx-auto">
+                <div class="glass rounded-3xl p-4 sm:p-6 md:p-8 border border-amber-500/30 relative overflow-hidden shadow-[0_0_45px_rgba(220,38,38,0.2)]">
+                    <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-5 border-b border-white/10 pb-4">
+                        <div class="flex items-center gap-3">
+                            <div class="w-11 h-11 sm:w-12 sm:h-12 rounded-2xl bg-gradient-to-br from-amber-500 to-red-600 flex items-center justify-center text-black text-xl sm:text-2xl shadow-lg animate-pulse shrink-0">
                                 <i class="fas fa-bolt"></i>
                             </div>
                             <div>
                                 <div class="flex items-center gap-2">
-                                    <h3 class="font-heading font-bold text-2xl md:text-3xl italic uppercase text-white">
+                                    <h3 class="font-heading font-bold text-xl sm:text-3xl italic uppercase text-white">
                                         FLASH <span class="text-amber-400">SALE</span> SPESIAL
                                     </h3>
-                                    <span class="px-2.5 py-0.5 rounded-full text-[10px] font-black uppercase bg-red-600 text-white">LIMITED</span>
+                                    <span class="px-2 py-0.5 rounded-full text-[9px] sm:text-[10px] font-black uppercase bg-red-600 text-white">LIMITED</span>
                                 </div>
-                                <p class="text-xs text-zinc-400">Harga miring terbatas! Langsung checkout sebelum waktu atau stok habis.</p>
+                                <p class="text-[11px] sm:text-xs text-zinc-400">Harga miring terbatas! Langsung checkout sebelum waktu atau stok habis.</p>
                             </div>
                         </div>
 
                         <!-- Live Countdown Timer -->
-                        <div class="flex items-center gap-2 self-start md:self-center bg-black/60 border border-amber-500/30 px-4 py-2.5 rounded-2xl">
-                            <span class="text-[10px] font-bold uppercase tracking-wider text-zinc-400 mr-1"><i class="fas fa-clock text-amber-400 mr-1"></i> Berakhir Dalam:</span>
+                        <div class="flex items-center gap-1.5 sm:gap-2 self-start md:self-center bg-black/60 border border-amber-500/30 px-3.5 py-2 rounded-2xl">
+                            <span class="text-[10px] font-bold uppercase tracking-wider text-zinc-400 mr-1"><i class="fas fa-clock text-amber-400 mr-1"></i> Berakhir:</span>
                             <span id="fs-hours" class="bg-red-600 text-white font-mono font-bold text-xs px-2 py-1 rounded-lg">00</span>
                             <span class="text-amber-400 font-bold">:</span>
                             <span id="fs-minutes" class="bg-red-600 text-white font-mono font-bold text-xs px-2 py-1 rounded-lg">00</span>
@@ -499,34 +627,34 @@
                     </div>
 
                     <!-- Grid Kartu Flash Sale -->
-                    <div id="home-flashsale-grid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4"></div>
+                    <div id="home-flashsale-grid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3 sm:gap-4"></div>
                 </div>
             </div>
 
             <!-- Bar Daftar Voucher Aktif -->
-            <div id="home-vouchers-section" class="hidden mt-8 max-w-6xl mx-auto">
+            <div id="home-vouchers-section" class="hidden mt-6 sm:mt-8 max-w-6xl mx-auto">
                 <div class="glass rounded-2xl p-4 border border-red-500/25 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
                     <div class="flex items-center gap-2.5 text-xs">
                         <span class="px-2.5 py-1 rounded-lg bg-red-600/20 border border-red-500/40 text-red-400 font-bold uppercase flex items-center gap-1.5 shrink-0">
                             <i class="fas fa-ticket"></i> Voucher Tersedia
                         </span>
-                        <span class="text-zinc-300">Klik kode voucher untuk langsung klaim ke keranjang:</span>
+                        <span class="text-zinc-300 text-[11px] sm:text-xs">Klik kode untuk langsung klaim ke keranjang:</span>
                     </div>
-                    <div id="home-vouchers-list" class="flex flex-wrap gap-2"></div>
+                    <div id="home-vouchers-list" class="flex flex-wrap gap-2 w-full sm:w-auto"></div>
                 </div>
             </div>
 
             <!-- Game Shortcuts (Dengan Skeleton Shimmer Loading) -->
-            <div class="mt-16 max-w-6xl mx-auto">
-                <div class="flex items-center justify-between mb-6">
-                    <h3 class="font-heading font-bold text-2xl italic uppercase text-white flex items-center gap-2.5">
+            <div class="mt-12 sm:mt-16 max-w-6xl mx-auto">
+                <div class="flex items-center justify-between mb-5">
+                    <h3 class="font-heading font-bold text-xl sm:text-2xl italic uppercase text-white flex items-center gap-2.5">
                         <span class="w-2 h-6 bg-red-600 rounded-full inline-block"></span> Pilih Kategori Game
                     </h3>
                     <button onclick="switchPage('katalog')" class="text-xs text-red-400 hover:text-red-300 font-semibold flex items-center gap-1">
                         Lihat Semua <i class="fas fa-arrow-right text-[10px]"></i>
                     </button>
                 </div>
-                <div id="home-game-shortcuts" class="grid grid-cols-1 sm:grid-cols-3 gap-5">
+                <div id="home-game-shortcuts" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5">
                     <div class="h-24 rounded-2xl skeleton-shimmer border border-white/5"></div>
                     <div class="h-24 rounded-2xl skeleton-shimmer border border-white/5"></div>
                     <div class="h-24 rounded-2xl skeleton-shimmer border border-white/5"></div>
@@ -534,37 +662,37 @@
             </div>
 
             <!-- FAQ Accordion -->
-            <div class="mt-20 max-w-3xl mx-auto">
-                <div class="text-center mb-8">
-                    <h3 class="font-heading font-bold text-3xl italic uppercase text-white">Pertanyaan <span class="text-red-500">Umum (FAQ)</span></h3>
+            <div class="mt-16 sm:mt-20 max-w-3xl mx-auto">
+                <div class="text-center mb-7">
+                    <h3 class="font-heading font-bold text-2xl sm:text-3xl italic uppercase text-white">Pertanyaan <span class="text-red-500">Umum (FAQ)</span></h3>
                     <p class="text-xs text-zinc-400 mt-1">Cara berbelanja mudah dan aman di TERA STORE</p>
                 </div>
                 <div class="space-y-3">
                     <div class="glass rounded-2xl border border-white/10 overflow-hidden">
-                        <button onclick="toggleFaq(1)" class="w-full p-4 text-left flex justify-between items-center font-bold text-xs text-zinc-100 hover:text-red-400 transition-colors">
+                        <button onclick="toggleFaq(1)" class="w-full p-4 text-left flex justify-between items-center gap-3 font-bold text-xs text-zinc-100 hover:text-red-400 transition-colors">
                             <span>1. Bagaimana cara menggunakan Kode Voucher & membeli item?</span>
-                            <i id="faq-icon-1" class="fas fa-chevron-down text-red-400 transition-transform"></i>
+                            <i id="faq-icon-1" class="fas fa-chevron-down text-red-400 transition-transform shrink-0"></i>
                         </button>
                         <div id="faq-body-1" class="hidden px-4 pb-4 text-xs text-zinc-400 leading-relaxed border-t border-white/5 pt-3">
                             Pilih item di menu <b>Katalog Item</b> atau <b>Flash Sale</b>, masukkan ke keranjang, ketik <b>Kode Voucher</b> di kolom promo keranjang lalu klik <b>Pakai</b>. Setelah itu isi <b>Username Roblox</b> kamu dan bayar via QRIS. Setelah lunas, klik tombol <b>Download Invoice</b> dan hubungi WhatsApp Admin!
                         </div>
                     </div>
                     <div class="glass rounded-2xl border border-white/10 overflow-hidden">
-                        <button onclick="toggleFaq(2)" class="w-full p-4 text-left flex justify-between items-center font-bold text-xs text-zinc-100 hover:text-red-400 transition-colors">
+                        <button onclick="toggleFaq(2)" class="w-full p-4 text-left flex justify-between items-center gap-3 font-bold text-xs text-zinc-100 hover:text-red-400 transition-colors">
                             <span>2. Mengapa harus transfer persis sesuai kode unik 3 digit terakhir?</span>
-                            <i id="faq-icon-2" class="fas fa-chevron-down text-red-400 transition-transform"></i>
+                            <i id="faq-icon-2" class="fas fa-chevron-down text-red-400 transition-transform shrink-0"></i>
                         </button>
                         <div id="faq-body-2" class="hidden px-4 pb-4 text-xs text-zinc-400 leading-relaxed border-t border-white/5 pt-3">
                             Kode unik (contoh: +Rp 12) digunakan oleh robot sistem kami untuk mengenali pembayaranmu secara otomatis dalam hitungan detik tanpa perlu repot menunggu konfirmasi manual.
                         </div>
                     </div>
                     <div class="glass rounded-2xl border border-white/10 overflow-hidden">
-                        <button onclick="toggleFaq(3)" class="w-full p-4 text-left flex justify-between items-center font-bold text-xs text-zinc-100 hover:text-red-400 transition-colors">
+                        <button onclick="toggleFaq(3)" class="w-full p-4 text-left flex justify-between items-center gap-3 font-bold text-xs text-zinc-100 hover:text-red-400 transition-colors">
                             <span>3. Bagaimana jika saya ingin mengunduh ulang Invoice PDF pesanan?</span>
-                            <i id="faq-icon-3" class="fas fa-chevron-down text-red-400 transition-transform"></i>
+                            <i id="faq-icon-3" class="fas fa-chevron-down text-red-400 transition-transform shrink-0"></i>
                         </button>
                         <div id="faq-body-3" class="hidden px-4 pb-4 text-xs text-zinc-400 leading-relaxed border-t border-white/5 pt-3">
-                            Kamu bisa membuka menu <b>Cek Pesanan</b>, ketik <b>Nomor Order</b> atau <b>Username Roblox</b> kamu, lalu klik tombol <b>Invoice</b> pada pesanan yang sudah berstatus LUNAS.
+                            Kamu bisa membuka menu <b>Cek Pesanan</b>, ketik <b>Nomor Order</b> atau <b>Username Roblox</b> kamu, lalu klik tombol <b>Invoice PDF</b> pada pesanan yang sudah berstatus LUNAS.
                         </div>
                     </div>
                 </div>
@@ -572,27 +700,28 @@
         </section>
 
         <!-- 2. SECTION KATALOG -->
-        <section id="katalog" class="page-section pt-12 pb-20 px-4 max-w-7xl mx-auto">
-            <div class="flex flex-col lg:flex-row justify-between lg:items-end gap-5 mb-8 border-b border-white/10 pb-6">
-                <div class="flex items-center gap-4">
-                    <div class="w-13 h-13 p-3.5 rounded-2xl bg-red-500/15 flex items-center justify-center border border-red-500/30">
-                        <i class="fas fa-boxes-stacked text-2xl text-red-400"></i>
+        <section id="katalog" class="page-section pt-8 sm:pt-12 pb-20 px-4 max-w-7xl mx-auto">
+            <!-- Header & Sticky Filter Control -->
+            <div class="flex flex-col lg:flex-row justify-between lg:items-end gap-4 mb-6 border-b border-white/10 pb-5">
+                <div class="flex items-center gap-3.5">
+                    <div class="w-12 h-12 p-3 rounded-2xl bg-red-500/15 flex items-center justify-center border border-red-500/30 shrink-0">
+                        <i class="fas fa-boxes-stacked text-xl sm:text-2xl text-red-400"></i>
                     </div>
                     <div>
-                        <h3 class="text-3xl md:text-4xl font-heading font-bold italic uppercase text-white">Katalog <span class="text-red-500">Item</span></h3>
-                        <p class="text-xs text-zinc-400 mt-0.5">Klik gambar item untuk melihat detail, filter kategori, atau urutkan harga.</p>
+                        <h3 class="text-2xl sm:text-4xl font-heading font-bold italic uppercase text-white leading-none">Katalog <span class="text-red-500">Item</span></h3>
+                        <p class="text-[11px] sm:text-xs text-zinc-400 mt-1">Klik gambar item untuk melihat detail, filter kategori, atau urutkan harga.</p>
                     </div>
                 </div>
 
                 <!-- Search & Price Sort Filter -->
-                <div class="flex flex-col sm:flex-row gap-3 w-full lg:w-auto items-center">
-                    <div class="relative w-full sm:w-64">
-                        <input type="text" id="searchInput" placeholder="Cari nama item..." class="input-field w-full rounded-xl py-2.5 pl-10 pr-4 text-xs">
+                <div class="flex flex-row gap-2.5 w-full lg:w-auto items-center">
+                    <div class="relative flex-grow sm:w-64">
+                        <input type="text" id="searchInput" placeholder="Cari nama item..." class="input-field w-full rounded-xl py-2.5 pl-9 pr-3 text-xs">
                         <i class="fas fa-search absolute left-3.5 top-1/2 -translate-y-1/2 text-zinc-400 text-xs"></i>
                     </div>
-                    <select id="sortSelect" onchange="handleSortChange()" class="input-field w-full sm:w-44 rounded-xl py-2.5 px-3.5 text-xs font-semibold cursor-pointer">
+                    <select id="sortSelect" onchange="handleSortChange()" class="input-field w-36 sm:w-44 rounded-xl py-2.5 px-3 text-xs font-semibold cursor-pointer shrink-0">
                         <option value="default">Urutan Default</option>
-                        <option value="flash">⚡ Promo Flash Sale</option>
+                        <option value="flash">⚡ Flash Sale</option>
                         <option value="asc">Harga: Termurah</option>
                         <option value="desc">Harga: Termahal</option>
                         <option value="az">Nama: A - Z</option>
@@ -600,12 +729,12 @@
                 </div>
             </div>
 
-            <!-- GAME TOGGLE -->
-            <div id="game-toggle-container" class="flex flex-wrap gap-2.5 mb-8"></div>
+            <!-- GAME TOGGLE (Horizontal Swipe di Mobile, Wrap di PC) -->
+            <div id="game-toggle-container" class="flex overflow-x-auto no-scrollbar sm:flex-wrap gap-2.5 mb-6 pb-1 snap-x"></div>
 
             <!-- GAME PANES WRAPPER (Skeleton Shimmer Saat Loading) -->
             <div id="game-panes-wrapper">
-                <div id="katalog-empty-state" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-4">
+                <div id="katalog-empty-state" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-3 sm:gap-4">
                     <div class="h-64 rounded-2xl skeleton-shimmer border border-white/5"></div>
                     <div class="h-64 rounded-2xl skeleton-shimmer border border-white/5"></div>
                     <div class="h-64 rounded-2xl skeleton-shimmer border border-white/5"></div>
@@ -616,20 +745,20 @@
         </section>
 
         <!-- 3. SECTION JOKI -->
-        <section id="joki" class="page-section pt-12 pb-20 px-4 max-w-7xl mx-auto">
-            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-10 border-b border-white/10 pb-6">
-                <div class="flex items-center gap-4">
-                    <div class="w-13 h-13 p-3.5 rounded-2xl bg-red-500/15 flex items-center justify-center border border-red-500/30">
-                        <i class="fas fa-bolt text-2xl text-red-400"></i>
+        <section id="joki" class="page-section pt-8 sm:pt-12 pb-20 px-4 max-w-7xl mx-auto">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8 border-b border-white/10 pb-5">
+                <div class="flex items-center gap-3.5">
+                    <div class="w-12 h-12 p-3 rounded-2xl bg-red-500/15 flex items-center justify-center border border-red-500/30 shrink-0">
+                        <i class="fas fa-bolt text-xl sm:text-2xl text-red-400"></i>
                     </div>
                     <div>
-                        <h3 class="text-3xl md:text-4xl font-heading font-bold italic uppercase text-white">Layanan <span class="text-red-500">Joki</span></h3>
-                        <p class="text-xs text-zinc-400 mt-0.5">Joki aman 100% dikerjakan manual oleh tim profesional TERA STORE.</p>
+                        <h3 class="text-2xl sm:text-4xl font-heading font-bold italic uppercase text-white leading-none">Layanan <span class="text-red-500">Joki</span></h3>
+                        <p class="text-[11px] sm:text-xs text-zinc-400 mt-1">Joki aman 100% dikerjakan manual oleh tim profesional TERA STORE.</p>
                     </div>
                 </div>
             </div>
 
-            <div id="joki-cards-container" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            <div id="joki-cards-container" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
                 <div class="h-56 rounded-2xl skeleton-shimmer border border-white/5"></div>
                 <div class="h-56 rounded-2xl skeleton-shimmer border border-white/5"></div>
                 <div class="h-56 rounded-2xl skeleton-shimmer border border-white/5"></div>
@@ -638,15 +767,15 @@
         </section>
 
         <!-- 4. SECTION LACAK PESANAN -->
-        <section id="lacak" class="page-section pt-12 pb-20 px-4 max-w-3xl mx-auto">
-            <div class="glass p-6 md:p-8 rounded-3xl border border-red-500/20 space-y-6">
-                <div class="flex items-center gap-4 border-b border-white/10 pb-5">
-                    <div class="w-12 h-12 rounded-2xl bg-red-500/15 border border-red-500/30 flex items-center justify-center text-red-400 text-xl">
+        <section id="lacak" class="page-section pt-8 sm:pt-12 pb-20 px-4 max-w-3xl mx-auto">
+            <div class="glass p-5 sm:p-8 rounded-3xl border border-red-500/20 space-y-6">
+                <div class="flex items-center gap-3.5 border-b border-white/10 pb-5">
+                    <div class="w-12 h-12 rounded-2xl bg-red-500/15 border border-red-500/30 flex items-center justify-center text-red-400 text-xl shrink-0">
                         <i class="fas fa-magnifying-glass-chart"></i>
                     </div>
                     <div>
-                        <h3 class="text-2xl md:text-3xl font-heading font-bold italic uppercase text-white">Cek Status <span class="text-red-500">Pesanan</span></h3>
-                        <p class="text-xs text-zinc-400">Cari berdasarkan Nomor Pesanan (TERA-xxx) atau Username Roblox kamu.</p>
+                        <h3 class="text-2xl sm:text-3xl font-heading font-bold italic uppercase text-white leading-none">Cek Status <span class="text-red-500">Pesanan</span></h3>
+                        <p class="text-[11px] sm:text-xs text-zinc-400 mt-1">Cari berdasarkan Nomor Pesanan (TERA-xxx) atau Username Roblox kamu.</p>
                     </div>
                 </div>
 
@@ -658,9 +787,9 @@
                 </div>
 
                 <!-- Pesanan Terakhir di Perangkat Ini -->
-                <div id="recent-local-order" class="hidden bg-red-950/20 border border-red-500/20 rounded-xl p-3.5 flex items-center justify-between text-xs">
-                    <span class="text-zinc-300"><i class="fas fa-history text-red-400 mr-1.5"></i> Pesanan terakhir kamu: <strong id="recent-order-id" class="text-white"></strong></span>
-                    <button onclick="useRecentOrder()" class="text-red-400 hover:text-red-300 font-bold underline">Cek Status</button>
+                <div id="recent-local-order" class="hidden bg-red-950/20 border border-red-500/20 rounded-xl p-3.5 flex items-center justify-between text-xs gap-2">
+                    <span class="text-zinc-300 truncate"><i class="fas fa-history text-red-400 mr-1.5"></i> Pesanan terakhir: <strong id="recent-order-id" class="text-white"></strong></span>
+                    <button onclick="useRecentOrder()" class="text-red-400 hover:text-red-300 font-bold underline shrink-0">Cek Status</button>
                 </div>
 
                 <!-- Hasil Pencarian Pesanan -->
@@ -669,74 +798,22 @@
         </section>
     </main>
 
-    <!-- TOMBOL MELAYANG GACHA HARIAN (DI POJOK KIRI BAWAH) -->
-<div class="fixed bottom-20 md:bottom-6 left-4 z-[75] flex flex-col gap-2.5">
-    <button onclick="openGachaModal()" title="Spin Harian Gratis!" class="w-12 h-12 rounded-2xl bg-gradient-to-tr from-amber-500 to-red-600 text-black font-black shadow-[0_0_20px_rgba(245,158,11,0.5)] flex items-center justify-center relative border border-amber-300/50 hover:scale-105 transition-transform animate-bounce">
-        <i class="fas fa-gift text-base"></i>
-        <span class="absolute -top-1 -right-1 bg-red-600 text-white text-[8px] font-extrabold px-1.5 py-0.5 rounded-full uppercase border border-black animate-pulse">FREE</span>
-    </button>
-</div>
-
-<!-- MODAL GACHA / SPIN WHEEL -->
-<div id="gachaModal" class="fixed inset-0 z-[130] hidden items-center justify-center p-4">
-    <div class="absolute inset-0 bg-black/85 backdrop-blur-md" onclick="closeGachaModal()"></div>
-    <div class="relative w-full max-w-sm glass rounded-3xl border border-amber-500/30 p-6 shadow-[0_0_50px_rgba(245,158,11,0.3)] z-10 text-center space-y-4">
-        <button onclick="closeGachaModal()" class="absolute top-4 right-4 w-8 h-8 rounded-full bg-white/5 hover:bg-red-600/30 text-zinc-400 hover:text-white flex items-center justify-center">
-            <i class="fas fa-times text-xs"></i>
-        </button>
-
-        <div>
-            <div class="inline-flex items-center justify-center w-12 h-12 rounded-2xl bg-amber-500/15 border border-amber-500/30 text-amber-400 text-xl mb-2">
-                <i class="fas fa-dharmachakra animate-spin-slow"></i>
-            </div>
-            <h3 class="font-heading font-bold text-2xl italic uppercase text-white">Gacha <span class="text-amber-400">Voucher Harian</span></h3>
-            <p id="gacha-subtitle" class="text-xs text-zinc-400 mt-0.5">Putar roda keberuntungan dan menangkan diskon belanja hari ini!</p>
-        </div>
-
-        <!-- Area Roda / Kotak Kotak Hadiah Berputar -->
-        <div class="py-6 bg-black/60 border border-amber-500/25 rounded-2xl relative overflow-hidden flex flex-col items-center justify-center min-h-[140px]">
-            <div id="gacha-wheel-box" class="text-4xl font-black text-amber-400 tracking-wider transition-all duration-300">
-                🎁 ❓ 🎁
-            </div>
-            <p id="gacha-result-text" class="text-xs text-zinc-300 font-semibold mt-2 px-4">Tekan tombol putar di bawah untuk mulai!</p>
-        </div>
-
-        <!-- Tombol Aksi -->
-        <div id="gacha-action-box">
-            <button id="btn-spin-gacha" onclick="executeGachaSpin()" class="w-full bg-gradient-to-r from-amber-500 to-red-600 hover:from-amber-400 hover:to-red-500 text-black font-black py-3.5 rounded-xl uppercase tracking-widest text-xs shadow-lg transition-all flex items-center justify-center gap-2">
-                <i class="fas fa-play text-xs"></i> Putar Sekarang!
-            </button>
-        </div>
-    </div>
-</div>
-
-    <!-- FLOATING QUICK ACTION BAR (DESKTOP) -->
-    <div class="hidden md:flex fixed bottom-6 right-6 z-40 flex-col gap-2.5">
-        <button onclick="toggleCart()" title="Buka Keranjang" class="w-12 h-12 rounded-2xl btn-crimson text-white shadow-2xl flex items-center justify-center relative border border-red-400/30">
-            <i class="fas fa-bag-shopping"></i>
-            <span id="floating-cart-count" class="absolute -top-1.5 -right-1.5 bg-amber-500 text-black text-[10px] font-black w-5 h-5 rounded-full flex items-center justify-center">0</span>
-        </button>
-        <button onclick="window.scrollTo({top: 0, behavior: 'smooth'})" title="Kembali ke Atas" class="w-12 h-12 rounded-2xl glass hover:bg-white/10 text-zinc-300 shadow-xl flex items-center justify-center border border-white/10">
-            <i class="fas fa-arrow-up text-xs"></i>
-        </button>
-    </div>
-
     <!-- FOOTER -->
-    <footer id="contact" class="mt-auto pt-16 pb-10 px-4 border-t border-red-900/20 bg-[#040304] relative overflow-hidden">
+    <footer id="contact" class="mt-auto pt-14 pb-10 px-4 border-t border-red-900/20 bg-[#040304] relative overflow-hidden">
         <div class="max-w-4xl mx-auto text-center relative z-10">
-            <h2 class="text-3xl md:text-4xl font-heading font-bold italic mb-3 uppercase text-white">Butuh Bantuan atau Konsultasi Joki?</h2>
-            <p class="text-zinc-400 text-xs md:text-sm mb-8 max-w-lg mx-auto">Hubungi Admin TERA STORE melalui sosial media resmi kami di bawah ini.</p>
+            <h2 class="text-2xl sm:text-4xl font-heading font-bold italic mb-2 uppercase text-white">Butuh Bantuan atau Konsultasi Joki?</h2>
+            <p class="text-zinc-400 text-xs sm:text-sm mb-7 max-w-lg mx-auto">Hubungi Admin TERA STORE melalui sosial media resmi kami di bawah ini.</p>
 
-            <div class="flex flex-wrap justify-center gap-4 mb-12">
-                <a href="javascript:void(0)" onclick="window.open(TIKTOK_URL, '_blank')" class="btn-tiktok flex items-center gap-2.5 bg-zinc-900/90 border border-white/10 px-7 py-3.5 rounded-2xl font-bold text-xs text-white transition-all hover:-translate-y-0.5">
+            <div class="flex flex-wrap justify-center gap-3.5 mb-10">
+                <a href="javascript:void(0)" onclick="window.open(TIKTOK_URL, '_blank')" class="btn-tiktok flex items-center gap-2.5 bg-zinc-900/90 border border-white/10 px-6 py-3.5 rounded-2xl font-bold text-xs text-white transition-all hover:-translate-y-0.5">
                     <i class="fab fa-tiktok text-lg text-pink-500"></i> DM via TikTok
                 </a>
-                <a href="javascript:void(0)" onclick="window.open(INSTAGRAM_URL, '_blank')" class="btn-ig flex items-center gap-2.5 bg-zinc-900/90 border border-white/10 px-7 py-3.5 rounded-2xl font-bold text-xs text-white transition-all hover:-translate-y-0.5">
+                <a href="javascript:void(0)" onclick="window.open(INSTAGRAM_URL, '_blank')" class="btn-ig flex items-center gap-2.5 bg-zinc-900/90 border border-white/10 px-6 py-3.5 rounded-2xl font-bold text-xs text-white transition-all hover:-translate-y-0.5">
                     <i class="fab fa-instagram text-lg text-rose-500"></i> DM via Instagram
                 </a>
             </div>
 
-            <div class="text-[11px] text-zinc-500 font-semibold tracking-wider uppercase border-t border-white/5 pt-8 flex flex-col sm:flex-row items-center justify-between gap-3">
+            <div class="text-[11px] text-zinc-500 font-semibold tracking-wider uppercase border-t border-white/5 pt-7 flex flex-col sm:flex-row items-center justify-between gap-3">
                 <div class="flex items-center gap-2">
                     <span class="w-2 h-2 rounded-full bg-red-600"></span>
                     <span>© 2026 TERA STORE. All Rights Reserved.</span>
@@ -746,28 +823,29 @@
         </div>
     </footer>
 
-    <!-- CART MODAL (Slide Sidebar dengan Progress Bar Promo & Kode Voucher) -->
+    <!-- CART MODAL (ERGONOMIS DI MOBILE & SIDEBAR DI PC - ANTI KETUTUP KEYBOARD) -->
     <div id="cartModal" class="fixed inset-0 z-[100] hidden">
-        <div class="absolute inset-0 bg-black/75 backdrop-blur-sm transition-opacity" onclick="toggleCart()"></div>
-        <div class="absolute right-0 top-0 bottom-0 w-full sm:w-[420px] glass border-l border-red-500/20 shadow-2xl flex flex-col">
+        <div class="absolute inset-0 bg-black/80 backdrop-blur-sm transition-opacity" onclick="toggleCart()"></div>
+        <div class="absolute right-0 bottom-0 top-10 sm:top-0 w-full sm:w-[430px] glass rounded-t-3xl sm:rounded-none border-t sm:border-t-0 sm:border-l border-red-500/25 shadow-2xl flex flex-col overflow-hidden">
+            
             <!-- Header Modal -->
-            <div class="p-5 border-b border-white/10 flex justify-between items-center bg-[#0d080a]">
+            <div class="px-5 py-4 border-b border-white/10 flex justify-between items-center bg-[#0d080a] shrink-0">
                 <h3 class="text-lg font-heading font-bold italic uppercase text-white flex items-center gap-2.5">
                     <i class="fas fa-bag-shopping text-red-500"></i> Keranjang Belanja
                 </h3>
                 <div class="flex items-center gap-2">
-                    <button onclick="clearCart()" title="Kosongkan Keranjang" class="text-[10px] text-zinc-400 hover:text-red-400 uppercase font-bold px-2.5 py-1 rounded-lg bg-white/5">
+                    <button onclick="clearCart()" title="Kosongkan Keranjang" class="text-[10px] text-zinc-400 hover:text-red-400 uppercase font-bold px-2.5 py-1.5 rounded-lg bg-white/5">
                         Reset
                     </button>
-                    <button onclick="toggleCart()" class="text-zinc-400 hover:text-white transition-colors p-1.5 rounded-lg hover:bg-white/5">
-                        <i class="fas fa-times text-lg"></i>
+                    <button onclick="toggleCart()" class="text-zinc-400 hover:text-white transition-colors w-8 h-8 rounded-lg hover:bg-white/5 flex items-center justify-center">
+                        <i class="fas fa-times text-base"></i>
                     </button>
                 </div>
             </div>
 
             <!-- Dynamic Promo Progress Bar -->
-            <div class="bg-[#130b0e] px-5 py-3 border-b border-white/10">
-                <div class="flex justify-between items-center text-[11px] mb-1.5">
+            <div class="bg-[#130b0e] px-5 py-2.5 border-b border-white/10 shrink-0">
+                <div class="flex justify-between items-center text-[11px] mb-1">
                     <span id="cart-progress-text" class="text-zinc-300 font-semibold">Tambahkan item untuk klaim promo!</span>
                     <span id="cart-progress-pct" class="text-amber-400 font-bold">0%</span>
                 </div>
@@ -776,66 +854,72 @@
                 </div>
             </div>
 
-            <!-- Items Container -->
-            <div id="cart-items" class="flex-grow overflow-y-auto p-5 space-y-3"></div>
+            <!-- AREA SCROLL TERPADU: ITEM + VOUCHER + USERNAME ROBLOX + CATATAN -->
+            <div class="flex-grow overflow-y-auto p-4 sm:p-5 space-y-4">
+                <!-- Items Container -->
+                <div id="cart-items" class="space-y-2.5"></div>
 
-            <!-- Footer Modal (Voucher + Checkout) -->
-            <div class="p-5 border-t border-white/10 bg-[#090607] space-y-3">
-                <!-- Input Kode Voucher -->
-                <div>
-                    <label class="text-[10px] text-zinc-400 font-bold uppercase tracking-wider block mb-1">
-                        <i class="fas fa-ticket text-red-400 mr-1"></i> Kode Voucher / Promo
-                    </label>
-                    <div class="flex gap-2">
-                        <input type="text" id="voucher-input" placeholder="Ketik kode promo..." class="input-field flex-grow px-3.5 py-2 rounded-xl text-xs font-mono uppercase">
-                        <button id="btn-apply-voucher" onclick="applyVoucher()" class="bg-red-950/80 hover:bg-red-800 text-red-200 hover:text-white border border-red-500/40 px-4 py-2 rounded-xl text-xs font-bold uppercase tracking-wider transition-all shrink-0">
-                            Pakai
-                        </button>
-                        <button id="btn-remove-voucher" onclick="removeVoucher()" class="hidden bg-zinc-800 hover:bg-red-900 text-zinc-300 hover:text-white px-3 py-2 rounded-xl text-xs font-bold uppercase transition-all shrink-0">
-                            <i class="fas fa-times"></i>
-                        </button>
+                <!-- Form Data & Voucher -->
+                <div class="pt-3 border-t border-white/10 space-y-3.5">
+                    <!-- Input Kode Voucher -->
+                    <div class="bg-black/40 p-3 rounded-2xl border border-white/5">
+                        <label class="text-[10px] text-zinc-400 font-bold uppercase tracking-wider block mb-1.5">
+                            <i class="fas fa-ticket text-red-400 mr-1"></i> Kode Voucher / Promo
+                        </label>
+                        <div class="flex gap-2">
+                            <input type="text" id="voucher-input" placeholder="Ketik kode promo..." class="input-field flex-grow px-3.5 py-2 rounded-xl text-xs font-mono uppercase">
+                            <button id="btn-apply-voucher" onclick="applyVoucher()" class="bg-red-950/80 hover:bg-red-800 text-red-200 hover:text-white border border-red-500/40 px-4 py-2 rounded-xl text-xs font-bold uppercase tracking-wider transition-all shrink-0">
+                                Pakai
+                            </button>
+                            <button id="btn-remove-voucher" onclick="removeVoucher()" class="hidden bg-zinc-800 hover:bg-red-900 text-zinc-300 hover:text-white px-3 py-2 rounded-xl text-xs font-bold uppercase transition-all shrink-0">
+                                <i class="fas fa-times"></i>
+                            </button>
+                        </div>
+                        <p id="voucher-status-msg" class="hidden text-[11px] font-semibold mt-1.5"></p>
                     </div>
-                    <p id="voucher-status-msg" class="hidden text-[11px] font-semibold mt-1"></p>
-                </div>
 
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
-                    <div class="bg-gradient-to-br from-red-950/30 to-black border border-red-500/40 rounded-2xl p-3.5 space-y-2 shadow-[0_0_15px_rgba(220,38,38,0.15)]">
-    <div class="flex items-center justify-between">
-        <label class="text-[11px] text-red-300 font-extrabold uppercase tracking-wider flex items-center gap-1.5">
-            <i class="fas fa-gamepad text-red-500"></i> Username Roblox <span class="text-red-500">*</span>
-        </label>
-        <span class="text-[9px] text-amber-400 font-bold bg-amber-500/10 px-2 py-0.5 rounded border border-amber-500/20 uppercase tracking-wide">Wajib Diisi</span>
-    </div>
-    
-    <div class="relative">
-        <input type="text" id="checkout-roblox" oninput="debounceCheckRoblox(this.value)" placeholder="Cth: LordAlpha_Rblx" class="input-field w-full px-3.5 py-2.5 rounded-xl text-xs font-bold border-red-500/50 bg-black/90 focus:border-red-500">
-        <span id="roblox-check-spinner" class="hidden absolute right-3.5 top-1/2 -translate-y-1/2 text-red-400 text-xs">
-            <i class="fas fa-circle-notch fa-spin"></i>
-        </span>
-    </div>
+                    <!-- Input Username Roblox -->
+                    <div class="bg-gradient-to-br from-red-950/30 to-black border border-red-500/40 rounded-2xl p-3.5 space-y-2 shadow-[0_0_15px_rgba(220,38,38,0.12)]">
+                        <div class="flex items-center justify-between">
+                            <label class="text-[11px] text-red-300 font-extrabold uppercase tracking-wider flex items-center gap-1.5">
+                                <i class="fas fa-gamepad text-red-500"></i> Username Roblox <span class="text-red-500">*</span>
+                            </label>
+                            <span class="text-[9px] text-amber-400 font-bold bg-amber-500/10 px-2 py-0.5 rounded border border-amber-500/20 uppercase tracking-wide">Wajib Diisi</span>
+                        </div>
+                        
+                        <div class="relative">
+                            <input type="text" id="checkout-roblox" oninput="debounceCheckRoblox(this.value)" placeholder="Cth: LordAlpha_Rblx" class="input-field w-full px-3.5 py-2.5 rounded-xl text-xs font-bold border-red-500/50 bg-black/90 focus:border-red-500">
+                            <span id="roblox-check-spinner" class="hidden absolute right-3.5 top-1/2 -translate-y-1/2 text-red-400 text-xs">
+                                <i class="fas fa-circle-notch fa-spin"></i>
+                            </span>
+                        </div>
 
-    <!-- Kotak Preview Avatar Roblox -->
-    <div id="roblox-avatar-preview" class="hidden mt-2 p-2 rounded-xl bg-black/80 border border-emerald-500/40 items-center gap-2.5">
-        <img id="roblox-avatar-img" src="" alt="Avatar" class="w-8 h-8 rounded-full border border-emerald-400 bg-zinc-900 object-cover shrink-0">
-        <div class="min-w-0 flex-grow">
-            <p id="roblox-display-name" class="text-[11px] font-bold text-white truncate">-</p>
-            <p id="roblox-user-handle" class="text-[9px] text-emerald-400 font-semibold truncate">@username</p>
-        </div>
-        <i class="fas fa-circle-check text-emerald-400 text-xs mr-1"></i>
-    </div>
+                        <!-- Kotak Preview Avatar Roblox -->
+                        <div id="roblox-avatar-preview" class="hidden mt-2 p-2 rounded-xl bg-black/80 border border-emerald-500/40 items-center gap-2.5">
+                            <img id="roblox-avatar-img" src="" alt="Avatar" class="w-9 h-9 rounded-full border border-emerald-400 bg-zinc-900 object-cover shrink-0">
+                            <div class="min-w-0 flex-grow">
+                                <p id="roblox-display-name" class="text-xs font-bold text-white truncate">-</p>
+                                <p id="roblox-user-handle" class="text-[10px] text-emerald-400 font-semibold truncate">@username</p>
+                            </div>
+                            <i class="fas fa-circle-check text-emerald-400 text-xs mr-1"></i>
+                        </div>
 
-    <p id="roblox-error-msg" class="hidden text-[10px] text-red-400 font-semibold mt-1">
-        <i class="fas fa-circle-exclamation mr-1"></i> Username tidak ditemukan di Roblox!
-    </p>
-</div>
+                        <p id="roblox-error-msg" class="hidden text-[10px] text-red-400 font-semibold mt-1">
+                            <i class="fas fa-circle-exclamation mr-1"></i> Username tidak ditemukan di Roblox!
+                        </p>
+                    </div>
+
+                    <!-- Catatan / No. WA -->
                     <div>
-                        <label class="text-[10px] text-zinc-400 font-bold uppercase tracking-wider block mb-1">Catatan / No. WA</label>
-                        <input type="text" id="checkout-note" placeholder="Cth: Sea 1 / 0812xxx" class="input-field w-full px-3 py-2 rounded-xl text-xs font-medium">
+                        <label class="text-[10px] text-zinc-400 font-bold uppercase tracking-wider block mb-1">Catatan / No. WhatsApp</label>
+                        <input type="text" id="checkout-note" placeholder="Cth: Sea 1 / 0812xxxx" class="input-field w-full px-3.5 py-2.5 rounded-xl text-xs font-medium">
                     </div>
                 </div>
+            </div>
 
-                <!-- Ringkasan Subtotal, Diskon & Total -->
-                <div class="bg-[#120c0e] p-3.5 rounded-xl border border-white/10 space-y-1.5">
+            <!-- STICKY FOOTER MODAL (RINGKASAN TOTAL & TOMBOL BAYAR QRIS) -->
+            <div class="p-4 sm:p-5 border-t border-white/10 bg-[#090607] space-y-2.5 shrink-0 pb-safe">
+                <div class="bg-[#120c0e] px-3.5 py-2.5 rounded-xl border border-white/10 space-y-1">
                     <div id="cart-subtotal-row" class="hidden justify-between items-center text-xs text-zinc-400">
                         <span>Subtotal</span>
                         <span id="cart-subtotal">Rp 0</span>
@@ -844,7 +928,7 @@
                         <span id="cart-discount-label">Diskon Voucher</span>
                         <span id="cart-discount-amount">-Rp 0</span>
                     </div>
-                    <div class="flex justify-between items-center pt-0.5">
+                    <div class="flex justify-between items-center">
                         <span class="text-xs text-zinc-300 font-bold uppercase tracking-wider">Total Bayar</span>
                         <span id="cart-total" class="text-lg font-black text-amber-400">Rp 0</span>
                     </div>
@@ -942,7 +1026,7 @@
                     </div>
 
                     <div class="space-y-2.5 pt-1">
-                        <!-- Tombol Download Invoice PDF (Hanya Terunduh Saat Diklik) -->
+                        <!-- Tombol Download Invoice PDF -->
                         <button onclick="downloadInvoicePDF()" class="btn-crimson w-full text-white py-3.5 rounded-xl font-bold uppercase tracking-widest text-xs transition-all flex items-center justify-center gap-2 shadow-lg">
                             <i class="fas fa-file-pdf text-base"></i> Download Invoice
                         </button>
@@ -989,7 +1073,7 @@
         let socialProofInterval = null;
 
         // ==========================================
-        // 1. CRIMSON EMBERS BACKGROUND PARTICLES
+        // 1. CRIMSON EMBERS BACKGROUND PARTICLES (ADAPTIF PC & HP)
         // ==========================================
         function initEmbersCanvas() {
             const canvas = document.getElementById('embers-canvas');
@@ -1001,10 +1085,11 @@
                 canvas.width = window.innerWidth;
                 canvas.height = window.innerHeight;
             };
-            window.addEventListener('resize', resize);
+            window.addEventListener('resize', resize, { passive: true });
             resize();
 
-            for (let i = 0; i < 28; i++) {
+            const count = window.innerWidth < 768 ? 14 : 26;
+            for (let i = 0; i < count; i++) {
                 particles.push({
                     x: Math.random() * canvas.width,
                     y: Math.random() * canvas.height,
@@ -1037,17 +1122,17 @@
         }
 
         // ==========================================
-        // 2. MOUSE-TRACKING RADIAL SPOTLIGHT ON CARDS
+        // 2. OPTIMIZED MOUSE-TRACKING RADIAL SPOTLIGHT (BEBAS LAG)
         // ==========================================
-        document.addEventListener('mousemove', (e) => {
-            document.querySelectorAll('.item-card, .flash-card').forEach(card => {
+        if (window.matchMedia('(hover: hover)').matches) {
+            document.addEventListener('mousemove', (e) => {
+                const card = e.target.closest('.item-card, .flash-card');
+                if (!card) return;
                 const rect = card.getBoundingClientRect();
-                const x = e.clientX - rect.left;
-                const y = e.clientY - rect.top;
-                card.style.setProperty('--mouse-x', `${x}px`);
-                card.style.setProperty('--mouse-y', `${y}px`);
-            });
-        });
+                card.style.setProperty('--mouse-x', `${e.clientX - rect.left}px`);
+                card.style.setProperty('--mouse-y', `${e.clientY - rect.top}px`);
+            }, { passive: true });
+        }
 
         // ==========================================
         // 3. SOUND CHIME & CONFETTI SAAT PEMBAYARAN LUNAS
@@ -1107,9 +1192,9 @@
                 userEl.innerText = maskUsername(order.robloxUser);
                 itemEl.innerText = firstLine.slice(0, 38);
 
-                pill.classList.remove('translate-y-24', 'opacity-0');
+                pill.classList.remove('translate-y-28', 'opacity-0');
                 setTimeout(() => {
-                    pill.classList.add('translate-y-24', 'opacity-0');
+                    pill.classList.add('translate-y-28', 'opacity-0');
                 }, 4800);
             }, 14000);
         }
@@ -1167,12 +1252,12 @@
 
         window.addEventListener('scroll', () => {
             const nav = document.getElementById('navbar');
-            if(window.scrollY > 40) {
+            if (window.scrollY > 40) {
                 nav.classList.add('nav-scrolled');
             } else {
                 nav.classList.remove('nav-scrolled');
             }
-        });
+        }, { passive: true });
 
         function switchPage(pageId) {
             document.querySelectorAll('.page-section').forEach(page => page.classList.remove('active-page'));
@@ -1229,7 +1314,7 @@
             const el = document.getElementById('voucher-status-msg');
             if (!el) return;
             el.innerText = msg;
-            el.className = `text-[11px] font-semibold mt-1 ${isError ? 'text-red-400' : 'text-emerald-400'}`;
+            el.className = `text-[11px] font-semibold mt-1.5 ${isError ? 'text-red-400' : 'text-emerald-400'}`;
             el.classList.remove('hidden');
         }
 
@@ -1466,8 +1551,8 @@
 
             if(cart.length === 0) {
                 cartItemsContainer.innerHTML = `
-                    <div class="h-full flex flex-col items-center justify-center text-zinc-500 py-12">
-                        <i class="fas fa-bag-shopping text-4xl mb-3 text-red-900/50"></i>
+                    <div class="flex flex-col items-center justify-center text-zinc-500 py-8 bg-black/30 rounded-2xl border border-white/5">
+                        <i class="fas fa-bag-shopping text-3xl mb-2 text-red-900/50"></i>
                         <p class="text-xs italic">Keranjang belanjamu masih kosong.</p>
                     </div>`;
             } else {
@@ -1613,8 +1698,8 @@
                 ctx.rotate(-Math.PI / 6);
                 ctx.textAlign = 'center';
 
-                const wmMain = `TERA STORE OFFICIAL • ${data.orderId} • ${String(data.robloxUser).toUpperCase()}`;
-                const wmSub = `VERIFIED PAID: ${formattedTotal} • ${secHash} • ANTI-FORGERY`;
+                const wmMain = `TERA STORE OFFICIAL • ${data.orderId} •${String(data.robloxUser).toUpperCase()}`;
+                const wmSub = `VERIFIED PAID: ${formattedTotal} •${secHash} • ANTI-FORGERY`;
 
                 for (let y = -canvas.height; y < canvas.height; y += 110) {
                     for (let x = -canvas.width; x < canvas.width; x += 560) {
@@ -1647,7 +1732,7 @@
 
             ctx.fillStyle = 'rgba(248, 113, 113, 0.35)';
             ctx.font = 'bold 9px monospace';
-            const microText = `AUTHENTIC TERA STORE DOCUMENT • ${data.orderId} • ${secHash} • DO NOT DUPLICATE • `;
+            const microText = `AUTHENTIC TERA STORE DOCUMENT • ${data.orderId} •${secHash} • DO NOT DUPLICATE • `;
             ctx.fillText((microText + microText).slice(0, 118), 36, 42);
             ctx.fillText((microText + microText).slice(0, 118), 36, canvas.height - 34);
 
@@ -1816,60 +1901,58 @@
         }
 
         let robloxCheckTimeout = null;
-let isRobloxUserValid = false;
+        let isRobloxUserValid = false;
 
-function debounceCheckRoblox(username) {
-    clearTimeout(robloxCheckTimeout);
-    const cleanUser = username.trim();
-    const previewBox = document.getElementById('roblox-avatar-preview');
-    const errorMsg = document.getElementById('roblox-error-msg');
-    const spinner = document.getElementById('roblox-check-spinner');
+        function debounceCheckRoblox(username) {
+            clearTimeout(robloxCheckTimeout);
+            const cleanUser = username.trim();
+            const previewBox = document.getElementById('roblox-avatar-preview');
+            const errorMsg = document.getElementById('roblox-error-msg');
+            const spinner = document.getElementById('roblox-check-spinner');
 
-    isRobloxUserValid = false;
-    previewBox.classList.add('hidden');
-    previewBox.classList.remove('flex');
-    errorMsg.classList.add('hidden');
+            isRobloxUserValid = false;
+            previewBox.classList.add('hidden');
+            previewBox.classList.remove('flex');
+            errorMsg.classList.add('hidden');
 
-    if (cleanUser.length < 3) {
-        spinner.classList.add('hidden');
-        return;
-    }
+            if (cleanUser.length < 3) {
+                spinner.classList.add('hidden');
+                return;
+            }
 
-    spinner.classList.remove('hidden');
+            spinner.classList.remove('hidden');
 
-    // Tunggu 600ms setelah pembeli selesai mengetik baru cek ke server
-    robloxCheckTimeout = setTimeout(() => {
-        verifyRobloxUsername(cleanUser);
-    }, 600);
-}
-
-async function verifyRobloxUsername(username) {
-    const previewBox = document.getElementById('roblox-avatar-preview');
-    const errorMsg = document.getElementById('roblox-error-msg');
-    const spinner = document.getElementById('roblox-check-spinner');
-
-    try {
-        const res = await fetch(`${GOOGLE_SCRIPT_URL}?action=check_roblox&username=${encodeURIComponent(username)}`);
-        const data = await res.json();
-
-        spinner.classList.add('hidden');
-
-        if (data.status === "success" && data.found) {
-            isRobloxUserValid = true;
-            document.getElementById('roblox-avatar-img').src = data.avatarUrl;
-            document.getElementById('roblox-display-name').innerText = data.displayName;
-            document.getElementById('roblox-user-handle').innerText = `@${data.username}`;
-            previewBox.classList.remove('hidden');
-            previewBox.classList.add('flex');
-        } else {
-            errorMsg.classList.remove('hidden');
+            robloxCheckTimeout = setTimeout(() => {
+                verifyRobloxUsername(cleanUser);
+            }, 600);
         }
-    } catch (err) {
-        spinner.classList.add('hidden');
-        // Jika koneksi gagal, tetap izinkan lanjut agar transaksi tidak terhambat
-        isRobloxUserValid = true;
-    }
-}
+
+        async function verifyRobloxUsername(username) {
+            const previewBox = document.getElementById('roblox-avatar-preview');
+            const errorMsg = document.getElementById('roblox-error-msg');
+            const spinner = document.getElementById('roblox-check-spinner');
+
+            try {
+                const res = await fetch(`${GOOGLE_SCRIPT_URL}?action=check_roblox&username=${encodeURIComponent(username)}`);
+                const data = await res.json();
+
+                spinner.classList.add('hidden');
+
+                if (data.status === "success" && data.found) {
+                    isRobloxUserValid = true;
+                    document.getElementById('roblox-avatar-img').src = data.avatarUrl;
+                    document.getElementById('roblox-display-name').innerText = data.displayName;
+                    document.getElementById('roblox-user-handle').innerText = `@${data.username}`;
+                    previewBox.classList.remove('hidden');
+                    previewBox.classList.add('flex');
+                } else {
+                    errorMsg.classList.remove('hidden');
+                }
+            } catch (err) {
+                spinner.classList.add('hidden');
+                isRobloxUserValid = true;
+            }
+        }
 
         async function openPaymentModal() {
             if (cart.length === 0) {
@@ -1896,7 +1979,7 @@ async function verifyRobloxUsername(username) {
             cart.forEach((c, i) => {
                 const gameLabel = `[${c.gameName || c.game.toUpperCase()}]`;
                 const fsTag = c.isFlashSale ? ' [FLASH SALE]' : '';
-                itemsList += `${i+1}. ${gameLabel} ${c.name}${fsTag} (${c.qty}x)\n`;
+                itemsList += `${i+1}. ${gameLabel}${c.name}${fsTag} (${c.qty}x)\n`;
                 subtotal += (c.price * c.qty);
             });
 
@@ -2016,7 +2099,6 @@ async function verifyRobloxUsername(username) {
                         document.getElementById('qris-waiting-view').classList.add('hidden');
                         document.getElementById('qris-success-view').classList.remove('hidden');
 
-                        // Jalankan Efek Perayaan Confetti & Suara Chime
                         triggerCelebrationEffects();
 
                         cart = [];
@@ -2092,24 +2174,23 @@ async function verifyRobloxUsername(username) {
                             : `<span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-amber-500/20 text-amber-400 border border-amber-500/30">MENUNGGU PEMBAYARAN</span>`;
 
                         const secHash = generateSecurityHash(o.orderId, o.robloxUser, o.total);
-                        const waMsg = encodeURIComponent(`Halo Min Tera, saya ingin konfirmasi pesanan:\n🧾 Order ID: ${o.orderId}\n🔐 Kode Keamanan: ${secHash}\n🎮 Roblox: ${o.robloxUser}\n📦 Item:\n${o.items}\n💰 Total: ${formatRupiah(o.total)}\nStatus: ${o.status}`);
+                        const waMsg = encodeURIComponent(`Halo Min Tera, saya ingin konfirmasi pesanan:\n🧾 Order ID: ${o.orderId}\n🔐 Kode Keamanan: ${secHash}\n🎮 Roblox: ${o.robloxUser}\n📦 Item:\n${o.items}\n💰 Total: ${formatRupiah(o.total)}\nStatus:${o.status}`);
 
                         return `
                             <div class="p-4 rounded-2xl bg-[#120c0e] border border-white/10 flex flex-col sm:flex-row justify-between gap-4">
                                 <div class="space-y-1">
-                                    <div class="flex items-center gap-2">
-                                        <span class="font-heading font-bold text-base text-red-400">${o.orderId}</span>
-                                        ${badge}
+                                    <div class="flex items-center gap-2 flex-wrap">
+                                        <span class="font-heading font-bold text-base text-red-400">${o.orderId}</span>${badge}
                                     </div>
                                     <p class="text-xs text-zinc-300"><b>Roblox:</b> ${o.robloxUser} | <b>Total:</b> <span class="text-amber-400 font-bold">${formatRupiah(o.total)}</span></p>
                                     <p class="text-[11px] text-zinc-400 whitespace-pre-line font-mono pt-1">${o.items}</p>
                                 </div>
                                 ${isPaid ? `
-                                    <div class="flex sm:flex-col gap-2 self-start sm:self-center shrink-0">
-                                        <button onclick="downloadTrackedOrderInvoice(${idx})" class="btn-crimson text-white px-3.5 py-2 rounded-xl text-xs font-bold uppercase tracking-wider flex items-center gap-1.5">
+                                    <div class="flex sm:flex-col gap-2 self-start sm:self-center shrink-0 w-full sm:w-auto">
+                                        <button onclick="downloadTrackedOrderInvoice(${idx})" class="btn-crimson flex-1 sm:flex-initial text-white px-3.5 py-2.5 rounded-xl text-xs font-bold uppercase tracking-wider flex items-center justify-center gap-1.5">
                                             <i class="fas fa-file-pdf"></i> Invoice PDF
                                         </button>
-                                        <a href="https://wa.me/${NOMOR_ADMIN_WA}?text=${waMsg}" target="_blank" class="bg-emerald-600 hover:bg-emerald-500 text-white px-3.5 py-2 rounded-xl text-xs font-bold uppercase tracking-wider flex items-center justify-center gap-1.5">
+                                        <a href="https://wa.me/${NOMOR_ADMIN_WA}?text=${waMsg}" target="_blank" class="bg-emerald-600 hover:bg-emerald-500 flex-1 sm:flex-initial text-white px-3.5 py-2.5 rounded-xl text-xs font-bold uppercase tracking-wider flex items-center justify-center gap-1.5">
                                             <i class="fab fa-whatsapp"></i> Chat WA
                                         </a>
                                     </div>
@@ -2144,7 +2225,7 @@ async function verifyRobloxUsername(username) {
 
             const toast = document.createElement('div');
             toast.id = 'copy-toast';
-            toast.style.cssText = 'position:fixed;bottom:80px;left:50%;transform:translateX(-50%);z-index:9999;max-width:90vw;padding:12px 20px;border-radius:14px;font-size:12px;font-weight:700;text-align:center;box-shadow:0 10px 30px rgba(0,0,0,0.6);color:#fff;';
+            toast.style.cssText = 'position:fixed;bottom:85px;left:50%;transform:translateX(-50%);z-index:9999;max-width:90vw;padding:12px 20px;border-radius:14px;font-size:12px;font-weight:700;text-align:center;box-shadow:0 10px 30px rgba(0,0,0,0.6);color:#fff;';
             toast.style.background = isError ? '#991b1b' : 'linear-gradient(135deg, #dc2626, #991b1b)';
             toast.style.border = '1px solid rgba(255,255,255,0.15)';
             toast.innerText = msg;
@@ -2208,7 +2289,7 @@ async function verifyRobloxUsername(username) {
 
                     const totalProds = (data.products || []).length;
                     const statItemsEl = document.getElementById('hero-stat-items');
-                    if (statItemsEl && totalProds > 0) statItemsEl.innerText = `${totalProds}+`;
+                    if (statItemsEl && totalProds > 0) statItemsEl.innerText = `${totalProds}+ Item`;
 
                     // 1. Ambil Daftar Voucher
                     const rawVouchers = data.vouchers || data.voucher || data.promos || [];
@@ -2376,38 +2457,66 @@ async function verifyRobloxUsername(username) {
             }
         }
 
+        // ==========================================
+        // BANNER SLIDER + DOTS INDICATOR
+        // ==========================================
         let bannerAutoScrollInterval = null;
         let isBannerPaused = false;
+        let bannerCount = 0;
 
         function renderHomeBanners(bannersList) {
-            const container = document.getElementById('home-banners-slider');
-            if (!container) return;
+    const container = document.getElementById('home-banners-slider');
+    const dotsContainer = document.getElementById('banner-dots');
+    if (!container) return;
 
-            if (!bannersList || bannersList.length === 0) {
-                container.innerHTML = `
-                    <div class="min-w-full snap-start shrink-0">
-                        <div class="glass rounded-3xl p-4 border border-red-500/30 relative overflow-hidden aspect-[21/9] sm:aspect-[24/9] flex items-center justify-center bg-zinc-950 text-zinc-400 text-xs">
-                            <div class="text-center">
-                                <i class="fas fa-images text-3xl mb-2 text-red-500/50"></i>
-                                <p>Belum ada banner aktif. Tambahkan melalui Admin Panel.</p>
-                            </div>
-                        </div>
-                    </div>`;
-                return;
-            }
-
-            container.innerHTML = bannersList.map(b => `
-                <div class="min-w-full sm:min-w-[calc(100%-0px)] snap-start shrink-0">
-                    <div class="glass rounded-3xl p-2 sm:p-3 border border-red-500/35 relative overflow-hidden shadow-[0_0_40px_rgba(153,27,27,0.25)] aspect-[21/9] sm:aspect-[24/9] flex items-center">
-                        <img src="${b.image}" alt="${b.title || 'Banner Tera Store'}" class="absolute inset-0 w-full h-full object-cover rounded-2xl" onerror="this.outerHTML='<div class=\\'w-full h-full flex items-center justify-center bg-zinc-950 text-zinc-500 text-xs\\'>Gagal Memuat Gambar Banner</div>'">
+    if (!bannersList || bannersList.length === 0) {
+        bannerCount = 0;
+        if (dotsContainer) dotsContainer.innerHTML = '';
+        container.innerHTML = `
+            <div class="min-w-full snap-start shrink-0">
+                <div class="glass rounded-2xl sm:rounded-3xl p-4 border border-red-500/30 relative overflow-hidden aspect-[21/9] sm:aspect-[24/9] flex items-center justify-center bg-zinc-950 text-zinc-400 text-xs">
+                    <div class="text-center">
+                        <i class="fas fa-images text-2xl sm:text-3xl mb-1.5 text-red-500/50"></i>
+                        <p>Belum ada banner aktif. Tambahkan melalui Admin Panel.</p>
                     </div>
                 </div>
-            `).join('');
+            </div>`;
+        return;
+    }
 
-            // Jalankan auto-scroll jika jumlah banner lebih dari 1
-            if (bannersList.length > 1) {
-                startBannerAutoScroll();
-            }
+    bannerCount = bannersList.length;
+    container.innerHTML = bannersList.map(b => `
+        <div class="min-w-full snap-start shrink-0">
+            <div class="glass rounded-2xl sm:rounded-3xl p-1.5 sm:p-2.5 border border-red-500/35 relative overflow-hidden shadow-[0_0_40px_rgba(153,27,27,0.25)] aspect-[21/9] sm:aspect-[24/9] flex items-center">
+                <img src="${b.image}" alt="${b.title || 'Banner Tera Store'}" class="absolute inset-0 w-full h-full object-cover rounded-xl sm:rounded-2xl" onerror="this.outerHTML='<div class=\\'w-full h-full flex items-center justify-center bg-zinc-950 text-zinc-500 text-xs\\'>Gagal Memuat Gambar Banner</div>'">
+            </div>
+        </div>
+    `).join('');
+
+    if (dotsContainer) {
+        dotsContainer.innerHTML = bannersList.length > 1
+            ? bannersList.map((_, idx) => `<span onclick="scrollToBannerIndex(${idx})" class="banner-dot ${idx === 0 ? 'active' : ''}"></span>`).join('')
+            : '';
+    }
+
+    if (bannersList.length > 1) {
+        startBannerAutoScroll();
+    }
+}
+
+        function updateBannerDots() {
+            const container = document.getElementById('home-banners-slider');
+            const dots = document.querySelectorAll('#banner-dots .banner-dot');
+            if (!container || dots.length === 0) return;
+            const activeIdx = Math.round(container.scrollLeft / container.clientWidth);
+            dots.forEach((d, idx) => d.classList.toggle('active', idx === activeIdx));
+        }
+
+        function scrollToBannerIndex(idx) {
+            const container = document.getElementById('home-banners-slider');
+            if (!container) return;
+            container.scrollTo({ left: container.clientWidth * idx, behavior: 'smooth' });
+            startBannerAutoScroll();
         }
 
         function startBannerAutoScroll() {
@@ -2416,28 +2525,24 @@ async function verifyRobloxUsername(username) {
 
             if (bannerAutoScrollInterval) clearInterval(bannerAutoScrollInterval);
 
-            // Berhenti sementara saat kursor di atas banner atau disentuh di HP
             if (!container.dataset.listenerAttached) {
                 container.addEventListener('mouseenter', () => isBannerPaused = true);
                 container.addEventListener('mouseleave', () => isBannerPaused = false);
                 container.addEventListener('touchstart', () => isBannerPaused = true, { passive: true });
                 container.addEventListener('touchend', () => isBannerPaused = false, { passive: true });
+                container.addEventListener('scroll', updateBannerDots, { passive: true });
                 container.dataset.listenerAttached = 'true';
             }
 
             bannerAutoScrollInterval = setInterval(() => {
                 if (isBannerPaused) return;
-                
-                // Cek apakah posisi banner sudah mentok di paling kanan
                 const maxScrollLeft = container.scrollWidth - container.clientWidth;
                 if (container.scrollLeft >= maxScrollLeft - 15) {
-                    // Kembali mulus ke banner pertama
                     container.scrollTo({ left: 0, behavior: 'smooth' });
                 } else {
-                    // Geser ke banner berikutnya
                     container.scrollBy({ left: container.clientWidth, behavior: 'smooth' });
                 }
-            }, 6000); // 4500 ms = 4,5 detik
+            }, 5500);
         }
 
         function scrollBanner(direction) {
@@ -2453,120 +2558,110 @@ async function verifyRobloxUsername(username) {
                 container.scrollBy({ left: container.clientWidth * direction, behavior: 'smooth' });
             }
 
-            // Reset timer 4,5 detik setiap kali tombol panah diklik manual
             startBannerAutoScroll();
         }
 
         // =======================
-// FITUR GACHA / SPIN WHEEL HARIAN
-// =======================
-const GACHA_COOLDOWN_KEY = "tera_last_gacha_date";
+        // FITUR GACHA / SPIN WHEEL HARIAN
+        // =======================
+        const GACHA_COOLDOWN_KEY = "tera_last_gacha_date";
 
-function openGachaModal() {
-    const modal = document.getElementById('gachaModal');
-    modal.classList.remove('hidden');
-    modal.classList.add('flex');
+        function openGachaModal() {
+            const modal = document.getElementById('gachaModal');
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+            checkGachaStatus();
+        }
 
-    checkGachaStatus();
-}
+        function closeGachaModal() {
+            const modal = document.getElementById('gachaModal');
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+        }
 
-function closeGachaModal() {
-    const modal = document.getElementById('gachaModal');
-    modal.classList.add('hidden');
-    modal.classList.remove('flex');
-}
+        function checkGachaStatus() {
+            const lastSpinDate = localStorage.getItem(GACHA_COOLDOWN_KEY);
+            const today = new Date().toDateString();
+            const btnSpin = document.getElementById('btn-spin-gacha');
+            const resultText = document.getElementById('gacha-result-text');
+            const wheelBox = document.getElementById('gacha-wheel-box');
 
-function checkGachaStatus() {
-    const lastSpinDate = localStorage.getItem(GACHA_COOLDOWN_KEY);
-    const today = new Date().toDateString();
-    const btnSpin = document.getElementById('btn-spin-gacha');
-    const resultText = document.getElementById('gacha-result-text');
-    const wheelBox = document.getElementById('gacha-wheel-box');
+            if (lastSpinDate === today) {
+                if (btnSpin) btnSpin.classList.add('hidden');
+                wheelBox.innerHTML = "✨🎟️✨";
+                resultText.innerHTML = `<span class="text-amber-400 font-bold">Kamu sudah menggunakan jatah gacha hari ini!</span><br>Kembali lagi besok ya bro.`;
+            } else {
+                if (btnSpin) btnSpin.classList.remove('hidden');
+                wheelBox.innerHTML = "🎁 ❓ 🎁";
+                resultText.innerText = "Tekan tombol putar di bawah untuk mulai!";
+            }
+        }
 
-    if (lastSpinDate === today) {
-        // Sudah pernah spin hari ini
-        if (btnSpin) btnSpin.classList.add('hidden');
-        wheelBox.innerHTML = "✨🎟️✨";
-        resultText.innerHTML = `<span class="text-amber-400 font-bold">Kamu sudah menggunakan jatah gacha hari ini!</span><br>Kembali lagi besok ya bro.`;
-    } else {
-        if (btnSpin) btnSpin.classList.remove('hidden');
-        wheelBox.innerHTML = "🎁 ❓ 🎁";
-        resultText.innerText = "Tekan tombol putar di bawah untuk mulai!";
-    }
-}
-
-function executeGachaSpin() {
-    const lastSpinDate = localStorage.getItem(GACHA_COOLDOWN_KEY);
-    const today = new Date().toDateString();
-    if (lastSpinDate === today) {
-        showToastMsg("Kamu sudah spin hari ini. Coba lagi besok!", true);
-        return;
-    }
-
-    const btnSpin = document.getElementById('btn-spin-gacha');
-    const wheelBox = document.getElementById('gacha-wheel-box');
-    const resultText = document.getElementById('gacha-result-text');
-    if (btnSpin) btnSpin.disabled = true;
-
-    // Daftar hadiah yang bisa didapat (bisa disesuaikan dengan kode voucher aktifmu)
-    const possibleRewards = [
-        { name: "HEMAT5", label: "Diskon 5%", type: "percent", value: 5 },
-        { name: "HEMAT10", label: "Diskon 10%", type: "percent", value: 10 },
-        { name: "TERA2026", label: "Potongan Rp 2.000", type: "nominal", value: 2000 },
-        { name: "SULTAN", label: "Potongan Rp 5.000", type: "nominal", value: 5000 }
-    ];
-
-    // Efek animasi berputar acak
-    let counter = 0;
-    const animInterval = setInterval(() => {
-        const randItem = possibleRewards[Math.floor(Math.random() * possibleRewards.length)];
-        wheelBox.innerHTML = randItem.label;
-        counter++;
-
-        if (counter > 14) {
-            clearInterval(animInterval);
-            
-            // Tentukan hadiah akhir secara acak
-            const winningReward = possibleRewards[Math.floor(Math.random() * possibleRewards.length)];
-            
-            // Simpan status bahwa hari ini sudah spin
-            localStorage.setItem(GACHA_COOLDOWN_KEY, today);
-
-            wheelBox.innerHTML = `🎉`;
-            resultText.innerHTML = `
-                <span class="text-emerald-400 font-extrabold text-sm">SELAMAT! Kamu Mendapat:</span><br>
-                <strong class="text-amber-400 text-base">${winningReward.label}</strong><br>
-                <span class="text-[10px] text-zinc-400">Kode Voucher: <code>${winningReward.name}</code></span>
-            `;
-
-            if (btnSpin) btnSpin.classList.add('hidden');
-
-            // Tambahkan otomatis voucher ke daftar voucher lokal jika belum ada
-            const exists = availableVouchers.find(v => v.code === winningReward.name);
-            if (!exists) {
-                availableVouchers.push({
-                    code: winningReward.name,
-                    value: winningReward.value,
-                    type: winningReward.type,
-                    minSpend: 0,
-                    quota: 999,
-                    active: true
-                });
-                renderVouchersBar();
+        function executeGachaSpin() {
+            const lastSpinDate = localStorage.getItem(GACHA_COOLDOWN_KEY);
+            const today = new Date().toDateString();
+            if (lastSpinDate === today) {
+                showToastMsg("Kamu sudah spin hari ini. Coba lagi besok!", true);
+                return;
             }
 
-            // Tampilkan tombol untuk langsung pakai voucher
-            const actionBox = document.getElementById('gacha-action-box');
-            actionBox.innerHTML = `
-                <button onclick="closeGachaModal(); applyVoucherCodeDirect('${winningReward.name}')" class="w-full btn-crimson text-white font-bold py-3.5 rounded-xl uppercase tracking-widest text-xs shadow-lg flex items-center justify-center gap-2">
-                    <i class="fas fa-ticket text-xs"></i> Pakai Voucher Sekarang!
-                </button>
-            `;
+            const btnSpin = document.getElementById('btn-spin-gacha');
+            const wheelBox = document.getElementById('gacha-wheel-box');
+            const resultText = document.getElementById('gacha-result-text');
+            if (btnSpin) btnSpin.disabled = true;
 
-            showToastMsg(`Hoki banget! Kamu dapat voucher ${winningReward.name}`);
+            const possibleRewards = [
+                { name: "HEMAT5", label: "Diskon 5%", type: "percent", value: 5 },
+                { name: "HEMAT10", label: "Diskon 10%", type: "percent", value: 10 },
+                { name: "TERA2026", label: "Potongan Rp 2.000", type: "nominal", value: 2000 },
+                { name: "SULTAN", label: "Potongan Rp 5.000", type: "nominal", value: 5000 }
+            ];
+
+            let counter = 0;
+            const animInterval = setInterval(() => {
+                const randItem = possibleRewards[Math.floor(Math.random() * possibleRewards.length)];
+                wheelBox.innerHTML = randItem.label;
+                counter++;
+
+                if (counter > 14) {
+                    clearInterval(animInterval);
+                    
+                    const winningReward = possibleRewards[Math.floor(Math.random() * possibleRewards.length)];
+                    localStorage.setItem(GACHA_COOLDOWN_KEY, today);
+
+                    wheelBox.innerHTML = `🎉`;
+                    resultText.innerHTML = `
+                        <span class="text-emerald-400 font-extrabold text-sm">SELAMAT! Kamu Mendapat:</span><br>
+                        <strong class="text-amber-400 text-base">${winningReward.label}</strong><br>
+                        <span class="text-[10px] text-zinc-400">Kode Voucher: <code>${winningReward.name}</code></span>
+                    `;
+
+                    if (btnSpin) btnSpin.classList.add('hidden');
+
+                    const exists = availableVouchers.find(v => v.code === winningReward.name);
+                    if (!exists) {
+                        availableVouchers.push({
+                            code: winningReward.name,
+                            value: winningReward.value,
+                            type: winningReward.type,
+                            minSpend: 0,
+                            quota: 999,
+                            active: true
+                        });
+                        renderVouchersBar();
+                    }
+
+                    const actionBox = document.getElementById('gacha-action-box');
+                    actionBox.innerHTML = `
+                        <button onclick="closeGachaModal(); applyVoucherCodeDirect('${winningReward.name}')" class="w-full btn-crimson text-white font-bold py-3.5 rounded-xl uppercase tracking-widest text-xs shadow-lg flex items-center justify-center gap-2">
+                            <i class="fas fa-ticket text-xs"></i> Pakai Voucher Sekarang!
+                        </button>
+                    `;
+
+                    showToastMsg(`Hoki banget! Kamu dapat voucher ${winningReward.name}`);
+                }
+            }, 100);
         }
-    }, 100);
-}
 
         function renderFlashSaleSection() {
             const section = document.getElementById('home-flashsale-section');
@@ -2587,23 +2682,23 @@ function executeGachaSpin() {
                     : 0;
 
                 const mediaHtml = (item.image && item.image !== "")
-                    ? `<img src="${item.image}" alt="${item.name}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" onerror="this.outerHTML='<div class=\\'w-full h-full flex items-center justify-center bg-zinc-900 text-3xl\\'>⚡</div>'">`
+                    ? `<img src="${item.image}" alt="${item.name}" loading="lazy" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" onerror="this.outerHTML='<div class=\\'w-full h-full flex items-center justify-center bg-zinc-900 text-3xl\\'>⚡</div>'">`
                     : `<div class="w-full h-full flex items-center justify-center bg-zinc-900 text-3xl">⚡</div>`;
 
                 return `
                     <div class="flash-card rounded-2xl p-2.5 flex flex-col items-center text-center relative group">
                         <div class="absolute top-2.5 left-2.5 z-10 bg-gradient-to-r from-red-600 to-amber-500 text-white text-[9px] font-black uppercase px-2 py-0.5 rounded-md shadow-md">
-                            ⚡ ${savePercent > 0 ? `HEMAT ${savePercent}%` : 'FLASH SALE'}
+                            ⚡ ${savePercent > 0 ? `-${savePercent}%` : 'FLASH'}
                         </div>
-                        <div class="w-full aspect-square mb-3 rounded-xl overflow-hidden border border-amber-500/20 bg-zinc-950 relative">
+                        <div class="w-full aspect-square mb-2.5 rounded-xl overflow-hidden border border-amber-500/20 bg-zinc-950 relative">
                             ${mediaHtml}
                         </div>
-                        <span class="text-[9px] text-red-400 uppercase font-bold tracking-wider">[${gameMeta[item.gameId]?.name || item.gameId.toUpperCase()}]</span>
+                        <span class="text-[9px] text-red-400 uppercase font-bold tracking-wider truncate max-w-full">[${gameMeta[item.gameId]?.name || item.gameId.toUpperCase()}]</span>
                         <h5 class="text-xs font-bold text-white mb-1 h-8 flex items-center justify-center leading-snug w-full line-clamp-2">${item.name}</h5>
                         
-                        <div class="w-full bg-black/60 border border-amber-500/25 rounded-xl py-1.5 px-2 mb-3 mt-auto">
+                        <div class="w-full bg-black/60 border border-amber-500/25 rounded-xl py-1.5 px-2 mb-2.5 mt-auto">
                             ${item.oldPrice > item.price ? `<span class="text-[10px] text-zinc-500 line-through block">${formatRupiah(item.oldPrice)}</span>` : ''}
-                            <span class="text-amber-400 text-sm font-black">${formatRupiah(item.price)}</span>
+                            <span class="text-amber-400 text-xs sm:text-sm font-black">${formatRupiah(item.price)}</span>
                         </div>
 
                         <div class="flex gap-1.5 w-full">
@@ -2664,17 +2759,17 @@ function executeGachaSpin() {
                 const gId = String(g.gameId || '').trim().toLowerCase();
                 return `
                     <button onclick="switchPage('katalog'); setActiveGame('${gId}')" class="glow-card-wrapper text-left">
-                        <div class="item-card rounded-2xl p-5 flex items-center justify-between gap-4">
-                            <div class="flex items-center gap-4">
-                                <div class="w-13 h-13 p-3.5 rounded-xl bg-red-500/10 border border-red-500/25 flex items-center justify-center text-2xl text-red-400 shrink-0">
+                        <div class="item-card rounded-2xl p-4 sm:p-5 flex items-center justify-between gap-4">
+                            <div class="flex items-center gap-3.5 sm:gap-4 min-w-0">
+                                <div class="w-12 h-12 rounded-xl bg-red-500/10 border border-red-500/25 flex items-center justify-center text-xl sm:text-2xl text-red-400 shrink-0">
                                     <i class="fas ${g.gameIcon || 'fa-gamepad'}"></i>
                                 </div>
-                                <div>
-                                    <h4 class="font-heading font-bold text-xl italic text-white">${g.gameName}</h4>
+                                <div class="min-w-0">
+                                    <h4 class="font-heading font-bold text-lg sm:text-xl italic text-white truncate">${g.gameName}</h4>
                                     <p class="text-[11px] text-zinc-400 mt-0.5">Lihat Katalog Item</p>
                                 </div>
                             </div>
-                            <i class="fas fa-chevron-right text-zinc-500 text-xs"></i>
+                            <i class="fas fa-chevron-right text-zinc-500 text-xs shrink-0"></i>
                         </div>
                     </button>
                 `;
@@ -2701,7 +2796,7 @@ function executeGachaSpin() {
                 const safePrice = Number(j.price) || 0;
                 return `
                     <div class="glow-card-wrapper flex flex-col">
-                        <div class="item-card rounded-2xl p-6 relative overflow-hidden flex flex-col flex-grow">
+                        <div class="item-card rounded-2xl p-5 sm:p-6 relative overflow-hidden flex flex-col flex-grow">
                             <div class="w-10 h-10 rounded-xl bg-red-500/10 border border-red-500/25 flex items-center justify-center text-red-400 mb-4">
                                 <i class="fas fa-bolt"></i>
                             </div>
@@ -2712,10 +2807,10 @@ function executeGachaSpin() {
                                 <span class="text-amber-400 font-extrabold text-sm">${formatRupiah(safePrice)}</span>
                             </div>
                             <div class="grid grid-cols-2 gap-2 mt-auto">
-                                <button onclick="orderJoki('${safeName}', ${safePrice}, 'website')" class="btn-crimson w-full py-2.5 rounded-xl font-bold uppercase text-[11px] flex items-center justify-center gap-1.5 text-white">
+                                <button onclick="orderJoki('${safeName}',${safePrice}, 'website')" class="btn-crimson w-full py-2.5 rounded-xl font-bold uppercase text-[11px] flex items-center justify-center gap-1.5 text-white">
                                     <i class="fas fa-cart-plus"></i> Via Web
                                 </button>
-                                <button onclick="orderJoki('${safeName}', ${safePrice}, 'whatsapp')" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white py-2.5 rounded-xl font-bold transition-all uppercase text-[11px] flex items-center justify-center gap-1.5 shadow-md">
+                                <button onclick="orderJoki('${safeName}',${safePrice}, 'whatsapp')" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white py-2.5 rounded-xl font-bold transition-all uppercase text-[11px] flex items-center justify-center gap-1.5 shadow-md">
                                     <i class="fab fa-whatsapp"></i> Via WA
                                 </button>
                             </div>
@@ -2732,7 +2827,7 @@ function executeGachaSpin() {
 
             if (!document.getElementById(`game-btn-${gId}`)) {
                 container.innerHTML += `
-                    <button id="game-btn-${gId}" onclick="setActiveGame('${gId}')" class="game-tab-btn border border-white/10 bg-zinc-900/60 hover:border-red-500/40 rounded-2xl py-3.5 px-6 flex items-center justify-center gap-2.5 font-bold uppercase italic text-xs tracking-wider text-zinc-400 transition-all">
+                    <button id="game-btn-${gId}" onclick="setActiveGame('${gId}')" class="game-tab-btn shrink-0 snap-start border border-white/10 bg-zinc-900/60 hover:border-red-500/40 rounded-2xl py-3 px-5 sm:py-3.5 sm:px-6 flex items-center justify-center gap-2.5 font-bold uppercase italic text-xs tracking-wider text-zinc-400 transition-all">
                         <i class="fas ${gIcon || 'fa-gamepad'} text-sm"></i> ${gName}
                     </button>
                 `;
@@ -2742,7 +2837,7 @@ function executeGachaSpin() {
                 const pane = document.createElement('div');
                 pane.id = `game-pane-${gId}`;
                 pane.className = 'game-pane';
-                pane.innerHTML = `<div class="flex flex-wrap gap-2 mb-7" id="${gId}-section-pills"></div><div id="katalog-container-${gId}" class="space-y-6"></div>`;
+                pane.innerHTML = `<div class="flex overflow-x-auto no-scrollbar sm:flex-wrap gap-2 mb-6 pb-1 snap-x" id="${gId}-section-pills"></div><div id="katalog-container-${gId}" class="space-y-6"></div>`;
                 panesWrapper.appendChild(pane);
             }
         }
@@ -2802,13 +2897,13 @@ function executeGachaSpin() {
             const sections = storeData[game] || [];
             const meta = gameMeta[game] || { pillActive: 'bg-red-600/25 border-red-500 text-white' };
 
-            let html = `<button onclick="filterSection('${game}','all')" class="px-4 py-2 rounded-xl text-xs font-bold uppercase tracking-wider border transition-all ${activeSectionFilter[game] === 'all' ? meta.pillActive : 'border-white/10 bg-zinc-900/50 text-zinc-400 hover:text-white'}">
+            let html = `<button onclick="filterSection('${game}','all')" class="shrink-0 snap-start px-4 py-2 rounded-xl text-xs font-bold uppercase tracking-wider border transition-all ${activeSectionFilter[game] === 'all' ? meta.pillActive : 'border-white/10 bg-zinc-900/50 text-zinc-400 hover:text-white'}">
                 <i class="fas fa-layer-group mr-1.5"></i>Semua Kategori
             </button>`;
 
             sections.forEach(sec => {
                 const isActive = activeSectionFilter[game] === sec.id;
-                html += `<button onclick="filterSection('${game}','${sec.id}')" class="px-4 py-2 rounded-xl text-xs font-bold uppercase tracking-wider border transition-all ${isActive ? meta.pillActive : 'border-white/10 bg-zinc-900/50 text-zinc-400 hover:text-white'}">
+                html += `<button onclick="filterSection('${game}','${sec.id}')" class="shrink-0 snap-start px-4 py-2 rounded-xl text-xs font-bold uppercase tracking-wider border transition-all ${isActive ? meta.pillActive : 'border-white/10 bg-zinc-900/50 text-zinc-400 hover:text-white'}">
                     <i class="fas ${sec.icon} mr-1.5"></i>${sec.category}
                 </button>`;
             });
@@ -2864,21 +2959,21 @@ function executeGachaSpin() {
 
                 container.innerHTML += `
                     <div class="section-group glass rounded-3xl border border-white/10 overflow-hidden open" id="${groupId}">
-                        <button onclick="toggleSectionGroup('${groupId}')" class="w-full flex items-center justify-between gap-4 p-5 md:p-6 text-left hover:bg-white/[0.02] transition-colors">
+                        <button onclick="toggleSectionGroup('${groupId}')" class="w-full flex items-center justify-between gap-4 p-4 sm:p-6 text-left hover:bg-white/[0.02] transition-colors">
                             <div class="flex items-center gap-3.5">
-                                <div class="w-11 h-11 rounded-xl bg-red-500/10 flex items-center justify-center border border-red-500/25 shrink-0">
-                                    <i class="fas ${section.icon} text-lg text-red-400"></i>
+                                <div class="w-10 h-10 sm:w-11 sm:h-11 rounded-xl bg-red-500/10 flex items-center justify-center border border-red-500/25 shrink-0">
+                                    <i class="fas ${section.icon} text-base sm:text-lg text-red-400"></i>
                                 </div>
                                 <div>
-                                    <h4 class="text-lg md:text-xl font-heading font-bold italic uppercase text-white">${section.category}</h4>
-                                    <p class="text-[10px] text-zinc-400 uppercase tracking-wider font-semibold">${filteredItems.length} Produk Tersedia</p>
+                                    <h4 class="text-base sm:text-xl font-heading font-bold italic uppercase text-white leading-tight">${section.category}</h4>
+                                    <p class="text-[10px] text-zinc-400 uppercase tracking-wider font-semibold mt-0.5">${filteredItems.length} Produk Tersedia</p>
                                 </div>
                             </div>
                             <i class="fas fa-chevron-down section-chevron text-red-400 text-sm shrink-0"></i>
                         </button>
                         <div class="section-body">
                             <div>
-                                <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4 px-5 md:px-6 pb-6">
+                                <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-3 sm:gap-4 px-4 sm:px-6 pb-5 sm:pb-6">
                                     ${cardsHtml}
                                 </div>
                             </div>
@@ -2903,7 +2998,7 @@ function executeGachaSpin() {
 
             let mediaHtml = '';
             if (item.image && item.image !== "") {
-                mediaHtml = `<img src="${item.image}" alt="${item.name}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" onerror="this.outerHTML='<div class=\\'w-full h-full flex items-center justify-center bg-zinc-900 text-3xl\\'>🎁</div>'">`;
+                mediaHtml = `<img src="${item.image}" alt="${item.name}" loading="lazy" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" onerror="this.outerHTML='<div class=\\'w-full h-full flex items-center justify-center bg-zinc-900 text-3xl\\'>🎁</div>'">`;
             } else {
                 mediaHtml = `<div class="w-full h-full flex items-center justify-center bg-zinc-900 group-hover:scale-105 transition-transform duration-500 text-3xl">${item.emoji || '🎁'}</div>`;
             }
@@ -2913,16 +3008,16 @@ function executeGachaSpin() {
 
             let topBadge = '';
             if (item.isFlashSale) {
-                topBadge = `<div class="absolute top-2.5 left-2.5 z-10 bg-gradient-to-r from-red-600 to-amber-500 text-white text-[9px] font-black uppercase px-2 py-0.5 rounded-md shadow-md">⚡ ${savePercent > 0 ? `-${savePercent}%` : 'PROMO'}</div>`;
+                topBadge = `<div class="absolute top-2 left-2 z-10 bg-gradient-to-r from-red-600 to-amber-500 text-white text-[9px] font-black uppercase px-2 py-0.5 rounded-md shadow-md">⚡ ${savePercent > 0 ? `-${savePercent}%` : 'PROMO'}</div>`;
             } else if (item.price >= 25000) {
-                topBadge = `<div class="absolute top-2.5 left-2.5 z-10 rarity-mythical text-[8px] font-black uppercase px-2 py-0.5 rounded-md">MYTHICAL</div>`;
+                topBadge = `<div class="absolute top-2 left-2 z-10 rarity-mythical text-[8px] font-black uppercase px-2 py-0.5 rounded-md">MYTHICAL</div>`;
             }
 
             return `
                 <div class="glow-card-wrapper flex flex-col">
                     <div class="${item.isFlashSale ? 'flash-card' : 'item-card'} rounded-2xl p-2.5 flex flex-col items-center text-center relative group flex-grow">
                         ${topBadge}
-                        <div onclick="openQuickView('${game}', ${sIndex}, ${iIndex})" title="Klik untuk Detail Produk" class="w-full aspect-square mb-3 rounded-xl overflow-hidden border border-white/10 bg-zinc-950 relative cursor-pointer">
+                        <div onclick="openQuickView('${game}', ${sIndex},${iIndex})" title="Klik untuk Detail Produk" class="w-full aspect-square mb-2.5 rounded-xl overflow-hidden border border-white/10 bg-zinc-950 relative cursor-pointer">
                             ${mediaHtml}
                             <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
                                 <span class="bg-black/80 text-white text-[10px] font-bold px-2.5 py-1 rounded-lg border border-white/15"><i class="fas fa-expand mr-1"></i>Detail</span>
@@ -2930,14 +3025,14 @@ function executeGachaSpin() {
                         </div>
                         <h5 class="text-xs font-bold text-zinc-100 mb-1.5 h-8 flex items-center justify-center leading-snug w-full line-clamp-2">${item.name}</h5>
                         
-                        <div class="w-full bg-amber-500/10 px-2 py-1 rounded-lg border border-amber-500/20 mb-3">
+                        <div class="w-full bg-amber-500/10 px-2 py-1 rounded-lg border border-amber-500/20 mb-2.5">
                             ${hasStrike ? `<span class="text-[10px] text-zinc-500 line-through block">${formatRupiah(item.oldPrice)}</span>` : ''}
                             <p id="total-${itemId}" class="text-amber-400 text-xs font-extrabold" data-baseprice="${item.price}">
                                 ${formatRupiah(item.price)}
                             </p>
                         </div>
 
-                        <div class="flex items-center justify-between w-full bg-black/60 rounded-xl p-1 border border-white/10 mb-3 mt-auto">
+                        <div class="flex items-center justify-between w-full bg-black/60 rounded-xl p-1 border border-white/10 mb-2.5 mt-auto">
                             <button onclick="updateQty('${itemId}', -1)" class="w-6 h-6 rounded-lg flex items-center justify-center text-zinc-400 hover:text-white hover:bg-white/10 transition-colors">
                                 <i class="fas fa-minus text-[10px]"></i>
                             </button>
@@ -2948,10 +3043,10 @@ function executeGachaSpin() {
                         </div>
 
                         <div class="flex gap-1.5 w-full">
-                            <button onclick="addToCart('${game}', ${sIndex}, ${iIndex}, '${itemId}', false)" class="btn-crimson flex-grow text-white text-[11px] font-bold py-2.5 rounded-xl transition-all uppercase tracking-wider flex items-center justify-center gap-1.5">
+                            <button onclick="addToCart('${game}',${sIndex}, ${iIndex}, '${itemId}', false)" class="btn-crimson flex-grow text-white text-[10px] sm:text-[11px] font-bold py-2.5 rounded-xl transition-all uppercase tracking-wider flex items-center justify-center gap-1">
                                 <i class="fas fa-cart-plus"></i> +Keranjang
                             </button>
-                            <button onclick="addToCart('${game}', ${sIndex}, ${iIndex}, '${itemId}', true)" title="Beli Instan" class="bg-amber-500/15 hover:bg-amber-500 text-amber-400 hover:text-black border border-amber-500/30 w-9 rounded-xl flex items-center justify-center transition-all shrink-0">
+                            <button onclick="addToCart('${game}',${sIndex}, ${iIndex}, '${itemId}', true)" title="Beli Instan" class="bg-amber-500/15 hover:bg-amber-500 text-amber-400 hover:text-black border border-amber-500/30 w-9 rounded-xl flex items-center justify-center transition-all shrink-0">
                                 <i class="fas fa-bolt text-xs"></i>
                             </button>
                         </div>
@@ -2968,3 +3063,4 @@ function executeGachaSpin() {
     </script>
 </body>
 </html>
+
