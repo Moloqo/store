@@ -15,67 +15,6 @@
     <!-- Canvas Confetti untuk Efek Perayaan Saat Pembayaran Lunas -->
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 
-    <!-- Firebase SDK -->
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-        import { getAuth, signInWithPopup, GoogleAuthProvider, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
-
-        const firebaseConfig = {
-            apiKey: "AIzaSyBSK0g6QOlhAC7Fy0DfmS6faAuLWyKhZS0",
-            authDomain: "authentication-9409d.firebaseapp.com",
-            projectId: "authentication-9409d",
-            storageBucket: "authentication-9409d.firebasestorage.app",
-            messagingSenderId: "344371781780",
-            appId: "G-JWNZKCE8G7"
-        };
-
-        const app = initializeApp(firebaseConfig);
-        const auth = getAuth(app);
-        const googleProvider = new GoogleAuthProvider();
-
-        window._firebaseAuth = auth;
-        window._googleProvider = googleProvider;
-        window._firebaseSignOut = signOut;
-
-        onAuthStateChanged(auth, (user) => {
-            if (user) {
-                const displayName = user.displayName || user.email || 'User';
-                const photoURL = user.photoURL || null;
-                window._currentFirebaseUser = user;
-                if (typeof setLoggedInUI === 'function') {
-                    setLoggedInUI(displayName, photoURL, 'google');
-                    if (typeof closeLoginModal === 'function') closeLoginModal();
-                }
-            }
-        });
-
-        window.handleGoogleLogin = async function() {
-            const btn = document.getElementById('btn-google-login');
-            if (!btn) return;
-            const originalHTML = btn.innerHTML;
-            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Memproses...';
-            btn.disabled = true;
-
-            try {
-                await signInWithPopup(auth, googleProvider);
-            } catch (err) {
-                btn.innerHTML = originalHTML;
-                btn.disabled = false;
-                const alertEl = document.getElementById('modal-alert-error');
-                const alertMsg = document.getElementById('modal-alert-msg');
-                if (alertEl && alertMsg) {
-                    alertMsg.textContent = 'Login Google gagal: ' + (err.message || 'Coba lagi.');
-                    alertEl.classList.remove('hidden');
-                }
-            }
-        };
-
-        window.handleGoogleSignOut = async function() {
-            try { await signOut(auth); } catch(e) {}
-            if (typeof handleLogout === 'function') handleLogout();
-        };
-    </script>
-
     <script src="https://cdn.tailwindcss.com"></script>
 
     <script>
@@ -167,13 +106,13 @@
             right: -10%;
         }
         /* Menyembunyikan scrollbar bawaan tapi tetap bisa di-scroll */
-    .no-scrollbar::-webkit-scrollbar {
-        display: none;
-    }
-    .no-scrollbar {
-        -ms-overflow-style: none;
-        scrollbar-width: none;
-    }
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
 
         /* Soft Crimson Glassmorphism */
         .glass {
@@ -363,9 +302,6 @@
 
         .btn-tiktok:hover { box-shadow: 0 4px 18px rgba(255, 0, 80, 0.3); border-color: #ff0050 !important; }
         .btn-ig:hover { box-shadow: 0 4px 18px rgba(225, 29, 72, 0.35); border-color: #e11d48 !important; }
-
-        #login-modal { transition: opacity 0.3s ease; }
-        #login-modal.show { opacity: 1; }
     </style>
 </head>
 <body class="antialiased selection:bg-red-800 selection:text-white flex flex-col min-h-screen pb-20 md:pb-0">
@@ -409,32 +345,10 @@
                     </a>
                 </div>
 
-                <div class="hidden md:flex items-center gap-3 ml-4 pl-4 border-l border-white/10">
-                    <button id="nav-login-btn" onclick="openLoginModal()" class="bg-red-950/40 border border-red-500/30 hover:border-red-500/70 px-4 py-2 rounded-xl text-xs font-bold uppercase tracking-wider text-red-300 hover:text-white hover:bg-red-900/40 transition-all flex items-center gap-2">
-                        <i class="fas fa-right-to-bracket"></i> Login
-                    </button>
-                    <div id="nav-user-info" class="hidden items-center gap-2.5">
-                        <div class="flex items-center gap-2 glass px-3.5 py-1.5 rounded-xl border border-red-500/30">
-                            <div class="w-6 h-6 rounded-full bg-red-500/20 border border-red-500/50 flex items-center justify-center">
-                                <i class="fas fa-user text-[10px] text-red-400"></i>
-                            </div>
-                            <span id="nav-username" class="text-xs font-bold text-zinc-200"></span>
-                        </div>
-                        <button onclick="handleLogout()" title="Logout" class="w-8 h-8 rounded-xl bg-white/5 hover:bg-red-500/20 text-zinc-400 hover:text-red-400 transition-colors flex items-center justify-center">
-                            <i class="fas fa-right-from-bracket text-xs"></i>
-                        </button>
-                    </div>
-                </div>
-
                 <!-- CART BUTTON -->
                 <button onclick="toggleCart()" class="relative bg-zinc-900/90 hover:bg-red-950/60 border border-white/10 hover:border-red-500/40 text-zinc-100 w-11 h-11 rounded-xl flex items-center justify-center transition-all ml-2">
                     <i class="fas fa-bag-shopping text-lg text-red-400"></i>
                     <span id="cart-count" class="absolute -top-1.5 -right-1.5 bg-red-600 text-white text-[10px] font-extrabold w-5 h-5 rounded-full flex items-center justify-center shadow-lg border border-black">0</span>
-                </button>
-
-                <!-- Mobile Login Trigger -->
-                <button id="mobile-top-login-btn" onclick="openLoginModal()" class="md:hidden bg-red-950/50 border border-red-500/30 text-red-300 px-3 h-11 rounded-xl text-xs font-bold uppercase flex items-center gap-1.5">
-                    <i class="fas fa-user"></i>
                 </button>
             </div>
         </div>
@@ -486,82 +400,6 @@
         </div>
     </div>
 
-    <!-- ======= LOGIN MODAL ======= -->
-    <div id="login-modal" class="fixed inset-0 z-[999] flex items-center justify-center px-4 py-8 hidden">
-        <div class="absolute inset-0 bg-black/85 backdrop-blur-md" onclick="closeLoginModal()"></div>
-
-        <div class="relative w-full max-w-md z-10">
-            <button onclick="closeLoginModal()" class="absolute -top-3 -right-3 w-9 h-9 rounded-full glass border border-red-500/30 text-zinc-400 hover:text-white hover:bg-red-600/30 transition-all flex items-center justify-center text-sm z-20">
-                <i class="fas fa-times"></i>
-            </button>
-
-            <div class="glass rounded-3xl p-7 border border-red-500/25 shadow-[0_0_50px_rgba(153,27,27,0.25)]">
-                <div class="text-center mb-6">
-                    <div class="inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-red-500/10 border border-red-500/30 mb-3 mx-auto">
-                        <i class="fas fa-shield-halved text-2xl text-red-500"></i>
-                    </div>
-                    <h2 class="font-heading font-bold text-3xl italic uppercase text-white">
-                        Masuk ke <span class="text-red-500">Akun</span>
-                    </h2>
-                    <p class="text-zinc-400 text-xs mt-1">Akses cepat transaksi & riwayat belanja di TERA STORE</p>
-                </div>
-
-                <div id="modal-alert-error" class="hidden rounded-xl px-4 py-3 mb-5 text-xs flex items-center gap-2 bg-red-500/10 border border-red-500/30 text-red-300">
-                    <i class="fas fa-circle-exclamation shrink-0 text-red-400"></i>
-                    <span id="modal-alert-msg">Username atau password salah.</span>
-                </div>
-
-                <div class="flex flex-col gap-4">
-                    <div>
-                        <label class="text-[11px] font-bold uppercase tracking-wider text-zinc-400 block mb-1.5">Username / Email</label>
-                        <div class="relative">
-                            <span class="absolute left-4 top-1/2 -translate-y-1/2 text-red-400/80 text-xs"><i class="fas fa-user"></i></span>
-                            <input type="text" id="modal-username" class="input-field w-full pl-10 pr-4 py-3 rounded-xl text-xs font-medium" placeholder="Masukkan username atau email" autocomplete="username">
-                        </div>
-                    </div>
-
-                    <div>
-                        <label class="text-[11px] font-bold uppercase tracking-wider text-zinc-400 block mb-1.5">Password</label>
-                        <div class="relative">
-                            <span class="absolute left-4 top-1/2 -translate-y-1/2 text-red-400/80 text-xs"><i class="fas fa-lock"></i></span>
-                            <input type="password" id="modal-password" class="input-field w-full pl-10 pr-11 py-3 rounded-xl text-xs font-medium" placeholder="Masukkan password" autocomplete="current-password">
-                            <button type="button" class="absolute right-4 top-1/2 -translate-y-1/2 text-xs text-zinc-400 hover:text-red-400" onclick="toggleModalPassword()">
-                                <i class="fas fa-eye" id="modal-eye-icon"></i>
-                            </button>
-                        </div>
-                    </div>
-
-                    <label class="flex items-center gap-2.5 cursor-pointer select-none">
-                        <input type="checkbox" id="modal-remember" class="w-4 h-4 rounded accent-red-600">
-                        <span class="text-xs text-zinc-400">Ingat saya di perangkat ini</span>
-                    </label>
-
-                    <button onclick="handleModalLogin()" class="btn-crimson w-full text-white font-bold py-3.5 rounded-xl uppercase tracking-widest text-xs flex items-center justify-center gap-2 mt-1">
-                        <span id="modal-btn-text"><i class="fas fa-right-to-bracket mr-1"></i> Masuk Sekarang</span>
-                        <span id="modal-btn-loading" class="hidden"><i class="fas fa-spinner fa-spin mr-1"></i> Memproses...</span>
-                    </button>
-                </div>
-
-                <div class="flex items-center gap-3 my-5">
-                    <div class="flex-1 h-px bg-white/10"></div>
-                    <span class="text-[10px] text-zinc-500 font-bold uppercase tracking-wider">atau masuk dengan</span>
-                    <div class="flex-1 h-px bg-white/10"></div>
-                </div>
-
-                <div class="grid grid-cols-2 gap-3">
-                    <button id="btn-google-login" onclick="handleGoogleLogin()" class="bg-zinc-900/90 hover:bg-zinc-800 border border-white/10 rounded-xl py-2.5 text-xs font-bold text-zinc-200 flex items-center justify-center gap-2 transition-all">
-                        <svg class="w-4 h-4" viewBox="0 0 24 24"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg>
-                        Google
-                    </button>
-                    <button id="btn-discord-login" onclick="handleDiscordLogin()" class="bg-zinc-900/90 hover:bg-zinc-800 border border-white/10 rounded-xl py-2.5 text-xs font-bold text-zinc-200 flex items-center justify-center gap-2 transition-all">
-                        <i class="fab fa-discord text-[#5865F2]"></i>
-                        Discord
-                    </button>
-                </div>
-            </div>
-        </div>
-    </div>
-
     <!-- ======= QUICK VIEW PRODUCT MODAL (POP-UP DETAIL PRODUK) ======= -->
     <div id="quickViewModal" class="fixed inset-0 z-[120] hidden items-center justify-center p-4">
         <div class="absolute inset-0 bg-black/80 backdrop-blur-md" onclick="closeQuickView()"></div>
@@ -608,25 +446,25 @@
         <!-- 1. SECTION HOME -->
         <section id="home" class="page-section active-page pt-10 md:pt-16 pb-20 px-4 max-w-7xl mx-auto">
             <!-- BANNER SLIDER INTERAKTIF (DINAMIS DARI ADMIN PANEL) -->
-<div class="max-w-6xl mx-auto relative group">
-    <!-- Tombol Geser Kiri -->
-    <button onclick="scrollBanner(-1)" class="absolute -left-4 top-1/2 -translate-y-1/2 z-20 w-10 h-10 rounded-full glass border border-red-500/40 text-white flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity bg-black/80 hover:bg-red-600">
-        <i class="fas fa-chevron-left text-xs"></i>
-    </button>
-    <!-- Tombol Geser Kanan -->
-    <button onclick="scrollBanner(1)" class="absolute -right-4 top-1/2 -translate-y-1/2 z-20 w-10 h-10 rounded-full glass border border-red-500/40 text-white flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity bg-black/80 hover:bg-red-600">
-        <i class="fas fa-chevron-right text-xs"></i>
-    </button>
+            <div class="max-w-6xl mx-auto relative group">
+                <!-- Tombol Geser Kiri -->
+                <button onclick="scrollBanner(-1)" class="absolute -left-4 top-1/2 -translate-y-1/2 z-20 w-10 h-10 rounded-full glass border border-red-500/40 text-white flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity bg-black/80 hover:bg-red-600">
+                    <i class="fas fa-chevron-left text-xs"></i>
+                </button>
+                <!-- Tombol Geser Kanan -->
+                <button onclick="scrollBanner(1)" class="absolute -right-4 top-1/2 -translate-y-1/2 z-20 w-10 h-10 rounded-full glass border border-red-500/40 text-white flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity bg-black/80 hover:bg-red-600">
+                    <i class="fas fa-chevron-right text-xs"></i>
+                </button>
 
-    <!-- Tempat di mana banner dari Admin Panel akan otomatis muncul -->
-    <div id="home-banners-slider" class="flex gap-4 overflow-x-auto snap-x snap-mandatory scroll-smooth no-scrollbar pb-4 pt-2">
-        <div class="min-w-full snap-start shrink-0">
-            <div class="glass rounded-3xl p-3 border border-red-500/35 relative overflow-hidden aspect-[21/9] sm:aspect-[24/9] flex items-center justify-center text-zinc-400 text-xs">
-                Memuat Banner...
+                <!-- Tempat di mana banner dari Admin Panel akan otomatis muncul -->
+                <div id="home-banners-slider" class="flex gap-4 overflow-x-auto snap-x snap-mandatory scroll-smooth no-scrollbar pb-4 pt-2">
+                    <div class="min-w-full snap-start shrink-0">
+                        <div class="glass rounded-3xl p-3 border border-red-500/35 relative overflow-hidden aspect-[21/9] sm:aspect-[24/9] flex items-center justify-center text-zinc-400 text-xs">
+                            Memuat Banner...
+                        </div>
+                    </div>
+                </div>
             </div>
-        </div>
-    </div>
-</div>
 
             <!-- ========================================== -->
             <!-- BANNER FLASH SALE & DAFTAR VOUCHER AKTIF   -->
@@ -1112,14 +950,6 @@
                 });
             }
 
-            // Fungsi untuk menggeser banner ke kiri atau kanan via tombol
-    function scrollBanner(direction) {
-        const container = document.getElementById('banner-container');
-        if (!container) return;
-        const scrollAmount = container.clientWidth * direction;
-        container.scrollBy({ left: scrollAmount, behavior: 'smooth' });
-    }
-
             function draw() {
                 ctx.clearRect(0, 0, canvas.width, canvas.height);
                 particles.forEach(p => {
@@ -1157,7 +987,6 @@
         // 3. SOUND CHIME & CONFETTI SAAT PEMBAYARAN LUNAS
         // ==========================================
         function triggerCelebrationEffects() {
-            // Efek Confetti Emas & Merah
             if (typeof confetti === 'function') {
                 confetti({
                     particleCount: 80,
@@ -1166,7 +995,6 @@
                     colors: ['#dc2626', '#fbbf24', '#10b981', '#ffffff']
                 });
             }
-            // Efek Suara Level-Up Chime Lembut
             try {
                 const ctx = new (window.AudioContext || window.webkitAudioContext)();
                 const notes = [523.25, 659.25, 783.99, 1046.50];
@@ -2202,31 +2030,29 @@
             setTimeout(() => toast.remove(), 3200);
         }
 
-        // GANTI FUNGSI orderJOKI LAMA DENGAN INI
-function orderJoki(jokiName, jokiPrice, actionType) {
-    if (actionType === 'whatsapp') {
-        const textMsg = `Halo Min Tera, saya ingin memesan layanan Joki:\n⚡ *${jokiName}*\n💰 Harga: ${formatRupiah(jokiPrice)}\n\nBoleh info prosedur selanjutnya min?`;
-        const waUrl = `https://wa.me/${NOMOR_ADMIN_WA}?text=${encodeURIComponent(textMsg)}`;
-        window.open(waUrl, '_blank');
-        showToastMsg("Mengarahkan ke WhatsApp Admin...");
-    } else if (actionType === 'website') {
-        // Langsung masukkan joki ke keranjang belanja website
-        cart.push({
-            name: `[JASA JOKI] ${jokiName}`,
-            price: Number(jokiPrice) || 0,
-            oldPrice: 0,
-            isFlashSale: false,
-            qty: 1,
-            image: "",
-            game: "joki",
-            gameName: "JASA JOKI"
-        });
-        saveCart();
-        updateCartUI();
-        toggleCart(); // Buka keranjang otomatis
-        showToastMsg(`★ "${jokiName}" berhasil masuk ke keranjang!`);
-    }
-}
+        function orderJoki(jokiName, jokiPrice, actionType) {
+            if (actionType === 'whatsapp') {
+                const textMsg = `Halo Min Tera, saya ingin memesan layanan Joki:\n⚡ *${jokiName}*\n💰 Harga: ${formatRupiah(jokiPrice)}\n\nBoleh info prosedur selanjutnya min?`;
+                const waUrl = `https://wa.me/${NOMOR_ADMIN_WA}?text=${encodeURIComponent(textMsg)}`;
+                window.open(waUrl, '_blank');
+                showToastMsg("Mengarahkan ke WhatsApp Admin...");
+            } else if (actionType === 'website') {
+                cart.push({
+                    name: `[JASA JOKI] ${jokiName}`,
+                    price: Number(jokiPrice) || 0,
+                    oldPrice: 0,
+                    isFlashSale: false,
+                    qty: 1,
+                    image: "",
+                    game: "joki",
+                    gameName: "JASA JOKI"
+                });
+                saveCart();
+                updateCartUI();
+                toggleCart();
+                showToastMsg(`★ "${jokiName}" berhasil masuk ke keranjang!`);
+            }
+        }
 
         const searchInput = document.getElementById('searchInput');
         if (searchInput) {
@@ -2258,7 +2084,6 @@ function orderJoki(jokiName, jokiPrice, actionType) {
                     allOrdersCache = data.orders || [];
                     flashSaleItems = [];
 
-                    // Update Hero Stats
                     const totalProds = (data.products || []).length;
                     const statItemsEl = document.getElementById('hero-stat-items');
                     if (statItemsEl && totalProds > 0) statItemsEl.innerText = `${totalProds}+`;
@@ -2430,38 +2255,37 @@ function orderJoki(jokiName, jokiPrice, actionType) {
         }
 
         function renderHomeBanners(bannersList) {
-    const container = document.getElementById('home-banners-slider');
-    if (!container) return;
+            const container = document.getElementById('home-banners-slider');
+            if (!container) return;
 
-    if (!bannersList || bannersList.length === 0) {
-        container.innerHTML = `
-            <div class="min-w-full snap-start shrink-0">
-                <div class="glass rounded-3xl p-4 border border-red-500/30 relative overflow-hidden aspect-[21/9] sm:aspect-[24/9] flex items-center justify-center bg-zinc-950 text-zinc-400 text-xs">
-                    <div class="text-center">
-                        <i class="fas fa-images text-3xl mb-2 text-red-500/50"></i>
-                        <p>Belum ada banner aktif. Tambahkan melalui Admin Panel.</p>
+            if (!bannersList || bannersList.length === 0) {
+                container.innerHTML = `
+                    <div class="min-w-full snap-start shrink-0">
+                        <div class="glass rounded-3xl p-4 border border-red-500/30 relative overflow-hidden aspect-[21/9] sm:aspect-[24/9] flex items-center justify-center bg-zinc-950 text-zinc-400 text-xs">
+                            <div class="text-center">
+                                <i class="fas fa-images text-3xl mb-2 text-red-500/50"></i>
+                                <p>Belum ada banner aktif. Tambahkan melalui Admin Panel.</p>
+                            </div>
+                        </div>
+                    </div>`;
+                return;
+            }
+
+            container.innerHTML = bannersList.map(b => `
+                <div class="min-w-full sm:min-w-[calc(100%-0px)] snap-start shrink-0">
+                    <div class="glass rounded-3xl p-2 sm:p-3 border border-red-500/35 relative overflow-hidden shadow-[0_0_40px_rgba(153,27,27,0.25)] aspect-[21/9] sm:aspect-[24/9] flex items-center">
+                        <img src="${b.image}" alt="${b.title || 'Banner Tera Store'}" class="absolute inset-0 w-full h-full object-cover rounded-2xl" onerror="this.outerHTML='<div class=\\'w-full h-full flex items-center justify-center bg-zinc-950 text-zinc-500 text-xs\\'>Gagal Memuat Gambar Banner</div>'">
                     </div>
                 </div>
-            </div>`;
-        return;
-    }
+            `).join('');
+        }
 
-    container.innerHTML = bannersList.map(b => `
-        <div class="min-w-full sm:min-w-[calc(100%-0px)] snap-start shrink-0">
-            <div class="glass rounded-3xl p-2 sm:p-3 border border-red-500/35 relative overflow-hidden shadow-[0_0_40px_rgba(153,27,27,0.25)] aspect-[21/9] sm:aspect-[24/9] flex items-center">
-                <img src="${b.image}" alt="${b.title || 'Banner Tera Store'}" class="absolute inset-0 w-full h-full object-cover rounded-2xl" onerror="this.outerHTML='<div class=\\'w-full h-full flex items-center justify-center bg-zinc-950 text-zinc-500 text-xs\\'>Gagal Memuat Gambar Banner</div>'">
-            </div>
-        </div>
-    `).join('');
-}
-
-// Fungsi untuk tombol panah kiri-kanan
-function scrollBanner(direction) {
-    const container = document.getElementById('home-banners-slider');
-    if (!container) return;
-    const scrollAmount = container.clientWidth * direction;
-    container.scrollBy({ left: scrollAmount, behavior: 'smooth' });
-}
+        function scrollBanner(direction) {
+            const container = document.getElementById('home-banners-slider');
+            if (!container) return;
+            const scrollAmount = container.clientWidth * direction;
+            container.scrollBy({ left: scrollAmount, behavior: 'smooth' });
+        }
 
         function renderFlashSaleSection() {
             const section = document.getElementById('home-flashsale-section');
@@ -2607,11 +2431,9 @@ function scrollBanner(direction) {
                                 <span class="text-amber-400 font-extrabold text-sm">${formatRupiah(safePrice)}</span>
                             </div>
                             <div class="grid grid-cols-2 gap-2 mt-auto">
-                                <!-- Tombol Order via Web (Masuk Keranjang) -->
                                 <button onclick="orderJoki('${safeName}', ${safePrice}, 'website')" class="btn-crimson w-full py-2.5 rounded-xl font-bold uppercase text-[11px] flex items-center justify-center gap-1.5 text-white">
                                     <i class="fas fa-cart-plus"></i> Via Web
                                 </button>
-                                <!-- Tombol Order via WhatsApp -->
                                 <button onclick="orderJoki('${safeName}', ${safePrice}, 'whatsapp')" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white py-2.5 rounded-xl font-bold transition-all uppercase text-[11px] flex items-center justify-center gap-1.5 shadow-md">
                                     <i class="fab fa-whatsapp"></i> Via WA
                                 </button>
@@ -2861,179 +2683,7 @@ function scrollBanner(direction) {
             initEmbersCanvas();
             loadSavedCart();
             fetchStoreDataFromSheets(); 
-            initLoginState();
         });
-
-        // ===== LOGIN SYSTEM =====
-        const TERA_SESSION_KEY = 'tera_session';
-        const DISCORD_CLIENT_ID = '1520336034678706336';
-        const DISCORD_REDIRECT_URL = window.location.href.split('?')[0].split('#')[0];
-        const DISCORD_SCOPE = 'identify email';
-        const DISCORD_WORKER_URL = 'https://odd-math-ff8b.lazulias00.workers.dev/';
-
-        function initLoginState() {
-            const urlParams = new URLSearchParams(window.location.search);
-            const discordCode = urlParams.get('code');
-            if (discordCode) {
-                handleDiscordCallback(discordCode);
-                return;
-            }
-            const session = getSession();
-            if (session) {
-                setLoggedInUI(session.username, session.avatar || null, session.provider || 'manual');
-            }
-        }
-
-        function getSession() {
-            try {
-                const raw = sessionStorage.getItem(TERA_SESSION_KEY) || localStorage.getItem(TERA_SESSION_KEY);
-                return raw ? JSON.parse(raw) : null;
-            } catch { return null; }
-        }
-
-        function openLoginModal() {
-            const modal = document.getElementById('login-modal');
-            modal.classList.remove('hidden');
-            setTimeout(() => modal.classList.add('show'), 10);
-            document.body.style.overflow = 'hidden';
-            setTimeout(() => document.getElementById('modal-username').focus(), 300);
-        }
-
-        function closeLoginModal() {
-            const modal = document.getElementById('login-modal');
-            modal.classList.remove('show');
-            modal.classList.add('hidden');
-            document.body.style.overflow = '';
-            document.getElementById('modal-alert-error').classList.add('hidden');
-            document.getElementById('modal-username').value = '';
-            document.getElementById('modal-password').value = '';
-        }
-
-        function toggleModalPassword() {
-            const pwd = document.getElementById('modal-password');
-            const icon = document.getElementById('modal-eye-icon');
-            if (pwd.type === 'password') {
-                pwd.type = 'text';
-                icon.className = 'fas fa-eye-slash';
-            } else {
-                pwd.type = 'password';
-                icon.className = 'fas fa-eye';
-            }
-        }
-
-        function handleModalLogin() {
-            const username = document.getElementById('modal-username').value.trim();
-            const password = document.getElementById('modal-password').value.trim();
-            const remember = document.getElementById('modal-remember').checked;
-            const btnText = document.getElementById('modal-btn-text');
-            const btnLoading = document.getElementById('modal-btn-loading');
-            const alertEl = document.getElementById('modal-alert-error');
-            const alertMsg = document.getElementById('modal-alert-msg');
-
-            alertEl.classList.add('hidden');
-
-            if (!username || !password) {
-                alertMsg.textContent = 'Username dan password tidak boleh kosong.';
-                alertEl.classList.remove('hidden');
-                return;
-            }
-
-            btnText.classList.add('hidden');
-            btnLoading.classList.remove('hidden');
-
-            setTimeout(() => {
-                btnText.classList.remove('hidden');
-                btnLoading.classList.add('hidden');
-
-                if (username === 'admin' && password === 'tera123') {
-                    const session = { username: username, avatar: null, provider: 'manual', loggedAt: Date.now() };
-                    if (remember) {
-                        localStorage.setItem(TERA_SESSION_KEY, JSON.stringify(session));
-                    } else {
-                        sessionStorage.setItem(TERA_SESSION_KEY, JSON.stringify(session));
-                    }
-                    setLoggedInUI(username, null, 'manual');
-                    closeLoginModal();
-                } else {
-                    alertMsg.textContent = 'Username atau password salah. Coba lagi.';
-                    alertEl.classList.remove('hidden');
-                }
-            }, 1000);
-        }
-
-        function handleDiscordLogin() {
-            const state = Math.random().toString(36).substring(2);
-            sessionStorage.setItem('discord_oauth_state', state);
-            const params = new URLSearchParams({
-                client_id: DISCORD_CLIENT_ID,
-                redirect_url: DISCORD_REDIRECT_URL,
-                response_type: 'code',
-                scope: DISCORD_SCOPE,
-                state: state
-            });
-            window.location.href = `https://discord.com/api/oauth2/authorize?${params.toString()}`;
-        }
-
-        async function handleDiscordCallback(code) {
-            const cleanUrl = window.location.pathname;
-            window.history.replaceState({}, document.title, cleanUrl);
-
-            try {
-                const res = await fetch(DISCORD_WORKER_URL, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ code: code })
-                });
-                const data = await res.json();
-                if (!res.ok) throw new Error(data.error || 'Gagal login Discord');
-
-                const session = {
-                    username: data.username,
-                    avatar: data.avatar,
-                    email: data.email,
-                    provider: 'discord',
-                    loggedAt: Date.now()
-                };
-                sessionStorage.setItem(TERA_SESSION_KEY, JSON.stringify(session));
-                setLoggedInUI(data.username, data.avatar, 'discord');
-            } catch (err) {
-                openLoginModal();
-            }
-        }
-
-        function setLoggedInUI(username, avatarUrl, provider) {
-            document.getElementById('nav-login-btn').classList.add('hidden');
-            const userInfo = document.getElementById('nav-user-info');
-            userInfo.classList.remove('hidden');
-            userInfo.classList.add('flex');
-            document.getElementById('nav-username').textContent = username;
-
-            const mobTopBtn = document.getElementById('mobile-top-login-btn');
-            if (mobTopBtn) {
-                mobTopBtn.innerHTML = `<i class="fas fa-user-check text-emerald-400"></i>`;
-                mobTopBtn.onclick = handleLogout;
-            }
-        }
-
-        function handleLogout() {
-            if (window.handleGoogleSignOut && window._currentFirebaseUser) {
-                window._currentFirebaseUser = null;
-                window.handleGoogleSignOut();
-            }
-            localStorage.removeItem(TERA_SESSION_KEY);
-            sessionStorage.removeItem(TERA_SESSION_KEY);
-
-            document.getElementById('nav-login-btn').classList.remove('hidden');
-            const userInfo = document.getElementById('nav-user-info');
-            userInfo.classList.add('hidden');
-            userInfo.classList.remove('flex');
-
-            const mobTopBtn = document.getElementById('mobile-top-login-btn');
-            if (mobTopBtn) {
-                mobTopBtn.innerHTML = `<i class="fas fa-user"></i>`;
-                mobTopBtn.onclick = openLoginModal;
-            }
-        }
     </script>
 </body>
 </html>
