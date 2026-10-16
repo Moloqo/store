@@ -285,7 +285,7 @@
     <div class="bg-gradient-to-r from-red-950/80 via-red-900/40 to-red-950/80 border-b border-red-500/15 text-[11px] py-2 px-4 text-center font-medium text-red-200/90 z-50">
         <span class="inline-flex items-center gap-2">
             <span class="w-2 h-2 rounded-full bg-red-500 animate-ping"></span>
-            <strong>SISTEM OTOMATIS 24/7:</strong> Pembayaran QRIS terverifikasi otomatis & Invoice PDF resmi ber-watermark!
+            <strong>SISTEM OTOMATIS 24/7:</strong> Pembayaran QRIS terverifikasi otomatis!
         </span>
     </div>
 
@@ -458,7 +458,7 @@
                     <span class="text-gradient-crimson uppercase">TANPA BATAS</span>
                 </h2>
                 <p class="text-zinc-400 text-sm md:text-base mb-10 max-w-2xl mx-auto leading-relaxed">
-                    Top-up item game Roblox favoritmu dan nikmati layanan Joki profesional dengan sistem pembayaran QRIS otomatis 24 jam yang aman, cepat, dan dilengkapi Invoice PDF resmi ber-watermark.
+                    Top-up item game Roblox favoritmu dan nikmati layanan Joki profesional dengan sistem pembayaran QRIS otomatis 24 jam yang aman dan cepat.
                 </p>
                 <div class="flex flex-wrap justify-center gap-4">
                     <button onclick="switchPage('katalog')" class="btn-crimson text-white px-8 py-4 rounded-2xl font-bold uppercase tracking-wider text-xs flex items-center gap-2.5 shadow-lg">
@@ -486,8 +486,8 @@
                     <div class="w-11 h-11 rounded-xl bg-amber-500/10 border border-amber-500/25 flex items-center justify-center text-amber-400 text-lg mb-3">
                         <i class="fas fa-file-pdf"></i>
                     </div>
-                    <h4 class="font-bold text-xs uppercase tracking-wider text-white">Invoice PDF Resmi</h4>
-                    <p class="text-[11px] text-zinc-400 mt-1">Dilengkapi watermark & kode hash anti-pemalsuan</p>
+                    <h4 class="font-bold text-xs uppercase tracking-wider text-white">Invoice PDF</h4>
+                    <p class="text-[11px] text-zinc-400 mt-1">Dilengkapi dengan hash number</p>
                 </div>
                 <div class="glass p-5 rounded-2xl border border-white/5 flex flex-col items-center text-center">
                     <div class="w-11 h-11 rounded-xl bg-emerald-500/10 border border-emerald-500/25 flex items-center justify-center text-emerald-400 text-lg mb-3">
@@ -535,7 +535,7 @@
                             <i id="faq-icon-1" class="fas fa-chevron-down text-red-400 transition-transform"></i>
                         </button>
                         <div id="faq-body-1" class="hidden px-4 pb-4 text-xs text-zinc-400 leading-relaxed border-t border-white/5 pt-3">
-                            Pilih item di menu <b>Katalog Item</b>, masukkan ke keranjang (atau klik tombol petir untuk Beli Instan), isi <b>Username Roblox</b> kamu, lalu unduh/scan QRIS sesuai nominal hingga 3 digit terakhir. Setelah lunas, file <b>Invoice PDF ber-watermark</b> otomatis terunduh dan kamu bisa langsung klik tombol Chat WhatsApp Admin!
+                            Pilih item di menu <b>Katalog Item</b>, masukkan ke keranjang (atau klik tombol petir untuk Beli Instan), isi <b>Username Roblox</b> kamu, lalu unduh/scan QRIS sesuai nominal hingga 3 digit terakhir. Setelah lunas, klik tombol <b>Download Invoice</b> dan hubungi WhatsApp Admin!
                         </div>
                     </div>
                     <div class="glass rounded-2xl border border-white/10 overflow-hidden">
@@ -778,7 +778,7 @@
 
                     <!-- Tombol Download QRIS -->
                     <button onclick="downloadQRIS()" class="w-full bg-zinc-900 hover:bg-zinc-800 text-zinc-100 py-2.5 rounded-xl font-bold uppercase tracking-wider text-[11px] border border-white/15 transition-all flex items-center justify-center gap-2">
-                        <i class="fas fa-download text-red-400"></i> Download QRIS
+                        <i class="fas fa-download text-red-400"></i> Download Gambar QRIS
                     </button>
 
                     <!-- Status Pengecekan Real-Time -->
@@ -803,7 +803,7 @@
                     <div>
                         <h4 class="text-2xl font-heading font-bold italic uppercase text-emerald-400">Pembayaran Lunas!</h4>
                         <p class="text-xs text-zinc-300 leading-relaxed mt-1">
-                            Terima kasih! Pembayaranmu telah terverifikasi. Silakan unduh **Invoice PDF Resmi (Ber-Watermark)** di bawah dan klik tombol WhatsApp untuk mengambil item bersama <strong>Admin Tera</strong>.
+                            Terima kasih! Pembayaranmu telah terverifikasi. Silakan tekan tombol di bawah untuk mengunduh Invoice dan hubungi <strong>Admin Tera</strong> di WhatsApp.
                         </p>
                     </div>
 
@@ -815,9 +815,9 @@
                     </div>
 
                     <div class="space-y-2.5 pt-1">
-                        <!-- Tombol Download Invoice PDF -->
+                        <!-- Tombol Download Invoice PDF (Hanya Terunduh Saat Diklik) -->
                         <button onclick="downloadInvoicePDF()" class="btn-crimson w-full text-white py-3.5 rounded-xl font-bold uppercase tracking-widest text-xs transition-all flex items-center justify-center gap-2 shadow-lg">
-                            <i class="fas fa-file-pdf text-base"></i> Download Invoice (.PDF Resmi)
+                            <i class="fas fa-file-pdf text-base"></i> Download Invoice
                         </button>
 
                         <!-- Tombol Langsung Hubungi WA Admin -->
@@ -827,7 +827,7 @@
                     </div>
 
                     <button onclick="closePaymentModal()" class="w-full bg-white/5 hover:bg-white/10 text-zinc-400 hover:text-white py-2.5 rounded-xl font-bold uppercase tracking-wider text-[11px] transition-all">
-                        Tutup
+                        Tutup Jendela
                     </button>
                 </div>
             </div>
@@ -1032,12 +1032,11 @@
             document.body.appendChild(link);
             link.click();
             document.body.removeChild(link);
-            showToastMsg("QRIS berhasil diunduh!");
+            showToastMsg("Gambar QRIS berhasil diunduh!");
         }
 
-        // Fungsi pembuat kode Hash Keamanan unik (tidak bisa ditebak jika diedit)
         function generateSecurityHash(orderId, user, total) {
-            const raw = `TERASTORE_SECRET_2026|${orderId}|${String(user).toUpperCase()}|${total}`;
+            const raw = `TERASTORE_SECRET_2026|${String(orderId).trim()}|${String(user).trim().toUpperCase()}|${Number(total) || 0}`;
             let h1 = 0xdeadbeef ^ raw.length, h2 = 0x41c6ce57 ^ raw.length;
             for (let i = 0, ch; i < raw.length; i++) {
                 ch = raw.charCodeAt(i);
@@ -1263,7 +1262,6 @@
                 pdf.save(`Invoice_${data.orderId || 'TERA_STORE'}.pdf`);
                 showToastMsg("Invoice PDF ber-watermark berhasil diunduh!");
             } else {
-                // Fallback jika CDN jsPDF terblokir koneksi pengguna
                 const link = document.createElement('a');
                 link.download = `Invoice_${data.orderId || 'TERA_STORE'}.png`;
                 link.href = imgData;
@@ -1279,6 +1277,8 @@
         // =======================
         let currentOrderId = null;
         let paymentCheckInterval = null;
+        let isCheckingPayment = false;
+        let isOrderPaid = false;
 
         function generateOrderId() {
             const now = new Date();
@@ -1345,7 +1345,7 @@
                     currentFinalNominal = result.finalAmount;
                     localStorage.setItem(LAST_ORDER_KEY, currentOrderId);
 
-                    // Simpan rincian pesanan untuk pembuatan Invoice PDF saat lunas
+                    // Simpan rincian pesanan untuk diunduh saat pembeli menekan tombol Download Invoice
                     lastInvoiceData = {
                         orderId: currentOrderId,
                         date: new Date().toLocaleString('id-ID'),
@@ -1379,12 +1379,21 @@
 
         function startCheckingPayment(orderId) {
             if (paymentCheckInterval) clearInterval(paymentCheckInterval);
+            isCheckingPayment = false;
+            isOrderPaid = false;
+
             paymentCheckInterval = setInterval(async () => {
+                // Cegah request bertumpuk atau eksekusi ulang jika sudah lunas
+                if (isCheckingPayment || isOrderPaid) return;
+                isCheckingPayment = true;
+
                 try {
                     const res = await fetch(`${GOOGLE_SCRIPT_URL}?orderId=${orderId}`);
                     const data = await res.json();
-                    if (data.status === "LUNAS") {
+                    if (data.status === "LUNAS" && !isOrderPaid) {
+                        isOrderPaid = true;
                         clearInterval(paymentCheckInterval);
+                        paymentCheckInterval = null;
                         
                         const robloxUser = lastInvoiceData?.robloxUser || document.getElementById('checkout-roblox').value.trim();
                         const buyerNote = lastInvoiceData?.buyerNote || document.getElementById('checkout-note').value.trim() || "-";
@@ -1412,21 +1421,21 @@
                         document.getElementById('qris-waiting-view').classList.add('hidden');
                         document.getElementById('qris-success-view').classList.remove('hidden');
 
-                        // Otomatis unduh Invoice PDF begitu pembayaran LUNAS
-                        setTimeout(() => {
-                            downloadInvoicePDF();
-                        }, 400);
-
                         cart = [];
                         saveCart();
                         updateCartUI();
                     }
-                } catch (e) {}
+                } catch (e) {
+                } finally {
+                    isCheckingPayment = false;
+                }
             }, 1500);
         }
 
         function closePaymentModal() {
             if (paymentCheckInterval) clearInterval(paymentCheckInterval);
+            paymentCheckInterval = null;
+            isCheckingPayment = false;
             document.getElementById('paymentModal').classList.add('hidden');
         }
 
