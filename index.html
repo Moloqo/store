@@ -14,6 +14,8 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <!-- Canvas Confetti untuk Efek Perayaan Saat Pembayaran Lunas -->
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <!-- Library QRCode untuk Generate Gambar QRIS Dinamis -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 
     <script src="https://cdn.tailwindcss.com"></script>
 
@@ -1050,6 +1052,112 @@
         const INSTAGRAM_URL = "https://www.instagram.com/tera.rblx";
         const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyx33ntFyF_QFbH15j8kbJJiEiI1wNwzk_eR4_EpPj4HeHZMR5NAGKkbUPtC5G4QGDv/exec";
         const NOMOR_ADMIN_WA = "6288210882762";
+        // DATA QRIS STATIS DANA BISNIS (M-Market)
+        const STATIC_QRIS_DATA = "00020101021126570011ID.DANA.WWW011893600915339486270002093948627000303UMI51440014ID.CO.QRIS.WWW0215ID10232486135240303UMI5204481453033605802ID5908M-Market6015Kota Jakarta Ti6105138806304A788";
+
+        // Algoritma Resmi CRC16-CCITT (Standar Bank Indonesia / EMVCo)
+        function hitungCRC16(str) {
+            let crc = 0xFFFF;
+            for (let c = 0; c < str.length; c++) {
+                crc ^= str.charCodeAt(c) << 8;
+                for (let i = 0; i < 8; i++) {
+                    if (crc & 0x8000) crc = ((crc << 1) ^ 0x1021) & 0xFFFF;
+                    else crc = (crc << 1) & 0xFFFF;
+                }
+            }
+            return crc.toString(16).toUpperCase().padStart(4, '0');
+        }
+
+        // Fungsi Mengubah QRIS Statis DANA Bisnis menjadi QRIS Dinamis Ber-Nominal
+        function createDynamicQRIS(qrisStatis, nominal) {
+            if (!qrisStatis || !qrisStatis.startsWith("000201")) return null;
+
+            // 1. Hapus 4 karakter checksum lama di ujung (A788)
+            let qrisTanpaCRC = qrisStatis.slice(0, -4);
+
+            // 2. Ubah kode Statis (010211) menjadi Dinamis (010212)
+            let qrisDinamis = qrisTanpaCRC.replace("010211", "010212");
+
+            // 3. Buat Tag 54 (Nominal Transaksi) -> "54" + PanjangDigit (2 angka) + Nominal
+            let nominalStr = String(Math.round(Number(nominal)));
+            let tag54 = "54" + String(nominalStr.length).padStart(2, '0') + nominalStr;
+
+            // 4. Sisipkan Tag 54 tepat sebelum kode negara "5802ID"
+            let splitParts = qrisDinamis.split("5802ID");
+            if (splitParts.length !== 2) return null;
+
+            let payloadBaru = splitParts[0] + tag54 + "5802ID" + splitParts[1];
+
+            // 5. Hitung dan tempelkan kode keamanan CRC16 baru di ujung
+            return payloadBaru + hitungCRC16(payloadBaru);
+        }
+
+        // Fungsi Render Gambar QRIS Dinamis + Poster Frame TERA STORE
+        function renderDynamicQRISImage(nominal, orderId) {
+            const imgEl = document.getElementById('qris-image-el');
+            const dynamicString = createDynamicQRIS(STATIC_QRIS_DATA, nominal);
+
+            if (!dynamicString || typeof QRCode === 'undefined') {
+                imgEl.src = "assets/qris.jpg";
+                return;
+            }
+
+            const tempDiv = document.createElement('div');
+            new QRCode(tempDiv, {
+                text: dynamicString,
+                width: 480,
+                height: 480,
+                colorDark: "#000000",
+                colorLight: "#ffffff",
+                correctLevel: QRCode.CorrectLevel.M
+            });
+
+            setTimeout(() => {
+                const qrCanvas = tempDiv.querySelector('canvas');
+                const qrImg = tempDiv.querySelector('img');
+                const sourceMedia = (qrCanvas && qrCanvas.width > 0) ? qrCanvas : qrImg;
+                if (!sourceMedia) return;
+
+                const finalCanvas = document.createElement('canvas');
+                finalCanvas.width = 600;
+                finalCanvas.height = 750;
+                const ctx = finalCanvas.getContext('2d');
+
+                // Background Putih Bersih
+                ctx.fillStyle = "#ffffff";
+                ctx.fillRect(0, 0, finalCanvas.width, finalCanvas.height);
+
+                // Header Merah TERA STORE
+                ctx.fillStyle = "#dc2626";
+                ctx.fillRect(0, 0, finalCanvas.width, 95);
+                ctx.fillStyle = "#ffffff";
+                ctx.font = "bold 28px sans-serif";
+                ctx.textAlign = "center";
+                ctx.fillText("TERA STORE OFFICIAL QRIS", 300, 42);
+                ctx.font = "bold 14px monospace";
+                ctx.fillText(`MERCHANT: M-MARKET • ORDER: ${orderId}`, 300, 72);
+
+                // Gambar QR Dinamis di Tengah
+                ctx.drawImage(sourceMedia, 60, 120, 480, 480);
+
+                // Kotak Info Nominal Otomatis di Bawah
+                ctx.fillStyle = "#fef2f2";
+                ctx.fillRect(40, 620, 520, 95);
+                ctx.strokeStyle = "#dc2626";
+                ctx.lineWidth = 2;
+                ctx.strokeRect(40, 620, 520, 95);
+
+                ctx.fillStyle = "#111827";
+                ctx.font = "bold 26px sans-serif";
+                ctx.fillText(`TOTAL: ${formatRupiah(nominal)}`, 300, 662);
+
+                ctx.fillStyle = "#dc2626";
+                ctx.font = "bold 13px sans-serif";
+                ctx.fillText("✓ Nominal & Kode Unik otomatis terisi saat di-scan", 300, 692);
+
+                imgEl.src = finalCanvas.toDataURL("image/png");
+            }, 100);
+        }
 
         const CART_STORAGE_KEY = "tera_saved_cart";
         const LAST_ORDER_KEY = "tera_last_order";
@@ -1634,9 +1742,10 @@
         // FITUR DOWNLOAD QRIS & INVOICE PDF BER-WATERMARK ANTI-PALSU
         // =======================
         function downloadQRIS() {
+            const imgEl = document.getElementById('qris-image-el');
             const link = document.createElement('a');
-            link.href = 'assets/qris.jpg';
-            link.download = `QRIS_TERA_STORE_${currentOrderId || 'PAYMENT'}.jpg`;
+            link.href = imgEl ? imgEl.src : 'assets/qris.jpg';
+            link.download = `QRIS_TERA_STORE_${currentOrderId || 'PAYMENT'}.png`;
             document.body.appendChild(link);
             link.click();
             document.body.removeChild(link);
@@ -2029,6 +2138,7 @@
                     document.getElementById('payment-order-id').innerText = currentOrderId;
                     document.getElementById('payment-unique-code').innerText = `+Rp ${result.uniqueCode}`;
                     document.getElementById('payment-total').innerText = formatRupiah(result.finalAmount);
+                    renderDynamicQRISImage(result.finalAmount, currentOrderId);
 
                     const vRow = document.getElementById('payment-voucher-row');
                     if (appliedVoucher && discountAmount > 0) {
