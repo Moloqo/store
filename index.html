@@ -2396,6 +2396,7 @@
                     activeSectionFilter = {};
                     allOrdersCache = data.orders || [];
                     flashSaleItems = [];
+                    window._gachaRewardsList = data.gachaRewards || [];
 
                     const totalProds = (data.products || []).length;
                     const statItemsEl = document.getElementById('hero-stat-items');
@@ -2536,34 +2537,13 @@
         }
 
         function renderVouchersBar() {
+            // VOUCHER DISEMBUNYIKAN DARI TAMPILAN PUBLIK (Eksklusif rahasia)
             const sec = document.getElementById('home-vouchers-section');
-            const list = document.getElementById('home-vouchers-list');
+            if (sec) sec.classList.add('hidden');
+
             const topBanner = document.getElementById('top-promo-banner');
-            if (!sec || !list) return;
-
-            if (!availableVouchers || availableVouchers.length === 0) {
-                sec.classList.add('hidden');
-                return;
-            }
-
-            sec.classList.remove('hidden');
-            list.innerHTML = availableVouchers.map(v => {
-                const label = (v.type === 'percent' || v.type === 'persen' || v.type === '%')
-                    ? `Diskon ${v.value}%`
-                    : `Potongan ${formatRupiah(v.value)}`;
-                return `
-                    <button onclick="applyVoucherCodeDirect('${v.code}')" class="px-3 py-1.5 rounded-xl bg-black/70 hover:bg-red-950 border border-dashed border-amber-500/50 text-xs flex items-center gap-2 transition-all group">
-                        <code class="font-mono font-extrabold text-amber-400 group-hover:text-white">${v.code}</code>
-                        <span class="text-[10px] text-zinc-300">(${label})</span>
-                        <i class="fas fa-copy text-[10px] text-red-400"></i>
-                    </button>
-                `;
-            }).join('');
-
-            if (topBanner && availableVouchers[0]) {
-                const v0 = availableVouchers[0];
-                const lbl = (v0.type === 'percent' || v0.type === 'persen' || v0.type === '%') ? `${v0.value}%` : formatRupiah(v0.value);
-                topBanner.innerHTML = `<strong>PROMO HARI INI:</strong> Pakai Kode Voucher <code class="bg-red-600 text-white px-2 py-0.5 rounded font-bold mx-1 cursor-pointer" onclick="applyVoucherCodeDirect('${v0.code}')">${v0.code}</code> untuk hemat <strong>${lbl}</strong> di Keranjang!`;
+            if (topBanner) {
+                topBanner.innerHTML = `<strong>SISTEM OTOMATIS 24/7:</strong> Pembayaran QRIS terverifikasi otomatis & klaim voucher spesial di Keranjang!`;
             }
         }
 
@@ -2720,12 +2700,31 @@
             const resultText = document.getElementById('gacha-result-text');
             if (btnSpin) btnSpin.disabled = true;
 
-            const possibleRewards = [
-                { name: "HEMAT5", label: "Diskon 5%", type: "percent", value: 5 },
-                { name: "HEMAT10", label: "Diskon 10%", type: "percent", value: 10 },
-                { name: "TERA2026", label: "Potongan Rp 2.000", type: "nominal", value: 2000 },
-                { name: "SULTAN", label: "Potongan Rp 5.000", type: "nominal", value: 5000 }
-            ];
+            // AMBIL DATA HADIAH GACHA DARI ADMIN PANEL (DATABASE GOOGLE SHEETS)
+            // Jika belum diatur di admin, gunakan default cadangan
+            const possibleRewards = (window._gachaRewardsList && window._gachaRewardsList.length > 0) 
+                ? window._gachaRewardsList 
+                : [
+                    { label: "Diskon 5%", code: "HEMAT5", chance: 10 },
+                    { label: "Diskon 10%", code: "HEMAT10", chance: 10 },
+                    { label: "Potongan Rp 2.000", code: "TERA2026", chance: 10 },
+                    { label: "ZONK", code: "MAAF BELUM BERUNTUNG", chance: 65 },
+                    { label: "Potongan Rp 5.000", code: "SULTAN", chance: 5 }
+                  ];
+
+            // Algoritma Pemilihan Berdasarkan Bobot Chance (Peluang) dari Admin Panel
+            let totalChance = possibleRewards.reduce((sum, item) => sum + Number(item.chance || 10), 0);
+            let randomNum = Math.random() * totalChance;
+            let cumulative = 0;
+            let winningReward = possibleRewards[0];
+
+            for (let reward of possibleRewards) {
+                cumulative += Number(reward.chance || 10);
+                if (randomNum <= cumulative) {
+                    winningReward = reward;
+                    break;
+                }
+            }
 
             let counter = 0;
             const animInterval = setInterval(() => {
@@ -2736,24 +2735,26 @@
                 if (counter > 14) {
                     clearInterval(animInterval);
                     
-                    const winningReward = possibleRewards[Math.floor(Math.random() * possibleRewards.length)];
                     localStorage.setItem(GACHA_COOLDOWN_KEY, today);
 
                     wheelBox.innerHTML = `🎉`;
                     resultText.innerHTML = `
                         <span class="text-emerald-400 font-extrabold text-sm">SELAMAT! Kamu Mendapat:</span><br>
                         <strong class="text-amber-400 text-base">${winningReward.label}</strong><br>
-                        <span class="text-[10px] text-zinc-400">Kode Voucher: <code>${winningReward.name}</code></span>
+                        <span class="text-[10px] text-zinc-400">Kode Voucher: <code>${winningReward.code}</code></span>
                     `;
 
                     if (btnSpin) btnSpin.classList.add('hidden');
 
-                    const exists = availableVouchers.find(v => v.code === winningReward.name);
+                    // Masukkan ke daftar voucher aktif di web
+                    const voucherCodeStr = winningReward.code;
+                    const exists = availableVouchers.find(v => v.code === voucherCodeStr);
                     if (!exists) {
+                        // Cek apakah voucher ini ada di database utama, jika tidak buat objek sementara
                         availableVouchers.push({
-                            code: winningReward.name,
-                            value: winningReward.value,
-                            type: winningReward.type,
+                            code: voucherCodeStr,
+                            value: winningReward.value || 10,
+                            type: winningReward.type || 'percent',
                             minSpend: 0,
                             quota: 999,
                             active: true
@@ -2763,12 +2764,12 @@
 
                     const actionBox = document.getElementById('gacha-action-box');
                     actionBox.innerHTML = `
-                        <button onclick="closeGachaModal(); applyVoucherCodeDirect('${winningReward.name}')" class="w-full btn-crimson text-white font-bold py-3.5 rounded-xl uppercase tracking-widest text-xs shadow-lg flex items-center justify-center gap-2">
+                        <button onclick="closeGachaModal(); applyVoucherCodeDirect('${voucherCodeStr}')" class="w-full btn-crimson text-white font-bold py-3.5 rounded-xl uppercase tracking-widest text-xs shadow-lg flex items-center justify-center gap-2">
                             <i class="fas fa-ticket text-xs"></i> Pakai Voucher Sekarang!
                         </button>
                     `;
 
-                    showToastMsg(`Hoki banget! Kamu dapat voucher ${winningReward.name}`);
+                    showToastMsg(`Hoki banget! Kamu dapat voucher ${voucherCodeStr}`);
                 }
             }, 100);
         }
