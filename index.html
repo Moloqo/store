@@ -1443,6 +1443,12 @@
                 return;
             }
 
+            // Blokir jika user mengetik kode ZONK secara manual
+            if (code.includes("ZONK") || code.includes("BELUM BERUNTUNG")) {
+                showVoucherStatus("Kode voucher tidak valid!", true);
+                return;
+            }
+
             const subtotal = calculateCartSubtotal();
             if (subtotal <= 0) {
                 showVoucherStatus("Tambahkan produk ke keranjang terlebih dahulu!", true);
@@ -2700,19 +2706,29 @@
             const resultText = document.getElementById('gacha-result-text');
             if (btnSpin) btnSpin.disabled = true;
 
-            // AMBIL DATA HADIAH GACHA DARI ADMIN PANEL (DATABASE GOOGLE SHEETS)
-            // Jika belum diatur di admin, gunakan default cadangan
+            // =========================================================
+            // 1. ATUR HADIAH GACHA, ZONK, & MINIMUM SPEND DI SINI
+            // =========================================================
+            // Catatan: 
+            // - type: 'percent' (persen) atau 'nominal' (potongan rupiah)
+            // - value: angka diskon (misal 5 untuk 5%, atau 2000 untuk Rp 2.000)
+            // - minSpend: minimal belanja dalam Rupiah (misal 15000 = min. belanja Rp 15.000)
+            // - isZonk: true khusus untuk hadiah ZONK
+            const defaultRewards = [
+                { label: "Diskon 5%", code: "HEMAT5", type: "percent", value: 5, minSpend: 10000, chance: 15 },
+                { label: "Diskon 10%", code: "HEMAT10", type: "percent", value: 10, minSpend: 25000, chance: 10 },
+                { label: "Potongan Rp 2.000", code: "TERA2026", type: "nominal", value: 2000, minSpend: 15000, chance: 10 },
+                { label: "Potongan Rp 5.000", code: "SULTAN", type: "nominal", value: 5000, minSpend: 50000, chance: 5 },
+                { label: "💀 ZONK!", code: "", isZonk: true, chance: 60 }
+            ];
+
+            // Jika dari Google Sheets (Admin Panel) ada data gacha, gunakan itu. 
+            // Kalau kamu mau FULL atur dari kodingan HTML ini saja, ubah baris di bawah jadi: const possibleRewards = defaultRewards;
             const possibleRewards = (window._gachaRewardsList && window._gachaRewardsList.length > 0) 
                 ? window._gachaRewardsList 
-                : [
-                    { label: "Diskon 5%", code: "HEMAT5", chance: 10 },
-                    { label: "Diskon 10%", code: "HEMAT10", chance: 10 },
-                    { label: "Potongan Rp 2.000", code: "TERA2026", chance: 10 },
-                    { label: "ZONK", code: "MAAF BELUM BERUNTUNG", chance: 65 },
-                    { label: "Potongan Rp 5.000", code: "SULTAN", chance: 5 }
-                  ];
+                : defaultRewards;
 
-            // Algoritma Pemilihan Berdasarkan Bobot Chance (Peluang) dari Admin Panel
+            // Algoritma Pemilihan Berdasarkan Bobot Chance (Peluang)
             let totalChance = possibleRewards.reduce((sum, item) => sum + Number(item.chance || 10), 0);
             let randomNum = Math.random() * totalChance;
             let cumulative = 0;
@@ -2734,42 +2750,67 @@
 
                 if (counter > 14) {
                     clearInterval(animInterval);
-                    
                     localStorage.setItem(GACHA_COOLDOWN_KEY, today);
-
-                    wheelBox.innerHTML = `🎉`;
-                    resultText.innerHTML = `
-                        <span class="text-emerald-400 font-extrabold text-sm">SELAMAT! Kamu Mendapat:</span><br>
-                        <strong class="text-amber-400 text-base">${winningReward.label}</strong><br>
-                        <span class="text-[10px] text-zinc-400">Kode Voucher: <code>${winningReward.code}</code></span>
-                    `;
-
                     if (btnSpin) btnSpin.classList.add('hidden');
 
-                    // Masukkan ke daftar voucher aktif di web
-                    const voucherCodeStr = winningReward.code;
-                    const exists = availableVouchers.find(v => v.code === voucherCodeStr);
-                    if (!exists) {
-                        // Cek apakah voucher ini ada di database utama, jika tidak buat objek sementara
-                        availableVouchers.push({
-                            code: voucherCodeStr,
-                            value: winningReward.value || 10,
-                            type: winningReward.type || 'percent',
-                            minSpend: 0,
-                            quota: 999,
-                            active: true
-                        });
-                        renderVouchersBar();
-                    }
-
                     const actionBox = document.getElementById('gacha-action-box');
-                    actionBox.innerHTML = `
-                        <button onclick="closeGachaModal(); applyVoucherCodeDirect('${voucherCodeStr}')" class="w-full btn-crimson text-white font-bold py-3.5 rounded-xl uppercase tracking-widest text-xs shadow-lg flex items-center justify-center gap-2">
-                            <i class="fas fa-ticket text-xs"></i> Pakai Voucher Sekarang!
-                        </button>
-                    `;
 
-                    showToastMsg(`Hoki banget! Kamu dapat voucher ${voucherCodeStr}`);
+                    // Deteksi apakah hasil spin adalah ZONK
+                    const isZonk = winningReward.isZonk === true || 
+                                   !winningReward.code || 
+                                   String(winningReward.label || '').toUpperCase().includes('ZONK') || 
+                                   String(winningReward.code || '').toUpperCase().includes('ZONK') || 
+                                   String(winningReward.code || '').toUpperCase().includes('BELUM BERUNTUNG') ||
+                                   (Number(winningReward.value || winningReward.discount || 0) <= 0 && !['HEMAT5','HEMAT10','TERA2026','SULTAN'].includes(String(winningReward.code).toUpperCase()));
+
+                    if (isZonk) {
+                        // 1. KALAU DAPAT ZONK: TIDAK ADA VOUCHER YANG DIBUAT & TIDAK ADA TOMBOL KLAIM
+                        wheelBox.innerHTML = `💀 ZONK!`;
+                        resultText.innerHTML = `
+                            <span class="text-red-400 font-extrabold text-sm">YAH, BELUM BERUNTUNG!</span><br>
+                            <span class="text-xs text-zinc-300">Kamu belum dapat voucher hari ini.</span><br>
+                            <span class="text-[10px] text-zinc-500">Coba lagi gacha besok ya!</span>
+                        `;
+                        actionBox.innerHTML = `
+                            <button onclick="closeGachaModal()" class="w-full bg-zinc-800 hover:bg-zinc-700 text-zinc-300 font-bold py-3.5 rounded-xl uppercase tracking-widest text-xs transition-all">
+                                Tutup
+                            </button>
+                        `;
+                        showToastMsg("Yah kamu dapat ZONK! Coba lagi besok ya.", true);
+                    } else {
+                        // 2. KALAU MENANG: BARU BUAT VOUCHERNYA BESERTA MINIMUM SPEND
+                        const voucherCodeStr = String(winningReward.code).trim().toUpperCase();
+                        const minSpendVal = Number(winningReward.minSpend || winningReward.minBelanja || 0);
+
+                        wheelBox.innerHTML = `🎉`;
+                        resultText.innerHTML = `
+                            <span class="text-emerald-400 font-extrabold text-sm">SELAMAT! Kamu Mendapat:</span><br>
+                            <strong class="text-amber-400 text-base">${winningReward.label}</strong><br>
+                            <span class="text-[10px] text-zinc-300">Kode Voucher: <code class="text-white font-bold">${voucherCodeStr}</code></span><br>
+                            <span class="text-[10px] text-amber-400/90 font-semibold">Min. Belanja: ${minSpendVal > 0 ? formatRupiah(minSpendVal) : 'Tanpa Minimal Belanja'}</span>
+                        `;
+
+                        const existingVoucher = availableVouchers.find(v => String(v.code).toUpperCase() === voucherCodeStr);
+                        if (!existingVoucher) {
+                            availableVouchers.push({
+                                code: voucherCodeStr,
+                                value: Number(winningReward.value || winningReward.discount || 10),
+                                type: winningReward.type || 'percent',
+                                minSpend: minSpendVal,
+                                quota: 999,
+                                active: true
+                            });
+                            renderVouchersBar();
+                        }
+
+                        actionBox.innerHTML = `
+                            <button onclick="closeGachaModal(); applyVoucherCodeDirect('${voucherCodeStr}')" class="w-full btn-crimson text-white font-bold py-3.5 rounded-xl uppercase tracking-widest text-xs shadow-lg flex items-center justify-center gap-2">
+                                <i class="fas fa-ticket text-xs"></i> Pakai Voucher Sekarang!
+                            </button>
+                        `;
+
+                        showToastMsg(`Hoki banget! Kamu dapat voucher ${voucherCodeStr}`);
+                    }
                 }
             }, 100);
         }
