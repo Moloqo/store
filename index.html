@@ -2402,7 +2402,6 @@
                     activeSectionFilter = {};
                     allOrdersCache = data.orders || [];
                     flashSaleItems = [];
-                    window._gachaRewardsList = data.gachaRewards || [];
 
                     const totalProds = (data.products || []).length;
                     const statItemsEl = document.getElementById('hero-stat-items');
@@ -2715,18 +2714,23 @@
             // - minSpend: minimal belanja dalam Rupiah (misal 15000 = min. belanja Rp 15.000)
             // - isZonk: true khusus untuk hadiah ZONK
             const defaultRewards = [
-                { label: "Diskon 5%", code: "HEMAT5", type: "percent", value: 5, minSpend: 10000, chance: 20 },
+                { label: "Diskon 5%", code: "HEMAT5", type: "percent", value: 5, minSpend: 10000, chance: 15 },
                 { label: "Diskon 10%", code: "HEMAT10", type: "percent", value: 10, minSpend: 25000, chance: 10 },
-                { label: "Potongan Rp 2.000", code: "TERA2026", type: "nominal", value: 2000, minSpend: 15000, chance: 15 },
-                { label: "Potongan Rp 5.000", code: "SULTAN", type: "nominal", value: 5000, minSpend: 40000, chance: 5 },
-                { label: "💀 ZONK!", code: "", isZonk: true, chance: 50 }
+                { label: "Potongan Rp 2.000", code: "TERA2026", type: "nominal", value: 2000, minSpend: 15000, chance: 10 },
+                { label: "Potongan Rp 5.000", code: "SULTAN", type: "nominal", value: 5000, minSpend: 50000, chance: 5 },
+                { label: "💀 ZONK!", code: "", isZonk: true, chance: 60 }
             ];
 
             // Jika dari Google Sheets (Admin Panel) ada data gacha, gunakan itu. 
             // Kalau kamu mau FULL atur dari kodingan HTML ini saja, ubah baris di bawah jadi: const possibleRewards = defaultRewards;
-            const possibleRewards = (window._gachaRewardsList && window._gachaRewardsList.length > 0) 
-                ? window._gachaRewardsList 
-                : defaultRewards;
+            // ✅ LANGSUNG PAKAI DAFTAR HADIAH DI INDEX.HTML:
+            const possibleRewards = [
+                { label: "Diskon 5%", code: "HEMAT5", type: "percent", value: 5, minSpend: 10000, chance: 20 },
+                { label: "Diskon 10%", code: "HEMAT10", type: "percent", value: 10, minSpend: 25000, chance: 10 },
+                { label: "Potongan Rp 2.000", code: "TERA2026", type: "nominal", value: 2000, minSpend: 15000, chance: 15 },
+                { label: "Potongan Rp 5.000", code: "SULTAN", type: "nominal", value: 5000, minSpend: 50000, chance: 5 },
+                { label: "💀 ZONK!", code: "", isZonk: true, chance: 50 }
+            ];
 
             // Algoritma Pemilihan Berdasarkan Bobot Chance (Peluang)
             let totalChance = possibleRewards.reduce((sum, item) => sum + Number(item.chance || 10), 0);
@@ -3215,4 +3219,3 @@
     </script>
 </body>
 </html>
-
